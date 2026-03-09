@@ -240,29 +240,20 @@ tr:hover td{background:rgba(255,255,255,.02);color:var(--text)}
 </head>
 <body>
 
-<!-- ══ UNLOCK SCREEN ══ -->
-<div id="unlock">
-  <div class="unlock-box">
-    <div class="unlock-logo">CS<span>.</span>MGT</div>
-    <div class="unlock-sub">Management Intelligence — Cognitive Solutions</div>
-    <div class="key-input-wrap">
-      <input class="key-input" id="key-in" type="password" maxlength="12" placeholder="Enter Access Key"
-             onkeydown="if(event.key==='Enter')unlock()">
-    </div>
-    <button class="unlock-btn" onclick="unlock()">ACCESS DASHBOARD</button>
-    <div class="unlock-err" id="key-err"></div>
-    <div class="unlock-hint">For authorised management only</div>
-  </div>
-</div>
+<!-- unlock screen removed -->
 
 <!-- ══ APP ══ -->
-<div id="app">
+<div id="app" style="display:block">
 
   <!-- Header -->
   <div class="hdr">
     <div class="hdr-logo">COGNITIVE<span>.</span>SOLUTIONS — INTELLIGENCE</div>
     <div class="hdr-right">
       <div class="hdr-time" id="live-clock"></div>
+      <input type="password" id="ai-key-hdr" placeholder="Anthropic API Key" 
+        style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;
+        font-family:var(--font);font-size:11px;padding:6px 10px;border-radius:6px;width:200px;outline:none"
+        oninput="syncAIKey(this.value)">
       <span class="hdr-badge">MANAGEMENT</span>
     </div>
   </div>
@@ -449,24 +440,8 @@ tr:hover td{background:rgba(255,255,255,.02);color:var(--text)}
 <script>
 // ═══════════════ CONFIG ═══════════════
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw77jFdET6ruzfO-risnbUyOQuJy2ISPUlFYLv-RnZhUk1VEB9SCgS40L6C8m4yeEqVAQ/exec';
-const ACCESS_KEY = 'CS2024MGT'; // ← Change this to your secret key
 
-// ═══════════════ UNLOCK ═══════════════
-function unlock() {
-  const key = document.getElementById('key-in').value.trim().toUpperCase();
-  if (key === ACCESS_KEY) {
-    document.getElementById('unlock').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    init();
-  } else {
-    const err = document.getElementById('key-err');
-    err.textContent = 'Invalid key. Try again.';
-    document.getElementById('key-in').value = '';
-    document.getElementById('key-in').focus();
-    setTimeout(() => err.textContent = '', 3000);
-  }
-}
-document.getElementById('key-in').addEventListener('keydown', e => { if(e.key==='Enter') unlock(); });
+// unlock removed — direct access
 
 // ═══════════════ INIT ═══════════════
 let _dailyData = null;
@@ -486,13 +461,25 @@ function init() {
   document.getElementById('ctrl-date').value = today;
   document.getElementById('ctrl-month').value = month;
 
-  // Load AI key from storage
+  // Load AI key from storage — sync to both inputs
   const savedKey = localStorage.getItem('cs_ai_key');
-  if (savedKey) document.getElementById('ai-key').value = savedKey;
+  if (savedKey) {
+    const k1 = document.getElementById('ai-key');
+    const k2 = document.getElementById('ai-key-hdr');
+    if (k1) k1.value = savedKey;
+    if (k2) k2.value = savedKey;
+  }
 
   loadAll();
   loadPenalties();
   populateEmpFilter();
+}
+
+function syncAIKey(val) {
+  // Keep both key inputs in sync
+  const k1 = document.getElementById('ai-key');
+  if (k1) k1.value = val;
+  if (val.length > 20) localStorage.setItem('cs_ai_key', val);
 }
 
 function loadAll() {
@@ -1158,6 +1145,8 @@ function formatDateFull(dateStr) {
   if (!dateStr) return '';
   return new Date(dateStr).toLocaleDateString('en-PK', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
 }
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
