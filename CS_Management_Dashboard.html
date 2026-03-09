@@ -523,31 +523,49 @@ async function loadDaily() {
     const todayReports = repRes.reports || [];
     const allReports = allRepRes.reports || [];
 
-    // Build report lookup by empId for today
-    const reportByEmp = {};
-    todayReports.forEach(r => { reportByEmp[r.empId] = r; });
+    // Build report lookup — match by empId OR empName (handles both old and new submissions)
+    const reportByEmpId = {};
+    const reportByEmpName = {};
+    todayReports.forEach(r => {
+      if (r.empId) reportByEmpId[r.empId] = r;
+      if (r.empName) reportByEmpName[r.empName.trim().toLowerCase()] = r;
+    });
 
     // Build set of reported dates per employee (for consecutive miss calc)
-    const reportedDates = {};
+    const reportedById = {};
+    const reportedByName = {};
     allReports.forEach(r => {
-      if (!reportedDates[r.empId]) reportedDates[r.empId] = new Set();
-      reportedDates[r.empId].add(r.date);
+      if (r.empId) {
+        if (!reportedById[r.empId]) reportedById[r.empId] = new Set();
+        reportedById[r.empId].add(r.date);
+      }
+      if (r.empName) {
+        const key = r.empName.trim().toLowerCase();
+        if (!reportedByName[key]) reportedByName[key] = new Set();
+        reportedByName[key].add(r.date);
+      }
     });
+
+    // Portal start date — don't count misses before this date
+    const PORTAL_START = new Date('2026-03-01'); // adjust if needed
 
     // Aggregate per employee
     const summary = employees.map(emp => {
-      const report = reportByEmp[emp.id] || null;
+      // Match report by ID first, fall back to name match
+      const nameKey = emp.name.trim().toLowerCase();
+      const report = reportByEmpId[emp.id] || reportByEmpName[nameKey] || null;
       const reportTime = report ? report.time : null;
       const notReported = !report;
       const isLate = reportTime ? (parseInt(reportTime.split(':')[0]) >= 19) : false;
 
-      // Consecutive misses
-      const empDates = reportedDates[emp.id] || new Set();
+      // Consecutive misses — only count back to portal start, max 7 days
+      const empDates = reportedById[emp.id] || reportedByName[nameKey] || new Set();
       let consecutiveMisses = 0;
       const checkDate = new Date(date);
       if (notReported) consecutiveMisses++;
-      for (let j = 1; j <= 30; j++) {
+      for (let j = 1; j <= 7; j++) {
         checkDate.setDate(checkDate.getDate() - 1);
+        if (checkDate < PORTAL_START) break; // don't go before portal launch
         const ds = checkDate.toLocaleDateString('en-GB');
         if (!empDates.has(ds)) consecutiveMisses++;
         else break;
