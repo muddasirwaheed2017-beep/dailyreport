@@ -569,10 +569,14 @@ async function loadAll(forceRefresh = true) {
     
     // Normalize with auto-detection
     const allUsers = usersRaw.map(normalizeUser);
+    console.log('All users normalized:', allUsers);
     _employees = allUsers.filter(e => {
       const approved = (e.approved || '').toString().toUpperCase();
-      const role = (e.role || '').toLowerCase();
-      return (approved === 'TRUE' || approved === '1') && role === 'employee';
+      const role = (e.role || 'employee').toLowerCase();
+      const isApproved = approved === 'TRUE' || approved === '1' || approved === 'YES';
+      const isEmployee = role === 'employee' || role === '';
+      console.log(`Filter: ${e.name} approved=${e.approved}(${isApproved}) role=${e.role}(${isEmployee})`);
+      return isApproved && isEmployee;
     });
     
     _reports = reportsRaw.map(normalizeReport);
