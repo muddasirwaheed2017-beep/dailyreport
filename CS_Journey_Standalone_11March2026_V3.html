@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1a1a1a">
+<title>CS Journey Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --R:#b91c1c;--Rm:#dc2626;--Rl:#fecaca;--Rbg:#fef2f2;
+  --G1:#1a1a1a;--G2:#2d2d2d;--G3:#404040;--G4:#666;--G5:#888;--G6:#aaa;--G7:#ccc;--G8:#e5e5e5;--G9:#f2f2f2;--W:#fff;
+  --grn:#16a34a;--grn-bg:#dcfce7;--grn-b:#86efac;
+  --amb:#d97706;--amb-bg:#fffbeb;--amb-b:#fcd34d;
+  --blu:#2563eb;--blu-bg:#eff6ff;--blu-b:#93c5fd;
+  --font:'Plus Jakarta Sans',system-ui,sans-serif;
+  --r:12px;--rl:16px;--rx:20px;
+  --sh:0 2px 6px rgba(0,0,0,.08);
+  --sh3d:0 3px 0 var(--G8),0 4px 10px rgba(0,0,0,.08);
+  --safe-b:env(safe-area-inset-bottom,0px)
+}
+html,body{height:100%;font-family:var(--font);background:var(--G9);color:var(--G1);-webkit-font-smoothing:antialiased;overflow:hidden}
+input,select,textarea,button{font-family:var(--font)}
+
+/* ── Toasts ── */
+#toasts{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;width:90%;max-width:360px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{padding:13px 16px;border-radius:var(--r);font-size:14px;font-weight:600;text-align:center;animation:tIn .2s;pointer-events:auto;border:1px solid}
+.t-ok{background:#f0fdf4;color:#166534;border-color:#86efac}
+.t-err{background:#fef2f2;color:#991b1b;border-color:#fca5a5}
+.t-warn{background:#fffbeb;color:#92400e;border-color:#fcd34d}
+.t-info{background:#f0f4ff;color:#1e3a5f;border-color:#93c5fd}
+@keyframes tIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Screens ── */
+.scr{display:none;height:100dvh;flex-direction:column}.scr.on{display:flex}
+
+/* ── Login ── */
+#s-login{background:var(--G1);align-items:center;justify-content:center;padding:24px}
+.lw{width:100%;max-width:400px}
+.lh{text-align:center;margin-bottom:30px;color:var(--W)}
+.lh-icon{width:60px;height:60px;border-radius:50%;border:3px solid var(--R);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px}
+.lh-t{font-size:22px;font-weight:800}.lh-t em{color:var(--R);font-style:normal}
+.lh-s{font-size:12px;color:var(--G5);margin-top:4px}
+.lc{background:var(--G2);border:1px solid var(--G3);border-radius:var(--rx);padding:24px}
+.fg{margin-bottom:12px}
+.fl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--G6);margin-bottom:5px;display:block}
+.fi{width:100%;padding:12px 14px;border:2px solid var(--G3);border-radius:var(--r);font-size:14px;color:var(--W);background:var(--G3);outline:none;transition:.2s}
+.fi:focus{border-color:var(--R);box-shadow:0 0 0 3px rgba(185,28,28,.08)}
+.fi::placeholder{color:var(--G5)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 18px;border:2px solid transparent;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap;width:100%}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+.btn-R{background:var(--R);color:var(--W);border-color:var(--R);box-shadow:0 3px 0 #7f1d1d}.btn-R:active{box-shadow:0 1px 0 #7f1d1d;transform:translateY(2px)}
+.btn-ghost{background:var(--W);border:2px solid var(--G8);color:var(--G3);box-shadow:0 2px 0 var(--G8)}.btn-ghost:active{box-shadow:none;transform:translateY(2px)}
+.btn-dark{background:var(--G2);color:var(--W);border-color:var(--G3);box-shadow:0 3px 0 #000}.btn-dark:active{box-shadow:0 1px 0 #000;transform:translateY(2px)}
+.btn-grn{background:var(--grn);color:var(--W);border-color:var(--grn);box-shadow:0 3px 0 #166534}.btn-grn:active{box-shadow:0 1px 0 #166534;transform:translateY(2px)}
+.btn-amb{background:var(--amb);color:var(--W);border-color:var(--amb);box-shadow:0 3px 0 #92400e}.btn-amb:active{box-shadow:0 1px 0 #92400e;transform:translateY(2px)}
+.btn-sm{padding:8px 14px;font-size:12px;width:auto;border-radius:9px}
+.btn-xs{padding:6px 10px;font-size:11px;width:auto;border-radius:8px}
+
+/* ── Top bar ── */
+.topbar{background:var(--G1);color:var(--W);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:2px solid var(--R)}
+.tb-l{display:flex;align-items:center;gap:10px}
+.tb-logo{font-size:15px;font-weight:800}.tb-logo em{color:var(--R);font-style:normal}
+.tb-r{display:flex;align-items:center;gap:8px}
+.tb-user{font-size:11px;font-weight:700;color:var(--G5)}
+.tb-out{background:transparent;color:var(--G6);border:1px solid var(--G3);padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:.15s}.tb-out:hover{color:var(--W)}
+
+/* ── Main content ── */
+#s-main{overflow:hidden}
+.ct{flex:1;overflow-y:auto;padding:14px 16px;max-width:600px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+
+/* ── Date bar ── */
+.date-bar{display:flex;align-items:center;gap:8px;background:var(--W);border:2px solid var(--G8);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;box-shadow:var(--sh3d)}
+.date-bar-nav{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--G8);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0;background:var(--G9);color:var(--G3);transition:.15s}
+.date-bar-nav:active{transform:scale(.93)}
+.date-bar-label{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--G2);cursor:pointer}
+.date-bar-today{font-size:10px;font-weight:700;padding:4px 10px;border-radius:16px;background:var(--Rbg);color:var(--R);border:1px solid var(--Rl);cursor:pointer;white-space:nowrap}
+.date-input-wrap{position:relative}
+.date-input-wrap input[type=date]{position:absolute;opacity:0;width:100%;height:100%;top:0;left:0;cursor:pointer}
+
+/* ── Journey status card ── */
+.jny-status{text-align:center;padding:22px 20px;background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);margin-bottom:12px;box-shadow:var(--sh3d)}
+.jny-status.state-travelling{border-color:var(--grn);background:linear-gradient(135deg,#fff 60%,#f0fdf4)}
+.jny-status.state-at-client{border-color:var(--amb);background:linear-gradient(135deg,#fff 60%,#fffbeb)}
+.jny-status.state-completed{border-color:var(--grn);background:var(--grn-bg)}
+.jny-status-i{font-size:40px;margin-bottom:8px}
+.jny-status-t{font-size:16px;font-weight:800;color:var(--G2)}
+.jny-status-s{font-size:12px;color:var(--G5);margin-top:5px;line-height:1.5}
+.jny-timer{font-size:32px;font-weight:800;font-family:monospace;color:var(--amb);margin:10px 0 6px}
+.jny-actions{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.jny-actions-row{display:flex;gap:8px}
+
+/* ── Totals ── */
+.jny-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.jny-tot{background:var(--W);border:2px solid var(--G8);border-radius:10px;padding:12px 6px;text-align:center;box-shadow:var(--sh)}
+.jny-tot-n{font-size:20px;font-weight:800;color:var(--G2)}.jny-tot-l{font-size:9px;font-weight:700;color:var(--G5);text-transform:uppercase;margin-top:3px}
+
+/* ── Timeline ── */
+.timeline{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:14px;box-shadow:var(--sh3d)}
+.tl-hd{font-size:13px;font-weight:800;color:var(--G3);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.tl-leg{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--G9);position:relative}
+.tl-leg:last-child{border:none;padding-bottom:0}
+.tl-line-wrap{width:20px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.tl-dot{width:13px;height:13px;border-radius:50%;border:3px solid var(--R);background:var(--W);z-index:1;flex-shrink:0}
+.tl-dot-grn{border-color:var(--grn);background:var(--grn)}
+.tl-dot-blu{border-color:var(--blu);background:var(--blu)}
+.tl-dot-red{border-color:var(--R);background:var(--R)}
+.tl-dot-amb{border-color:var(--amb);background:var(--W)}
+.tl-connector{width:2px;flex:1;background:var(--G8);min-height:16px;margin-top:2px}
+.tl-info{flex:1;min-width:0}
+.tl-place{font-size:13px;font-weight:700;color:var(--G2);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tl-time{font-size:11px;color:var(--G5);font-weight:600;margin-top:2px}
+.tl-meta{font-size:10px;color:var(--G5);margin-top:4px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tl-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.tl-notes{font-size:11px;color:var(--G4);margin-top:5px;line-height:1.5;padding:6px 8px;background:var(--G9);border-radius:7px;border-left:2px solid var(--G7)}
+.tl-outcome-btn{font-size:10px;font-weight:700;color:var(--R);cursor:pointer;padding:2px 6px;border:1px solid var(--Rl);border-radius:5px;background:var(--Rbg);white-space:nowrap}
+.tl-outcome-lbl{font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--grn-bg);color:var(--grn);border:1px solid var(--grn-b)}
+
+/* ── Map ── */
+.map-section{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);overflow:hidden;margin-bottom:12px;box-shadow:var(--sh3d)}
+.map-hd{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--G8)}
+.map-hd-t{font-size:13px;font-weight:700;color:var(--G2)}
+#jny-map{height:240px}
+.map-gl{display:block;text-align:center;padding:10px;font-size:12px;font-weight:700;color:var(--R);background:var(--Rbg);text-decoration:none;border-top:1px solid var(--Rl)}
+
+/* ── Modal overlay ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:800;display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal-ov.on{display:flex}
+.modal-sh{background:var(--W);border-radius:20px 20px 0 0;width:100%;max-width:600px;padding:20px 16px calc(20px + var(--safe-b));border-top:3px solid var(--R);max-height:85vh;overflow-y:auto}
+.modal-t{font-size:16px;font-weight:800;color:var(--G2);margin-bottom:4px}
+.modal-s{font-size:12px;color:var(--G5);margin-bottom:16px}
+.modal-fg{margin-bottom:12px}
+.modal-fl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--G5);margin-bottom:5px;display:block}
+.modal-fi{width:100%;padding:12px 14px;border:2px solid var(--G8);border-radius:var(--r);font-size:14px;color:var(--G1);background:var(--W);outline:none;transition:.2s}
+.modal-fi:focus{border-color:var(--R);box-shadow:0 0 0 3px rgba(185,28,28,.08)}
+.modal-fi-sel{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.modal-ta{resize:none;min-height:80px;line-height:1.6}
+.modal-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--G9)}
+.modal-toggle-row:last-child{border:none}
+.modal-toggle-label{font-size:13px;font-weight:600;color:var(--G2)}
+.modal-toggle-sub{font-size:11px;color:var(--G5);margin-top:2px}
+.toggle{width:44px;height:24px;border-radius:12px;background:var(--G7);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+.toggle.on{background:var(--grn)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:var(--W);top:3px;left:3px;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after{left:23px}
+.modal-actions{display:flex;gap:8px;margin-top:14px}
+.modal-btn-cancel{flex:1;padding:12px;border:2px solid var(--G8);border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;background:var(--W);color:var(--G3)}
+.modal-btn-cancel:active{transform:scale(.97)}
+.modal-btn-submit{flex:2;padding:12px;border:none;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;background:var(--R);color:var(--W);box-shadow:0 3px 0 #7f1d1d}
+.modal-btn-submit:active{transform:translateY(2px);box-shadow:0 1px 0 #7f1d1d}
+.modal-btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── Outcome grid ── */
+.outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.oc-opt{padding:11px 10px;border-radius:var(--r);border:2px solid var(--G8);background:var(--W);font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:.15s;color:var(--G3)}
+.oc-opt:active{transform:scale(.97)}
+.oc-opt.sel{border-color:var(--R);background:var(--Rbg);color:var(--R);font-weight:800}
+
+/* ── Loading / empty ── */
+.loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:32px;color:var(--G5);font-size:13px}
+.spinner{width:14px;height:14px;border:2px solid var(--G8);border-top-color:var(--R);border-radius:50%;animation:sp .6s linear infinite;flex-shrink:0}
+@keyframes sp{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px 16px}
+.empty-i{font-size:44px;margin-bottom:10px;opacity:.25}
+.empty-t{font-size:13px;font-weight:700;color:var(--G5)}
+.empty-s{font-size:11px;color:var(--G6);margin-top:5px}
+
+/* ── GPS pulse indicator ── */
+.gps-pulse{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--grn);padding:6px 12px;background:var(--grn-bg);border-radius:20px;border:1px solid var(--grn-b);margin-bottom:10px}
+.gps-dot{width:8px;height:8px;border-radius:50%;background:var(--grn);animation:gpsPls 1.2s infinite}
+@keyframes gpsPls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── Misc ── */
+.sec-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--G5);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.no-journey-date{background:var(--W);border:2px solid var(--G8);border-radius:var(--rl);padding:28px;text-align:center;box-shadow:var(--sh)}
+.nj-i{font-size:36px;margin-bottom:6px;opacity:.3}
+.nj-t{font-size:13px;font-weight:700;color:var(--G5)}
+.nj-s{font-size:11px;color:var(--G6);margin-top:4px}
+.divider{height:1px;background:var(--G8);margin:14px 0}
+
+/* ── View past history list ── */
+.hist-item{background:var(--W);border:2px solid var(--G8);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:12px;box-shadow:var(--sh)}
+.hist-item:active{transform:scale(.98)}
+.hist-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-date{font-size:13px;font-weight:700;color:var(--G2)}
+.hist-meta{font-size:11px;color:var(--G5);margin-top:2px}
+.hist-km{font-size:14px;font-weight:800;color:var(--R);flex-shrink:0}
+
+@media(max-width:400px){.jny-totals{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+
+<!-- ═══════════════════════════════════════════════════════ LOGIN ═══ -->
+<div id="s-login" class="scr on">
+  <div style="background:var(--G1);flex:1;display:flex;align-items:center;justify-content:center;padding:24px">
+    <div class="lw">
+      <div class="lh">
+        <div class="lh-icon">🗺️</div>
+        <div class="lh-t">CS <em>Journey</em> Tracker</div>
+        <div class="lh-s">© Cognitive Solutions Pvt Ltd</div>
+      </div>
+      <div class="lc">
+        <div class="fg">
+          <label class="fl">Username</label>
+          <input class="fi" id="li-u" placeholder="your username" autocomplete="username" autocapitalize="none" spellcheck="false">
+        </div>
+        <div class="fg" style="margin-bottom:16px">
+          <label class="fl">Password</label>
+          <input class="fi" id="li-p" type="password" placeholder="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')App.signIn()">
+        </div>
+        <button class="btn btn-R" id="si-btn" onclick="App.signIn()">Sign In →</button>
+        <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--G5)">CS Activity Reporter credentials</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN ════ -->
+<div id="s-main" class="scr">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="tb-l">
+      <div style="font-size:20px">🗺️</div>
+      <div class="tb-logo">CS <em>Journey</em></div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-user" id="tb-user"></div>
+      <button class="tb-out" onclick="App.logout()">Sign Out</button>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="ct" id="main-ct">
+    <!-- Date navigator -->
+    <div class="date-bar">
+      <div class="date-bar-nav" onclick="App.dateNav(-1)">‹</div>
+      <div class="date-bar-label" id="date-label">—</div>
+      <div class="date-input-wrap">
+        <div class="date-bar-today" id="date-today-btn">Today</div>
+        <input type="date" id="date-picker" onchange="App.datePick(this.value)">
+      </div>
+      <div class="date-bar-nav" onclick="App.dateNav(1)">›</div>
+    </div>
+
+    <!-- Journey content area -->
+    <div id="jny-area">
+      <div class="loading"><div class="spinner"></div> Loading...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ MODALS ══ -->
+
+<!-- Start Journey Modal -->
+<div class="modal-ov" id="m-start">
+  <div class="modal-sh">
+    <div class="modal-t">🟢 Start Journey</div>
+    <div class="modal-s">Getting GPS fix. Enter your starting location.</div>
+    <div id="m-start-gps" class="gps-pulse" style="display:none"><div class="gps-dot"></div> GPS acquired</div>
+    <div class="modal-fg">
+      <label class="modal-fl">Starting From</label>
+      <select class="modal-fi modal-fi-sel" id="m-start-place">
+        <option value="">— Select location —</option>
+        <option value="Home">🏠 Home</option>
+        <option value="Office">🏢 Office</option>
+        <option value="Warehouse">🏭 Warehouse</option>
+        <option value="Custom">📍 Custom (type below)</option>
+      </select>
+    </div>
+    <div class="modal-fg" id="m-start-custom-wrap" style="display:none">
+      <label class="modal-fl">Custom Location Name</label>
+      <input class="modal-fi" id="m-start-custom" placeholder="e.g. Gulberg, Hall Road...">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="App.closeModal('m-start')">Cancel</button>
+      <button class="modal-btn-submit" id="m-start-btn" onclick="App.doStart()">🟢 Start Journey</button>
+    </div>
+  </div>
+</div>
+
+<!-- Arrive at Client Modal -->
+<div class="modal-ov" id="m-arrive">
+  <div class="modal-sh">
+    <div class="modal-t">📍 Arrived at Client</div>
+    <div class="modal-s">Record GPS and enter client details.</div>
+    <div id="m-arrive-gps" class="gps-pulse" style="display:none"><div class="gps-dot"></div> GPS acquired</div>
+    <div class="modal-fg">
+      <label class="modal-fl">Client / Location Name *</label>
+      <input class="modal-fi" id="m-arrive-client" placeholder="e.g. Ahmed Electronics, Saddar">
+    </div>
+    <div class="modal-fg">
+      <label class="modal-fl">Visit Type</label>
+      <div class="modal-toggle-row" style="border:none;padding:0">
+        <div>
+          <div class="modal-toggle-label">Planned Visit?</div>
+          <div class="modal-toggle-sub">Was this client in your visit plan?</div>
+        </div>
+        <div class="toggle" id="m-arrive-planned" onclick="this.classList.toggle('on')"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="App.closeModal('m-arrive')">Cancel</button>
+      <button class="modal-btn-submit" id="m-arrive-btn" onclick="App.doArrive()">📍 Arrived</button>
+    </div>
+  </div>
+</div>
+
+<!-- Leave Client Modal -->
+<div class="modal-ov" id="m-leave">
+  <div class="modal-sh">
+    <div class="modal-t">🚶 Leaving Client</div>
+    <div class="modal-s" id="m-leave-s">Add notes and set outcome.</div>
+    <div id="m-leave-gps" class="gps-pulse" style="display:none"><div class="gps-dot"></div> GPS acquired</div>
+    <div class="modal-fg">
+      <label class="modal-fl">Visit Outcome</label>
+      <div class="outcome-grid" id="m-leave-outcomes"></div>
+    </div>
+    <div class="modal-fg">
+      <label class="modal-fl">Meeting Notes (optional)</label>
+      <textarea class="modal-fi modal-ta" id="m-leave-notes" placeholder="Key discussion points, next steps..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="App.closeModal('m-leave')">Cancel</button>
+      <button class="modal-btn-submit" id="m-leave-btn" onclick="App.doLeave()">🚶 Left Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- End Journey Modal -->
+<div class="modal-ov" id="m-end">
+  <div class="modal-sh">
+    <div class="modal-t">🔴 End Journey</div>
+    <div class="modal-s">Where are you ending your journey?</div>
+    <div id="m-end-gps" class="gps-pulse" style="display:none"><div class="gps-dot"></div> GPS acquired</div>
+    <div class="modal-fg">
+      <label class="modal-fl">Ending At</label>
+      <select class="modal-fi modal-fi-sel" id="m-end-place">
+        <option value="">— Select location —</option>
+        <option value="Office">🏢 Office</option>
+        <option value="Home">🏠 Home</option>
+        <option value="Warehouse">🏭 Warehouse</option>
+        <option value="Custom">📍 Custom (type below)</option>
+      </select>
+    </div>
+    <div class="modal-fg" id="m-end-custom-wrap" style="display:none">
+      <label class="modal-fl">Custom Location Name</label>
+      <input class="modal-fi" id="m-end-custom" placeholder="e.g. Clifton, SITE...">
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="App.closeModal('m-end')">Cancel</button>
+      <button class="modal-btn-submit" id="m-end-btn" onclick="App.doEnd()">🔴 End Journey</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Outcome Modal (for past legs) -->
+<div class="modal-ov" id="m-outcome">
+  <div class="modal-sh">
+    <div class="modal-t">📋 Update Outcome</div>
+    <div class="modal-s" id="m-outcome-s">Set the outcome for this visit.</div>
+    <div class="outcome-grid" id="m-outcome-grid"></div>
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="modal-btn-cancel" onclick="App.closeModal('m-outcome')">Cancel</button>
+      <button class="modal-btn-submit" id="m-outcome-btn" onclick="App.doOutcome()">Save Outcome</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────── CONFIG ────
+const C = {
+  DB: 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
+  ADMIN_U: 'admin',
+  ADMIN_P: 'admin123',
+  ADMIN_N: 'Muddasir',
+  KM_RATE: 6.5,
+  OUTCOMES: {
+    intro:    '🤝 Intro',
+    demo:     '📋 Demo',
+    proposal: '📄 Proposal',
+    follow:   '📅 Follow-up',
+    recovery: '💰 Recovery',
+    closed:   '🎉 Closed',
+    complaint:'🔄 Complaint',
+    notavail: '❌ Not Avail',
+    cold:     '🚪 Cold',
+    other:    '🤷 Other'
+  }
+};
+
+// ─────────────────────────────────────────────────────── FIREBASE ──
+const F = {
+  r(m, p, d) {
+    return new Promise((ok, no) => {
+      const x = new XMLHttpRequest();
+      x.open(m, C.DB + '/' + p + '.json', true);
+      x.setRequestHeader('Content-Type', 'application/json');
+      x.onload = function() {
+        if (x.status >= 200 && x.status < 300) {
+          try { ok(JSON.parse(x.responseText)) } catch(e) { ok(null) }
+        } else no(new Error('HTTP ' + x.status));
+      };
+      x.onerror = function() { no(new Error('Network')) };
+      x.send(d !== undefined ? JSON.stringify(d) : null);
+    });
+  },
+  g: function(p) { return this.r('GET', p) },
+  set: function(p, d) { return this.r('PUT', p, d) },
+  arr: function(o) {
+    if (!o) return [];
+    return Object.entries(o).map(function(e) {
+      var k = e[0], v = e[1];
+      return typeof v === 'object' && v ? Object.assign({}, v, {id: k}) : {id: k};
+    });
+  }
+};
+
+// ─────────────────────────────────────────────────────── UTILS ─────
+const U = {
+  toast(m, t) {
+    var e = document.createElement('div');
+    e.className = 'toast t-' + (t || 'info');
+    e.textContent = m;
+    document.getElementById('toasts').appendChild(e);
+    setTimeout(function() { e.remove() }, 2800);
+  },
+  today() { return new Date().toISOString().slice(0, 10) },
+  time() {
+    return new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+  },
+  dateFull(d) {
+    if (!d) return '';
+    var dt = new Date(d + 'T00:00:00');
+    return dt.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'short', year:'numeric'});
+  },
+  dateShort(d) {
+    if (!d) return '';
+    var dt = new Date(d + 'T00:00:00');
+    return dt.toLocaleDateString('en-GB', {weekday:'short', day:'numeric', month:'short'});
+  },
+  isToday(d) { return d === this.today() },
+  haversine(lat1, lng1, lat2, lng2) {
+    var R = 6371;
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLng = (lng2 - lng1) * Math.PI / 180;
+    var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  },
+  minsApart(t1, t2) {
+    if (!t1 || !t2) return 0;
+    var a = t1.split(':'), b = t2.split(':');
+    return (parseInt(b[0])*60 + parseInt(b[1])) - (parseInt(a[0])*60 + parseInt(a[1]));
+  },
+  formatMins(m) {
+    if (!m) return '0m';
+    if (m < 60) return m + 'm';
+    return Math.floor(m/60) + 'h ' + (m%60) + 'm';
+  }
+};
+
+// ─────────────────────────────────────────────────────── SOUNDS ────
+const S = (function() {
+  var c = null;
+  function gc() { if (!c) c = new (window.AudioContext || window.webkitAudioContext)(); return c; }
+  function p(freq1, freq2, dur) {
+    try {
+      var x = gc(), o = x.createOscillator(), g = x.createGain(), t = x.currentTime;
+      o.connect(g); g.connect(x.destination);
+      o.frequency.setValueAtTime(freq1, t);
+      o.frequency.exponentialRampToValueAtTime(freq2, t + dur);
+      g.gain.setValueAtTime(0.07, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+      o.start(t); o.stop(t + dur);
+    } catch(e) {}
+  }
+  return {
+    ok: function() { p(523, 784, 0.2) },
+    err: function() { p(300, 180, 0.15) },
+    gps: function() { p(300, 1200, 0.2) },
+    nav: function() { p(500, 700, 0.08) }
+  };
+})();
+document.addEventListener('click', function(e) {
+  if (e.target.closest('button,.btn,.date-bar-nav,.oc-opt,.tl-outcome-btn')) S.nav();
+}, true);
+
+// ─────────────────────────────────────────────────────── STATE ─────
+var ME = null, _jny = null, _curDate = U.today(), _jnyTimer = null, _pendingGps = {}, _leafMap = null;
+var _selectedOutcome = null, _editLegIdx = null;
+
+// ─────────────────────────────────────────────────────── APP ───────
+var App = {
+
+  // ── Auth ───────────────────────────────────────────────────────
+  async signIn() {
+    var u = document.getElementById('li-u').value.trim().toLowerCase();
+    if (!u) { U.toast('Enter username', 'warn'); return; }
+    var btn = document.getElementById('si-btn');
+    btn.innerHTML = '<div class="spinner"></div>';
+    btn.disabled = true;
+    try {
+      if (u === C.ADMIN_U) {
+        ME = {id: 'admin', name: C.ADMIN_N, username: 'admin', role: 'admin'};
+      } else {
+        var users = F.arr(await F.g('users'));
+        var user = users.find(function(x) { return (x.username || '').toLowerCase() === u; });
+        if (!user) { U.toast('User not found', 'err'); return; }
+        if (user.approved !== true) { U.toast('Account pending approval', 'warn'); return; }
+        ME = {id: user.id, name: user.name, username: user.username, role: 'employee'};
+      }
+      localStorage.setItem('cs_jny_s', JSON.stringify(ME));
+      S.ok();
+      this.showMain();
+    } catch(e) {
+      U.toast('Connection error', 'err');
+    } finally {
+      btn.innerHTML = 'Sign In →';
+      btn.disabled = false;
+    }
+  },
+
+  logout() {
+    ME = null; _jny = null;
+    localStorage.removeItem('cs_jny_s');
+    if (_jnyTimer) { clearInterval(_jnyTimer); _jnyTimer = null; }
+    this._scr('s-login');
+  },
+
+  restore() {
+    try {
+      var s = JSON.parse(localStorage.getItem('cs_jny_s'));
+      if (s) { ME = s; this.showMain(); return true; }
+    } catch(e) {}
+    return false;
+  },
+
+  _scr(id) {
+    document.querySelectorAll('.scr').forEach(function(s) { s.classList.remove('on'); });
+    document.getElementById(id).classList.add('on');
+  },
+
+  showMain() {
+    this._scr('s-main');
+    document.getElementById('tb-user').textContent = ME.name;
+    _curDate = U.today();
+    this._updateDateBar();
+    this.loadJourney();
+  },
+
+  // ── Date navigation ─────────────────────────────────────────────
+  dateNav(dir) {
+    var d = new Date(_curDate + 'T00:00:00');
+    d.setDate(d.getDate() + dir);
+    var newD = d.toISOString().slice(0, 10);
+    // Don't allow future
+    if (newD > U.today()) return;
+    _curDate = newD;
+    this._updateDateBar();
+    this.loadJourney();
+  },
+
+  datePick(val) {
+    if (!val || val > U.today()) return;
+    _curDate = val;
+    this._updateDateBar();
+    this.loadJourney();
+  },
+
+  _updateDateBar() {
+    var isToday = U.isToday(_curDate);
+    var label = isToday ? '📅 Today — ' + U.dateShort(_curDate) : U.dateFull(_curDate);
+    document.getElementById('date-label').textContent = label;
+    document.getElementById('date-today-btn').textContent = isToday ? '• Today' : 'Today';
+    document.getElementById('date-picker').value = _curDate;
+    // Disable forward nav if today
+    document.querySelectorAll('.date-bar-nav')[1].style.opacity = isToday ? '0.3' : '1';
+  },
+
+  // ── Firebase journey ops ─────────────────────────────────────────
+  _jnyKey() { return ME.id + '_' + _curDate; },
+
+  async loadJourney() {
+    document.getElementById('jny-area').innerHTML = '<div class="loading"><div class="spinner"></div> Loading...</div>';
+    try {
+      var data = await F.g('itinerary/' + this._jnyKey());
+      _jny = data;
+    } catch(e) {
+      _jny = null;
+    }
+    this.render();
+  },
+
+  async _save() {
+    await F.set('itinerary/' + this._jnyKey(), _jny);
+  },
+
+  // ── Journey state ────────────────────────────────────────────────
+  _state() {
+    if (!_jny) return 'idle';
+    if (_jny.endTime) return 'completed';
+    var legs = _jny.legs || [];
+    if (!legs.length) return 'started';
+    var last = legs[legs.length - 1];
+    if (last.arriveTime && !last.leaveTime) return 'at_client';
+    return 'travelling';
+  },
+
+  // ── Render ───────────────────────────────────────────────────────
+  render() {
+    var state = this._state();
+    var j = _jny;
+    var isToday = U.isToday(_curDate);
+    var area = document.getElementById('jny-area');
+    var html = '';
+
+    // ── Past date with no journey ──
+    if (!isToday && state === 'idle') {
+      area.innerHTML = `
+        <div class="no-journey-date">
+          <div class="nj-i">🗺️</div>
+          <div class="nj-t">No journey recorded</div>
+          <div class="nj-s">No journey was logged for this date.</div>
+        </div>`;
+      return;
+    }
+
+    // ── IDLE (today, no journey started) ──
+    if (state === 'idle') {
+      area.innerHTML = `
+        <div class="jny-status">
+          <div class="jny-status-i">🗺️</div>
+          <div class="jny-status-t">No Journey Started</div>
+          <div class="jny-status-s">Start tracking your field visits, distance, and time</div>
+          <div class="jny-actions">
+            <button class="btn btn-grn" onclick="App.openStart()">🟢 Start Journey</button>
+          </div>
+        </div>`;
+      return;
+    }
+
+    var legs = j.legs || [];
+
+    // ── Status card ──
+    var statusHtml = '';
+    if (state === 'started') {
+      statusHtml = `
+        <div class="jny-status state-travelling">
+          <div class="jny-status-i">🚗</div>
+          <div class="jny-status-t">Heading to First Client</div>
+          <div class="jny-status-s">Started ${j.startTime} from <strong>${j.startPlace}</strong></div>
+          <div class="jny-actions">
+            <button class="btn btn-R" onclick="App.openArrive()">📍 Arrived at Client</button>
+            <button class="btn btn-dark btn-sm" style="width:100%" onclick="App.openEnd()">🔴 End Journey (No visits)</button>
+          </div>
+        </div>`;
+    } else if (state === 'at_client') {
+      var cur = legs[legs.length - 1];
+      statusHtml = `
+        <div class="jny-status state-at-client">
+          <div class="jny-status-i">🤝</div>
+          <div class="jny-status-t">In Meeting: ${cur.client}</div>
+          <div class="jny-timer" id="jny-live-timer">--:--</div>
+          <div class="jny-status-s">Arrived at ${cur.arriveTime} · ${cur.planned ? '📅 Planned' : '📍 Unplanned'}</div>
+          <div class="jny-actions">
+            <button class="btn btn-R" onclick="App.openLeave()">🚶 Left Client</button>
+          </div>
+        </div>`;
+    } else if (state === 'travelling') {
+      var last = legs[legs.length - 1];
+      statusHtml = `
+        <div class="jny-status state-travelling">
+          <div class="jny-status-i">🚗</div>
+          <div class="jny-status-t">Travelling</div>
+          <div class="jny-status-s">Left <strong>${last.client}</strong> at ${last.leaveTime}</div>
+          <div class="jny-actions">
+            <button class="btn btn-R" onclick="App.openArrive()">📍 Next Client</button>
+            <div class="jny-actions-row">
+              <button class="btn btn-dark btn-sm" style="flex:1" onclick="App.openEnd()">🔴 End Journey</button>
+            </div>
+          </div>
+        </div>`;
+    } else {
+      // completed
+      statusHtml = `
+        <div class="jny-status state-completed">
+          <div class="jny-status-i">✅</div>
+          <div class="jny-status-t">Journey Complete</div>
+          <div class="jny-status-s">${j.startTime} → ${j.endTime} &nbsp;·&nbsp; ${j.startPlace} → ${j.endPlace}</div>
+        </div>`;
+    }
+
+    // ── Totals ──
+    var totalKm = j.totalKm || this._calcKm();
+    var totalMtg = j.totalMeetingMins || legs.reduce(function(s,l) { return s+(l.meetingMins||0); }, 0);
+    var kmClaim = Math.round(totalKm * C.KM_RATE);
+
+    var totalsHtml = `
+      <div class="jny-totals">
+        <div class="jny-tot"><div class="jny-tot-n">${totalKm.toFixed(1)}</div><div class="jny-tot-l">KM</div></div>
+        <div class="jny-tot"><div class="jny-tot-n">${legs.length}</div><div class="jny-tot-l">Stops</div></div>
+        <div class="jny-tot"><div class="jny-tot-n">${U.formatMins(totalMtg)}</div><div class="jny-tot-l">Meeting</div></div>
+        <div class="jny-tot"><div class="jny-tot-n" style="color:var(--grn)">Rs ${kmClaim}</div><div class="jny-tot-l">KM Claim</div></div>
+      </div>`;
+
+    // ── Timeline ──
+    var tlHtml = '<div class="timeline"><div class="tl-hd">📍 Journey Timeline</div>';
+    // Start point
+    tlHtml += `
+      <div class="tl-leg">
+        <div class="tl-line-wrap">
+          <div class="tl-dot tl-dot-grn"></div>
+          ${legs.length || j.endTime ? '<div class="tl-connector"></div>' : ''}
+        </div>
+        <div class="tl-info">
+          <div class="tl-place">🟢 ${j.startPlace}</div>
+          <div class="tl-time">${j.startTime}</div>
+          <div class="tl-meta"><span>📍 ${j.startLat.toFixed(4)}, ${j.startLng.toFixed(4)}</span></div>
+        </div>
+      </div>`;
+
+    legs.forEach(function(l, i) {
+      var isLast = i === legs.length - 1;
+      var hasNext = !isLast || j.endTime;
+      var dotCls = l.leaveTime ? 'tl-dot-blu' : 'tl-dot-amb';
+      var oc = l.outcome ? (C.OUTCOMES[l.outcome] || l.outcome) : '';
+      var outcomeHtml = oc
+        ? `<span class="tl-outcome-lbl">${oc}</span>`
+        : (isToday && !j.endTime
+            ? `<span class="tl-outcome-btn" onclick="App.openOutcome(${i})">+ outcome</span>`
+            : '');
+      var badgeStyle = l.planned
+        ? 'background:var(--grn);color:#fff'
+        : 'background:var(--blu);color:#fff';
+
+      tlHtml += `
+        <div class="tl-leg">
+          <div class="tl-line-wrap">
+            <div class="tl-dot ${dotCls}"></div>
+            ${hasNext ? '<div class="tl-connector"></div>' : ''}
+          </div>
+          <div class="tl-info">
+            <div class="tl-place">
+              ${l.planned ? '📅' : '📍'} ${l.client}
+              <span class="tl-badge" style="${badgeStyle}">${l.planned ? 'Planned' : 'Unplanned'}</span>
+            </div>
+            <div class="tl-time">
+              ${l.arriveTime}${l.leaveTime ? ' → ' + l.leaveTime + ' (' + U.formatMins(l.meetingMins) + ')' : ' · <span style="color:var(--amb);font-weight:700">In meeting…</span>'}
+            </div>
+            <div class="tl-meta">
+              <span>🚗 ${l.travelFromPrevKm} km · ${U.formatMins(l.travelFromPrevMins)} travel</span>
+              ${outcomeHtml}
+            </div>
+            ${l.notes ? `<div class="tl-notes">${l.notes}</div>` : ''}
+          </div>
+        </div>`;
+    });
+
+    // End point
+    if (j.endTime) {
+      tlHtml += `
+        <div class="tl-leg">
+          <div class="tl-line-wrap">
+            <div class="tl-dot tl-dot-red"></div>
+          </div>
+          <div class="tl-info">
+            <div class="tl-place">🔴 ${j.endPlace}</div>
+            <div class="tl-time">${j.endTime}</div>
+            <div class="tl-meta"><span>📍 ${j.endLat.toFixed(4)}, ${j.endLng.toFixed(4)}</span></div>
+          </div>
+        </div>`;
+    }
+
+    tlHtml += '</div>';
+
+    // ── Map ──
+    var mapHtml = `
+      <div class="map-section">
+        <div class="map-hd">
+          <div class="map-hd-t">🗺️ Route Map</div>
+          <button class="btn btn-ghost btn-xs" onclick="App.openGoogleMaps()">Google Maps →</button>
+        </div>
+        <div id="jny-map"></div>
+      </div>`;
+
+    area.innerHTML = statusHtml + totalsHtml + mapHtml + tlHtml;
+
+    // Start live timer
+    if (state === 'at_client' && _jny && _jny.legs && _jny.legs.length) {
+      var cur = _jny.legs[_jny.legs.length - 1];
+      if (_jnyTimer) clearInterval(_jnyTimer);
+      _jnyTimer = setInterval(function() {
+        var el = document.getElementById('jny-live-timer');
+        if (!el) { clearInterval(_jnyTimer); return; }
+        var mins = U.minsApart(cur.arriveTime, U.time());
+        el.textContent = Math.floor(mins/60) + ':' + String(mins%60).padStart(2,'0');
+      }, 5000);
+      // Run immediately
+      var el = document.getElementById('jny-live-timer');
+      if (el) {
+        var mins = U.minsApart(cur.arriveTime, U.time());
+        el.textContent = Math.floor(mins/60) + ':' + String(mins%60).padStart(2,'0');
+      }
+    } else {
+      if (_jnyTimer) { clearInterval(_jnyTimer); _jnyTimer = null; }
+    }
+
+    // Render map
+    setTimeout(function() { App._renderMap(); }, 100);
+  },
+
+  _calcKm() {
+    if (!_jny) return 0;
+    var legs = _jny.legs || [];
+    var total = 0;
+    legs.forEach(function(l) { total += l.travelFromPrevKm || 0; });
+    return Math.round(total * 10) / 10;
+  },
+
+  _renderMap() {
+    var j = _jny;
+    if (!j || !j.startLat) return;
+    var el = document.getElementById('jny-map');
+    if (!el) return;
+
+    if (_leafMap) { _leafMap.remove(); _leafMap = null; }
+
+    _leafMap = L.map('jny-map', {zoomControl: true, attributionControl: false});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18}).addTo(_leafMap);
+
+    var points = [[j.startLat, j.startLng]];
+    var legs = j.legs || [];
+
+    // Custom icons
+    function makeIcon(color, emoji) {
+      return L.divIcon({
+        html: `<div style="background:${color};border:2px solid #fff;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,.3)">${emoji}</div>`,
+        className: '', iconSize: [28, 28], iconAnchor: [14, 14]
+      });
+    }
+
+    L.marker([j.startLat, j.startLng], {icon: makeIcon('#16a34a', '🟢')})
+      .bindPopup(`<strong>Start: ${j.startPlace}</strong><br>${j.startTime}`)
+      .addTo(_leafMap);
+
+    legs.forEach(function(l, i) {
+      if (l.arriveLat) {
+        points.push([l.arriveLat, l.arriveLng]);
+        var oc = l.outcome ? (C.OUTCOMES[l.outcome] || '') : '';
+        var popup = `<strong>${l.client}</strong><br>${l.arriveTime}${l.leaveTime ? ' → '+l.leaveTime : ''}<br>${l.planned ? '📅 Planned' : '📍 Unplanned'}${oc ? '<br>'+oc : ''}`;
+        L.marker([l.arriveLat, l.arriveLng], {icon: makeIcon(l.leaveTime ? '#2563eb' : '#d97706', l.planned ? '📅' : '📍')})
+          .bindPopup(popup)
+          .addTo(_leafMap);
+      }
+    });
+
+    if (j.endLat) {
+      points.push([j.endLat, j.endLng]);
+      L.marker([j.endLat, j.endLng], {icon: makeIcon('#b91c1c', '🔴')})
+        .bindPopup(`<strong>End: ${j.endPlace}</strong><br>${j.endTime}`)
+        .addTo(_leafMap);
+    }
+
+    if (points.length >= 2) {
+      L.polyline(points, {color:'#b91c1c', weight:3, opacity:.7, dashArray:'6,4'}).addTo(_leafMap);
+    }
+
+    _leafMap.fitBounds(L.latLngBounds(points), {padding: [24, 24]});
+  },
+
+  openGoogleMaps() {
+    if (!_jny || !_jny.startLat) return;
+    var legs = _jny.legs || [];
+    var waypoints = legs.map(function(l) { return l.arriveLat + ',' + l.arriveLng; }).join('/');
+    var dest = _jny.endLat ? _jny.endLat + ',' + _jny.endLng : _jny.startLat + ',' + _jny.startLng;
+    var url = 'https://www.google.com/maps/dir/' + _jny.startLat + ',' + _jny.startLng +
+      (waypoints ? '/' + waypoints : '') + '/' + dest;
+    window.open(url, '_blank');
+  },
+
+  // ── GPS helper ─────────────────────────────────────────────────
+  _getGps(modalId, cb) {
+    var gpsEl = document.getElementById(modalId.replace('m-', 'm-') + '-gps');
+    // find the gps div inside the modal
+    var gpsDiv = document.querySelector('#' + modalId + ' .gps-pulse');
+    if (gpsDiv) gpsDiv.style.display = 'none';
+    if (!navigator.geolocation) { U.toast('GPS not available', 'err'); cb(null); return; }
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        if (gpsDiv) gpsDiv.style.display = 'inline-flex';
+        S.gps();
+        cb({lat: pos.coords.latitude, lng: pos.coords.longitude});
+      },
+      function() { U.toast('GPS failed — check permissions', 'err'); cb(null); },
+      {enableHighAccuracy: true, timeout: 15000}
+    );
+  },
+
+  // ── Modal helpers ───────────────────────────────────────────────
+  openModal(id) {
+    document.getElementById(id).classList.add('on');
+  },
+  closeModal(id) {
+    document.getElementById(id).classList.remove('on');
+  },
+
+  // ── START ───────────────────────────────────────────────────────
+  openStart() {
+    _pendingGps.start = null;
+    document.querySelector('#m-start .gps-pulse').style.display = 'none';
+    document.getElementById('m-start-place').value = '';
+    document.getElementById('m-start-custom-wrap').style.display = 'none';
+    document.getElementById('m-start-custom').value = '';
+    this.openModal('m-start');
+    var self = this;
+    this._getGps('m-start', function(pos) {
+      _pendingGps.start = pos;
+      if (!pos) U.toast('Could not get GPS. Will retry on submit.', 'warn');
+    });
+  },
+
+  async doStart() {
+    var sel = document.getElementById('m-start-place').value;
+    if (!sel) { U.toast('Select starting location', 'warn'); return; }
+    var place = sel === 'Custom' ? document.getElementById('m-start-custom').value.trim() : sel;
+    if (!place) { U.toast('Enter location name', 'warn'); return; }
+
+    var btn = document.getElementById('m-start-btn');
+    btn.disabled = true; btn.textContent = 'Getting GPS…';
+
+    var self = this;
+    var finalize = function(pos) {
+      if (!pos) { U.toast('GPS required to start journey', 'err'); btn.disabled=false; btn.textContent='🟢 Start Journey'; return; }
+      _jny = {
+        userId: ME.id, userName: ME.name,
+        date: _curDate,
+        startTime: U.time(), startLat: pos.lat, startLng: pos.lng, startPlace: place,
+        endTime: null, endLat: null, endLng: null, endPlace: null,
+        legs: [], ts: new Date().toISOString()
+      };
+      self._save().then(function() {
+        S.ok();
+        U.toast('🟢 Journey started from ' + place, 'ok');
+        self.closeModal('m-start');
+        btn.disabled = false; btn.textContent = '🟢 Start Journey';
+        self.render();
+      });
+    };
+
+    if (_pendingGps.start) { finalize(_pendingGps.start); }
+    else {
+      this._getGps('m-start', function(pos) {
+        finalize(pos);
+      });
+    }
+  },
+
+  // ── ARRIVE ──────────────────────────────────────────────────────
+  openArrive() {
+    _pendingGps.arrive = null;
+    document.querySelector('#m-arrive .gps-pulse').style.display = 'none';
+    document.getElementById('m-arrive-client').value = '';
+    document.getElementById('m-arrive-planned').classList.remove('on');
+    this.openModal('m-arrive');
+    var self = this;
+    this._getGps('m-arrive', function(pos) {
+      _pendingGps.arrive = pos;
+    });
+  },
+
+  async doArrive() {
+    var client = document.getElementById('m-arrive-client').value.trim();
+    if (!client) { U.toast('Enter client name', 'warn'); return; }
+    var planned = document.getElementById('m-arrive-planned').classList.contains('on');
+
+    var btn = document.getElementById('m-arrive-btn');
+    btn.disabled = true; btn.textContent = 'Getting GPS…';
+
+    var self = this;
+    var finalize = function(pos) {
+      if (!pos) { U.toast('GPS required', 'err'); btn.disabled=false; btn.textContent='📍 Arrived'; return; }
+      var j = _jny;
+      var legs = j.legs || [];
+      var prevLat = legs.length ? (legs[legs.length-1].leaveLat || j.startLat) : j.startLat;
+      var prevLng = legs.length ? (legs[legs.length-1].leaveLng || j.startLng) : j.startLng;
+      var prevTime = legs.length ? (legs[legs.length-1].leaveTime || j.startTime) : j.startTime;
+      var dist = U.haversine(prevLat, prevLng, pos.lat, pos.lng);
+      var travelMins = U.minsApart(prevTime, U.time());
+
+      legs.push({
+        seq: legs.length + 1,
+        client: client, planned: planned,
+        arriveTime: U.time(), arriveLat: pos.lat, arriveLng: pos.lng,
+        leaveTime: null, leaveLat: null, leaveLng: null,
+        meetingMins: 0,
+        travelFromPrevKm: Math.round(dist * 10) / 10,
+        travelFromPrevMins: travelMins,
+        notes: '', outcome: ''
+      });
+      j.legs = legs;
+      self._save().then(function() {
+        S.ok();
+        U.toast('📍 Arrived at ' + client, 'ok');
+        self.closeModal('m-arrive');
+        btn.disabled = false; btn.textContent = '📍 Arrived';
+        self.render();
+      });
+    };
+
+    if (_pendingGps.arrive) { finalize(_pendingGps.arrive); }
+    else { this._getGps('m-arrive', finalize); }
+  },
+
+  // ── LEAVE ───────────────────────────────────────────────────────
+  openLeave() {
+    _pendingGps.leave = null;
+    document.querySelector('#m-leave .gps-pulse').style.display = 'none';
+    document.getElementById('m-leave-notes').value = '';
+    _selectedOutcome = null;
+    var legs = _jny ? _jny.legs || [] : [];
+    var cur = legs.length ? legs[legs.length-1] : null;
+    if (cur) document.getElementById('m-leave-s').textContent = 'Leaving ' + cur.client;
+
+    // Render outcome grid
+    var grid = document.getElementById('m-leave-outcomes');
+    grid.innerHTML = Object.entries(C.OUTCOMES).map(function(e) {
+      return `<div class="oc-opt" data-oc="${e[0]}" onclick="App._selOc(this,'leave')">${e[1]}</div>`;
+    }).join('');
+
+    this.openModal('m-leave');
+    var self = this;
+    this._getGps('m-leave', function(pos) { _pendingGps.leave = pos; });
+  },
+
+  _selOc(el, ctx) {
+    var grid = el.closest('.outcome-grid');
+    grid.querySelectorAll('.oc-opt').forEach(function(o) { o.classList.remove('sel'); });
+    el.classList.add('sel');
+    if (ctx === 'leave') _selectedOutcome = el.dataset.oc;
+    else _selectedOutcome = el.dataset.oc;
+  },
+
+  async doLeave() {
+    var notes = document.getElementById('m-leave-notes').value.trim();
+    var btn = document.getElementById('m-leave-btn');
+    btn.disabled = true; btn.textContent = 'Getting GPS…';
+
+    var self = this;
+    var finalize = function(pos) {
+      if (!pos) { U.toast('GPS required', 'err'); btn.disabled=false; btn.textContent='🚶 Left Client'; return; }
+      var legs = _jny.legs || [];
+      var last = legs[legs.length - 1];
+      last.leaveTime = U.time();
+      last.leaveLat = pos.lat; last.leaveLng = pos.lng;
+      last.meetingMins = U.minsApart(last.arriveTime, last.leaveTime);
+      last.notes = notes;
+      if (_selectedOutcome) last.outcome = _selectedOutcome;
+      self._save().then(function() {
+        S.ok();
+        U.toast('🚶 Left ' + last.client + ' (' + U.formatMins(last.meetingMins) + ')', 'ok');
+        self.closeModal('m-leave');
+        btn.disabled = false; btn.textContent = '🚶 Left Client';
+        _selectedOutcome = null;
+        self.render();
+      });
+    };
+
+    if (_pendingGps.leave) { finalize(_pendingGps.leave); }
+    else { this._getGps('m-leave', finalize); }
+  },
+
+  // ── END ─────────────────────────────────────────────────────────
+  openEnd() {
+    _pendingGps.end = null;
+    document.querySelector('#m-end .gps-pulse').style.display = 'none';
+    document.getElementById('m-end-place').value = 'Office';
+    document.getElementById('m-end-custom-wrap').style.display = 'none';
+    document.getElementById('m-end-custom').value = '';
+    this.openModal('m-end');
+    var self = this;
+    this._getGps('m-end', function(pos) { _pendingGps.end = pos; });
+  },
+
+  async doEnd() {
+    var sel = document.getElementById('m-end-place').value;
+    if (!sel) { U.toast('Select ending location', 'warn'); return; }
+    var place = sel === 'Custom' ? document.getElementById('m-end-custom').value.trim() : sel;
+    if (!place) { U.toast('Enter location name', 'warn'); return; }
+
+    var btn = document.getElementById('m-end-btn');
+    btn.disabled = true; btn.textContent = 'Getting GPS…';
+
+    var self = this;
+    var finalize = function(pos) {
+      if (!pos) { U.toast('GPS required to end journey', 'err'); btn.disabled=false; btn.textContent='🔴 End Journey'; return; }
+      var j = _jny;
+      j.endTime = U.time(); j.endLat = pos.lat; j.endLng = pos.lng; j.endPlace = place;
+
+      var totalKm = 0;
+      var legs = j.legs || [];
+      legs.forEach(function(l) { totalKm += l.travelFromPrevKm || 0; });
+      if (legs.length && legs[legs.length-1].leaveLat) {
+        totalKm += U.haversine(legs[legs.length-1].leaveLat, legs[legs.length-1].leaveLng, pos.lat, pos.lng);
+      } else if (!legs.length) {
+        totalKm += U.haversine(j.startLat, j.startLng, pos.lat, pos.lng);
+      }
+      j.totalKm = Math.round(totalKm * 10) / 10;
+      j.totalMeetingMins = legs.reduce(function(s,l) { return s + (l.meetingMins||0); }, 0);
+      j.totalTravelMins = U.minsApart(j.startTime, j.endTime) - j.totalMeetingMins;
+
+      self._save().then(function() {
+        S.ok();
+        U.toast('🔴 Journey complete — ' + j.totalKm.toFixed(1) + ' km', 'ok');
+        self.closeModal('m-end');
+        btn.disabled = false; btn.textContent = '🔴 End Journey';
+        self.render();
+      });
+    };
+
+    if (_pendingGps.end) { finalize(_pendingGps.end); }
+    else { this._getGps('m-end', finalize); }
+  },
+
+  // ── OUTCOME edit ────────────────────────────────────────────────
+  openOutcome(idx) {
+    _editLegIdx = idx;
+    _selectedOutcome = null;
+    var leg = _jny && _jny.legs ? _jny.legs[idx] : null;
+    if (!leg) return;
+    document.getElementById('m-outcome-s').textContent = 'Outcome for: ' + leg.client;
+    var grid = document.getElementById('m-outcome-grid');
+    var current = leg.outcome || '';
+    grid.innerHTML = Object.entries(C.OUTCOMES).map(function(e) {
+      return `<div class="oc-opt${current===e[0]?' sel':''}" data-oc="${e[0]}" onclick="App._selOc(this,'outcome')">${e[1]}</div>`;
+    }).join('');
+    if (current) _selectedOutcome = current;
+    this.openModal('m-outcome');
+  },
+
+  async doOutcome() {
+    if (!_selectedOutcome) { U.toast('Select an outcome', 'warn'); return; }
+    if (_editLegIdx === null || !_jny) return;
+    _jny.legs[_editLegIdx].outcome = _selectedOutcome;
+    await this._save();
+    S.ok();
+    U.toast('Outcome saved ✓', 'ok');
+    this.closeModal('m-outcome');
+    _editLegIdx = null;
+    _selectedOutcome = null;
+    this.render();
+  }
+};
+
+// ── Modal select change handlers ────────────────────────────────────
+document.getElementById('m-start-place').addEventListener('change', function() {
+  document.getElementById('m-start-custom-wrap').style.display = this.value === 'Custom' ? 'block' : 'none';
+});
+document.getElementById('m-end-place').addEventListener('change', function() {
+  document.getElementById('m-end-custom-wrap').style.display = this.value === 'Custom' ? 'block' : 'none';
+});
+
+// Close modals on backdrop click
+document.querySelectorAll('.modal-ov').forEach(function(ov) {
+  ov.addEventListener('click', function(e) {
+    if (e.target === ov) ov.classList.remove('on');
+  });
+});
+
+// ── Today btn also goes to today ─────────────────────────────────────
+document.getElementById('date-today-btn').addEventListener('click', function() {
+  if (_curDate !== U.today()) {
+    _curDate = U.today();
+    App._updateDateBar();
+    App.loadJourney();
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────
+if (!App.restore()) {
+  // Login screen already shown
+}
+</script>
+</body>
+</html>
