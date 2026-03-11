@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>GPS Test — Cognitive Solutions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#1a1a1a;padding:16px;padding-bottom:80px}
+h1{font-size:18px;font-weight:800;margin-bottom:4px}
+.sub{font-size:11px;color:#888;margin-bottom:16px}
+.card{background:#fff;border-radius:12px;border:2px solid #e5e7eb;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card-t{font-size:14px;font-weight:800;margin-bottom:10px;color:#1a1a1a}
+.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:13px}
+.row:last-child{border:none}
+.label{color:#888;font-weight:600}.val{font-weight:800;color:#1a1a1a}
+.val-grn{color:#16a34a}.val-amb{color:#d97706}.val-red{color:#b91c1c}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;margin-top:8px;color:#fff}
+.btn-red{background:#b91c1c}.btn-blue{background:#2563eb}.btn-grn{background:#16a34a}.btn-grey{background:#6b7280}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5}
+.spinner{display:inline-block;width:16px;height:16px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.log{background:#1a1a1a;color:#22c55e;font-family:monospace;font-size:11px;padding:12px;border-radius:8px;max-height:300px;overflow-y:auto;margin-top:10px;line-height:1.6}
+.log-entry{border-bottom:1px solid #333;padding:4px 0}.log-entry:last-child{border:none}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.mini{background:#fff;border:2px solid #e5e7eb;border-radius:10px;padding:12px;text-align:center}
+.mini-n{font-size:22px;font-weight:800}.mini-l{font-size:9px;font-weight:700;color:#888;text-transform:uppercase;margin-top:2px}
+.bar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden;margin-top:6px}
+.bar-fill{height:100%;border-radius:5px;transition:width .5s}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin:2px}
+.tag-grn{background:#dcfce7;color:#16a34a}.tag-amb{background:#fef3c7;color:#d97706}.tag-red{background:#fee2e2;color:#b91c1c}
+</style>
+</head>
+<body>
+<h1>📡 GPS Accuracy Test</h1>
+<div class="sub">Cognitive Solutions — Standalone Test · No data sent anywhere</div>
+
+<!-- SINGLE READING -->
+<div class="card">
+<div class="card-t">📍 Single GPS Reading</div>
+<div id="single-result">Tap button to get your current position</div>
+<button class="btn btn-red" id="btn-single" onclick="singleGps()">📍 Get My Location</button>
+</div>
+
+<!-- ACCURACY TEST -->
+<div class="card">
+<div class="card-t">🎯 Accuracy Test (5 readings)</div>
+<div class="sub" style="margin-bottom:8px">Takes 5 readings over 10 seconds to measure consistency</div>
+<div class="grid">
+<div class="mini"><div class="mini-n" id="acc-avg">—</div><div class="mini-l">Avg Accuracy (m)</div></div>
+<div class="mini"><div class="mini-n" id="acc-best">—</div><div class="mini-l">Best (m)</div></div>
+<div class="mini"><div class="mini-n" id="acc-worst">—</div><div class="mini-l">Worst (m)</div></div>
+<div class="mini"><div class="mini-n" id="acc-drift">—</div><div class="mini-l">Drift (m)</div></div>
+</div>
+<div id="acc-bar-wrap" style="display:none">
+<div style="font-size:11px;color:#888;font-weight:600;margin-bottom:4px">Readings: <span id="acc-count">0</span>/5</div>
+<div class="bar"><div class="bar-fill" id="acc-bar" style="width:0%;background:#b91c1c"></div></div>
+</div>
+<div id="acc-readings"></div>
+<button class="btn btn-blue" id="btn-acc" onclick="accuracyTest()">🎯 Start Accuracy Test</button>
+</div>
+
+<!-- CONTINUOUS TRACKING -->
+<div class="card">
+<div class="card-t">📡 Continuous Tracking</div>
+<div class="sub" style="margin-bottom:8px">Watch position changes in real-time. Shows how GPS updates when you move.</div>
+<div class="grid">
+<div class="mini"><div class="mini-n" id="ct-updates">0</div><div class="mini-l">Updates</div></div>
+<div class="mini"><div class="mini-n" id="ct-dist">0</div><div class="mini-l">Distance (m)</div></div>
+<div class="mini"><div class="mini-n" id="ct-speed">—</div><div class="mini-l">Speed (km/h)</div></div>
+<div class="mini"><div class="mini-n" id="ct-acc">—</div><div class="mini-l">Accuracy (m)</div></div>
+</div>
+<button class="btn btn-grn" id="btn-track" onclick="toggleTracking()">📡 Start Tracking</button>
+</div>
+
+<!-- HIGH vs LOW ACCURACY -->
+<div class="card">
+<div class="card-t">⚡ High vs Low Accuracy Comparison</div>
+<div class="sub" style="margin-bottom:8px">Compares enableHighAccuracy: true vs false</div>
+<div id="cmp-result">Tap to compare both modes</div>
+<button class="btn btn-grey" id="btn-cmp" onclick="compareAccuracy()">⚡ Compare Modes</button>
+</div>
+
+<!-- DISTANCE CALCULATOR -->
+<div class="card">
+<div class="card-t">📏 Distance Between Two Points</div>
+<div class="sub" style="margin-bottom:8px">Take GPS at point A, walk somewhere, take GPS at point B. See distance.</div>
+<div id="dist-result">
+<div class="row"><span class="label">Point A</span><span class="val" id="dist-a">Not set</span></div>
+<div class="row"><span class="label">Point B</span><span class="val" id="dist-b">Not set</span></div>
+<div class="row"><span class="label">Distance</span><span class="val" id="dist-d">—</span></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:8px">
+<button class="btn btn-red" style="flex:1" onclick="markPoint('a')">📍 Mark A</button>
+<button class="btn btn-blue" style="flex:1" onclick="markPoint('b')">📍 Mark B</button>
+</div>
+</div>
+
+<!-- LOG -->
+<div class="card">
+<div class="card-t">📋 GPS Log</div>
+<div style="display:flex;gap:8px;margin-bottom:8px">
+<button class="btn btn-grey" style="flex:1;padding:8px;font-size:12px" onclick="clearLog()">🗑 Clear</button>
+<button class="btn btn-grey" style="flex:1;padding:8px;font-size:12px" onclick="exportLog()">📤 Copy Log</button>
+</div>
+<div class="log" id="gps-log">Ready. Tap any test to begin.</div>
+</div>
+
+<script>
+var _log = [];
+var _tracking = false;
+var _watchId = null;
+var _trackData = { count: 0, totalDist: 0, lastLat: null, lastLng: null };
+var _pointA = null, _pointB = null;
+
+function log(msg, type) {
+  var time = new Date().toLocaleTimeString('en-GB');
+  _log.push({ time: time, msg: msg, type: type || 'info' });
+  var el = document.getElementById('gps-log');
+  var clr = type === 'ok' ? '#22c55e' : type === 'err' ? '#ef4444' : type === 'warn' ? '#fbbf24' : '#888';
+  el.innerHTML += '<div class="log-entry" style="color:' + clr + '">[' + time + '] ' + msg + '</div>';
+  el.scrollTop = el.scrollHeight;
+}
+
+function haversine(lat1, lng1, lat2, lng2) {
+  var R = 6371000;
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLng = (lng2 - lng1) * Math.PI / 180;
+  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function accTag(m) {
+  if (m <= 10) return '<span class="tag tag-grn">Excellent ≤10m</span>';
+  if (m <= 30) return '<span class="tag tag-amb">Good ≤30m</span>';
+  return '<span class="tag tag-red">Poor >30m</span>';
+}
+
+// SINGLE GPS
+function singleGps() {
+  var btn = document.getElementById('btn-single');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Getting GPS...';
+  var el = document.getElementById('single-result');
+  log('Requesting single GPS fix (highAccuracy: true)...');
+  var t0 = Date.now();
+
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var ms = Date.now() - t0;
+    var c = pos.coords;
+    el.innerHTML = '<div class="row"><span class="label">Latitude</span><span class="val">' + c.latitude.toFixed(6) + '</span></div>' +
+      '<div class="row"><span class="label">Longitude</span><span class="val">' + c.longitude.toFixed(6) + '</span></div>' +
+      '<div class="row"><span class="label">Accuracy</span><span class="val">' + Math.round(c.accuracy) + 'm ' + accTag(c.accuracy) + '</span></div>' +
+      '<div class="row"><span class="label">Altitude</span><span class="val">' + (c.altitude !== null ? c.altitude.toFixed(1) + 'm' : 'N/A') + '</span></div>' +
+      '<div class="row"><span class="label">Speed</span><span class="val">' + (c.speed !== null ? (c.speed * 3.6).toFixed(1) + ' km/h' : 'N/A') + '</span></div>' +
+      '<div class="row"><span class="label">Heading</span><span class="val">' + (c.heading !== null ? c.heading.toFixed(0) + '°' : 'N/A') + '</span></div>' +
+      '<div class="row"><span class="label">Response Time</span><span class="val">' + ms + 'ms</span></div>' +
+      '<div class="row"><span class="label">Timestamp</span><span class="val">' + new Date(pos.timestamp).toLocaleTimeString('en-GB') + '</span></div>';
+    log('GPS fix: ' + c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm (' + ms + 'ms)', 'ok');
+    btn.disabled = false; btn.textContent = '📍 Get My Location';
+  }, function(err) {
+    el.innerHTML = '<div style="color:#b91c1c;font-weight:700">❌ ' + err.message + ' (code: ' + err.code + ')</div>';
+    log('GPS ERROR: ' + err.message + ' code=' + err.code, 'err');
+    btn.disabled = false; btn.textContent = '📍 Get My Location';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
+// ACCURACY TEST
+function accuracyTest() {
+  var btn = document.getElementById('btn-acc');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Reading 1/5...';
+  document.getElementById('acc-bar-wrap').style.display = 'block';
+  var readings = [];
+  var el = document.getElementById('acc-readings');
+  el.innerHTML = '';
+  log('Starting accuracy test: 5 readings, 2s apart...', 'warn');
+
+  function takeReading(i) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      var c = pos.coords;
+      readings.push({ lat: c.latitude, lng: c.longitude, acc: c.accuracy });
+      document.getElementById('acc-count').textContent = readings.length;
+      document.getElementById('acc-bar').style.width = (readings.length * 20) + '%';
+      document.getElementById('acc-bar').style.background = readings.length < 3 ? '#b91c1c' : readings.length < 5 ? '#d97706' : '#16a34a';
+      btn.innerHTML = '<div class="spinner"></div> Reading ' + (readings.length + 1) + '/5...';
+      log('#' + readings.length + ': ' + c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm', 'ok');
+
+      el.innerHTML += '<div class="row"><span class="label">#' + readings.length + '</span><span class="val">' + c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm</span></div>';
+
+      if (readings.length < 5) {
+        setTimeout(function() { takeReading(i + 1); }, 2000);
+      } else {
+        // Calculate results
+        var accs = readings.map(function(r) { return r.acc; });
+        var avg = accs.reduce(function(a, b) { return a + b; }, 0) / accs.length;
+        var best = Math.min.apply(null, accs);
+        var worst = Math.max.apply(null, accs);
+        // Drift = max distance between any two readings
+        var maxDrift = 0;
+        for (var x = 0; x < readings.length; x++) {
+          for (var y = x + 1; y < readings.length; y++) {
+            var d = haversine(readings[x].lat, readings[x].lng, readings[y].lat, readings[y].lng);
+            if (d > maxDrift) maxDrift = d;
+          }
+        }
+        document.getElementById('acc-avg').textContent = Math.round(avg) + 'm';
+        document.getElementById('acc-best').textContent = Math.round(best) + 'm';
+        document.getElementById('acc-worst').textContent = Math.round(worst) + 'm';
+        document.getElementById('acc-drift').textContent = maxDrift.toFixed(1) + 'm';
+        log('Accuracy test complete: avg=' + Math.round(avg) + 'm, best=' + Math.round(best) + 'm, drift=' + maxDrift.toFixed(1) + 'm', 'ok');
+        btn.disabled = false; btn.textContent = '🎯 Start Accuracy Test';
+      }
+    }, function(err) {
+      log('Reading #' + (i + 1) + ' failed: ' + err.message, 'err');
+      btn.disabled = false; btn.textContent = '🎯 Start Accuracy Test';
+    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+  }
+  takeReading(0);
+}
+
+// CONTINUOUS TRACKING
+function toggleTracking() {
+  var btn = document.getElementById('btn-track');
+  if (_tracking) {
+    navigator.geolocation.clearWatch(_watchId);
+    _tracking = false;
+    btn.className = 'btn btn-grn';
+    btn.textContent = '📡 Start Tracking';
+    log('Tracking stopped. Updates: ' + _trackData.count + ', Distance: ' + _trackData.totalDist.toFixed(1) + 'm', 'warn');
+    return;
+  }
+  _tracking = true;
+  _trackData = { count: 0, totalDist: 0, lastLat: null, lastLng: null };
+  btn.className = 'btn btn-red';
+  btn.textContent = '⏹ Stop Tracking';
+  log('Continuous tracking started...', 'ok');
+
+  _watchId = navigator.geolocation.watchPosition(function(pos) {
+    var c = pos.coords;
+    _trackData.count++;
+    document.getElementById('ct-updates').textContent = _trackData.count;
+    document.getElementById('ct-acc').textContent = Math.round(c.accuracy) + 'm';
+    if (c.speed !== null) document.getElementById('ct-speed').textContent = (c.speed * 3.6).toFixed(1);
+
+    if (_trackData.lastLat !== null) {
+      var d = haversine(_trackData.lastLat, _trackData.lastLng, c.latitude, c.longitude);
+      if (d > 2) { // Only count movement > 2m to filter GPS jitter
+        _trackData.totalDist += d;
+      }
+    }
+    _trackData.lastLat = c.latitude;
+    _trackData.lastLng = c.longitude;
+    document.getElementById('ct-dist').textContent = Math.round(_trackData.totalDist);
+
+    if (_trackData.count % 5 === 0) {
+      log('Track #' + _trackData.count + ': ' + c.latitude.toFixed(6) + ',' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm dist=' + Math.round(_trackData.totalDist) + 'm', 'ok');
+    }
+  }, function(err) {
+    log('Track error: ' + err.message, 'err');
+  }, { enableHighAccuracy: true, maximumAge: 2000 });
+}
+
+// HIGH vs LOW ACCURACY COMPARISON
+function compareAccuracy() {
+  var btn = document.getElementById('btn-cmp');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Testing High...';
+  var el = document.getElementById('cmp-result');
+  log('Comparing High vs Low accuracy modes...', 'warn');
+  var t0 = Date.now();
+
+  navigator.geolocation.getCurrentPosition(function(posH) {
+    var msH = Date.now() - t0;
+    var hAcc = posH.coords.accuracy;
+    log('HIGH accuracy: ±' + Math.round(hAcc) + 'm in ' + msH + 'ms', 'ok');
+    btn.innerHTML = '<div class="spinner"></div> Testing Low...';
+    var t1 = Date.now();
+
+    navigator.geolocation.getCurrentPosition(function(posL) {
+      var msL = Date.now() - t1;
+      var lAcc = posL.coords.accuracy;
+      log('LOW accuracy: ±' + Math.round(lAcc) + 'm in ' + msL + 'ms', 'ok');
+      var dist = haversine(posH.coords.latitude, posH.coords.longitude, posL.coords.latitude, posL.coords.longitude);
+
+      el.innerHTML = '<div class="row"><span class="label">High Accuracy</span><span class="val val-grn">±' + Math.round(hAcc) + 'm · ' + msH + 'ms</span></div>' +
+        '<div class="row"><span class="label">Low Accuracy</span><span class="val val-amb">±' + Math.round(lAcc) + 'm · ' + msL + 'ms</span></div>' +
+        '<div class="row"><span class="label">Difference</span><span class="val">' + dist.toFixed(1) + 'm apart</span></div>' +
+        '<div class="row"><span class="label">Winner</span><span class="val val-grn">' + (hAcc < lAcc ? 'High (more precise)' : hAcc > lAcc ? 'Low (surprisingly better)' : 'Same') + '</span></div>';
+      log('Comparison: High ±' + Math.round(hAcc) + 'm vs Low ±' + Math.round(lAcc) + 'm, ' + dist.toFixed(1) + 'm apart', 'ok');
+      btn.disabled = false; btn.textContent = '⚡ Compare Modes';
+    }, function(err) {
+      log('Low accuracy failed: ' + err.message, 'err');
+      btn.disabled = false; btn.textContent = '⚡ Compare Modes';
+    }, { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 });
+  }, function(err) {
+    log('High accuracy failed: ' + err.message, 'err');
+    btn.disabled = false; btn.textContent = '⚡ Compare Modes';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
+// DISTANCE BETWEEN TWO POINTS
+function markPoint(which) {
+  log('Marking point ' + which.toUpperCase() + '...');
+  navigator.geolocation.getCurrentPosition(function(pos) {
+    var c = pos.coords;
+    if (which === 'a') {
+      _pointA = { lat: c.latitude, lng: c.longitude, acc: c.accuracy };
+      document.getElementById('dist-a').innerHTML = c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm';
+      log('Point A set: ' + c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6), 'ok');
+    } else {
+      _pointB = { lat: c.latitude, lng: c.longitude, acc: c.accuracy };
+      document.getElementById('dist-b').innerHTML = c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6) + ' ±' + Math.round(c.accuracy) + 'm';
+      log('Point B set: ' + c.latitude.toFixed(6) + ', ' + c.longitude.toFixed(6), 'ok');
+    }
+    if (_pointA && _pointB) {
+      var d = haversine(_pointA.lat, _pointA.lng, _pointB.lat, _pointB.lng);
+      document.getElementById('dist-d').innerHTML = '<span class="val-red">' + d.toFixed(1) + 'm</span> (' + (d / 1000).toFixed(3) + ' km)';
+      log('Distance A→B: ' + d.toFixed(1) + 'm', 'ok');
+    }
+  }, function(err) {
+    log('Mark point failed: ' + err.message, 'err');
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
+}
+
+// LOG FUNCTIONS
+function clearLog() {
+  _log = [];
+  document.getElementById('gps-log').innerHTML = 'Log cleared.';
+}
+
+function exportLog() {
+  var text = _log.map(function(l) { return '[' + l.time + '] ' + l.msg; }).join('\n');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function() { alert('Log copied to clipboard!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); alert('Log copied!');
+  }
+}
+
+// Check GPS support on load
+if (!navigator.geolocation) {
+  log('❌ Geolocation NOT supported on this browser/device', 'err');
+} else {
+  log('✅ Geolocation API available', 'ok');
+  log('Device: ' + navigator.userAgent.split('(')[1].split(')')[0], 'info');
+}
+</script>
+</body>
+</html>
