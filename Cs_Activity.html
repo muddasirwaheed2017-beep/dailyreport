@@ -319,7 +319,7 @@ _geoCheck:function(cb){if(!navigator.geolocation){cb(null);return}navigator.geol
 markAtt:async function(){document.getElementById('att-pt').textContent='📡...';
 this._geoCheck(async function(geo){
 try{var rec={userId:ME.id,userName:ME.name,date:U.today(),time:U.time(),ts:new Date().toISOString()};
-if(geo){rec.inLat=geo.lat;rec.inLng=geo.lng;rec.inDist=geo.dist;rec.inNear=geo.near}
+if(geo){rec.inLat=geo.lat;rec.inLng=geo.lng;rec.inDist=geo.dist;rec.inNear=geo.near;rec.inStatus=geo.near?'At Office':'Away from Office'}else{rec.inStatus='No GPS'}
 var res=await F.push('attendance',rec);_att=F.arr(await F.g('attendance'));S.p('att');
 var msg=geo?(geo.near?'✅ Checked in at office':'⚠️ Checked in '+geo.dist+'m from office'):'✅ Checked in';
 U.toast(msg,geo&&!geo.near?'warn':'ok');
@@ -329,7 +329,7 @@ markOut:async function(){document.getElementById('att-ot').textContent='📡...'
 this._geoCheck(async function(geo){
 try{var mine=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()});if(!mine)return;
 var upd={out:U.time(),outTs:new Date().toISOString()};
-if(geo){upd.outLat=geo.lat;upd.outLng=geo.lng;upd.outDist=geo.dist;upd.outNear=geo.near}
+if(geo){upd.outLat=geo.lat;upd.outLng=geo.lng;upd.outDist=geo.dist;upd.outNear=geo.near;upd.outStatus=geo.near?'At Office':'Away from Office'}else{upd.outStatus='No GPS'}
 await F.up('attendance/'+mine.id,upd);_att=F.arr(await F.g('attendance'));S.p('att');
 var hrs=U.workHrs(mine.time,U.time());var status=hrs<4?'Half day':'';
 var msg=geo?(geo.near?'🏠 Checked out':'⚠️ Out '+geo.dist+'m away'):'🏠 Checked out';
