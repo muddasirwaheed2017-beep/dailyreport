@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CS Activity Reporter — Admin Dashboard</title>
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#1f2937;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+button,input,select{font-family:inherit;font-size:inherit;border:none;outline:none}
+
+/* ── DESIGN TOKENS ── */
+:root{
+  --red:#b91c1c;--red-dk:#991b1b;--red-lt:#fef2f2;
+  --g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;
+  --shadow:0 2px 8px rgba(0,0,0,.12);
+  --shadow-up:0 -2px 6px rgba(0,0,0,.08);
+  --tile-shadow:2px 2px 0 var(--g300);
+  --tile-press:1px 1px 0 var(--g300);
+  --radius:10px;
+}
+
+/* ── UTILITIES ── */
+.hidden{display:none!important}
+.flex-c{display:flex;align-items:center}
+.flex-col{display:flex;flex-direction:column}
+
+/* ── LOGIN SCREEN ── */
+#loginScreen{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#fff}
+.login-logo{width:56px;height:56px;border:2px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.login-logo svg{width:28px;height:28px;fill:var(--red)}
+.login-title{font-size:22px;font-weight:700;margin-bottom:2px}
+.login-title span{color:var(--red)}
+.login-sub{font-size:12px;color:var(--g400);margin-bottom:28px}
+.login-card{width:100%;max-width:360px;border:2px solid var(--g200);border-radius:16px;padding:28px 22px;background:#fff;box-shadow:var(--shadow)}
+.login-card label{font-size:12px;font-weight:600;color:var(--g500);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.login-card input{width:100%;padding:12px 14px;border:2px solid var(--g200);border-radius:var(--radius);font-size:15px;margin-bottom:16px;transition:border .2s}
+.login-card input:focus{border-color:var(--red)}
+.btn-login{width:100%;padding:13px;background:var(--red);color:#fff;font-size:15px;font-weight:600;border:2px solid var(--red-dk);border-radius:var(--radius);cursor:pointer;box-shadow:var(--tile-shadow);transition:all .1s}
+.btn-login:active{box-shadow:var(--tile-press);transform:translate(1px,1px)}
+.login-err{color:var(--red);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+
+/* ── APP SHELL ── */
+#appShell{display:none;min-height:100dvh;padding-bottom:68px}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--red);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(185,28,28,.3)}
+.topbar h1{font-size:16px;font-weight:700;letter-spacing:.3px}
+.topbar-sub{font-size:11px;opacity:.8}
+.btn-logout{background:rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:600;padding:6px 14px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+.btn-logout:active{background:rgba(255,255,255,.3)}
+
+/* ── BOTTOM TABS ── */
+.bottom-tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:2px solid var(--g200);box-shadow:var(--shadow-up);z-index:100}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 0 6px;cursor:pointer;background:none;color:var(--g400);font-size:10px;font-weight:600;gap:3px;transition:color .2s}
+.tab-btn.active{color:var(--red)}
+.tab-btn svg{width:22px;height:22px}
+.tab-btn.active svg{fill:var(--red)}
+.tab-btn:active{background:var(--g50)}
+
+/* ── PAGE CONTAINERS ── */
+.page{display:none;padding:14px}
+.page.active{display:block}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;margin-bottom:14px;box-shadow:var(--tile-shadow)}
+.filter-bar h3{font-size:13px;font-weight:700;color:var(--g600);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.filter-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.filter-row:last-child{margin-bottom:0}
+.filter-label{font-size:11px;font-weight:600;color:var(--g500);margin-bottom:4px;display:block}
+.filter-group{flex:1;min-width:0}
+.filter-input{width:100%;padding:9px 10px;border:2px solid var(--g200);border-radius:8px;font-size:13px;background:#fff;color:var(--g800);-webkit-appearance:none}
+.filter-input:focus{border-color:var(--red)}
+select.filter-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+
+/* Quick select chips */
+.quick-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:6px 12px;border:2px solid var(--g200);border-radius:20px;font-size:12px;font-weight:600;color:var(--g600);background:#fff;cursor:pointer;white-space:nowrap;box-shadow:1px 1px 0 var(--g200);transition:all .15s}
+.chip:active,.chip.active{background:var(--red);color:#fff;border-color:var(--red-dk);box-shadow:var(--tile-press);transform:translate(1px,1px)}
+.btn-apply{padding:9px 20px;background:var(--red);color:#fff;font-size:13px;font-weight:600;border:2px solid var(--red-dk);border-radius:8px;cursor:pointer;box-shadow:var(--tile-shadow);transition:all .1s;margin-top:6px}
+.btn-apply:active{box-shadow:var(--tile-press);transform:translate(1px,1px)}
+
+/* ── DATA TILES ── */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-tile{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;box-shadow:var(--tile-shadow);text-align:center}
+.stat-tile .val{font-size:26px;font-weight:800;color:var(--red)}
+.stat-tile .lbl{font-size:11px;font-weight:600;color:var(--g500);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── DATA TABLE ── */
+.data-section{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);box-shadow:var(--tile-shadow);overflow:hidden;margin-bottom:14px}
+.data-section .sec-header{padding:12px 14px;border-bottom:2px solid var(--g200);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.data-section .sec-header h3{font-size:14px;font-weight:700;color:var(--g700)}
+.data-section .sec-header .badge{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.sec-body{padding:0}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:var(--g50);font-weight:700;color:var(--g600);text-align:left;padding:10px 12px;border-bottom:2px solid var(--g200);white-space:nowrap;position:sticky;top:0}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--g100);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:active{background:var(--red-lt)}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:60vh;overflow-y:auto}
+
+/* Status badges */
+.badge-present{background:#dcfce7;color:#166534;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-absent{background:#fef2f2;color:#991b1b;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-late{background:#fef9c3;color:#854d0e;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-leave{background:#e0e7ff;color:#3730a3;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+
+/* ── LOADING / EMPTY ── */
+.loader{text-align:center;padding:30px;color:var(--g400);font-size:13px}
+.loader .spin{display:inline-block;width:24px;height:24px;border:3px solid var(--g200);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-msg{text-align:center;padding:30px;color:var(--g400);font-size:13px}
+
+/* ── ACTIVITY CARD ── */
+.activity-card{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--tile-shadow)}
+.activity-card .ac-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.activity-card .ac-name{font-size:14px;font-weight:700;color:var(--g800)}
+.activity-card .ac-date{font-size:11px;color:var(--g400);font-weight:600}
+.activity-card .ac-body{font-size:13px;color:var(--g600);line-height:1.5}
+.activity-card .ac-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.activity-card .ac-tag{font-size:11px;font-weight:600;color:var(--g500);background:var(--g100);padding:3px 8px;border-radius:6px}
+
+/* ── RESPONSIVE ── */
+@media(min-width:480px){
+  .stat-row{grid-template-columns:repeat(4,1fr)}
+  .filter-row{flex-wrap:nowrap}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<div id="loginScreen">
+  <div class="login-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+  </div>
+  <div class="login-title"><span>CS</span> Activity Reporter</div>
+  <div class="login-sub">© Cognitive Solutions Pvt Ltd — Admin Dashboard</div>
+  <div class="login-card">
+    <label>PASSWORD</label>
+    <input type="password" id="inPass" placeholder="Enter admin password" autocomplete="current-password">
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP SHELL ═══════════════ -->
+<div id="appShell">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <div class="topbar-sub">CS Activity Reporter</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-logout" onclick="showDebug()">Debug</button>
+      <button class="btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Connection Warning -->
+  <div id="connStatus" style="display:none;background:#fef9c3;color:#854d0e;padding:10px 16px;font-size:13px;font-weight:600;text-align:center;border-bottom:2px solid #facc15"></div>
+
+  <!-- ── ATTENDANCE PAGE ── -->
+  <div class="page active" id="pageAtt">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <h3>Filters</h3>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Employee</span>
+          <select class="filter-input" id="attEmp">
+            <option value="all">All Employees</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">From</span>
+          <input type="date" class="filter-input" id="attFrom">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">To</span>
+          <input type="date" class="filter-input" id="attTo">
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Quick Select</span>
+        <div class="quick-chips">
+          <button class="chip" onclick="qselAtt('today')">Today</button>
+          <button class="chip" onclick="qselAtt('week')">This Week</button>
+          <button class="chip" onclick="qselAtt('month')">This Month</button>
+          <button class="chip" onclick="qselAtt('lastmonth')">Last Month</button>
+        </div>
+      </div>
+      <button class="btn-apply" onclick="loadAttendance()">Apply Filters</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-row" id="attStats">
+      <div class="stat-tile"><div class="val" id="statPresent">-</div><div class="lbl">Present</div></div>
+      <div class="stat-tile"><div class="val" id="statAbsent">-</div><div class="lbl">Absent</div></div>
+      <div class="stat-tile"><div class="val" id="statLate">-</div><div class="lbl">Late</div></div>
+      <div class="stat-tile"><div class="val" id="statLeave">-</div><div class="lbl">Leave</div></div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-section">
+      <div class="sec-header">
+        <h3>Attendance Records</h3>
+        <span class="badge" id="attCount">0</span>
+      </div>
+      <div class="sec-body">
+        <div id="attLoader" class="loader hidden"><div class="spin"></div><br>Loading…</div>
+        <div id="attEmpty" class="empty-msg hidden">No records found for selected filters.</div>
+        <div class="table-wrap" id="attTableWrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Date</th><th>Employee</th><th>Status</th><th>Check-In</th><th>Check-Out</th></tr>
+            </thead>
+            <tbody id="attBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ACTIVITY REPORTS PAGE ── -->
+  <div class="page" id="pageAct">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <h3>Filters</h3>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Employee</span>
+          <select class="filter-input" id="actEmp">
+            <option value="all">All Employees</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">From</span>
+          <input type="date" class="filter-input" id="actFrom">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">To</span>
+          <input type="date" class="filter-input" id="actTo">
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Quick Select</span>
+        <div class="quick-chips">
+          <button class="chip" onclick="qselAct('today')">Today</button>
+          <button class="chip" onclick="qselAct('week')">This Week</button>
+          <button class="chip" onclick="qselAct('month')">This Month</button>
+          <button class="chip" onclick="qselAct('lastmonth')">Last Month</button>
+        </div>
+      </div>
+      <button class="btn-apply" onclick="loadActivity()">Apply Filters</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-row" id="actStats">
+      <div class="stat-tile"><div class="val" id="statReports">-</div><div class="lbl">Reports</div></div>
+      <div class="stat-tile"><div class="val" id="statEmployees">-</div><div class="lbl">Employees</div></div>
+    </div>
+
+    <!-- Activity Cards -->
+    <div id="actLoader" class="loader hidden"><div class="spin"></div><br>Loading…</div>
+    <div id="actEmpty" class="empty-msg hidden">No activity reports found for selected filters.</div>
+    <div id="actCards"></div>
+  </div>
+
+  <!-- Debug Modal -->
+  <div id="debugModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px;border-bottom:2px solid var(--g200);display:flex;justify-content:space-between;align-items:center">
+        <b style="font-size:15px">Firebase Debug</b>
+        <button onclick="$('debugModal').style.display='none'" style="background:none;font-size:20px;cursor:pointer;color:var(--g500)">&times;</button>
+      </div>
+      <div style="padding:12px 16px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--g100)">
+        <button class="chip" onclick="dbFetch('')">Root Keys</button>
+        <button class="chip" onclick="dbFetch('attendance')">attendance/</button>
+        <button class="chip" onclick="dbFetch('activity_reports')">activity_reports/</button>
+        <button class="chip" onclick="dbFetch('reports')">reports/</button>
+        <button class="chip" onclick="dbFetch('dailyReports')">dailyReports/</button>
+        <button class="chip" onclick="dbFetch('users')">users/</button>
+      </div>
+      <div style="padding:8px 16px;border-bottom:1px solid var(--g100);display:flex;gap:6px">
+        <input type="text" id="dbPath" placeholder="custom/path" style="flex:1;padding:8px;border:2px solid var(--g200);border-radius:6px;font-size:13px">
+        <button class="chip" onclick="dbFetch($('dbPath').value)">Fetch</button>
+      </div>
+      <div id="dbOut" style="padding:14px 16px;overflow:auto;flex:1;font-size:12px;font-family:monospace;white-space:pre-wrap;color:var(--g700);background:var(--g50)">Tap a button above to inspect Firebase...</div>
+    </div>
+  </div>
+
+  <!-- Bottom Tabs -->
+  <div class="bottom-tabs">
+    <button class="tab-btn active" onclick="switchTab('pageAtt',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+      Attendance
+    </button>
+    <button class="tab-btn" onclick="switchTab('pageAct',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6zm2-6h8v2H8v-2zm0-3h8v2H8v-2z"/></svg>
+      Activity
+    </button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   FIREBASE CONFIG
+   ═══════════════════════════════════════ */
+const FB='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+/* Team roster — id : display name */
+const TEAM={
+  muhammadbilal:'Muhammad Bilal Akram',
+  'hassnain.d':'Hassnain Dawood',
+  kh_fawad:'Khawaja Fawad Tariq',
+  fazalali:'Afzaal Bhatti',
+  'salman.a':'Muhammad Salman Azeem',
+  shan_ali:'Shan Ali Khan'
+};
+
+/* ── HELPERS ── */
+function $(id){return document.getElementById(id)}
+function localDate(d){
+  var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+dd;
+}
+function fmtDate(s){
+  if(!s) return '-';
+  var p=s.split('-');
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
+function fmtTime(t){return t||'-'}
+
+/* Firebase fetch GET */
+function fbGet(path,cb){
+  fetch(FB+'/'+path+'.json')
+    .then(function(r){return r.json()})
+    .then(function(d){cb(d)})
+    .catch(function(e){console.error('fbGet error:',e);cb(null)});
+}
+
+/* ── LOGIN ── */
+function doLogin(){
+  var p=$('inPass').value.trim();
+  if(!p){$('loginErr').textContent='Enter password';return}
+  /* Check against Firebase users node first, fall back to hardcoded */
+  /* First test Firebase connection */
+  $('loginErr').textContent='Connecting to Firebase...';
+  $('loginErr').style.color='var(--g500)';
+  fbGet('users',function(users){
+    var ok=false;
+    var fbConnected=(users!==null);
+    if(users){
+      for(var k in users){
+        if(users[k].password===p && users[k].role==='admin'){ok=true;break}
+      }
+    }
+    if(!ok && p==='admin123') ok=true;
+    if(ok){
+      $('loginScreen').style.display='none';
+      $('appShell').style.display='block';
+      populateEmpDropdowns();
+      setDefaultDates();
+      if(!fbConnected){
+        /* Show warning banner */
+        $('connStatus').textContent='⚠ Firebase unreachable — no data will load';
+        $('connStatus').style.display='block';
+      }
+      loadAttendance();
+    } else {
+      $('loginErr').style.color='var(--red)';
+      $('loginErr').textContent='Invalid password.';
+    }
+  });
+}
+function doLogout(){
+  $('appShell').style.display='none';
+  $('loginScreen').style.display='flex';
+  $('inPass').value='';
+  $('loginErr').textContent='';
+}
+
+/* ── POPULATE EMPLOYEE DROPDOWNS ── */
+function populateEmpDropdowns(){
+  ['attEmp','actEmp'].forEach(function(id){
+    var sel=$(id);
+    sel.innerHTML='<option value="all">All Employees</option>';
+    for(var uid in TEAM){
+      var o=document.createElement('option');
+      o.value=uid;o.textContent=TEAM[uid];
+      sel.appendChild(o);
+    }
+  });
+}
+
+/* ── DEFAULT DATES (this month) + highlight chip ── */
+function setDefaultDates(){
+  var now=new Date();
+  var first=new Date(now.getFullYear(),now.getMonth(),1);
+  $('attFrom').value=localDate(first);
+  $('attTo').value=localDate(now);
+  $('actFrom').value=localDate(first);
+  $('actTo').value=localDate(now);
+  /* Highlight "This Month" chips */
+  document.querySelectorAll('.quick-chips').forEach(function(grp){
+    grp.querySelectorAll('.chip').forEach(function(c){
+      if(c.textContent.trim()==='This Month') c.classList.add('active');
+    });
+  });
+}
+
+/* ── QUICK SELECTS ── */
+function qsel(prefix,period){
+  var now=new Date(),from,to=now;
+  if(period==='today'){from=new Date(now)}
+  else if(period==='week'){from=new Date(now);from.setDate(now.getDate()-now.getDay())}
+  else if(period==='month'){from=new Date(now.getFullYear(),now.getMonth(),1)}
+  else if(period==='lastmonth'){from=new Date(now.getFullYear(),now.getMonth()-1,1);to=new Date(now.getFullYear(),now.getMonth(),0)}
+  $(prefix+'From').value=localDate(from);
+  $(prefix+'To').value=localDate(to);
+  /* highlight chip */
+  var parent=event.target.closest('.quick-chips');
+  parent.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active')});
+  event.target.classList.add('active');
+}
+function qselAtt(p){qsel('att',p)}
+function qselAct(p){qsel('act',p)}
+
+/* ── TAB SWITCHING ── */
+var _actLoaded=false;
+function switchTab(pageId,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  $(pageId).classList.add('active');
+  btn.classList.add('active');
+  /* Auto-load activity on first visit */
+  if(pageId==='pageAct' && !_actLoaded){_actLoaded=true;loadActivity()}
+}
+
+/* ═══════════════════════════════════════
+   ATTENDANCE
+   ═══════════════════════════════════════ */
+function loadAttendance(){
+  var emp=$('attEmp').value;
+  var from=$('attFrom').value;
+  var to=$('attTo').value;
+  if(!from||!to){alert('Select date range');return}
+
+  $('attLoader').classList.remove('hidden');
+  $('attEmpty').classList.add('hidden');
+  $('attBody').innerHTML='';
+  $('attCount').textContent='0';
+  $('statPresent').textContent='-';
+  $('statAbsent').textContent='-';
+  $('statLate').textContent='-';
+  $('statLeave').textContent='-';
+
+  /* Determine which employees to fetch */
+  var empList=(emp==='all')?Object.keys(TEAM):[emp];
+  var pending=empList.length, allRows=[];
+
+  empList.forEach(function(uid){
+    fbGet('attendance/'+uid,function(data){
+      if(data){
+        for(var dateKey in data){
+          /* Normalize date key — could be YYYY-MM-DD or DD-MM-YYYY */
+          var normDate=normalizeDateKey(dateKey);
+          if(normDate>=from && normDate<=to){
+            var rec=data[dateKey];
+            allRows.push({
+              date:normDate,
+              uid:uid,
+              name:TEAM[uid]||uid,
+              status:rec.status||rec.type||'-',
+              checkin:rec.checkIn||rec.checkin||rec.time||'-',
+              checkout:rec.checkOut||rec.checkout||'-',
+              raw:rec
+            });
+          }
+        }
+      }
+      pending--;
+      if(pending===0) renderAttendance(allRows);
+    });
+  });
+}
+
+function normalizeDateKey(k){
+  /* Handles YYYY-MM-DD and DD-MM-YYYY and DD/MM/YYYY */
+  if(/^\d{4}-\d{2}-\d{2}$/.test(k)) return k;
+  var p=k.split(/[-\/]/);
+  if(p.length===3 && p[2].length===4) return p[2]+'-'+p[1]+'-'+p[0];
+  return k;
+}
+
+function renderAttendance(rows){
+  $('attLoader').classList.add('hidden');
+
+  /* Sort by date desc, then name */
+  rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.name.localeCompare(b.name)});
+
+  if(rows.length===0){$('attEmpty').classList.remove('hidden');return}
+  $('attEmpty').classList.add('hidden');
+  $('attCount').textContent=rows.length;
+
+  /* Stats */
+  var pres=0,abs=0,late=0,leave=0;
+  rows.forEach(function(r){
+    var s=(r.status+'').toLowerCase();
+    if(s==='present'||s==='on time'||s==='ontime') pres++;
+    else if(s==='absent') abs++;
+    else if(s==='late') late++;
+    else if(s==='leave'||s==='on leave') leave++;
+    else pres++; /* default to present if has check-in */
+  });
+  $('statPresent').textContent=pres;
+  $('statAbsent').textContent=abs;
+  $('statLate').textContent=late;
+  $('statLeave').textContent=leave;
+
+  /* Table rows */
+  var html='';
+  rows.forEach(function(r){
+    var s=(r.status+'').toLowerCase();
+    var cls='badge-present';
+    if(s==='absent') cls='badge-absent';
+    else if(s==='late') cls='badge-late';
+    else if(s==='leave'||s==='on leave') cls='badge-leave';
+    html+='<tr>';
+    html+='<td>'+fmtDate(r.date)+'</td>';
+    html+='<td>'+r.name+'</td>';
+    html+='<td><span class="'+cls+'">'+capitalize(r.status)+'</span></td>';
+    html+='<td>'+fmtTime(r.checkin)+'</td>';
+    html+='<td>'+fmtTime(r.checkout)+'</td>';
+    html+='</tr>';
+  });
+  $('attBody').innerHTML=html;
+}
+
+function capitalize(s){if(!s||s==='-')return'-';return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase()}
+
+/* ═══════════════════════════════════════
+   ACTIVITY REPORTS
+   ═══════════════════════════════════════ */
+function loadActivity(){
+  var emp=$('actEmp').value;
+  var from=$('actFrom').value;
+  var to=$('actTo').value;
+  if(!from||!to){alert('Select date range');return}
+
+  $('actLoader').classList.remove('hidden');
+  $('actEmpty').classList.add('hidden');
+  $('actCards').innerHTML='';
+  $('statReports').textContent='-';
+  $('statEmployees').textContent='-';
+
+  var empList=(emp==='all')?Object.keys(TEAM):[emp];
+  var pending=empList.length, allReports=[];
+
+  empList.forEach(function(uid){
+    /* Try multiple possible paths for activity reports */
+    var paths=['activity_reports/'+uid, 'reports/'+uid, 'dailyReports/'+uid];
+    var pathPending=paths.length;
+
+    paths.forEach(function(path){
+      fbGet(path,function(data){
+        if(data){
+          for(var dateKey in data){
+            var normDate=normalizeDateKey(dateKey);
+            if(normDate>=from && normDate<=to){
+              var rec=data[dateKey];
+              /* Handle if rec is an array or object of reports */
+              if(Array.isArray(rec)){
+                rec.forEach(function(r){if(r) allReports.push(makeReport(r,uid,normDate))});
+              } else if(typeof rec==='object' && rec!==null){
+                /* Could be a single report or multiple keyed reports */
+                if(rec.activity||rec.report||rec.description||rec.text||rec.client){
+                  allReports.push(makeReport(rec,uid,normDate));
+                } else {
+                  for(var rk in rec){
+                    if(rec[rk] && typeof rec[rk]==='object'){
+                      allReports.push(makeReport(rec[rk],uid,normDate));
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        pathPending--;
+        if(pathPending===0){
+          pending--;
+          if(pending===0) renderActivity(allReports);
+        }
+      });
+    });
+  });
+}
+
+function makeReport(rec,uid,date){
+  return{
+    date:date,
+    uid:uid,
+    name:TEAM[uid]||uid,
+    activity:rec.activity||rec.report||rec.description||rec.text||JSON.stringify(rec),
+    client:rec.client||rec.company||'',
+    type:rec.type||rec.category||'',
+    status:rec.status||''
+  };
+}
+
+function renderActivity(reports){
+  $('actLoader').classList.add('hidden');
+  reports.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.name.localeCompare(b.name)});
+
+  if(reports.length===0){$('actEmpty').classList.remove('hidden');return}
+  $('actEmpty').classList.add('hidden');
+
+  /* Stats */
+  var uniqEmp={};
+  reports.forEach(function(r){uniqEmp[r.uid]=true});
+  $('statReports').textContent=reports.length;
+  $('statEmployees').textContent=Object.keys(uniqEmp).length;
+
+  /* Cards */
+  var html='';
+  reports.forEach(function(r){
+    html+='<div class="activity-card">';
+    html+='<div class="ac-header"><span class="ac-name">'+r.name+'</span><span class="ac-date">'+fmtDate(r.date)+'</span></div>';
+    html+='<div class="ac-body">'+escHtml(r.activity)+'</div>';
+    html+='<div class="ac-meta">';
+    if(r.client) html+='<span class="ac-tag">'+escHtml(r.client)+'</span>';
+    if(r.type) html+='<span class="ac-tag">'+escHtml(r.type)+'</span>';
+    if(r.status) html+='<span class="ac-tag">'+escHtml(r.status)+'</span>';
+    html+='</div></div>';
+  });
+  $('actCards').innerHTML=html;
+}
+
+function escHtml(s){
+  if(!s) return '';
+  var d=document.createElement('div');d.textContent=s;return d.innerHTML;
+}
+
+/* ── DEBUG ── */
+function showDebug(){$('debugModal').style.display='flex'}
+function dbFetch(path){
+  var out=$('dbOut');
+  out.textContent='Fetching /'+path+' ...';
+  var url=FB+'/'+path+'.json';
+  if(path==='') url=FB+'/.json?shallow=true';
+  fetch(url)
+    .then(function(r){return r.text()})
+    .then(function(txt){
+      try{
+        var d=JSON.parse(txt);
+        if(path===''||path.split('/').length<=1){
+          out.textContent='PATH: /'+path+'\nKEYS: '+JSON.stringify(Object.keys(d||{}),null,1)+'\n\n--- First 2000 chars ---\n'+JSON.stringify(d,null,2).substring(0,2000);
+        } else {
+          out.textContent='PATH: /'+path+'\n\n'+JSON.stringify(d,null,2).substring(0,3000);
+        }
+      }catch(e){out.textContent='Parse error: '+e.message+'\nRaw: '+txt.substring(0,500)}
+    })
+    .catch(function(e){out.textContent='Network error: '+e.message+'\n\nIf opening from Files app, try Safari or GitHub Pages.'});
+}
+
+/* ── ENTER KEY LOGIN ── */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter' && $('loginScreen').style.display!=='none') doLogin();
+});
+</script>
+</body>
+</html>
