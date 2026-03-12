@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CS Activity Reporter — Admin Dashboard</title>
+<style>
+/* ── RESET & BASE ── */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f3f4f6;color:#1f2937;-webkit-tap-highlight-color:transparent;overflow-x:hidden}
+button,input,select{font-family:inherit;font-size:inherit;border:none;outline:none}
+
+/* ── DESIGN TOKENS ── */
+:root{
+  --red:#b91c1c;--red-dk:#991b1b;--red-lt:#fef2f2;
+  --g50:#f9fafb;--g100:#f3f4f6;--g200:#e5e7eb;--g300:#d1d5db;--g400:#9ca3af;--g500:#6b7280;--g600:#4b5563;--g700:#374151;--g800:#1f2937;--g900:#111827;
+  --shadow:0 2px 8px rgba(0,0,0,.12);
+  --shadow-up:0 -2px 6px rgba(0,0,0,.08);
+  --tile-shadow:2px 2px 0 var(--g300);
+  --tile-press:1px 1px 0 var(--g300);
+  --radius:10px;
+}
+
+/* ── UTILITIES ── */
+.hidden{display:none!important}
+.flex-c{display:flex;align-items:center}
+.flex-col{display:flex;flex-direction:column}
+
+/* ── LOGIN SCREEN ── */
+#loginScreen{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;background:#fff}
+.login-logo{width:56px;height:56px;border:2px solid var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.login-logo svg{width:28px;height:28px;fill:var(--red)}
+.login-title{font-size:22px;font-weight:700;margin-bottom:2px}
+.login-title span{color:var(--red)}
+.login-sub{font-size:12px;color:var(--g400);margin-bottom:28px}
+.login-card{width:100%;max-width:360px;border:2px solid var(--g200);border-radius:16px;padding:28px 22px;background:#fff;box-shadow:var(--shadow)}
+.login-card label{font-size:12px;font-weight:600;color:var(--g500);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.login-card input{width:100%;padding:12px 14px;border:2px solid var(--g200);border-radius:var(--radius);font-size:15px;margin-bottom:16px;transition:border .2s}
+.login-card input:focus{border-color:var(--red)}
+.btn-login{width:100%;padding:13px;background:var(--red);color:#fff;font-size:15px;font-weight:600;border:2px solid var(--red-dk);border-radius:var(--radius);cursor:pointer;box-shadow:var(--tile-shadow);transition:all .1s}
+.btn-login:active{box-shadow:var(--tile-press);transform:translate(1px,1px)}
+.login-err{color:var(--red);font-size:13px;text-align:center;margin-top:12px;min-height:18px}
+
+/* ── APP SHELL ── */
+#appShell{display:none;min-height:100dvh;padding-bottom:68px}
+
+/* ── TOP BAR ── */
+.topbar{background:var(--red);color:#fff;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(185,28,28,.3)}
+.topbar h1{font-size:16px;font-weight:700;letter-spacing:.3px}
+.topbar-sub{font-size:11px;opacity:.8}
+.btn-logout{background:rgba(255,255,255,.18);color:#fff;font-size:12px;font-weight:600;padding:6px 14px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+.btn-logout:active{background:rgba(255,255,255,.3)}
+
+/* ── BOTTOM TABS ── */
+.bottom-tabs{position:fixed;bottom:0;left:0;right:0;display:flex;background:#fff;border-top:2px solid var(--g200);box-shadow:var(--shadow-up);z-index:100}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 0 6px;cursor:pointer;background:none;color:var(--g400);font-size:10px;font-weight:600;gap:3px;transition:color .2s}
+.tab-btn.active{color:var(--red)}
+.tab-btn svg{width:22px;height:22px}
+.tab-btn.active svg{fill:var(--red)}
+.tab-btn:active{background:var(--g50)}
+
+/* ── PAGE CONTAINERS ── */
+.page{display:none;padding:14px}
+.page.active{display:block}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;margin-bottom:14px;box-shadow:var(--tile-shadow)}
+.filter-bar h3{font-size:13px;font-weight:700;color:var(--g600);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.filter-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.filter-row:last-child{margin-bottom:0}
+.filter-label{font-size:11px;font-weight:600;color:var(--g500);margin-bottom:4px;display:block}
+.filter-group{flex:1;min-width:0}
+.filter-input{width:100%;padding:9px 10px;border:2px solid var(--g200);border-radius:8px;font-size:13px;background:#fff;color:var(--g800);-webkit-appearance:none}
+.filter-input:focus{border-color:var(--red)}
+select.filter-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+
+/* Quick select chips */
+.quick-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:6px 12px;border:2px solid var(--g200);border-radius:20px;font-size:12px;font-weight:600;color:var(--g600);background:#fff;cursor:pointer;white-space:nowrap;box-shadow:1px 1px 0 var(--g200);transition:all .15s}
+.chip:active,.chip.active{background:var(--red);color:#fff;border-color:var(--red-dk);box-shadow:var(--tile-press);transform:translate(1px,1px)}
+.btn-apply{padding:9px 20px;background:var(--red);color:#fff;font-size:13px;font-weight:600;border:2px solid var(--red-dk);border-radius:8px;cursor:pointer;box-shadow:var(--tile-shadow);transition:all .1s;margin-top:6px}
+.btn-apply:active{box-shadow:var(--tile-press);transform:translate(1px,1px)}
+
+/* ── DATA TILES ── */
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-tile{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;box-shadow:var(--tile-shadow);text-align:center}
+.stat-tile .val{font-size:26px;font-weight:800;color:var(--red)}
+.stat-tile .lbl{font-size:11px;font-weight:600;color:var(--g500);margin-top:2px;text-transform:uppercase;letter-spacing:.4px}
+
+/* ── DATA TABLE ── */
+.data-section{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);box-shadow:var(--tile-shadow);overflow:hidden;margin-bottom:14px}
+.data-section .sec-header{padding:12px 14px;border-bottom:2px solid var(--g200);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.data-section .sec-header h3{font-size:14px;font-weight:700;color:var(--g700)}
+.data-section .sec-header .badge{background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px}
+.sec-body{padding:0}
+.data-table{width:100%;border-collapse:collapse;font-size:12px}
+.data-table th{background:var(--g50);font-weight:700;color:var(--g600);text-align:left;padding:10px 12px;border-bottom:2px solid var(--g200);white-space:nowrap;position:sticky;top:0}
+.data-table td{padding:10px 12px;border-bottom:1px solid var(--g100);vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:active{background:var(--red-lt)}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:60vh;overflow-y:auto}
+
+/* Status badges */
+.badge-present{background:#dcfce7;color:#166534;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-absent{background:#fef2f2;color:#991b1b;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-late{background:#fef9c3;color:#854d0e;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-leave{background:#e0e7ff;color:#3730a3;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-visit{background:#fef2f2;color:#b91c1c;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-activity{background:#f0fdf4;color:#166534;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-laterpt{background:#fef9c3;color:#854d0e;padding:3px 6px;border-radius:6px;font-size:10px;font-weight:600}
+.tag-pill{display:inline-block;background:var(--g100);color:var(--g600);padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;margin:1px 2px}
+
+/* ── LOADING / EMPTY ── */
+.loader{text-align:center;padding:30px;color:var(--g400);font-size:13px}
+.loader .spin{display:inline-block;width:24px;height:24px;border:3px solid var(--g200);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-msg{text-align:center;padding:30px;color:var(--g400);font-size:13px}
+
+/* ── ACTIVITY CARD ── */
+.activity-card{background:#fff;border:2px solid var(--g200);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--tile-shadow)}
+.activity-card .ac-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.activity-card .ac-name{font-size:14px;font-weight:700;color:var(--g800)}
+.activity-card .ac-date{font-size:11px;color:var(--g400);font-weight:600}
+.activity-card .ac-body{font-size:13px;color:var(--g600);line-height:1.5}
+.activity-card .ac-meta{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.activity-card .ac-tag{font-size:11px;font-weight:600;color:var(--g500);background:var(--g100);padding:3px 8px;border-radius:6px}
+
+/* ── RESPONSIVE ── */
+@media(min-width:480px){
+  .stat-row{grid-template-columns:repeat(4,1fr)}
+  .filter-row{flex-wrap:nowrap}
+}
+
+/* ── PDF BUTTON ── */
+.btn-pdf{padding:6px 14px;background:#fff;color:var(--red);font-size:12px;font-weight:700;border:2px solid var(--red);border-radius:6px;cursor:pointer;box-shadow:1px 1px 0 var(--g300);transition:all .1s;white-space:nowrap}
+.btn-pdf:active{background:var(--red);color:#fff;box-shadow:var(--tile-press);transform:translate(1px,1px)}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<div id="loginScreen">
+  <div class="login-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+  </div>
+  <div class="login-title"><span>CS</span> Activity Reporter</div>
+  <div class="login-sub">© Cognitive Solutions Pvt Ltd — Admin Dashboard</div>
+  <div class="login-card">
+    <label>PASSWORD</label>
+    <input type="password" id="inPass" placeholder="Enter admin password" autocomplete="current-password">
+    <button class="btn-login" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ APP SHELL ═══════════════ -->
+<div id="appShell">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <div class="topbar-sub">CS Activity Reporter</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-logout" onclick="showDebug()">Debug</button>
+      <button class="btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Connection Warning -->
+  <div id="connStatus" style="display:none;background:#fef9c3;color:#854d0e;padding:10px 16px;font-size:13px;font-weight:600;text-align:center;border-bottom:2px solid #facc15"></div>
+
+  <!-- ── ATTENDANCE PAGE ── -->
+  <div class="page active" id="pageAtt">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <h3>Filters</h3>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Employee</span>
+          <select class="filter-input" id="attEmp" onchange="loadAttendance()">
+            <option value="all">All Employees</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">From</span>
+          <input type="date" class="filter-input" id="attFrom" onchange="loadAttendance()">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">To</span>
+          <input type="date" class="filter-input" id="attTo" onchange="loadAttendance()">
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Quick Select</span>
+        <div class="quick-chips">
+          <button class="chip" onclick="qselAtt('today')">Today</button>
+          <button class="chip" onclick="qselAtt('week')">This Week</button>
+          <button class="chip" onclick="qselAtt('month')">This Month</button>
+          <button class="chip" onclick="qselAtt('lastmonth')">Last Month</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-row" id="attStats">
+      <div class="stat-tile"><div class="val" id="statPresent">-</div><div class="lbl">Present</div></div>
+      <div class="stat-tile"><div class="val" id="statAbsent">-</div><div class="lbl">Absent</div></div>
+      <div class="stat-tile"><div class="val" id="statLate">-</div><div class="lbl">Late</div></div>
+      <div class="stat-tile"><div class="val" id="statLeave">-</div><div class="lbl">Leave</div></div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="data-section">
+      <div class="sec-header">
+        <h3>Attendance Records</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="btn-pdf" onclick="downloadAttPdf()">⬇ PDF</button>
+          <span class="badge" id="attCount">0</span>
+        </div>
+      </div>
+      <div class="sec-body">
+        <div id="attLoader" class="loader hidden"><div class="spin"></div><br>Loading…</div>
+        <div id="attEmpty" class="empty-msg hidden">No records found for selected filters.</div>
+        <div class="table-wrap" id="attTableWrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Date</th><th>Employee</th><th>Status</th><th>Check-In</th><th>In Location</th><th>Check-Out</th><th>Out Location</th></tr>
+            </thead>
+            <tbody id="attBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DAILY REPORTS PAGE ── -->
+  <div class="page" id="pageAct">
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <h3>Filters</h3>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Employee</span>
+          <select class="filter-input" id="actEmp" onchange="loadActivity()">
+            <option value="all">All Employees</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Type</span>
+          <select class="filter-input" id="actType" onchange="loadActivity()">
+            <option value="all">All Reports</option>
+            <option value="visit">Visit Reports</option>
+            <option value="activity">Activity Reports</option>
+          </select>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">From</span>
+          <input type="date" class="filter-input" id="actFrom" onchange="loadActivity()">
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">To</span>
+          <input type="date" class="filter-input" id="actTo" onchange="loadActivity()">
+        </div>
+      </div>
+      <div>
+        <span class="filter-label">Quick Select</span>
+        <div class="quick-chips">
+          <button class="chip" onclick="qselAct('today')">Today</button>
+          <button class="chip" onclick="qselAct('week')">This Week</button>
+          <button class="chip" onclick="qselAct('month')">This Month</button>
+          <button class="chip" onclick="qselAct('lastmonth')">Last Month</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-row" id="actStats">
+      <div class="stat-tile"><div class="val" id="statReports">-</div><div class="lbl">Total</div></div>
+      <div class="stat-tile"><div class="val" id="statVisits">-</div><div class="lbl">Visits</div></div>
+      <div class="stat-tile"><div class="val" id="statActivities">-</div><div class="lbl">Activity</div></div>
+      <div class="stat-tile"><div class="val" id="statLateRpt">-</div><div class="lbl">Late Rpt</div></div>
+    </div>
+
+    <!-- Reports Table -->
+    <div class="data-section">
+      <div class="sec-header">
+        <h3>Daily Reports</h3>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button class="btn-pdf" onclick="downloadActPdf()">⬇ PDF</button>
+          <span class="badge" id="actCount">0</span>
+        </div>
+      </div>
+      <div class="sec-body">
+        <div id="actLoader" class="loader hidden"><div class="spin"></div><br>Loading…</div>
+        <div id="actEmpty" class="empty-msg hidden">No reports found for selected filters.</div>
+        <div class="table-wrap" id="actTableWrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Date</th><th>Time</th><th>Employee</th><th>Type</th><th>Details</th><th>Tags</th></tr>
+            </thead>
+            <tbody id="actBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Modal -->
+  <div id="debugModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)this.style.display='none'">
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column">
+      <div style="padding:14px 16px;border-bottom:2px solid var(--g200);display:flex;justify-content:space-between;align-items:center">
+        <b style="font-size:15px">Firebase Debug</b>
+        <button onclick="$('debugModal').style.display='none'" style="background:none;font-size:20px;cursor:pointer;color:var(--g500)">&times;</button>
+      </div>
+      <div style="padding:12px 16px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--g100)">
+        <button class="chip" onclick="dbFetch('')">Root Keys</button>
+        <button class="chip" onclick="dbFetch('attendance')">attendance/</button>
+        <button class="chip" onclick="dbFetch('activity_reports')">activity_reports/</button>
+        <button class="chip" onclick="dbFetch('reports')">reports/</button>
+        <button class="chip" onclick="dbFetch('dailyReports')">dailyReports/</button>
+        <button class="chip" onclick="dbFetch('users')">users/</button>
+      </div>
+      <div style="padding:8px 16px;border-bottom:1px solid var(--g100);display:flex;gap:6px">
+        <input type="text" id="dbPath" placeholder="custom/path" style="flex:1;padding:8px;border:2px solid var(--g200);border-radius:6px;font-size:13px">
+        <button class="chip" onclick="dbFetch($('dbPath').value)">Fetch</button>
+      </div>
+      <div id="dbOut" style="padding:14px 16px;overflow:auto;flex:1;font-size:12px;font-family:monospace;white-space:pre-wrap;color:var(--g700);background:var(--g50)">Tap a button above to inspect Firebase...</div>
+    </div>
+  </div>
+
+  <!-- Bottom Tabs -->
+  <div class="bottom-tabs">
+    <button class="tab-btn active" onclick="switchTab('pageAtt',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+      Attendance
+    </button>
+    <button class="tab-btn" onclick="switchTab('pageAct',this)">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6zm2-6h8v2H8v-2zm0-3h8v2H8v-2z"/></svg>
+      Reports
+    </button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   FIREBASE CONFIG
+   ═══════════════════════════════════════ */
+const FB='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+/* Team roster — built dynamically from Firebase users */
+var TEAM={}; /* userId -> displayName */
+var _lastAttRows=[];
+var _lastActReports=[];
+var START_TIME='09:30';
+
+/* ── HELPERS ── */
+function $(id){return document.getElementById(id)}
+function localDate(d){
+  var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+dd;
+}
+function fmtDate(s){
+  if(!s) return '-';
+  var p=s.split('-');
+  return p[2]+'/'+p[1]+'/'+p[0];
+}
+function fmtTime(t){return t||'-'}
+
+/* Firebase fetch GET */
+function fbGet(path,cb){
+  fetch(FB+'/'+path+'.json')
+    .then(function(r){return r.json()})
+    .then(function(d){cb(d)})
+    .catch(function(e){console.error('fbGet error:',e);cb(null)});
+}
+
+/* ── LOGIN ── */
+function doLogin(){
+  var p=$('inPass').value.trim();
+  if(!p){$('loginErr').textContent='Enter password';return}
+  /* Check against Firebase users node first, fall back to hardcoded */
+  /* First test Firebase connection */
+  $('loginErr').textContent='Connecting to Firebase...';
+  $('loginErr').style.color='var(--g500)';
+  fbGet('users',function(users){
+    var ok=false;
+    var fbConnected=(users!==null);
+    if(users){
+      for(var k in users){
+        if(users[k].password===p && users[k].role==='admin'){ok=true;break}
+      }
+    }
+    if(!ok && p==='admin123') ok=true;
+    if(ok){
+      $('loginScreen').style.display='none';
+      $('appShell').style.display='block';
+      if(!fbConnected){
+        $('connStatus').textContent='⚠ Firebase unreachable — no data will load';
+        $('connStatus').style.display='block';
+      }
+      setDefaultDates();
+      populateEmpDropdowns(function(){
+        loadAttendance();
+      });
+    } else {
+      $('loginErr').style.color='var(--red)';
+      $('loginErr').textContent='Invalid password.';
+    }
+  });
+}
+function doLogout(){
+  $('appShell').style.display='none';
+  $('loginScreen').style.display='flex';
+  $('inPass').value='';
+  $('loginErr').textContent='';
+}
+
+/* ── POPULATE EMPLOYEE DROPDOWNS from Firebase users + attendance ── */
+function populateEmpDropdowns(cb){
+  fbGet('users',function(users){
+    TEAM={};
+    if(users){
+      for(var k in users){
+        var u=users[k];
+        if(u.name||u.displayName||u.username){
+          TEAM[k]=u.name||u.displayName||u.username;
+        }
+      }
+    }
+    /* Also scan attendance for any users not in users node */
+    fbGet('attendance',function(attData){
+      if(attData){
+        for(var key in attData){
+          var rec=attData[key];
+          if(rec && rec.userId && rec.userName && !TEAM[rec.userId]){
+            TEAM[rec.userId]=rec.userName;
+          }
+        }
+      }
+      /* Build dropdowns */
+      ['attEmp','actEmp'].forEach(function(id){
+        var sel=$(id);
+        sel.innerHTML='<option value="all">All Employees</option>';
+        for(var uid in TEAM){
+          var o=document.createElement('option');
+          o.value=uid;o.textContent=TEAM[uid];
+          sel.appendChild(o);
+        }
+      });
+      if(cb) cb();
+    });
+  });
+}
+
+/* ── DEFAULT DATES (this month) + highlight chip ── */
+function setDefaultDates(){
+  var now=new Date();
+  var first=new Date(now.getFullYear(),now.getMonth(),1);
+  $('attFrom').value=localDate(first);
+  $('attTo').value=localDate(now);
+  $('actFrom').value=localDate(first);
+  $('actTo').value=localDate(now);
+  /* Highlight "This Month" chips */
+  document.querySelectorAll('.quick-chips').forEach(function(grp){
+    grp.querySelectorAll('.chip').forEach(function(c){
+      if(c.textContent.trim()==='This Month') c.classList.add('active');
+    });
+  });
+}
+
+/* ── QUICK SELECTS ── */
+function qsel(prefix,period){
+  var now=new Date(),from,to=now;
+  if(period==='today'){from=new Date(now)}
+  else if(period==='week'){from=new Date(now);from.setDate(now.getDate()-now.getDay())}
+  else if(period==='month'){from=new Date(now.getFullYear(),now.getMonth(),1)}
+  else if(period==='lastmonth'){from=new Date(now.getFullYear(),now.getMonth()-1,1);to=new Date(now.getFullYear(),now.getMonth(),0)}
+  $(prefix+'From').value=localDate(from);
+  $(prefix+'To').value=localDate(to);
+  /* highlight chip */
+  var parent=event.target.closest('.quick-chips');
+  parent.querySelectorAll('.chip').forEach(function(c){c.classList.remove('active')});
+  event.target.classList.add('active');
+}
+function qselAtt(p){qsel('att',p);loadAttendance()}
+function qselAct(p){qsel('act',p);loadActivity()}
+
+/* ── TAB SWITCHING ── */
+var _actLoaded=false;
+function switchTab(pageId,btn){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+  $(pageId).classList.add('active');
+  btn.classList.add('active');
+  /* Auto-load activity on first visit */
+  if(pageId==='pageAct' && !_actLoaded){_actLoaded=true;loadActivity()}
+}
+
+/* ═══════════════════════════════════════
+   ATTENDANCE — flat list with push keys
+   Fields: date, time (in), out, userId, userName
+   ═══════════════════════════════════════ */
+function loadAttendance(){
+  var emp=$('attEmp').value;
+  var from=$('attFrom').value;
+  var to=$('attTo').value;
+  if(!from||!to){alert('Select date range');return}
+
+  $('attLoader').classList.remove('hidden');
+  $('attEmpty').classList.add('hidden');
+  $('attBody').innerHTML='';
+  $('attCount').textContent='0';
+  $('statPresent').textContent='-';
+  $('statAbsent').textContent='-';
+  $('statLate').textContent='-';
+  $('statLeave').textContent='-';
+
+  fbGet('attendance',function(data){
+    var rows=[];
+    if(data){
+      for(var key in data){
+        var rec=data[key];
+        if(!rec||!rec.date) continue;
+        var d=rec.date; /* already YYYY-MM-DD */
+        /* Date range filter */
+        if(d<from||d>to) continue;
+        /* Employee filter */
+        if(emp!=='all' && rec.userId!==emp) continue;
+
+        /* Derive status from check-in time */
+        var status='Present';
+        if(rec.time){
+          if(rec.time>START_TIME) status='Late';
+        }
+
+        rows.push({
+          date:d,
+          uid:rec.userId||'',
+          name:rec.userName||TEAM[rec.userId]||rec.userId||'-',
+          status:status,
+          checkin:rec.time||'-',
+          checkout:rec.out||'-',
+          inStatus:rec.inStatus||(rec.inNear===true?'At Office':rec.inNear===false?'Away':'—'),
+          inLat:rec.inLat,inLng:rec.inLng,inDist:rec.inDist,
+          outStatus:rec.outStatus||(rec.outNear===true?'At Office':rec.outNear===false?'Away':'—'),
+          outLat:rec.outLat,outLng:rec.outLng,outDist:rec.outDist
+        });
+      }
+    }
+    renderAttendance(rows);
+  });
+}
+
+function renderAttendance(rows){
+  _lastAttRows=rows;
+  $('attLoader').classList.add('hidden');
+
+  /* Sort by date desc, then name */
+  rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.name.localeCompare(b.name)});
+
+  if(rows.length===0){$('attEmpty').classList.remove('hidden');return}
+  $('attEmpty').classList.add('hidden');
+  $('attCount').textContent=rows.length;
+
+  /* Stats */
+  var pres=0,abs=0,late=0,leave=0;
+  rows.forEach(function(r){
+    var s=r.status.toLowerCase();
+    if(s==='late') late++;
+    else if(s==='absent') abs++;
+    else if(s==='leave') leave++;
+    else pres++;
+  });
+  $('statPresent').textContent=pres;
+  $('statAbsent').textContent=abs;
+  $('statLate').textContent=late;
+  $('statLeave').textContent=leave;
+
+  /* Table rows */
+  var html='';
+  rows.forEach(function(r){
+    var s=r.status.toLowerCase();
+    var cls='badge-present';
+    if(s==='late') cls='badge-late';
+    else if(s==='absent') cls='badge-absent';
+    else if(s==='leave') cls='badge-leave';
+
+    /* In location badge */
+    var inLoc='—';
+    if(r.inLat&&r.inLng){
+      var inCls=r.inStatus==='At Office'?'badge-present':'badge-absent';
+      var inLabel=r.inStatus==='At Office'?'At Office':'Away ('+r.inDist+'m)';
+      inLoc='<a href="https://maps.google.com/?q='+r.inLat+','+r.inLng+'" target="_blank" style="text-decoration:none"><span class="'+inCls+'">'+inLabel+' 📍</span></a>';
+    }
+
+    /* Out location badge */
+    var outLoc='—';
+    if(r.outLat&&r.outLng){
+      var outCls=r.outStatus==='At Office'?'badge-present':'badge-absent';
+      var outLabel=r.outStatus==='At Office'?'At Office':'Away ('+r.outDist+'m)';
+      outLoc='<a href="https://maps.google.com/?q='+r.outLat+','+r.outLng+'" target="_blank" style="text-decoration:none"><span class="'+outCls+'">'+outLabel+' 📍</span></a>';
+    } else if(r.checkout!=='-'){
+      outLoc='<span class="badge-leave">No GPS</span>';
+    }
+
+    html+='<tr>';
+    html+='<td>'+fmtDate(r.date)+'</td>';
+    html+='<td>'+escHtml(r.name)+'</td>';
+    html+='<td><span class="'+cls+'">'+r.status+'</span></td>';
+    html+='<td>'+r.checkin+'</td>';
+    html+='<td>'+inLoc+'</td>';
+    html+='<td>'+r.checkout+'</td>';
+    html+='<td>'+outLoc+'</td>';
+    html+='</tr>';
+  });
+  $('attBody').innerHTML=html;
+}
+
+function capitalize(s){if(!s||s==='-')return'-';return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase()}
+
+/* ═══════════════════════════════════════
+   DAILY REPORTS — flat list from reports/
+   Visit: type,userId,userName,client,message,outcome,lat,lng,address,tags,date,time,planned
+   Activity: type,userId,userName,message,tags,date,time,lateReport
+   ═══════════════════════════════════════ */
+var OUTCOMES={intro:'🤝 Intro',demo:'📋 Demo',proposal:'📄 Proposal',follow:'📅 Follow-up',recovery:'💰 Recovery',closed:'🎉 Closed',complaint:'🔄 Complaint',notavail:'❌ N/A',cold:'🚪 Cold',other:'🤷 Other'};
+
+function loadActivity(){
+  var emp=$('actEmp').value;
+  var type=$('actType').value;
+  var from=$('actFrom').value;
+  var to=$('actTo').value;
+  if(!from||!to){alert('Select date range');return}
+
+  $('actLoader').style.display='block';
+  $('actEmpty').style.display='none';
+  $('actBody').innerHTML='';
+  $('actCount').textContent='0';
+  $('statReports').textContent='-';
+  $('statVisits').textContent='-';
+  $('statActivities').textContent='-';
+  $('statLateRpt').textContent='-';
+
+  fbGet('reports',function(data){
+    var rows=[];
+    if(data){
+      for(var key in data){
+        var rec=data[key];
+        if(!rec||!rec.date) continue;
+        var d=rec.date;
+        if(d<from||d>to) continue;
+        if(emp!=='all' && rec.userId!==emp) continue;
+        if(type!=='all' && rec.type!==type) continue;
+
+        var isLateRpt=rec.lateReport===true||(rec.ts&&rec.date&&rec.ts.slice(0,10)!==rec.date);
+
+        rows.push({
+          date:d,
+          time:rec.time||'-',
+          uid:rec.userId||'',
+          name:rec.userName||TEAM[rec.userId]||rec.userId||'-',
+          type:rec.type||'-',
+          message:rec.message||'',
+          client:rec.client||'',
+          outcome:rec.outcome||'',
+          tags:rec.tags||'',
+          lateReport:isLateRpt,
+          lat:rec.lat,lng:rec.lng,
+          address:rec.address||'',
+          planned:rec.planned||false
+        });
+      }
+    }
+    renderActivity(rows);
+  });
+}
+
+function renderActivity(rows){
+  _lastActReports=rows;
+  $('actLoader').style.display='none';
+
+  rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.time>b.time?-1:a.time<b.time?1:a.name.localeCompare(b.name)});
+
+  if(rows.length===0){
+    $('actEmpty').style.display='block';
+    $('actCount').textContent='0';
+    $('statReports').textContent='0';
+    $('statVisits').textContent='0';
+    $('statActivities').textContent='0';
+    $('statLateRpt').textContent='0';
+    return;
+  }
+  $('actEmpty').style.display='none';
+  $('actCount').textContent=rows.length;
+
+  /* Stats */
+  var visits=0,acts=0,lateRpts=0;
+  rows.forEach(function(r){
+    if(r.type==='visit') visits++;
+    else if(r.type==='activity') acts++;
+    if(r.lateReport) lateRpts++;
+  });
+  $('statReports').textContent=rows.length;
+  $('statVisits').textContent=visits;
+  $('statActivities').textContent=acts;
+  $('statLateRpt').textContent=lateRpts;
+
+  /* Table rows */
+  var html='';
+  try{
+  rows.forEach(function(r){
+    var typeCls=r.type==='visit'?'badge-visit':'badge-activity';
+    var typeLabel=r.type==='visit'?'📍 Visit':'📝 Activity';
+
+    /* Build details column */
+    var details='';
+    if(r.type==='visit'){
+      details='<strong>'+escHtml(r.client)+'</strong>';
+      if(r.outcome) details+=' <span style="color:var(--g500);font-size:11px">'+(OUTCOMES[r.outcome]||r.outcome)+'</span>';
+      if(r.message) details+='<br><span style="color:var(--g600);font-size:11px">'+escHtml(r.message).slice(0,120)+(r.message.length>120?'…':'')+'</span>';
+      if(r.lat&&r.lng&&r.lat!==0) details+=' <a href="https://maps.google.com/?q='+r.lat+','+r.lng+'" target="_blank" style="font-size:10px">📍</a>';
+    } else {
+      var msg=r.message||'';
+      details=escHtml(msg).slice(0,150)+(msg.length>150?'…':'');
+    }
+
+    /* Tags — handle array or string */
+    var tagHtml='';
+    try{
+      var tagArr=[];
+      if(Array.isArray(r.tags)){tagArr=r.tags}
+      else if(typeof r.tags==='string'&&r.tags){tagArr=r.tags.split(/[,\s]+/).filter(Boolean)}
+      tagArr.forEach(function(t){tagHtml+='<span class="tag-pill">'+escHtml(String(t))+'</span>'});
+    }catch(e){}
+    if(r.lateReport) tagHtml+='<span class="badge-laterpt">⏰ Late</span>';
+    if(r.type==='visit'&&r.planned) tagHtml+='<span class="tag-pill" style="background:#dcfce7;color:#166534">✅ Planned</span>';
+
+    html+='<tr>';
+    html+='<td>'+fmtDate(r.date)+'</td>';
+    html+='<td>'+r.time+'</td>';
+    html+='<td>'+escHtml(r.name)+'</td>';
+    html+='<td><span class="'+typeCls+'">'+typeLabel+'</span></td>';
+    html+='<td style="max-width:280px">'+details+'</td>';
+    html+='<td>'+tagHtml+'</td>';
+    html+='</tr>';
+  });
+  }catch(e){console.error('Render error:',e)}
+  $('actBody').innerHTML=html;
+}
+
+function escHtml(s){
+  if(!s) return '';
+  var d=document.createElement('div');d.textContent=s;return d.innerHTML;
+}
+
+/* ═══════════════════════════════════════
+   PDF DOWNLOADS
+   ═══════════════════════════════════════ */
+function pdfHeader(doc,title,from,to,empLabel){
+  /* Red banner */
+  doc.setFillColor(185,28,28);
+  doc.rect(0,0,doc.internal.pageSize.getWidth(),28,'F');
+  doc.setTextColor(255,255,255);
+  doc.setFontSize(16);doc.setFont(undefined,'bold');
+  doc.text('COGNITIVE SOLUTIONS',14,12);
+  doc.setFontSize(8);doc.setFont(undefined,'normal');
+  doc.text('Industrial Automation | CS Activity Reporter',14,18);
+  doc.setFontSize(9);
+  doc.text(title,14,25);
+
+  /* Filter info */
+  doc.setTextColor(80,80,80);
+  doc.setFontSize(9);doc.setFont(undefined,'normal');
+  var filterLine='Period: '+fmtDate(from)+' to '+fmtDate(to)+'  |  Employee: '+empLabel;
+  doc.text(filterLine,14,36);
+  doc.text('Generated: '+new Date().toLocaleString('en-PK'),14,42);
+  return 48;
+}
+
+function pdfFooter(doc){
+  var pc=doc.internal.getNumberOfPages();
+  for(var i=1;i<=pc;i++){
+    doc.setPage(i);
+    var h=doc.internal.pageSize.getHeight();
+    doc.setFontSize(8);doc.setTextColor(150,150,150);
+    doc.text('CS Activity Reporter — Cognitive Solutions Pvt Ltd',14,h-8);
+    doc.text('Page '+i+' of '+pc,doc.internal.pageSize.getWidth()-30,h-8);
+  }
+}
+
+function downloadAttPdf(){
+  if(_lastAttRows.length===0){alert('No attendance data to download');return}
+  var {jsPDF}=window.jspdf;
+  var doc=new jsPDF('l','mm','a4'); /* landscape */
+  var from=$('attFrom').value, to=$('attTo').value;
+  var empSel=$('attEmp');
+  var empLabel=empSel.options[empSel.selectedIndex].text;
+  var startY=pdfHeader(doc,'Attendance Report',from,to,empLabel);
+
+  /* Summary stats */
+  var p=$('statPresent').textContent, a=$('statAbsent').textContent;
+  var l=$('statLate').textContent, lv=$('statLeave').textContent;
+  doc.setFontSize(10);doc.setTextColor(40,40,40);doc.setFont(undefined,'bold');
+  doc.text('Present: '+p+'    Absent: '+a+'    Late: '+l+'    Leave: '+lv,14,startY+2);
+  startY+=8;
+
+  /* Table */
+  var rows=_lastAttRows.map(function(r){
+    var inLoc=r.inStatus==='At Office'?'At Office':r.inDist?'Away ('+r.inDist+'m)':'—';
+    var outLoc=r.outStatus==='At Office'?'At Office':r.outDist?'Away ('+r.outDist+'m)':r.checkout!=='-'?'No GPS':'—';
+    return[fmtDate(r.date),r.name,r.status,r.checkin,inLoc,r.checkout,outLoc];
+  });
+  doc.autoTable({
+    startY:startY,
+    head:[['Date','Employee','Status','In','In Location','Out','Out Location']],
+    body:rows,
+    theme:'grid',
+    headStyles:{fillColor:[185,28,28],textColor:255,fontStyle:'bold',fontSize:9},
+    bodyStyles:{fontSize:8},
+    alternateRowStyles:{fillColor:[252,245,245]},
+    margin:{left:14,right:14}
+  });
+
+  pdfFooter(doc);
+  doc.save('Attendance_'+from+'_to_'+to+'.pdf');
+}
+
+function downloadActPdf(){
+  if(_lastActReports.length===0){alert('No reports to download');return}
+  var {jsPDF}=window.jspdf;
+  var doc=new jsPDF('l','mm','a4'); /* landscape for more columns */
+  var from=$('actFrom').value, to=$('actTo').value;
+  var empSel=$('actEmp');
+  var empLabel=empSel.options[empSel.selectedIndex].text;
+  var startY=pdfHeader(doc,'Daily Reports',from,to,empLabel);
+
+  /* Summary stats */
+  var v=$('statVisits').textContent, a=$('statActivities').textContent;
+  var lr=$('statLateRpt').textContent, tot=$('statReports').textContent;
+  doc.setFontSize(10);doc.setTextColor(40,40,40);doc.setFont(undefined,'bold');
+  doc.text('Total: '+tot+'    Visits: '+v+'    Activity: '+a+'    Late Reports: '+lr,14,startY+2);
+  startY+=8;
+
+  /* Table */
+  var rows=_lastActReports.map(function(r){
+    var typeLabel=r.type==='visit'?'Visit':'Activity';
+    var details='';
+    if(r.type==='visit'){
+      details=r.client;
+      if(r.outcome) details+=' ('+(OUTCOMES[r.outcome]||r.outcome)+')';
+      if(r.message) details+='\n'+r.message.slice(0,200);
+    } else {
+      details=r.message.slice(0,200);
+    }
+    var tags=(r.tags||'')+(r.lateReport?' [LATE RPT]':'')+(r.planned?' [PLANNED]':'');
+    return[fmtDate(r.date),r.time,r.name,typeLabel,details,tags];
+  });
+  doc.autoTable({
+    startY:startY,
+    head:[['Date','Time','Employee','Type','Details','Tags']],
+    body:rows,
+    theme:'grid',
+    headStyles:{fillColor:[185,28,28],textColor:255,fontStyle:'bold',fontSize:9},
+    bodyStyles:{fontSize:8,cellPadding:3},
+    columnStyles:{4:{cellWidth:80},5:{cellWidth:40}},
+    alternateRowStyles:{fillColor:[252,245,245]},
+    margin:{left:14,right:14}
+  });
+
+  pdfFooter(doc);
+  doc.save('Daily_Reports_'+from+'_to_'+to+'.pdf');
+}
+
+/* ── DEBUG ── */
+function showDebug(){$('debugModal').style.display='flex'}
+function dbFetch(path){
+  var out=$('dbOut');
+  out.textContent='Fetching /'+path+' ...';
+  var url=FB+'/'+path+'.json';
+  if(path==='') url=FB+'/.json?shallow=true';
+  fetch(url)
+    .then(function(r){return r.text()})
+    .then(function(txt){
+      try{
+        var d=JSON.parse(txt);
+        if(path===''||path.split('/').length<=1){
+          out.textContent='PATH: /'+path+'\nKEYS: '+JSON.stringify(Object.keys(d||{}),null,1)+'\n\n--- First 2000 chars ---\n'+JSON.stringify(d,null,2).substring(0,2000);
+        } else {
+          out.textContent='PATH: /'+path+'\n\n'+JSON.stringify(d,null,2).substring(0,3000);
+        }
+      }catch(e){out.textContent='Parse error: '+e.message+'\nRaw: '+txt.substring(0,500)}
+    })
+    .catch(function(e){out.textContent='Network error: '+e.message+'\n\nIf opening from Files app, try Safari or GitHub Pages.'});
+}
+
+/* ── ENTER KEY LOGIN ── */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter' && $('loginScreen').style.display!=='none') doLogin();
+});
+</script>
+</body>
+</html>
