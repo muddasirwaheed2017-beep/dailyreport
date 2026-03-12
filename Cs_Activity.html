@@ -225,6 +225,48 @@ input,select,textarea,button{font-family:var(--font)}
 #cal-popup .cp-label{color:var(--G5);font-weight:600}.cp-val{font-weight:700;color:var(--G2)}
 #ep-cal{overflow-anchor:none}.cal-filters{scroll-margin-top:0;position:sticky;top:56px;z-index:10;background:var(--G9);padding:8px 0}
 @media(max-width:380px){.mst{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:1fr 1fr}}
+
+/* ── ADMIN DASHBOARD STYLES ── */
+.adm-filter{background:var(--W);border:2px solid var(--G8);border-radius:10px;padding:12px;margin-bottom:10px}
+.adm-filter h4{font-size:11px;font-weight:700;color:var(--G5);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.adm-frow{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.adm-frow:last-child{margin-bottom:0}
+.adm-fg{flex:1;min-width:0}
+.adm-fl{font-size:10px;font-weight:600;color:var(--G5);margin-bottom:3px;display:block}
+.adm-fi{width:100%;padding:7px 8px;border:2px solid var(--G8);border-radius:6px;font-size:12px;background:var(--W);-webkit-appearance:none}
+.adm-fi:focus{border-color:var(--R)}
+.adm-chips{display:flex;gap:4px;flex-wrap:wrap}
+.adm-chip{padding:5px 10px;border:2px solid var(--G8);border-radius:16px;font-size:11px;font-weight:600;color:var(--G5);background:var(--W);cursor:pointer}
+.adm-chip.on{background:var(--R);color:var(--W);border-color:var(--R)}
+.adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.adm-stat{background:var(--W);border:2px solid var(--G8);border-radius:8px;padding:10px 6px;text-align:center}
+.adm-stat .sv{font-size:22px;font-weight:800;color:var(--R)}
+.adm-stat .sl{font-size:9px;font-weight:700;color:var(--G5);text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+.adm-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-height:55vh;overflow-y:auto;border:2px solid var(--G8);border-radius:8px;background:var(--W)}
+.adm-tbl{width:100%;border-collapse:collapse;font-size:11px}
+.adm-tbl th{background:var(--G9);font-weight:700;color:var(--G5);text-align:left;padding:8px;border-bottom:2px solid var(--G8);white-space:nowrap;position:sticky;top:0}
+.adm-tbl td{padding:8px;border-bottom:1px solid var(--G9);vertical-align:top}
+.adm-tbl tr:active{background:var(--G9)}
+.adm-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.adm-hd h3{font-size:13px;font-weight:700}
+.adm-hd-r{display:flex;gap:6px;align-items:center}
+.adm-badge{background:var(--R);color:var(--W);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px}
+.adm-btn-pdf{padding:5px 10px;background:var(--W);color:var(--R);font-size:11px;font-weight:700;border:2px solid var(--R);border-radius:6px;cursor:pointer}
+.ab-present{background:#dcfce7;color:#166534;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.ab-absent{background:#fef2f2;color:#991b1b;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.ab-late{background:#fef9c3;color:#854d0e;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.ab-visit{background:#fef2f2;color:#b91c1c;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.ab-activity{background:#f0fdf4;color:#166534;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.ab-laterpt{background:#fef9c3;color:#854d0e;padding:2px 5px;border-radius:4px;font-size:9px;font-weight:600}
+.ab-tag{display:inline-block;background:var(--G9);color:var(--G5);padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600;margin:1px}
+.adm-empty{text-align:center;padding:20px;color:var(--G5);font-size:12px}
+.adm-loader{text-align:center;padding:20px;color:var(--G5);font-size:12px}
+.ai-sum-panel{background:var(--W);border:2px solid var(--G8);border-radius:10px;margin-top:10px;overflow:hidden}
+.ai-sum-hd{padding:10px 12px;background:var(--G9);border-bottom:2px solid var(--G8);display:flex;justify-content:space-between;align-items:center}
+.ai-sum-hd h4{font-size:12px;font-weight:700}
+.ai-sum-body{padding:12px;font-size:12px;line-height:1.6;color:var(--G3);white-space:pre-wrap;max-height:50vh;overflow-y:auto}
+.btn-ai{padding:7px 14px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-size:11px;font-weight:700;border:none;border-radius:6px;cursor:pointer}
+.btn-ai:active{opacity:.8}
 </style>
 </head>
 <body>
@@ -243,7 +285,7 @@ input,select,textarea,button{font-family:var(--font)}
 <div id="ep-journey" class="pg"><div style="font-size:15px;font-weight:800;color:var(--G2);margin-bottom:10px">🗺️ Daily Journey</div><div id="jny-ctrl"></div><div id="jny-timeline"></div></div>
 <div id="ep-inbox" class="pg"><div class="sec">Messages</div><div id="e-inbox"><div class="loading"><div class="spinner"></div></div></div></div>
 </div><button class="ai-fab" onclick="App.toggleAI()">🤖</button><div class="ai-panel" id="ai-panel"><div class="ai-hd"><div class="ai-hd-t">🤖 AI Assistant</div><button class="btn btn-ghost btn-sm" onclick="App.toggleAI()">✕</button></div><div class="ai-msgs" id="ai-msgs"><div class="ai-msg ai-a">Hi! Ask about your performance.</div></div><div class="ai-quick" id="ai-quick"></div><div class="ai-input"><input id="ai-in" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')App.aiSend()"><button onclick="App.aiSend()">Send</button></div></div><div class="bnav"><div class="bn on" onclick="App.nav('home')"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div><div class="bn" onclick="App.nav('plan')"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div><div class="bn" onclick="App.nav('cal')"><div class="bn-i">📅</div><div class="bn-l">Calendar</div></div><div class="bn" onclick="App.nav('inbox')"><div class="bn-i">💬</div><div class="bn-l">Inbox</div><div class="bn-dot" id="in-dot"></div></div><div class="bn" onclick="App.nav('reports')"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div><div class="bn" onclick="App.nav('visits')"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div><div class="bn" onclick="App.nav('journey')"><div class="bn-i">🗺️</div><div class="bn-l">Journey</div></div><div class="bn" onclick="App.nav('summary')"><div class="bn-i">📊</div><div class="bn-l">Summary</div></div><div class="bn" onclick="App.nav('appraisal')"><div class="bn-i">🏆</div><div class="bn-l">Appraisal</div></div></div></div>
-<div id="s-admin" class="scr"><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Activity Reporter</em></div><span style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:16px;background:var(--R);color:var(--W)">ADMIN</span></div><div class="tb-r"><span style="font-size:12px;color:var(--G5)" id="a-nm"></span><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="ct" style="padding-bottom:66px"><div id="ap-dash" class="pg on"><div class="card" style="margin-bottom:12px;border-left:4px solid var(--blu)"><div class="card-hd"><div class="card-t">👁️ View as Employee</div></div><div style="display:flex;gap:6px"><select class="fi fi-sel" id="admin-view-user" style="flex:1;padding:8px;font-size:12px"><option value="">— Select Employee —</option></select><button class="btn btn-R btn-sm" onclick="App.viewAsUser()" style="flex-shrink:0">View Portal →</button></div></div><div class="stats"><div class="stat"><div class="stat-n" id="ak-s">—</div><div class="stat-l">Staff</div></div><div class="stat"><div class="stat-n" id="ak-r">—</div><div class="stat-l">Reports</div></div><div class="stat"><div class="stat-n" id="ak-a">—</div><div class="stat-l">Attendance</div></div><div class="stat"><div class="stat-n" id="ak-p">—</div><div class="stat-l" id="ak-p-l">Missed</div></div></div><div class="sec">Live Feed</div><div id="a-feed"><div class="loading"><div class="spinner"></div></div></div></div><div id="ap-staff" class="pg"><div class="card"><div class="card-hd"><div class="card-t">➕ Add Employee</div></div><div class="fi-row"><div class="fg"><label class="fl">Name</label><input class="fi" id="ae-n"></div><div class="fg"><label class="fl">Username</label><input class="fi" id="ae-u"></div></div><div class="fi-row"><div class="fg"><label class="fl">Password</label><input class="fi" id="ae-p" type="password"></div><div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="ae-w"></div></div><button class="btn btn-R" onclick="App.addEmp()">Add</button></div><div class="sec">Active</div><div id="a-el"></div><div class="sec" style="color:var(--amb)">Pending</div><div id="a-pl"></div></div><div id="ap-rpts" class="pg"><div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap"><select class="fi fi-sel" id="f-emp" onchange="App.aR()" style="flex:1;padding:8px;font-size:12px"><option value="">All</option></select><input type="date" class="fi" id="f-date" onchange="App.aR()" style="flex:1;padding:8px;font-size:12px"><select class="fi fi-sel" id="f-type" onchange="App.aR()" style="padding:8px;font-size:12px"><option value="">All</option><option value="visit">Visit</option><option value="activity">Activity</option></select></div><input class="fi" id="f-q" placeholder="🔍 Search or #tag" style="margin-bottom:8px;padding:9px;font-size:12px" oninput="App.aR()"><div id="f-sum" style="font-size:11px;color:var(--G5);margin-bottom:6px;font-weight:600"></div><div id="a-rpts"></div><button class="btn btn-ghost" id="f-more" style="display:none;margin-top:8px" onclick="App.moreAR()">More ↓</button></div><div id="ap-instr" class="pg"><div class="card"><div class="card-hd"><div class="card-t">📢 Send Instruction</div></div><div class="fg"><label class="fl">To</label><select class="fi fi-sel" id="ins-to"><option value="all">All</option></select></div><div class="fg"><label class="fl">Message <span class="wc" id="ins-body-wc">0/2000</span></label><textarea class="fi fi-ta" id="ins-body" oninput="App.wordCheck(this,'ins-body-wc')"></textarea></div><div class="fg"><label class="fl">Priority</label><select class="fi fi-sel" id="ins-pri"><option value="routine">🔵 Routine</option><option value="important">🟡 Important</option><option value="urgent">🔴 Urgent</option><option value="good">🟢 Good News</option></select></div><button class="btn btn-R" onclick="App.sendIns()">📨 Send</button></div><div class="sec">Sent</div><div id="a-ilog"></div></div></div><div class="bnav"><div class="bn on" onclick="App.anav('dash')"><div class="bn-i">📊</div><div class="bn-l">Dash</div></div><div class="bn" onclick="App.anav('staff')"><div class="bn-i">👥</div><div class="bn-l">Staff</div></div><div class="bn" onclick="App.anav('rpts')"><div class="bn-i">📋</div><div class="bn-l">Reports</div></div><div class="bn" onclick="App.anav('instr')"><div class="bn-i">📢</div><div class="bn-l">Instruct</div></div></div></div>
+<div id="s-admin" class="scr"><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Activity Reporter</em></div><span style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:16px;background:var(--R);color:var(--W)">ADMIN</span></div><div class="tb-r"><span style="font-size:12px;color:var(--G5)" id="a-nm"></span><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="ct" style="padding-bottom:66px"><div id="ap-dash" class="pg on"><div class="card" style="margin-bottom:12px;border-left:4px solid var(--blu)"><div class="card-hd"><div class="card-t">👁️ View as Employee</div></div><div style="display:flex;gap:6px"><select class="fi fi-sel" id="admin-view-user" style="flex:1;padding:8px;font-size:12px"><option value="">— Select Employee —</option></select><button class="btn btn-R btn-sm" onclick="App.viewAsUser()" style="flex-shrink:0">View Portal →</button></div></div><div class="stats"><div class="stat"><div class="stat-n" id="ak-s">—</div><div class="stat-l">Staff</div></div><div class="stat"><div class="stat-n" id="ak-r">—</div><div class="stat-l">Reports</div></div><div class="stat"><div class="stat-n" id="ak-a">—</div><div class="stat-l">Attendance</div></div><div class="stat"><div class="stat-n" id="ak-p">—</div><div class="stat-l" id="ak-p-l">Missed</div></div></div><div class="sec">Live Feed</div><div id="a-feed"><div class="loading"><div class="spinner"></div></div></div></div><div id="ap-staff" class="pg"><div class="card"><div class="card-hd"><div class="card-t">➕ Add Employee</div></div><div class="fi-row"><div class="fg"><label class="fl">Name</label><input class="fi" id="ae-n"></div><div class="fg"><label class="fl">Username</label><input class="fi" id="ae-u"></div></div><div class="fi-row"><div class="fg"><label class="fl">Password</label><input class="fi" id="ae-p" type="password"></div><div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="ae-w"></div></div><button class="btn btn-R" onclick="App.addEmp()">Add</button></div><div class="sec">Active</div><div id="a-el"></div><div class="sec" style="color:var(--amb)">Pending</div><div id="a-pl"></div></div><div id="ap-att" class="pg"><div class="adm-filter"><h4>Attendance Filters</h4><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">Employee</span><select class="adm-fi" id="aa-emp" onchange="App.loadAdmAtt()"></select></div></div><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">From</span><input type="date" class="adm-fi" id="aa-from" onchange="App.loadAdmAtt()"></div><div class="adm-fg"><span class="adm-fl">To</span><input type="date" class="adm-fi" id="aa-to" onchange="App.loadAdmAtt()"></div></div><div class="adm-chips" id="aa-chips"><button class="adm-chip" onclick="App.aqsel('aa','today',this)">Today</button><button class="adm-chip" onclick="App.aqsel('aa','week',this)">This Week</button><button class="adm-chip on" onclick="App.aqsel('aa','month',this)">This Month</button><button class="adm-chip" onclick="App.aqsel('aa','lastmonth',this)">Last Month</button></div></div><div class="adm-stats"><div class="adm-stat"><div class="sv" id="aa-pres">-</div><div class="sl">Present</div></div><div class="adm-stat"><div class="sv" id="aa-abs">-</div><div class="sl">Absent</div></div><div class="adm-stat"><div class="sv" id="aa-late">-</div><div class="sl">Late</div></div><div class="adm-stat"><div class="sv" id="aa-leave">-</div><div class="sl">Leave</div></div></div><div class="adm-hd"><h3>Records</h3><div class="adm-hd-r"><button class="adm-btn-pdf" onclick="App.dlAdmAttPdf()">⬇ PDF</button><span class="adm-badge" id="aa-cnt">0</span></div></div><div id="aa-loader" class="adm-loader" style="display:none">Loading...</div><div id="aa-empty" class="adm-empty" style="display:none">No records found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Employee</th><th>Status</th><th>In</th><th>In Loc</th><th>Out</th><th>Out Loc</th></tr></thead><tbody id="aa-body"></tbody></table></div></div><div id="ap-rpts" class="pg"><div class="adm-filter"><h4>Report Filters</h4><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">Employee</span><select class="adm-fi" id="ar-emp" onchange="App.loadAdmRpts()"></select></div><div class="adm-fg"><span class="adm-fl">Type</span><select class="adm-fi" id="ar-type" onchange="App.loadAdmRpts()"><option value="all">All</option><option value="visit">Visit</option><option value="activity">Activity</option></select></div></div><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">From</span><input type="date" class="adm-fi" id="ar-from" onchange="App.loadAdmRpts()"></div><div class="adm-fg"><span class="adm-fl">To</span><input type="date" class="adm-fi" id="ar-to" onchange="App.loadAdmRpts()"></div></div><div class="adm-chips" id="ar-chips"><button class="adm-chip" onclick="App.aqsel('ar','today',this)">Today</button><button class="adm-chip" onclick="App.aqsel('ar','week',this)">This Week</button><button class="adm-chip on" onclick="App.aqsel('ar','month',this)">This Month</button><button class="adm-chip" onclick="App.aqsel('ar','lastmonth',this)">Last Month</button></div></div><div class="adm-stats"><div class="adm-stat"><div class="sv" id="ar-tot">-</div><div class="sl">Total</div></div><div class="adm-stat"><div class="sv" id="ar-vis">-</div><div class="sl">Visits</div></div><div class="adm-stat"><div class="sv" id="ar-act">-</div><div class="sl">Activity</div></div><div class="adm-stat"><div class="sv" id="ar-lr">-</div><div class="sl">Late Rpt</div></div></div><div class="adm-hd"><h3>Reports</h3><div class="adm-hd-r"><button class="btn-ai" onclick="App.genAISummary()">🤖 AI Summary</button><button class="adm-btn-pdf" onclick="App.dlAdmRptPdf()">⬇ PDF</button><span class="adm-badge" id="ar-cnt">0</span></div></div><div id="ar-loader" class="adm-loader" style="display:none">Loading...</div><div id="ar-empty" class="adm-empty" style="display:none">No reports found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Time</th><th>Employee</th><th>Type</th><th>Details</th><th>Tags</th></tr></thead><tbody id="ar-body"></tbody></table></div><div id="ai-sum-wrap" style="display:none"><div class="ai-sum-panel"><div class="ai-sum-hd"><h4>🤖 AI Summary</h4><button class="btn btn-ghost btn-sm" onclick="document.getElementById('ai-sum-wrap').style.display='none'">✕</button></div><div class="ai-sum-body" id="ai-sum-out">Generating...</div></div></div></div></div><div id="ap-instr" class="pg"><div class="card"><div class="card-hd"><div class="card-t">📢 Send Instruction</div></div><div class="fg"><label class="fl">To</label><select class="fi fi-sel" id="ins-to"><option value="all">All</option></select></div><div class="fg"><label class="fl">Message <span class="wc" id="ins-body-wc">0/2000</span></label><textarea class="fi fi-ta" id="ins-body" oninput="App.wordCheck(this,'ins-body-wc')"></textarea></div><div class="fg"><label class="fl">Priority</label><select class="fi fi-sel" id="ins-pri"><option value="routine">🔵 Routine</option><option value="important">🟡 Important</option><option value="urgent">🔴 Urgent</option><option value="good">🟢 Good News</option></select></div><button class="btn btn-R" onclick="App.sendIns()">📨 Send</button></div><div class="sec">Sent</div><div id="a-ilog"></div></div></div><div class="bnav"><div class="bn on" onclick="App.anav('dash')"><div class="bn-i">📊</div><div class="bn-l">Dash</div></div><div class="bn" onclick="App.anav('staff')"><div class="bn-i">👥</div><div class="bn-l">Staff</div></div><div class="bn" onclick="App.anav('att')"><div class="bn-i">📅</div><div class="bn-l">Attend</div></div><div class="bn" onclick="App.anav('rpts')"><div class="bn-i">📋</div><div class="bn-l">Reports</div></div><div class="bn" onclick="App.anav('instr')"><div class="bn-i">📢</div><div class="bn-l">Instruct</div></div></div></div>
 <div id="map-ov"><div class="map-sh"><div class="map-hd"><div id="map-nm" style="font-weight:700;font-size:14px">Location</div><button class="btn btn-ghost btn-sm" onclick="App.closeMap()">✕</button></div><div id="leaflet-map"></div><a id="map-gl" href="#" target="_blank" class="map-lk">📍 Google Maps →</a></div></div>
 <div id="photo-ov" onclick="this.classList.remove('on')"><img id="pv-img" src=""></div>
 <div id="help-ov" onclick="if(event.target===this)this.classList.remove('on')"><div class="help-sh"><div class="help-title">📖 Help <button class="btn btn-ghost btn-sm" onclick="document.getElementById('help-ov').classList.remove('on')">✕</button></div><div id="help-content"></div></div></div>
@@ -308,7 +350,9 @@ nav:function(p){S.p('nav');document.querySelectorAll('#s-emp .pg').forEach(funct
 document.querySelectorAll('#s-emp .bn').forEach(function(b){b.classList.remove('on')});var m={home:0,plan:1,cal:2,inbox:3,reports:4,visits:5,journey:6,summary:7,appraisal:8};if(m[p]!==undefined&&document.querySelectorAll('#s-emp .bn')[m[p]])document.querySelectorAll('#s-emp .bn')[m[p]].classList.add('on');
 if(p==='cal'){this.renderCal()}if(p==='inbox')this.loadInbox();if(p==='visit'){_vPlanId=null;this.setVisitNum();this.showPlanSelection();this.loadDraft('v')}if(p==='activity'){this.setDateMode('a','today');this.setActTitle();this.loadDraft('a')}if(p==='plan'){this.initPlanForm();this.loadPlans()}if(p==='summary'){this.loadSummary('week')}if(p==='appraisal'){var sk=localStorage.getItem('cs_aikey');if(sk)document.getElementById('ai-key').value=sk}if(p==='reports'){this._rpOffset=0;this.loadRpView()}if(p==='visits'){this._vsOffset=0;this.loadVsView()}if(p==='journey'){this.loadJourney()}},
 anav:function(p){S.p('nav');document.querySelectorAll('#s-admin .pg').forEach(function(x){x.classList.remove('on')});document.getElementById('ap-'+p).classList.add('on');
-document.querySelectorAll('#s-admin .bn').forEach(function(b){b.classList.remove('on')});var m={dash:0,staff:1,rpts:2,instr:3};if(document.querySelectorAll('#s-admin .bn')[m[p]])document.querySelectorAll('#s-admin .bn')[m[p]].classList.add('on');
+if(p==='att'&&_admInited&&!_admAttRows.length)App.loadAdmAtt();
+if(p==='rpts'&&_admInited&&!_admRptRows.length)App.loadAdmRpts();
+document.querySelectorAll('#s-admin .bn').forEach(function(b){b.classList.remove('on')});var m={dash:0,staff:1,att:2,rpts:3,instr:4};if(document.querySelectorAll('#s-admin .bn')[m[p]])document.querySelectorAll('#s-admin .bn')[m[p]].classList.add('on');
 if(p==='dash')this.loadDash();if(p==='staff')this.loadStaff();if(p==='rpts'){this._ar=[];this.aR();this.popFil()}if(p==='instr'){this.popIns();this.loadILog()}},
 checkAtt:async function(){try{var atts=_att.length?_att:F.arr(await F.g('attendance'));var mine=atts.find(function(a){return a.userId===ME.id&&a.date===U.today()});
 if(mine){document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+mine.time;document.getElementById('att-p').onclick=null;
@@ -945,6 +989,304 @@ document.addEventListener('DOMContentLoaded',function(){App.restore()});
 document.getElementById('map-ov').addEventListener('click',function(e){if(e.target===e.currentTarget)App.closeMap()});
 window.addEventListener('online',function(){document.getElementById('offline-bar').style.display='none'});
 window.addEventListener('offline',function(){document.getElementById('offline-bar').style.display='block'});
+
+
+/* ═══════════════════════════════════════
+   ADMIN DASHBOARD — ATTENDANCE + REPORTS + AI
+   ═══════════════════════════════════════ */
+var _admAttRows=[],_admRptRows=[];
+var ADM_START='09:30';
+var ADM_OUTCOMES={intro:'🤝 Intro',demo:'📋 Demo',proposal:'📄 Proposal',follow:'📅 Follow-up',recovery:'💰 Recovery',closed:'🎉 Closed',complaint:'🔄 Complaint',notavail:'❌ N/A',cold:'🚪 Cold',other:'🤷 Other'};
+
+/* ── Init admin filters when admin loads ── */
+var _admInited=false;
+(function(){
+  var origShowAdmin=App.showAdmin;
+  App.showAdmin=function(){
+    origShowAdmin.apply(this,arguments);
+    if(!_admInited){_admInited=true;App.initAdmFilters()}
+  };
+})();
+
+App.initAdmFilters=async function(){
+  try{
+    var users=F.arr(await F.g('users')).filter(function(u){return u.approved===true});
+    ['aa-emp','ar-emp'].forEach(function(id){
+      var sel=document.getElementById(id);
+      sel.innerHTML='<option value="all">All Employees</option>';
+      users.forEach(function(u){
+        var o=document.createElement('option');
+        o.value=u.id;o.textContent=u.name||u.username;
+        sel.appendChild(o);
+      });
+    });
+    /* Set default dates (this month) */
+    var now=new Date();
+    var first=new Date(now.getFullYear(),now.getMonth(),1);
+    var ds=function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+    ['aa','ar'].forEach(function(p){
+      document.getElementById(p+'-from').value=ds(first);
+      document.getElementById(p+'-to').value=ds(now);
+    });
+  }catch(e){console.error('initAdmFilters:',e)}
+};
+
+/* ── Quick Select ── */
+App.aqsel=function(prefix,period,btn){
+  var now=new Date(),from,to=new Date();
+  if(period==='today'){from=new Date(now)}
+  else if(period==='week'){from=new Date(now);from.setDate(now.getDate()-now.getDay())}
+  else if(period==='month'){from=new Date(now.getFullYear(),now.getMonth(),1)}
+  else if(period==='lastmonth'){from=new Date(now.getFullYear(),now.getMonth()-1,1);to=new Date(now.getFullYear(),now.getMonth(),0)}
+  var ds=function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+  document.getElementById(prefix+'-from').value=ds(from);
+  document.getElementById(prefix+'-to').value=ds(to);
+  btn.parentElement.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('on')});
+  btn.classList.add('on');
+  if(prefix==='aa') App.loadAdmAtt();
+  else App.loadAdmRpts();
+};
+
+/* ═══ ATTENDANCE ═══ */
+App.loadAdmAtt=async function(){
+  var emp=document.getElementById('aa-emp').value;
+  var from=document.getElementById('aa-from').value;
+  var to=document.getElementById('aa-to').value;
+  if(!from||!to) return;
+  document.getElementById('aa-loader').style.display='block';
+  document.getElementById('aa-empty').style.display='none';
+  document.getElementById('aa-body').innerHTML='';
+  try{
+    var data=await F.g('attendance');
+    var rows=[];
+    if(data){
+      for(var k in data){
+        var rec=data[k];if(!rec||!rec.date)continue;
+        var d=rec.date;
+        if(d<from||d>to)continue;
+        if(emp!=='all'&&rec.userId!==emp)continue;
+        var status='Present';
+        if(rec.time&&rec.time>ADM_START) status='Late';
+        rows.push({date:d,uid:rec.userId||'',name:rec.userName||'',status:status,
+          checkin:rec.time||'-',checkout:rec.out||'-',
+          inStatus:rec.inStatus||(rec.inNear===true?'At Office':rec.inNear===false?'Away':'—'),
+          inLat:rec.inLat,inLng:rec.inLng,inDist:rec.inDist,
+          outStatus:rec.outStatus||(rec.outNear===true?'At Office':rec.outNear===false?'Away':'—'),
+          outLat:rec.outLat,outLng:rec.outLng,outDist:rec.outDist});
+      }
+    }
+    _admAttRows=rows;
+    document.getElementById('aa-loader').style.display='none';
+    rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.name.localeCompare(b.name)});
+    if(!rows.length){document.getElementById('aa-empty').style.display='block';document.getElementById('aa-cnt').textContent='0';
+      ['aa-pres','aa-abs','aa-late','aa-leave'].forEach(function(id){document.getElementById(id).textContent='0'});return}
+    document.getElementById('aa-cnt').textContent=rows.length;
+    var p=0,ab=0,la=0,lv=0;
+    rows.forEach(function(r){if(r.status==='Late')la++;else p++});
+    document.getElementById('aa-pres').textContent=p;
+    document.getElementById('aa-abs').textContent=ab;
+    document.getElementById('aa-late').textContent=la;
+    document.getElementById('aa-leave').textContent=lv;
+    var h='';
+    rows.forEach(function(r){
+      var cls=r.status==='Late'?'ab-late':'ab-present';
+      var inLoc='—';
+      if(r.inLat&&r.inLng){var ic=r.inStatus==='At Office'?'ab-present':'ab-absent';var il=r.inStatus==='At Office'?'At Office':'Away ('+r.inDist+'m)';
+        inLoc='<a href="https://maps.google.com/?q='+r.inLat+','+r.inLng+'" target="_blank" style="text-decoration:none"><span class="'+ic+'">'+il+' 📍</span></a>'}
+      var outLoc='—';
+      if(r.outLat&&r.outLng){var oc=r.outStatus==='At Office'?'ab-present':'ab-absent';var ol=r.outStatus==='At Office'?'At Office':'Away ('+r.outDist+'m)';
+        outLoc='<a href="https://maps.google.com/?q='+r.outLat+','+r.outLng+'" target="_blank" style="text-decoration:none"><span class="'+oc+'">'+ol+' 📍</span></a>'}
+      else if(r.checkout!=='-'){outLoc='<span class="ab-late">No GPS</span>'}
+      h+='<tr><td>'+U.dateFull(r.date)+'</td><td>'+r.name+'</td><td><span class="'+cls+'">'+r.status+'</span></td><td>'+r.checkin+'</td><td>'+inLoc+'</td><td>'+r.checkout+'</td><td>'+outLoc+'</td></tr>';
+    });
+    document.getElementById('aa-body').innerHTML=h;
+  }catch(e){console.error('loadAdmAtt:',e);document.getElementById('aa-loader').style.display='none'}
+};
+
+/* ═══ REPORTS ═══ */
+App.loadAdmRpts=async function(){
+  var emp=document.getElementById('ar-emp').value;
+  var type=document.getElementById('ar-type').value;
+  var from=document.getElementById('ar-from').value;
+  var to=document.getElementById('ar-to').value;
+  if(!from||!to) return;
+  document.getElementById('ar-loader').style.display='block';
+  document.getElementById('ar-empty').style.display='none';
+  document.getElementById('ar-body').innerHTML='';
+  try{
+    var data=await F.g('reports');
+    var rows=[];
+    if(data){
+      for(var k in data){
+        var rec=data[k];if(!rec||!rec.date)continue;
+        var d=rec.date;
+        if(d<from||d>to)continue;
+        if(emp!=='all'&&rec.userId!==emp)continue;
+        if(type!=='all'&&rec.type!==type)continue;
+        var isLate=rec.lateReport===true||(rec.ts&&rec.date&&rec.ts.slice(0,10)!==rec.date);
+        rows.push({date:d,time:rec.time||'-',uid:rec.userId||'',name:rec.userName||'',
+          type:rec.type||'-',message:rec.message||'',client:rec.client||'',
+          outcome:rec.outcome||'',tags:rec.tags||'',lateReport:isLate,
+          lat:rec.lat,lng:rec.lng,address:rec.address||'',planned:rec.planned||false});
+      }
+    }
+    _admRptRows=rows;
+    document.getElementById('ar-loader').style.display='none';
+    rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.time>b.time?-1:1});
+    if(!rows.length){document.getElementById('ar-empty').style.display='block';document.getElementById('ar-cnt').textContent='0';
+      ['ar-tot','ar-vis','ar-act','ar-lr'].forEach(function(id){document.getElementById(id).textContent='0'});return}
+    document.getElementById('ar-cnt').textContent=rows.length;
+    var vis=0,act=0,lr=0;
+    rows.forEach(function(r){if(r.type==='visit')vis++;else if(r.type==='activity')act++;if(r.lateReport)lr++});
+    document.getElementById('ar-tot').textContent=rows.length;
+    document.getElementById('ar-vis').textContent=vis;
+    document.getElementById('ar-act').textContent=act;
+    document.getElementById('ar-lr').textContent=lr;
+    var h='';
+    rows.forEach(function(r){
+      var tc=r.type==='visit'?'ab-visit':'ab-activity';
+      var tl=r.type==='visit'?'📍 Visit':'📝 Activity';
+      var det='';
+      if(r.type==='visit'){
+        det='<strong>'+(r.client||'-')+'</strong>';
+        if(r.outcome) det+=' <span style="color:#6b7280;font-size:10px">'+(ADM_OUTCOMES[r.outcome]||r.outcome)+'</span>';
+        if(r.message) det+='<br><span style="color:#4b5563;font-size:10px">'+U.esc(r.message).slice(0,100)+(r.message.length>100?'…':'')+'</span>';
+        if(r.lat&&r.lng&&r.lat!==0) det+=' <a href="https://maps.google.com/?q='+r.lat+','+r.lng+'" target="_blank" style="font-size:9px">📍</a>';
+      }else{det=U.esc(r.message||'').slice(0,120)+(r.message&&r.message.length>120?'…':'')}
+      var tags='';
+      try{var ta=Array.isArray(r.tags)?r.tags:(typeof r.tags==='string'&&r.tags?r.tags.split(/[,\s]+/).filter(Boolean):[]);
+        ta.forEach(function(t){tags+='<span class="ab-tag">'+U.esc(String(t))+'</span>'})}catch(e){}
+      if(r.lateReport) tags+='<span class="ab-laterpt">⏰ Late</span>';
+      if(r.type==='visit'&&r.planned) tags+='<span class="ab-tag" style="background:#dcfce7;color:#166534">✅ Planned</span>';
+      h+='<tr><td>'+U.dateFull(r.date)+'</td><td>'+r.time+'</td><td>'+r.name+'</td><td><span class="'+tc+'">'+tl+'</span></td><td style="max-width:200px">'+det+'</td><td>'+tags+'</td></tr>';
+    });
+    document.getElementById('ar-body').innerHTML=h;
+  }catch(e){console.error('loadAdmRpts:',e);document.getElementById('ar-loader').style.display='none'}
+};
+
+/* ═══ AI SUMMARY ═══ */
+App.genAISummary=async function(){
+  var apiKey=localStorage.getItem('claude_api_key');
+  if(!apiKey){apiKey=prompt('Enter Claude API Key:');if(!apiKey)return;localStorage.setItem('claude_api_key',apiKey)}
+  if(!_admRptRows.length){alert('No report data to summarize. Load reports first.');return}
+
+  document.getElementById('ai-sum-wrap').style.display='block';
+  document.getElementById('ai-sum-out').textContent='🤖 Generating AI summary...';
+
+  var emp=document.getElementById('ar-emp').value;
+  var empSel=document.getElementById('ar-emp');
+  var empLabel=empSel.options[empSel.selectedIndex].text;
+  var from=document.getElementById('ar-from').value;
+  var to=document.getElementById('ar-to').value;
+
+  /* Build data summary for AI */
+  var byEmp={};
+  _admRptRows.forEach(function(r){
+    if(!byEmp[r.name]) byEmp[r.name]={visits:0,activities:0,lateRpts:0,clients:{},outcomes:{},reports:[]};
+    var e=byEmp[r.name];
+    if(r.type==='visit'){e.visits++;if(r.client)e.clients[r.client]=(e.clients[r.client]||0)+1;if(r.outcome)e.outcomes[r.outcome]=(e.outcomes[r.outcome]||0)+1}
+    else e.activities++;
+    if(r.lateReport) e.lateRpts++;
+    e.reports.push(r.date+' '+r.time+' ['+r.type+'] '+(r.type==='visit'?(r.client+' - '+r.message).slice(0,150):r.message.slice(0,150)));
+  });
+
+  /* Also get attendance data for the period */
+  var attSummary='';
+  try{
+    var attData=await F.g('attendance');
+    var attByEmp={};
+    if(attData){for(var k in attData){var a=attData[k];if(!a||!a.date||a.date<from||a.date>to)continue;
+      if(emp!=='all'&&a.userId!==emp)continue;
+      if(!attByEmp[a.userName])attByEmp[a.userName]={days:0,late:0,ontime:0};
+      attByEmp[a.userName].days++;
+      if(a.time&&a.time>ADM_START)attByEmp[a.userName].late++;else attByEmp[a.userName].ontime++}}
+    var attLines=[];
+    for(var n in attByEmp){var at=attByEmp[n];attLines.push(n+': '+at.days+' days (On-time: '+at.ontime+', Late: '+at.late+')')}
+    attSummary=attLines.join('\n');
+  }catch(e){}
+
+  var empSummaries=[];
+  for(var name in byEmp){
+    var e=byEmp[name];
+    var topClients=Object.entries(e.clients).sort(function(a,b){return b[1]-a[1]}).slice(0,5).map(function(c){return c[0]+' ('+c[1]+')'}).join(', ');
+    var outcomeStr=Object.entries(e.outcomes).map(function(o){return o[0]+': '+o[1]}).join(', ');
+    empSummaries.push(name+':\n  Visits: '+e.visits+', Activities: '+e.activities+', Late Reports: '+e.lateRpts+
+      '\n  Top Clients: '+(topClients||'None')+'\n  Outcomes: '+(outcomeStr||'None')+
+      '\n  Recent Reports:\n  '+e.reports.slice(0,8).join('\n  '));
+  }
+
+  var prompt='You are a Sales Performance Analyst for Cognitive Solutions Pvt Ltd (industrial automation). Analyze the following field sales team data for the period '+from+' to '+to+'.';
+  if(emp!=='all') prompt+='\nFocus on employee: '+empLabel;
+  prompt+='\n\n=== ATTENDANCE ===\n'+(attSummary||'No attendance data');
+  prompt+='\n\n=== REPORTS BY EMPLOYEE ===\n'+empSummaries.join('\n\n');
+  prompt+='\n\n=== TOTALS ===\nTotal Reports: '+_admRptRows.length+' | Visits: '+document.getElementById('ar-vis').textContent+' | Activities: '+document.getElementById('ar-act').textContent+' | Late Reports: '+document.getElementById('ar-lr').textContent;
+
+  prompt+='\n\nGENERATE A CONCISE MANAGEMENT SUMMARY:\n';
+  prompt+='1. **TEAM OVERVIEW**: Who is performing well, who needs attention. Report submission discipline.\n';
+  prompt+='2. **VISIT ANALYSIS**: Client coverage, visit-to-outcome conversion, planned vs unplanned.\n';
+  prompt+='3. **RED FLAGS**: Late reports, missing submissions, suspicious patterns, low activity.\n';
+  prompt+='4. **RECOMMENDATIONS**: 3-5 specific actionable items.\n';
+  prompt+='\nBe direct, data-driven, no fluff. This goes to management.';
+
+  try{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,messages:[{role:'user',content:prompt}]})
+    });
+    var data=await resp.json();
+    if(data.content&&data.content[0]){
+      document.getElementById('ai-sum-out').textContent=data.content[0].text;
+    }else{
+      document.getElementById('ai-sum-out').textContent='Error: '+JSON.stringify(data);
+    }
+  }catch(e){
+    document.getElementById('ai-sum-out').textContent='Error: '+e.message;
+  }
+};
+
+/* ═══ PDF DOWNLOADS ═══ */
+App.dlAdmAttPdf=function(){
+  if(!_admAttRows.length){alert('No data');return}
+  var J=window.jspdf;var doc=new J.jsPDF('l','mm','a4');
+  var from=document.getElementById('aa-from').value,to=document.getElementById('aa-to').value;
+  doc.setFillColor(185,28,28);doc.rect(0,0,297,22,'F');
+  doc.setTextColor(255);doc.setFontSize(14);doc.setFont(undefined,'bold');
+  doc.text('COGNITIVE SOLUTIONS — Attendance Report',14,10);
+  doc.setFontSize(8);doc.setFont(undefined,'normal');
+  doc.text('Period: '+from+' to '+to+' | Generated: '+new Date().toLocaleString('en-PK'),14,16);
+  var rows=_admAttRows.map(function(r){
+    var inL=r.inStatus==='At Office'?'At Office':r.inDist?'Away ('+r.inDist+'m)':'—';
+    var outL=r.outStatus==='At Office'?'At Office':r.outDist?'Away ('+r.outDist+'m)':r.checkout!=='-'?'No GPS':'—';
+    return[r.date,r.name,r.status,r.checkin,inL,r.checkout,outL]});
+  doc.autoTable({startY:24,head:[['Date','Employee','Status','In','In Loc','Out','Out Loc']],body:rows,
+    theme:'grid',headStyles:{fillColor:[185,28,28],textColor:255,fontStyle:'bold',fontSize:8},bodyStyles:{fontSize:7},
+    alternateRowStyles:{fillColor:[252,245,245]},margin:{left:10,right:10}});
+  doc.save('Attendance_'+from+'_to_'+to+'.pdf');
+};
+
+App.dlAdmRptPdf=function(){
+  if(!_admRptRows.length){alert('No data');return}
+  var J=window.jspdf;var doc=new J.jsPDF('l','mm','a4');
+  var from=document.getElementById('ar-from').value,to=document.getElementById('ar-to').value;
+  doc.setFillColor(185,28,28);doc.rect(0,0,297,22,'F');
+  doc.setTextColor(255);doc.setFontSize(14);doc.setFont(undefined,'bold');
+  doc.text('COGNITIVE SOLUTIONS — Daily Reports',14,10);
+  doc.setFontSize(8);doc.setFont(undefined,'normal');
+  doc.text('Period: '+from+' to '+to+' | Generated: '+new Date().toLocaleString('en-PK'),14,16);
+  var rows=_admRptRows.map(function(r){
+    var det=r.type==='visit'?(r.client+' ('+(ADM_OUTCOMES[r.outcome]||r.outcome||'')+') '+r.message).slice(0,200):r.message.slice(0,200);
+    var tags='';try{var ta=Array.isArray(r.tags)?r.tags.join(','):r.tags||'';tags=ta+(r.lateReport?' [LATE]':'');}catch(e){}
+    return[r.date,r.time,r.name,r.type==='visit'?'Visit':'Activity',det,tags]});
+  doc.autoTable({startY:24,head:[['Date','Time','Employee','Type','Details','Tags']],body:rows,
+    theme:'grid',headStyles:{fillColor:[185,28,28],textColor:255,fontStyle:'bold',fontSize:8},bodyStyles:{fontSize:7},
+    columnStyles:{4:{cellWidth:80}},alternateRowStyles:{fillColor:[252,245,245]},margin:{left:10,right:10}});
+  doc.save('Reports_'+from+'_to_'+to+'.pdf');
+};
+
+/* ── Helper: escape HTML (add if not exists) ── */
+if(!U.esc) U.esc=function(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML};
+
 </script>
 </body>
 </html>
