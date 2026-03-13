@@ -289,7 +289,8 @@ input,select,textarea,button{font-family:var(--font)}
 <script>
 'use strict';
 const C={DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',ADMIN_U:'admin',ADMIN_N:'Muddasir',MAX_PH:5,PH_KB:200,KM_RATE:6.5,DED_LATE:200,DED_ABSENT:500,
-OFFICE_LAT:31.5204,OFFICE_LNG:74.3587,GEO_RADIUS:200,START_TIME:'09:30',HALF_DAY:'13:00',END_TIME:'18:00',MAX_WORDS:2000,
+OFFICES:[{name:'Head Office',lat:31.462915,lng:74.320000},{name:'Brandreth Road',lat:31.575249,lng:74.323730}],
+GEO_RADIUS:200,START_TIME:'09:30',HALF_DAY:'13:00',END_TIME:'18:00',CHECKIN_START:'07:00',CHECKIN_END:'12:00',MAX_WORDS:2000,
 CLIENTS:['Ahmed Electronics','Shezan Factory','KJL','Packages Mall','Metro Cash & Carry','Nishat Mills','Sapphire Textile','Orient Electronics','Dawlance','PEL','Haier Pakistan','Siemens Pakistan','ABB Pakistan','Schneider Electric'],
 CITIES:['Lahore','Karachi','Islamabad','Rawalpindi','Faisalabad','Multan','Gujranwala','Sialkot','Peshawar','Quetta','Hyderabad','Bahawalpur','Sargodha','Sheikhupura','Kasur','Other'],
 TAGS:['recovery','followup','newclient','payment','demo','complaint','order','quote','meeting','proposal','delivery','return','cold','urgent','visitplan','cncsale','ficosale','cncpanelbuildersale'],
@@ -351,32 +352,70 @@ if(p==='att'&&_admInited&&!_admAttRows.length)App.loadAdmAtt();
 if(p==='rpts'&&_admInited&&!_admRptRows.length)App.loadAdmRpts();
 document.querySelectorAll('#s-admin .bn').forEach(function(b){b.classList.remove('on')});var m={dash:0,staff:1,att:2,rpts:3,instr:4};if(document.querySelectorAll('#s-admin .bn')[m[p]])document.querySelectorAll('#s-admin .bn')[m[p]].classList.add('on');
 if(p==='dash')this.loadDash();if(p==='staff')this.loadStaff();if(p==='rpts'){this._ar=[];this.aR();this.popFil()}if(p==='instr'){this.popIns();this.loadILog()}},
-checkAtt:async function(){try{var atts=_att.length?_att:F.arr(await F.g('attendance'));var mine=atts.find(function(a){return a.userId===ME.id&&a.date===U.today()});
-if(mine){document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+mine.time;document.getElementById('att-p').onclick=null;
-if(!mine.out){document.getElementById('att-out').style.display='flex'}else{document.getElementById('att-out').style.display='flex';document.getElementById('att-out').className='tb-att tb-ad';document.getElementById('att-out').onclick=null;document.getElementById('att-ot').textContent='🏠 '+mine.out}
-_myAttId=mine.id}else{_myAttId=null}}catch(e){}},
+checkAtt:async function(){try{var atts=_att.length?_att:F.arr(await F.g('attendance'));
+var todayAll=atts.filter(function(a){return a.userId===ME.id&&a.date===U.today()});
+var active=todayAll.find(function(a){return!a.out}); /* active session = no checkout */
+var lastDone=todayAll.filter(function(a){return a.out}).sort(function(a,b){return(b.out||'').localeCompare(a.out||'')})[0];
+if(active){
+  /* Currently checked in — show time, hide check-in, show checkout */
+  document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+active.time;document.getElementById('att-p').onclick=null;
+  document.getElementById('att-out').style.display='flex';document.getElementById('att-out').className='tb-att';document.getElementById('att-ot').textContent='🚪 Out';
+  document.getElementById('att-out').onclick=function(){App.markOut()};
+  _myAttId=active.id;
+} else if(lastDone){
+  /* All sessions checked out — allow new check-in */
+  document.getElementById('att-p').className='tb-att tb-ap';document.getElementById('att-pt').textContent='⏳ Check In';document.getElementById('att-p').onclick=function(){App.markAtt()};
+  document.getElementById('att-out').style.display='flex';document.getElementById('att-out').className='tb-att tb-ad';document.getElementById('att-out').onclick=null;
+  document.getElementById('att-ot').textContent='🏠 '+lastDone.out;
+  _myAttId=lastDone.id;
+} else {
+  /* No attendance today — show check-in */
+  document.getElementById('att-p').className='tb-att tb-ap';document.getElementById('att-pt').textContent='⏳ Check In';document.getElementById('att-p').onclick=function(){App.markAtt()};
+  document.getElementById('att-out').style.display='none';
+  _myAttId=null;
+}}catch(e){}},
 _geoDist:function(lat1,lng1,lat2,lng2){var R=6371000;var dLat=(lat2-lat1)*Math.PI/180;var dLng=(lng2-lng1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))},
-_geoCheck:function(cb){if(!navigator.geolocation){cb(null);return}navigator.geolocation.getCurrentPosition(function(pos){var dist=App._geoDist(pos.coords.latitude,pos.coords.longitude,C.OFFICE_LAT,C.OFFICE_LNG);cb({lat:pos.coords.latitude,lng:pos.coords.longitude,dist:Math.round(dist),near:dist<=C.GEO_RADIUS})},function(){cb(null)},{enableHighAccuracy:true,timeout:10000})},
-markAtt:async function(){document.getElementById('att-pt').textContent='📡...';
+_geoCheck:function(cb){if(!navigator.geolocation){cb(null);return}navigator.geolocation.getCurrentPosition(function(pos){
+var lat=pos.coords.latitude,lng=pos.coords.longitude;
+var best=null;C.OFFICES.forEach(function(ofc){var d=App._geoDist(lat,lng,ofc.lat,ofc.lng);if(!best||d<best.dist)best={dist:Math.round(d),name:ofc.name}});
+cb({lat:lat,lng:lng,dist:best?best.dist:99999,near:best&&best.dist<=C.GEO_RADIUS,officeName:best?best.name:''})},function(){cb(null)},{enableHighAccuracy:true,timeout:10000})},
+markAtt:async function(){
+/* ── Block only if active check-in exists (no checkout yet) ── */
+var active=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()&&!a.out});
+if(active){U.toast('Already checked in at '+active.time+'. Check out first.','err');return}
+/* Check if yesterday has no checkout */
+var yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);var yd=yesterday.toISOString().slice(0,10);
+var prevAtt=_att.find(function(a){return a.userId===ME.id&&a.date===yd&&!a.out});
+if(prevAtt){U.toast('⚠️ No checkout for '+yd+'. Contact admin.','warn')}
+/* Count today's sessions */
+var todaySessions=_att.filter(function(a){return a.userId===ME.id&&a.date===U.today()});
+var seq=todaySessions.length+1;
+document.getElementById('att-pt').textContent='📡...';
 this._geoCheck(async function(geo){
-try{var rec={userId:ME.id,userName:ME.name,date:U.today(),time:U.time(),ts:new Date().toISOString()};
-if(geo){rec.inLat=geo.lat;rec.inLng=geo.lng;rec.inDist=geo.dist;rec.inNear=geo.near;rec.inStatus=geo.near?'At Office':'Away from Office'}else{rec.inStatus='No GPS'}
+try{var rec={userId:ME.id,userName:ME.name,date:U.today(),time:U.time(),ts:new Date().toISOString(),session:seq};
+if(geo){rec.inLat=geo.lat;rec.inLng=geo.lng;rec.inDist=geo.dist;rec.inNear=geo.near;
+rec.inStatus=geo.near?'At Office ('+geo.officeName+')':'Away from Office';rec.inOffice=geo.officeName||''}else{rec.inStatus='No GPS'}
 var res=await F.push('attendance',rec);_att=F.arr(await F.g('attendance'));S.p('att');
-var msg=geo?(geo.near?'✅ Checked in at office':'⚠️ Checked in '+geo.dist+'m from office'):'✅ Checked in';
+var msg=geo?(geo.near?'✅ Checked in at '+geo.officeName+' (Session '+seq+')':'⚠️ Checked in '+geo.dist+'m from nearest office'):'✅ Checked in (No GPS)';
 U.toast(msg,geo&&!geo.near?'warn':'ok');
 document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+U.time();document.getElementById('att-p').onclick=null;document.getElementById('att-out').style.display='flex';
 App.checkAtt()}catch(e){U.toast('Error','err');document.getElementById('att-pt').textContent='⏳ Check In'}})},
 markOut:async function(){document.getElementById('att-ot').textContent='📡...';
 this._geoCheck(async function(geo){
-try{var mine=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()});if(!mine)return;
+try{
+/* ── Must be at office to check out ── */
+if(!geo){U.toast('GPS required to check out','err');document.getElementById('att-ot').textContent='🚪 Out';return}
+if(!geo.near){U.toast('❌ Must be at office to check out. You are '+geo.dist+'m from '+geo.officeName,'err');document.getElementById('att-ot').textContent='🚪 Out';return}
+var mine=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()&&!a.out});if(!mine){U.toast('No active check-in found','err');document.getElementById('att-ot').textContent='🚪 Out';return}
 var upd={out:U.time(),outTs:new Date().toISOString()};
-if(geo){upd.outLat=geo.lat;upd.outLng=geo.lng;upd.outDist=geo.dist;upd.outNear=geo.near;upd.outStatus=geo.near?'At Office':'Away from Office'}else{upd.outStatus='No GPS'}
+upd.outLat=geo.lat;upd.outLng=geo.lng;upd.outDist=geo.dist;upd.outNear=geo.near;
+upd.outStatus='At Office ('+geo.officeName+')';upd.outOffice=geo.officeName;
 await F.up('attendance/'+mine.id,upd);_att=F.arr(await F.g('attendance'));S.p('att');
 var hrs=U.workHrs(mine.time,U.time());var status=hrs<4?'Half day':'';
-var msg=geo?(geo.near?'🏠 Checked out':'⚠️ Out '+geo.dist+'m away'):'🏠 Checked out';
-if(status)msg+=' ('+status+')';U.toast(msg,geo&&!geo.near?'warn':'ok');
+var msg='🏠 Checked out at '+geo.officeName;
+if(status)msg+=' ('+status+')';U.toast(msg,'ok');
 document.getElementById('att-out').className='tb-att tb-ad';document.getElementById('att-out').onclick=null;document.getElementById('att-ot').textContent='🏠 '+U.time();
-App.loadStats()}catch(e){U.toast('Error','err');document.getElementById('att-ot').textContent='🚪 Out'}})},
+App.loadStats()}catch(e){U.toast('Error: '+e.message,'err');document.getElementById('att-ot').textContent='🚪 Out'}})},
 loadTicker:async function(){try{var all=F.arr(await F.g('instructions')).filter(function(m){return m.toId===ME.id||m.toId==='all'}).sort(function(a,b){return(b.ts||'').localeCompare(a.ts||'')}).slice(0,8);
 if(!all.length){document.getElementById('tkw').classList.remove('on');return}
 var pc={urgent:'tk-u',important:'tk-i',routine:'tk-r',good:'tk-g'},pi={urgent:'🔴',important:'🟡',routine:'🔵',good:'🟢'};
