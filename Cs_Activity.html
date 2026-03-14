@@ -196,33 +196,19 @@ input,select,textarea,button{font-family:var(--font)}
 .jny-totals{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
 .jny-tot{background:var(--W);border:2px solid var(--G8);border-radius:8px;padding:10px;text-align:center}
 .jny-tot-n{font-size:18px;font-weight:800;color:var(--G2)}.jny-tot-l{font-size:9px;font-weight:700;color:var(--G5);text-transform:uppercase;margin-top:2px}
-.jny-daynav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:6px}
-.jny-daynav-d{font-size:13px;font-weight:700;color:var(--G3);text-align:center;flex:1}
-.jny-daynav-sub{font-size:10px;color:var(--G5);font-weight:600}
-.jny-src{font-size:10px;color:var(--G5);text-align:center;margin-bottom:10px;padding:4px 8px;background:var(--G9);border-radius:6px;display:flex;align-items:center;justify-content:center;gap:4px}
-.jny-src a{color:var(--R);text-decoration:none;font-weight:700}
-.jv-card{background:var(--W);border:2px solid var(--G8);border-radius:var(--rl);padding:12px;margin-top:8px;box-shadow:var(--sh3d)}
-.jv-card-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.jv-card-i{font-size:20px;flex-shrink:0}
-.jv-card-t{font-size:13px;font-weight:800;color:var(--G2);line-height:1.3}
-.jv-card-sub{font-size:10px;color:var(--G5);font-weight:600}
-.jv-card-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
-.jv-row{display:flex;gap:6px;font-size:11px;color:var(--G4);padding:3px 0;align-items:flex-start}
-.jv-row-l{color:var(--G5);font-weight:600;min-width:60px;flex-shrink:0}
-.jv-row-v{flex:1;word-break:break-word}
-.jv-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
-.jv-tag{font-size:9px;font-weight:700;background:var(--Rbg);color:var(--R);padding:2px 6px;border-radius:4px}
-.jv-photos{display:flex;gap:4px;margin-top:6px;overflow-x:auto;padding-bottom:4px}
-.jv-photos img{width:56px;height:56px;object-fit:cover;border-radius:6px;border:2px solid var(--G8);cursor:pointer;flex-shrink:0}
-.jv-link{font-size:10px;color:var(--R);font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:2px}
-.jv-ot{background:#fef3c7;color:#92400e;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;display:inline-block}
-.jny-empty{text-align:center;padding:30px 20px;color:var(--G5)}
-.jny-empty-i{font-size:40px;margin-bottom:8px}
-.jny-empty-t{font-size:14px;font-weight:800;color:var(--G3)}
-.jny-empty-s{font-size:11px;margin-top:4px}
-.jv-expand{font-size:10px;color:var(--blu);font-weight:700;cursor:pointer;margin-top:4px;user-select:none}
-.jv-detail{display:none;margin-top:6px;padding-top:6px;border-top:1px dashed var(--G8)}
-.jv-detail.open{display:block}
+.att-live{display:flex;gap:4px;margin:8px 0;flex-wrap:wrap}
+.att-live-s{flex:1;min-width:60px;background:var(--W);border:2px solid var(--G8);border-radius:8px;padding:8px 6px;text-align:center}
+.att-live-n{font-size:16px;font-weight:800;color:var(--G2)}.att-live-l{font-size:8px;font-weight:700;color:var(--G5);text-transform:uppercase;margin-top:2px}
+.att-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.att-modal{background:var(--W);border-radius:16px 16px 0 0;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;padding:20px 16px 30px;box-shadow:0 -4px 24px rgba(0,0,0,.2)}
+.att-modal-t{font-size:15px;font-weight:800;color:var(--G2);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.att-gps-bar{font-size:10px;color:var(--G5);padding:4px 8px;background:var(--G9);border-radius:6px;text-align:center;margin-bottom:8px}
+.att-gps-ok{color:var(--grn);font-weight:700}.att-gps-weak{color:var(--amb);font-weight:700}
+.att-ph-grid{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.att-ph-grid img{width:52px;height:52px;object-fit:cover;border-radius:6px;border:2px solid var(--G8)}
+.att-selfie-zone{border:2px dashed var(--R);border-radius:10px;padding:12px;margin-top:8px;background:var(--Rbg);text-align:center}
+.att-selfie-zone.done{border-color:var(--grn);background:var(--grn-bg)}
+.att-selfie-preview{width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin-top:6px;display:none}
 .sum-period{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}.sp{padding:7px 12px;border-radius:20px;font-size:11px;font-weight:700;background:var(--W);border:2px solid var(--G8);color:var(--G4);cursor:pointer;white-space:nowrap;flex-shrink:0}.sp:active{transform:translateY(1px)}.sp.on{background:var(--G1);color:var(--W);border-color:var(--G1)}
 .sum-card{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:16px;margin-bottom:10px;box-shadow:var(--sh3d)}
 .sum-card-t{font-size:13px;font-weight:800;color:var(--G3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
@@ -326,9 +312,9 @@ input,select,textarea,button{font-family:var(--font)}
 <div id="ep-visits" class="pg"><div style="font-size:15px;font-weight:800;color:var(--G2);margin-bottom:10px">📍 Visit Reports</div><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><button class="btn btn-ghost btn-sm" onclick="App.vsNav(-1)">← Prev</button><div style="font-size:13px;font-weight:700;color:var(--G3)" id="vs-date"></div><button class="btn btn-ghost btn-sm" onclick="App.vsNav(1)">Next →</button></div><div style="display:flex;gap:6px;margin-bottom:8px"><input class="fi" id="vs-q" placeholder="🔍 Client or #tag" style="flex:1;padding:8px;font-size:12px" oninput="App.loadVsView()"><select class="fi fi-sel" id="vs-out" onchange="App.loadVsView()" style="padding:8px;font-size:12px"><option value="">All Outcomes</option><option value="closed">🎉 Closed</option><option value="recovery">💰 Recovery</option><option value="follow">📅 Follow-up</option><option value="demo">📋 Demo</option><option value="proposal">📄 Proposal</option><option value="intro">🤝 Intro</option><option value="cold">🚪 Cold</option><option value="complaint">🔄 Complaint</option></select><select class="fi fi-sel" id="vs-plan" onchange="App.loadVsView()" style="padding:8px;font-size:12px"><option value="">All</option><option value="planned">Planned</option><option value="unplanned">Unplanned</option></select></div><div id="vs-sum" style="font-size:11px;color:var(--G5);margin-bottom:6px;font-weight:600"></div><div id="vs-list"></div></div>
 <div id="ep-summary" class="pg"><div class="sum-period"><div class="sp on" onclick="App.sumPeriod(this,'week')">This Week</div><div class="sp" onclick="App.sumPeriod(this,'month')">This Month</div><div class="sp" onclick="App.sumPeriod(this,'3month')">Last 3 Months</div><div class="sp" onclick="App.sumPeriod(this,'year')">This Year</div><div class="sp" onclick="App.sumPeriod(this,'lastyear')">Last Year</div></div><div id="sum-score-box"></div><button class="btn btn-R" style="width:100%;margin-bottom:10px;font-size:12px;background:var(--G2)" onclick="App.dlSummaryPdf()">📄 Download Summary PDF</button><div id="sum-content"></div></div>
 <div id="ep-appraisal" class="pg"><div style="font-size:15px;font-weight:800;color:var(--G2);margin-bottom:10px">📋 Performance Appraisal</div><div class="card"><div class="fg"><label class="fl">Appraisal Period</label><select class="fi fi-sel" id="ai-period" style="padding:8px;font-size:12px"><option value="week">This Week</option><option value="lastweek">Last Week</option><option value="month" selected>This Month</option><option value="lastmonth">Last Month</option><option value="3month">Last 3 Months</option><option value="6month">Last 6 Months</option><option value="year">This Year</option><option value="lastyear">Last Year</option></select></div><div class="fg"><label class="fl">Claude API Key</label><input class="fi" id="ai-key" type="password" placeholder="sk-ant-..." style="font-family:monospace;font-size:12px"></div><div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-R" id="ai-gen-btn" onclick="App.genAIReport()" style="flex:1">📋 Generate Appraisal</button><button class="btn btn-R" id="ai-dl-btn" onclick="App.dlAiPdf()" style="width:auto;padding:0 16px;display:none;background:var(--G2)">📄 PDF</button></div></div><div id="ai-report" style="margin-top:10px"></div></div>
-<div id="ep-journey" class="pg"><div style="font-size:15px;font-weight:800;color:var(--G2);margin-bottom:10px">🗺️ Field Journey</div><div class="jny-src">📡 Data from <a href="https://muddasirwaheed2017-beep.github.io/dailyreport/" target="_blank">Visit Tracker</a></div><div class="jny-daynav"><button class="btn btn-ghost btn-sm" onclick="App.jnyNav(-1)">← Prev</button><div style="text-align:center;flex:1"><div class="jny-daynav-d" id="jny-date-label"></div><div class="jny-daynav-sub" id="jny-date-sub"></div></div><button class="btn btn-ghost btn-sm" onclick="App.jnyNav(0)">Today</button><button class="btn btn-ghost btn-sm" onclick="App.jnyNav(1)">Next →</button></div><div id="jny-ctrl"></div><div id="jny-timeline"></div><div id="jny-visits"></div></div>
+<div id="ep-attend" class="pg"><div style="font-size:15px;font-weight:800;color:var(--G2);margin-bottom:6px">📍 Attendance / Visit</div><div id="att-gps" class="att-gps-bar">📡 GPS: waiting...</div><div id="att-status"></div><div id="att-live-bar"></div><div id="att-actions"></div><div id="att-timeline"></div></div>
 <div id="ep-inbox" class="pg"><div class="sec">Messages</div><div id="e-inbox"><div class="loading"><div class="spinner"></div></div></div></div>
-</div><button class="ai-fab" onclick="App.toggleAI()">🤖</button><div class="ai-panel" id="ai-panel"><div class="ai-hd"><div class="ai-hd-t">🤖 AI Assistant</div><button class="btn btn-ghost btn-sm" onclick="App.toggleAI()">✕</button></div><div class="ai-msgs" id="ai-msgs"><div class="ai-msg ai-a">Hi! Ask about your performance.</div></div><div class="ai-quick" id="ai-quick"></div><div class="ai-input"><input id="ai-in" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')App.aiSend()"><button onclick="App.aiSend()">Send</button></div></div><div class="bnav"><div class="bn on" onclick="App.nav('home')"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div><div class="bn" onclick="App.nav('plan')"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div><div class="bn" onclick="App.nav('cal')"><div class="bn-i">📅</div><div class="bn-l">Calendar</div></div><div class="bn" onclick="App.nav('inbox')"><div class="bn-i">💬</div><div class="bn-l">Inbox</div><div class="bn-dot" id="in-dot"></div></div><div class="bn" onclick="App.nav('reports')"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div><div class="bn" onclick="App.nav('visits')"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div><div class="bn" onclick="App.nav('journey')"><div class="bn-i">🗺️</div><div class="bn-l">Journey</div></div><div class="bn" onclick="App.nav('summary')"><div class="bn-i">📊</div><div class="bn-l">Summary</div></div><div class="bn" onclick="App.nav('appraisal')"><div class="bn-i">🏆</div><div class="bn-l">Appraisal</div></div></div></div>
+</div><button class="ai-fab" onclick="App.toggleAI()">🤖</button><div class="ai-panel" id="ai-panel"><div class="ai-hd"><div class="ai-hd-t">🤖 AI Assistant</div><button class="btn btn-ghost btn-sm" onclick="App.toggleAI()">✕</button></div><div class="ai-msgs" id="ai-msgs"><div class="ai-msg ai-a">Hi! Ask about your performance.</div></div><div class="ai-quick" id="ai-quick"></div><div class="ai-input"><input id="ai-in" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')App.aiSend()"><button onclick="App.aiSend()">Send</button></div></div><div class="bnav"><div class="bn on" onclick="App.nav('home')"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div><div class="bn" onclick="App.nav('plan')"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div><div class="bn" onclick="App.nav('cal')"><div class="bn-i">📅</div><div class="bn-l">Calendar</div></div><div class="bn" onclick="App.nav('inbox')"><div class="bn-i">💬</div><div class="bn-l">Inbox</div><div class="bn-dot" id="in-dot"></div></div><div class="bn" onclick="App.nav('reports')"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div><div class="bn" onclick="App.nav('visits')"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div><div class="bn" onclick="App.nav('attend')"><div class="bn-i">📍</div><div class="bn-l">Attend</div></div><div class="bn" onclick="App.nav('summary')"><div class="bn-i">📊</div><div class="bn-l">Summary</div></div><div class="bn" onclick="App.nav('appraisal')"><div class="bn-i">🏆</div><div class="bn-l">Appraisal</div></div></div></div>
 <div id="s-admin" class="scr"><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Activity Reporter</em></div><span style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:16px;background:var(--R);color:var(--W)">ADMIN</span></div><div class="tb-r"><span style="font-size:12px;color:var(--G5)" id="a-nm"></span><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="ct" style="padding-bottom:66px"><div id="ap-dash" class="pg on"><div class="card" style="margin-bottom:12px;border-left:4px solid var(--blu)"><div class="card-hd"><div class="card-t">👁️ View as Employee</div></div><div style="display:flex;gap:6px"><select class="fi fi-sel" id="admin-view-user" style="flex:1;padding:8px;font-size:12px"><option value="">— Select Employee —</option></select><button class="btn btn-R btn-sm" onclick="App.viewAsUser()" style="flex-shrink:0">View Portal →</button></div></div><div class="stats"><div class="stat"><div class="stat-n" id="ak-s">—</div><div class="stat-l">Staff</div></div><div class="stat"><div class="stat-n" id="ak-r">—</div><div class="stat-l">Reports</div></div><div class="stat"><div class="stat-n" id="ak-a">—</div><div class="stat-l">Attendance</div></div><div class="stat"><div class="stat-n" id="ak-p">—</div><div class="stat-l" id="ak-p-l">Missed</div></div></div><div class="sec">Live Feed</div><div id="a-feed"><div class="loading"><div class="spinner"></div></div></div></div><div id="ap-staff" class="pg"><div class="card"><div class="card-hd"><div class="card-t">➕ Add Employee</div></div><div class="fi-row"><div class="fg"><label class="fl">Name</label><input class="fi" id="ae-n"></div><div class="fg"><label class="fl">Username</label><input class="fi" id="ae-u"></div></div><div class="fi-row"><div class="fg"><label class="fl">Password</label><input class="fi" id="ae-p" type="password"></div><div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="ae-w"></div></div><button class="btn btn-R" onclick="App.addEmp()">Add</button></div><div class="sec">Active</div><div id="a-el"></div><div class="sec" style="color:var(--amb)">Pending</div><div id="a-pl"></div></div><div id="ap-att" class="pg"><div class="adm-filter"><h4>Attendance Filters</h4><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">Employee</span><select class="adm-fi" id="aa-emp" onchange="App.loadAdmAtt()"></select></div></div><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">From</span><input type="date" class="adm-fi" id="aa-from" onchange="App.loadAdmAtt()"></div><div class="adm-fg"><span class="adm-fl">To</span><input type="date" class="adm-fi" id="aa-to" onchange="App.loadAdmAtt()"></div></div><div class="adm-chips" id="aa-chips"><button class="adm-chip" onclick="App.aqsel('aa','today',this)">Today</button><button class="adm-chip" onclick="App.aqsel('aa','week',this)">This Week</button><button class="adm-chip on" onclick="App.aqsel('aa','month',this)">This Month</button><button class="adm-chip" onclick="App.aqsel('aa','lastmonth',this)">Last Month</button></div></div><div class="adm-stats"><div class="adm-stat"><div class="sv" id="aa-pres">-</div><div class="sl">Present</div></div><div class="adm-stat"><div class="sv" id="aa-abs">-</div><div class="sl">Absent</div></div><div class="adm-stat"><div class="sv" id="aa-late">-</div><div class="sl">Late</div></div><div class="adm-stat"><div class="sv" id="aa-leave">-</div><div class="sl">No Departure</div></div></div><div class="adm-chips" style="margin-bottom:8px" id="aa-status-chips"><button class="adm-chip on" onclick="App.aaFilter('all',this)">All</button><button class="adm-chip" onclick="App.aaFilter('ontime',this)">✅ On Time</button><button class="adm-chip" onclick="App.aaFilter('late',this)">⏰ Late</button><button class="adm-chip" onclick="App.aaFilter('absent',this)">❌ Absent</button><button class="adm-chip" onclick="App.aaFilter('nologout',this)">⚠️ No Departure</button></div><div class="adm-hd"><h3>Records</h3><div class="adm-hd-r"><button class="adm-btn-pdf" onclick="App.dlAdmAttPdf()">⬇ PDF</button><span class="adm-badge" id="aa-cnt">0</span></div></div><div id="aa-empty" class="adm-empty" style="display:none">No records found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Employee</th><th>Status</th><th>Login</th><th>Location</th><th>Logout</th><th>Location</th></tr></thead><tbody id="aa-body"></tbody></table></div></div><div id="ap-rpts" class="pg"><div class="adm-filter"><h4>Report Filters</h4><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">Employee</span><select class="adm-fi" id="ar-emp" onchange="App.loadAdmRpts()"></select></div><div class="adm-fg"><span class="adm-fl">Type</span><select class="adm-fi" id="ar-type" onchange="App.loadAdmRpts()"><option value="all">All</option><option value="visit">Visit</option><option value="activity">Activity</option></select></div></div><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">From</span><input type="date" class="adm-fi" id="ar-from" onchange="App.loadAdmRpts()"></div><div class="adm-fg"><span class="adm-fl">To</span><input type="date" class="adm-fi" id="ar-to" onchange="App.loadAdmRpts()"></div></div><div class="adm-chips" id="ar-chips"><button class="adm-chip" onclick="App.aqsel('ar','today',this)">Today</button><button class="adm-chip" onclick="App.aqsel('ar','week',this)">This Week</button><button class="adm-chip on" onclick="App.aqsel('ar','month',this)">This Month</button><button class="adm-chip" onclick="App.aqsel('ar','lastmonth',this)">Last Month</button></div></div><div class="adm-stats"><div class="adm-stat"><div class="sv" id="ar-tot">-</div><div class="sl">Total</div></div><div class="adm-stat"><div class="sv" id="ar-vis">-</div><div class="sl">Visits</div></div><div class="adm-stat"><div class="sv" id="ar-act">-</div><div class="sl">Activity</div></div><div class="adm-stat"><div class="sv" id="ar-lr">-</div><div class="sl">Late Rpt</div></div></div><div class="adm-hd"><h3>Reports</h3><div class="adm-hd-r"><button class="btn-ai" onclick="App.genAISummary()">🤖 AI Summary</button><button class="adm-btn-pdf" onclick="App.dlAdmRptPdf()">⬇ PDF</button><span class="adm-badge" id="ar-cnt">0</span></div></div><div id="ar-empty" class="adm-empty" style="display:none">No reports found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Time</th><th>Employee</th><th>Type</th><th>Details</th><th>Tags</th></tr></thead><tbody id="ar-body"></tbody></table></div><div id="ai-sum-wrap" style="display:none"><div class="ai-sum-panel"><div class="ai-sum-hd"><h4>🤖 AI Summary</h4><button class="btn btn-ghost btn-sm" onclick="document.getElementById('ai-sum-wrap').style.display='none'">✕</button></div><div class="ai-sum-body" id="ai-sum-out">Generating...</div></div></div></div><div id="ap-vis" class="pg"><div class="adm-filter"><h4>Field Visits (from Visit Tracker)</h4><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">Employee</span><select class="adm-fi" id="av-emp" onchange="App.loadAdmVis()"></select></div><div class="adm-fg"><span class="adm-fl">Client</span><select class="adm-fi" id="av-client" onchange="App.loadAdmVis()"><option value="all">All Clients</option></select></div></div><div class="adm-frow"><div class="adm-fg"><span class="adm-fl">From</span><input type="date" class="adm-fi" id="av-from" onchange="App.loadAdmVis()"></div><div class="adm-fg"><span class="adm-fl">To</span><input type="date" class="adm-fi" id="av-to" onchange="App.loadAdmVis()"></div></div><div class="adm-chips" id="av-chips"><button class="adm-chip" onclick="App.aqsel('av','today',this)">Today</button><button class="adm-chip" onclick="App.aqsel('av','week',this)">This Week</button><button class="adm-chip on" onclick="App.aqsel('av','month',this)">This Month</button><button class="adm-chip" onclick="App.aqsel('av','lastmonth',this)">Last Month</button></div></div><div class="adm-stats"><div class="adm-stat"><div class="sv" id="av-tot">-</div><div class="sl">Visits</div></div><div class="adm-stat"><div class="sv" id="av-km">-</div><div class="sl">Total KM</div></div><div class="adm-stat"><div class="sv" id="av-dur">-</div><div class="sl">Avg Mins</div></div><div class="adm-stat"><div class="sv" id="av-cli">-</div><div class="sl">Clients</div></div></div><div class="adm-hd"><h3>Client Visits</h3><div class="adm-hd-r"><button class="adm-btn-pdf" onclick="App.dlAdmVisPdf()">⬇ PDF</button><span class="adm-badge" id="av-cnt">0</span></div></div><div id="av-empty" class="adm-empty" style="display:none">No visits found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Employee</th><th>Client</th><th>Purpose</th><th>Arrive</th><th>Leave</th><th>Mins</th><th>Outcome</th><th>📍</th></tr></thead><tbody id="av-body"></tbody></table></div><div style="margin-top:10px"><div class="adm-hd"><h3>Journeys</h3><span class="adm-badge" id="av-jcnt">0</span></div><div id="av-jempty" class="adm-empty" style="display:none">No journeys found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Employee</th><th>Start</th><th>End</th><th>Stops</th><th>KM</th><th>Duration</th></tr></thead><tbody id="av-jbody"></tbody></table></div></div></div><div id="ap-instr" class="pg"><div class="card"><div class="card-hd"><div class="card-t">📢 Send Instruction</div></div><div class="fg"><label class="fl">To</label><select class="fi fi-sel" id="ins-to"><option value="all">All</option></select></div><div class="fg"><label class="fl">Message <span class="wc" id="ins-body-wc">0/2000</span></label><textarea class="fi fi-ta" id="ins-body" oninput="App.wordCheck(this,'ins-body-wc')"></textarea></div><div class="fg"><label class="fl">Priority</label><select class="fi fi-sel" id="ins-pri"><option value="routine">🔵 Routine</option><option value="important">🟡 Important</option><option value="urgent">🔴 Urgent</option><option value="good">🟢 Good News</option></select></div><button class="btn btn-R" onclick="App.sendIns()">📨 Send</button></div><div class="sec">Sent</div><div id="a-ilog"></div></div></div><div class="bnav"><div class="bn on" onclick="App.anav('dash')"><div class="bn-i">📊</div><div class="bn-l">Dash</div></div><div class="bn" onclick="App.anav('staff')"><div class="bn-i">👥</div><div class="bn-l">Staff</div></div><div class="bn" onclick="App.anav('att')"><div class="bn-i">📅</div><div class="bn-l">Attend</div></div><div class="bn" onclick="App.anav('rpts')"><div class="bn-i">📋</div><div class="bn-l">Reports</div></div><div class="bn" onclick="App.anav('vis')"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div><div class="bn" onclick="App.anav('instr')"><div class="bn-i">📢</div><div class="bn-l">Instruct</div></div></div></div>
 <div id="map-ov"><div class="map-sh"><div class="map-hd"><div id="map-nm" style="font-weight:700;font-size:14px">Location</div><button class="btn btn-ghost btn-sm" onclick="App.closeMap()">✕</button></div><div id="leaflet-map"></div><a id="map-gl" href="#" target="_blank" class="map-lk">📍 Google Maps →</a></div></div>
 <div id="photo-ov" onclick="this.classList.remove('on')"><img id="pv-img" src=""></div>
@@ -395,8 +381,8 @@ try{_rpts=F.arr(await F.g('reports'));_att=F.arr(await F.g('attendance'));_plans
 this.checkMissedPlans();this.checkAtt();this.loadTicker();this.loadStats();this.loadInbox();
 var n=new Date();_calY=n.getFullYear();_calM=n.getMonth();this.initAIQuick()},
 nav:function(p){S.p('nav');document.querySelectorAll('#s-emp .pg').forEach(function(x){x.classList.remove('on')});document.getElementById('ep-'+p).classList.add('on');
-document.querySelectorAll('#s-emp .bn').forEach(function(b){b.classList.remove('on')});var m={home:0,plan:1,cal:2,inbox:3,reports:4,visits:5,journey:6,summary:7,appraisal:8};if(m[p]!==undefined&&document.querySelectorAll('#s-emp .bn')[m[p]])document.querySelectorAll('#s-emp .bn')[m[p]].classList.add('on');
-if(p==='cal'){this.renderCal()}if(p==='inbox')this.loadInbox();if(p==='visit'){_vPlanId=null;this.setVisitNum();this.showPlanSelection();this.loadDraft('v')}if(p==='activity'){this.setDateMode('a','today');this.setActTitle();this.loadDraft('a')}if(p==='plan'){this.initPlanForm();this.loadPlans()}if(p==='summary'){this.loadSummary('week')}if(p==='appraisal'){var sk=localStorage.getItem('cs_aikey');if(sk)document.getElementById('ai-key').value=sk}if(p==='reports'){this._rpOffset=0;this.loadRpView()}if(p==='visits'){this._vsOffset=0;this.loadVsView()}if(p==='journey'){this.loadJourney()}},
+document.querySelectorAll('#s-emp .bn').forEach(function(b){b.classList.remove('on')});var m={home:0,plan:1,cal:2,inbox:3,reports:4,visits:5,attend:6,summary:7,appraisal:8};if(m[p]!==undefined&&document.querySelectorAll('#s-emp .bn')[m[p]])document.querySelectorAll('#s-emp .bn')[m[p]].classList.add('on');
+if(p==='cal'){this.renderCal()}if(p==='inbox')this.loadInbox();if(p==='visit'){_vPlanId=null;this.setVisitNum();this.showPlanSelection();this.loadDraft('v')}if(p==='activity'){this.setDateMode('a','today');this.setActTitle();this.loadDraft('a')}if(p==='plan'){this.initPlanForm();this.loadPlans()}if(p==='summary'){this.loadSummary('week')}if(p==='appraisal'){var sk=localStorage.getItem('cs_aikey');if(sk)document.getElementById('ai-key').value=sk}if(p==='reports'){this._rpOffset=0;this.loadRpView()}if(p==='visits'){this._vsOffset=0;this.loadVsView()}if(p==='attend'){this.loadAttend()}},
 anav:function(p){S.p('nav');document.querySelectorAll('#s-admin .pg').forEach(function(x){x.classList.remove('on')});document.getElementById('ap-'+p).classList.add('on');
 if(p==='att'&&_admInited&&!_admAttRows.length)App.loadAdmAtt();
 if(p==='rpts'&&_admInited&&!_admRptRows.length)App.loadAdmRpts();
@@ -902,126 +888,231 @@ else{doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60,60
 y+=6;if(y>260){doc.addPage();y=App._pdfHdr(doc,0)}
 doc.setFont('helvetica','italic');doc.setFontSize(7);doc.setTextColor(150,150,150);var disc=doc.splitTextToSize('Report generated by Claude AI on '+new Date().toLocaleString('en-GB')+' — This is an automated analysis and should be reviewed by management.',178);doc.text(disc,14,y);
 var totalPg=doc.internal.getNumberOfPages();for(var i=1;i<=totalPg;i++){doc.setPage(i);this._pdfFtr(doc,i)}doc.save('AI_Report_'+ME.name.replace(/\s+/g,'_')+'_'+(d.label||'').replace(/\s+/g,'_')+'.pdf');S.p('ok');U.toast('AI PDF Downloaded','ok')}catch(e){U.toast('PDF Error: '+e.message,'err');console.error(e)}},
-_jny:null,_jnyTimer:null,_jnyDate:null,_jnyItData:null,_jnyCvData:null,
-_jnyDateStr:function(d){var y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),dd=String(d.getDate()).padStart(2,'0');return y+'-'+m+'-'+dd},
-jnyNav:function(dir){if(!this._jnyDate)this._jnyDate=new Date();if(dir===0)this._jnyDate=new Date();else this._jnyDate.setDate(this._jnyDate.getDate()+dir);this.loadJourney()},
-loadJourney:async function(){
-  if(!this._jnyDate)this._jnyDate=new Date();
-  var ds=this._jnyDateStr(this._jnyDate);
-  var label=document.getElementById('jny-date-label');
-  var sub=document.getElementById('jny-date-sub');
-  if(label)label.textContent=U.dateFull(ds);
-  var isToday=ds===U.today();
-  if(sub)sub.textContent=isToday?'Today':this._jnyDate.toLocaleDateString('en-US',{weekday:'long'});
-  var ctrl=document.getElementById('jny-ctrl');var tl=document.getElementById('jny-timeline');var vw=document.getElementById('jny-visits');
-  ctrl.innerHTML='<div class="loading"><div class="spinner"></div></div>';tl.innerHTML='';vw.innerHTML='';
-  try{
-    /* Fetch itinerary entries for this user+date */
-    var itAll=await F.g('itinerary');var journeys=[];
-    if(itAll){for(var k in itAll){var it=itAll[k];if(!it)continue;
-      if(it.userId===ME.id&&it.date===ds)journeys.push(it)}}
-    /* Fetch clientVisits for this user+date */
-    var cvAll=await F.g('clientVisits');var visits=[];
-    if(cvAll){for(var k in cvAll){var cv=cvAll[k];if(!cv)continue;
-      if(cv.userId===ME.id&&cv.date===ds)visits.push(cv)}}
-    this._jnyItData=journeys;this._jnyCvData=visits;
-    this.renderJourney()
-  }catch(e){console.error('loadJourney:',e);this._jnyItData=[];this._jnyCvData=[];this.renderJourney()}
-},
-_jnyMins:function(t1,t2){if(!t1||!t2)return 0;var a=t1.split(':'),b=t2.split(':');return(parseInt(b[0])*60+parseInt(b[1]))-(parseInt(a[0])*60+parseInt(a[1]))},
-_jnyFmtMins:function(m){if(!m||m<=0)return'—';if(m<60)return m+'m';return Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m'},
-renderJourney:function(){
-  var ctrl=document.getElementById('jny-ctrl');var tl=document.getElementById('jny-timeline');var vw=document.getElementById('jny-visits');
-  var journeys=this._jnyItData||[];var visits=this._jnyCvData||[];
-  if(this._jnyTimer){clearInterval(this._jnyTimer);this._jnyTimer=null}
-  /* No data at all */
-  if(!journeys.length&&!visits.length){
-    ctrl.innerHTML='<div class="jny-empty"><div class="jny-empty-i">🗺️</div><div class="jny-empty-t">No Field Activity</div><div class="jny-empty-s">No journey or visits recorded for this date.<br>Use the <strong>Visit Tracker</strong> app to track your field day.</div></div>';
-    tl.innerHTML='';vw.innerHTML='';return}
-  /* Pick primary journey (first one, usually only one per day) */
-  var j=journeys.length?journeys[0]:null;
-  var legs=j?(j.legs||[]):[];
-  var isLive=j&&!j.endTime;
-  /* Journey status card */
-  var html='';
-  if(j){
-    var totalKm=j.totalKm||0;
-    if(!totalKm&&legs.length)totalKm=legs.reduce(function(s,l){return s+(l.km||0)},0)+(j.finalLegKm||0);
-    var totalMeet=j.totalMeetingMins||legs.reduce(function(s,l){return s+(l.meetingMins||0)},0);
-    if(isLive){
-      /* Determine live state */
-      var last=legs.length?legs[legs.length-1]:null;
-      var atClient=last&&last.arriveTime&&!last.leaveTime;
-      if(atClient){
-        html='<div class="jny-status" style="border-color:var(--amb)"><div class="jny-status-i">🤝</div><div class="jny-status-t">In Meeting: '+(last.clientName||last.client||'Client')+'</div><div class="jny-timer" id="jny-meet-timer">00:00</div><div class="jny-status-s">Since '+last.arriveTime+' · Started day at '+j.startTime+' from '+(j.startPlace||'—')+'</div></div>';
-        var self=this;this._jnyTimer=setInterval(function(){var mins=self._jnyMins(last.arriveTime,U.time());var el=document.getElementById('jny-meet-timer');if(el)el.textContent=Math.floor(mins/60)+':'+String(mins%60).padStart(2,'0')},5000)
-      }else{
-        html='<div class="jny-status" style="border-color:var(--grn)"><div class="jny-status-i">🚗</div><div class="jny-status-t">On the Road</div><div class="jny-status-s">'+(last?'Left '+(last.clientName||last.client||'client')+' at '+last.leaveTime:'Started '+j.startTime+' from '+(j.startPlace||'—'))+'</div></div>'}
-      html+='<div class="jny-totals"><div class="jny-tot"><div class="jny-tot-n">'+totalKm.toFixed(1)+'</div><div class="jny-tot-l">KM so far</div></div><div class="jny-tot"><div class="jny-tot-n">'+legs.length+'</div><div class="jny-tot-l">Stops</div></div><div class="jny-tot"><div class="jny-tot-n">'+this._jnyFmtMins(totalMeet)+'</div><div class="jny-tot-l">Meeting</div></div></div>'
-    }else{
-      /* Completed journey */
-      var durMins=this._jnyMins(j.startTime,j.endTime);
-      html='<div class="jny-status" style="border-color:var(--grn);background:var(--grn-bg)"><div class="jny-status-i">✅</div><div class="jny-status-t">Journey Complete</div><div class="jny-status-s">'+j.startTime+' → '+j.endTime+' · '+(j.startPlace||'—')+' → '+(j.endPlace||j.returnDest||'—')+'</div></div>';
-      html+='<div class="jny-totals"><div class="jny-tot"><div class="jny-tot-n">'+totalKm.toFixed(1)+'</div><div class="jny-tot-l">KM Total</div></div><div class="jny-tot"><div class="jny-tot-n">'+legs.length+'</div><div class="jny-tot-l">Stops</div></div><div class="jny-tot"><div class="jny-tot-n">'+this._jnyFmtMins(totalMeet)+'</div><div class="jny-tot-l">Meeting</div></div></div>';
-      html+='<div class="jny-totals" style="grid-template-columns:repeat(2,1fr)"><div class="jny-tot"><div class="jny-tot-n">'+this._jnyFmtMins(durMins)+'</div><div class="jny-tot-l">Total Duration</div></div><div class="jny-tot"><div class="jny-tot-n">Rs '+(Math.round(totalKm*C.KM_RATE))+'</div><div class="jny-tot-l">KM Claim</div></div></div>'
-    }
-  }
-  ctrl.innerHTML=html;
-  /* Timeline from journey legs */
-  var tlHtml='';
-  if(j&&(legs.length||j.startTime)){
-    tlHtml='<div style="margin-top:14px">';
-    /* Start node */
-    tlHtml+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot jny-dot-grn"></div><div class="jny-line"></div></div><div class="jny-leg-info"><div class="jny-leg-place">🟢 '+(j.startPlace||'Start')+'</div><div class="jny-leg-time">'+(j.startTime||'—')+'</div>'+(j.startLat?'<div class="jny-leg-meta"><a class="jv-link" href="https://maps.google.com/?q='+(j.startLat||0)+','+(j.startLng||0)+'" target="_blank">📍 Map</a></div>':'')+'</div></div>';
-    /* Each leg/stop */
-    legs.forEach(function(l,i){
-      var oc=l.outcome?(C.OUTCOMES[l.outcome]||l.outcome):'';
-      var pur=l.purpose?(C.VT_PURPOSES[l.purpose]||l.purpose):'';
-      var dotCls=l.leaveTime?'jny-dot-blu':(l.locked?'jny-dot-blu':'jny-dot-red');
-      var clientName=l.clientName||l.client||'Client';
-      var hasNext=i<legs.length-1||j.endTime;
-      var kmTxt='';
-      if(l.km>0)kmTxt='🚗 '+l.km.toFixed(1)+' km'+(l.kmMethod==='gps'?' <span style="color:var(--grn)">GPS</span>':'');
-      else if(l.travelFromPrevKm>0)kmTxt='🚗 '+l.travelFromPrevKm+' km';
-      var meetTxt=l.arriveTime||'';
-      if(l.leaveTime)meetTxt+=' → '+l.leaveTime+' ('+(l.meetingMins||0)+'m)';
-      else if(l.arriveTime)meetTxt+=' · <span style="color:var(--amb);font-weight:700">in meeting…</span>';
-      tlHtml+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot '+dotCls+'"></div>'+(hasNext?'<div class="jny-line"></div>':'')+'</div><div class="jny-leg-info"><div class="jny-leg-place">'+(l.planned?'📅':'📍')+' '+U.esc(clientName)+' <span class="jny-leg-badge" style="background:'+(l.planned?'var(--grn)':'var(--blu)')+';color:#fff">'+(l.planned?'Planned':'Unplanned')+'</span>'+(l.afterHours?' <span class="jv-ot">🌙 OT</span>':'')+'</div><div class="jny-leg-time">'+meetTxt+'</div><div class="jny-leg-meta">'+(kmTxt?'<span>'+kmTxt+'</span>':'')+(pur?' <span>'+pur+'</span>':'')+(oc?' <span>'+oc+'</span>':'')+'</div>'+(l.notes?'<div style="font-size:11px;color:var(--G4);margin-top:3px">'+U.esc(l.notes)+'</div>':'')+'</div></div>'
-    });
-    /* End node */
-    if(j.endTime){
-      var endPlace=j.endPlace||j.returnDest||'End';
-      tlHtml+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot jny-dot-red"></div></div><div class="jny-leg-info"><div class="jny-leg-place">🔴 '+U.esc(endPlace)+'</div><div class="jny-leg-time">'+(j.endTime||'')+'</div>'+(j.finalLegKm?'<div class="jny-leg-meta"><span>🚗 '+j.finalLegKm.toFixed(1)+' km return</span></div>':'')+'</div></div>'
-    }
-    tlHtml+='</div>'
-  }
-  tl.innerHTML=tlHtml;
-  /* Visit detail cards from clientVisits */
-  var vHtml='';
-  if(visits.length){
-    vHtml='<div class="sec" style="margin-top:14px">📋 Visit Details ('+visits.length+')</div>';
-    visits.sort(function(a,b){return(a.arriveTime||'').localeCompare(b.arriveTime||'')});
-    visits.forEach(function(v,vi){
-      var pur=v.purpose?(C.VT_PURPOSES[v.purpose]||v.purpose):'—';
-      var oc=v.outcome?(C.OUTCOMES[v.outcome]||v.outcome):'—';
-      var dur=v.durationMins||0;
-      var catBadge='';
-      if(v.clientCategory){var cc=v.clientCategory;var ccMap={'cnc_fico':'CNC/FICO','solar':'Solar','gsync':'GSync','other':'Other'};catBadge=' <span class="jny-leg-badge" style="background:var(--Rbg);color:var(--R)">'+(ccMap[cc]||cc)+'</span>'}
-      vHtml+='<div class="jv-card">';
-      vHtml+='<div class="jv-card-hd"><div class="jv-card-i">'+(v.planned?'📅':'📍')+'</div><div style="flex:1"><div class="jv-card-t">'+U.esc(v.clientName||'Client')+catBadge+'</div><div class="jv-card-sub">'+(v.arriveTime||'—')+' → '+(v.leaveTime||'—')+' · '+dur+'m'+(v.afterHours?' <span class="jv-ot">🌙 Overtime</span>':'')+'</div></div>'+(v.arriveLat?'<a class="jv-link" href="https://maps.google.com/?q='+v.arriveLat+','+v.arriveLng+'" target="_blank">📍</a>':'')+'</div>';
-      vHtml+='<div class="jv-row"><span class="jv-row-l">Purpose</span><span class="jv-row-v">'+pur+'</span></div>';
-      vHtml+='<div class="jv-row"><span class="jv-row-l">Outcome</span><span class="jv-row-v">'+oc+'</span></div>';
-      if(v.notes){vHtml+='<div class="jv-row"><span class="jv-row-l">Notes</span><span class="jv-row-v">'+U.esc(v.notes)+'</span></div>'}
-      if(v.visitTags&&v.visitTags.length){vHtml+='<div class="jv-tags">';v.visitTags.forEach(function(t){vHtml+='<span class="jv-tag">#'+U.esc(t)+'</span>'});vHtml+='</div>'}
-      if(v.photos&&v.photos.length){vHtml+='<div class="jv-photos">';v.photos.forEach(function(p){vHtml+='<img src="'+p+'" onclick="window.open(this.src,\'_blank\')" loading="lazy">'});vHtml+='</div>'}
-      if(v.selfieUrl){vHtml+='<div style="margin-top:6px"><span style="font-size:10px;color:var(--G5);font-weight:600">🤳 OT Selfie</span><div class="jv-photos"><img src="'+v.selfieUrl+'" onclick="window.open(this.src,\'_blank\')" loading="lazy" style="width:48px;height:48px;border-radius:50%"></div></div>'}
-      vHtml+='</div>'
-    })
-  }else if(!j){
-    /* Only visits, no journey */
-  }
-  vw.innerHTML=vHtml
-},
+/* ═══ ATTEND ENGINE — Attendance + Visit + Journey (unified) ═══ */
+_att_j:null,_att_timer:null,_att_gpsTrack:[],_att_watcher:null,_att_tickIv:null,_att_selfieB64:null,_att_photos:[],
+_hav:function(a1,n1,a2,n2){var R=6371,dLat=(a2-a1)*Math.PI/180,dLng=(n2-n1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a1*Math.PI/180)*Math.cos(a2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))},
+_havRoute:function(tr){var t=0;for(var i=1;i<tr.length;i++)t+=this._hav(tr[i-1].lat,tr[i-1].lng,tr[i].lat,tr[i].lng);return Math.round(t*10)/10},
+_osrmKm:async function(tr){if(!tr||tr.length<2)return 0;var sample=tr;if(tr.length>100){sample=[];var step=Math.ceil(tr.length/100);for(var i=0;i<tr.length;i+=step)sample.push(tr[i]);if(sample[sample.length-1]!==tr[tr.length-1])sample.push(tr[tr.length-1])}
+try{var coords=sample.map(function(p){return p.lng.toFixed(6)+','+p.lat.toFixed(6)}).join(';');
+var res=await Promise.race([fetch('https://router.project-osrm.org/route/v1/driving/'+coords+'?overview=false'),new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'))},6000)})]);
+var data=await res.json();if(data.code==='Ok'&&data.routes&&data.routes[0])return Math.round(data.routes[0].distance/100)/10}catch(e){}return this._havRoute(tr)},
+_attMins:function(t1,t2){if(!t1||!t2)return 0;var a=t1.split(':'),b=t2.split(':');return(parseInt(b[0])*60+parseInt(b[1]))-(parseInt(a[0])*60+parseInt(a[1]))},
+_fmtMins:function(m){if(!m||m<=0)return'0m';return m>=60?Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m':m+'m'},
+_attKey:function(){return ME.id+'_'+U.today()+'_1'},
+_attSave:async function(){await F.set('itinerary/'+this._attKey(),this._att_j)},
+_attGps:function(cb){if(!navigator.geolocation){U.toast('No GPS','err');cb(null);return}
+navigator.geolocation.getCurrentPosition(function(p){cb({lat:p.coords.latitude,lng:p.coords.longitude,acc:Math.round(p.coords.accuracy)})},function(){U.toast('GPS denied','err');cb(null)},{enableHighAccuracy:true,timeout:15000})},
+_attStartGps:function(){this._attStopGps();this._att_gpsTrack=[];if(!navigator.geolocation)return;var self=this;
+this._att_watcher=navigator.geolocation.watchPosition(function(p){if(p.coords.accuracy<=50){var last=self._att_gpsTrack[self._att_gpsTrack.length-1];
+if(!last||self._hav(last.lat,last.lng,p.coords.latitude,p.coords.longitude)*1000>5){self._att_gpsTrack.push({lat:p.coords.latitude,lng:p.coords.longitude,acc:Math.round(p.coords.accuracy),t:Date.now()});
+var ge=document.getElementById('att-gps');if(ge)ge.innerHTML='📡 GPS: <span class="att-gps-ok">Active</span> · '+self._att_gpsTrack.length+' pts';
+self._attUpdateLiveKm()}}},function(){var ge=document.getElementById('att-gps');if(ge)ge.innerHTML='📡 GPS: <span class="att-gps-weak">Weak signal</span>'},
+{enableHighAccuracy:true,maximumAge:0,timeout:15000})},
+_attStopGps:function(){if(this._att_watcher!==null){navigator.geolocation.clearWatch(this._att_watcher);this._att_watcher=null}},
+_attUpdateLiveKm:function(){var j=this._att_j;if(!j)return;var legKm=(j.legs||[]).reduce(function(s,l){return s+(l.km||0)},0);
+var liveKm=this._att_gpsTrack.length>=2?this._havRoute(this._att_gpsTrack):0;
+var el=document.getElementById('att-km-live');if(el)el.textContent=(Math.round((legKm+liveKm)*10)/10).toFixed(1)},
+_attStartTick:function(){if(this._att_tickIv)clearInterval(this._att_tickIv);var self=this;
+this._att_tickIv=setInterval(function(){self._attUpdateLiveKm();
+var j=self._att_j;if(!j||!j.startTime)return;var elapsed=self._attMins(j.startTime,U.time());if(elapsed<0)elapsed+=1440;
+var el=document.getElementById('att-elapsed');if(el)el.textContent=self._fmtMins(elapsed);
+var legs=j.legs||[];var last=legs.length?legs[legs.length-1]:null;
+if(last&&last.arriveTime&&!last.leaveTime){var mm=self._attMins(last.arriveTime,U.time());
+var te=document.getElementById('att-meet-timer');if(te)te.textContent=Math.floor(mm/60)+':'+String(mm%60).padStart(2,'0')}},5000)},
+_attStopTick:function(){if(this._att_tickIv){clearInterval(this._att_tickIv);this._att_tickIv=null}},
+_attState:function(){var j=this._att_j;if(!j)return'idle';if(j.endTime)return'done';var legs=j.legs||[];if(!legs.length)return'travelling';var last=legs[legs.length-1];if(last.arriveTime&&!last.leaveTime)return'at_client';return'travelling'},
+_attIsOT:function(){var h=parseInt(U.time().split(':')[0]);return h>=17||h<9},
+_attNearOffice:function(lat,lng){var near=null;C.OFFICES.forEach(function(o){var d=App._hav(lat,lng,o.lat,o.lng)*1000;if(d<=C.GEO_RADIUS)near=o.name});return near},
+
+loadAttend:async function(){
+  try{var data=await F.g('itinerary/'+this._attKey());this._att_j=data||null}catch(e){this._att_j=null}
+  if(this._att_j&&!this._att_j.endTime){this._attStartGps();this._attStartTick()}
+  this.renderAttend()},
+
+attendLogIn:function(){var self=this;if(this._att_j){U.toast('Already logged in today','warn');return}
+showLoad('Logging In','Getting GPS...');
+this._attGps(function(pos){if(!pos){hideLoad();return}
+var office=self._attNearOffice(pos.lat,pos.lng);
+if(!office){U.toast('❌ Must be at office to log in','err');hideLoad();return}
+var late=false;var t=U.time();var parts=t.split(':');var nowM=parseInt(parts[0])*60+parseInt(parts[1]);
+var startParts=C.START_TIME.split(':');var startM=parseInt(startParts[0])*60+parseInt(startParts[1]);
+if(nowM>startM)late=true;
+self._att_j={userId:ME.id,userName:ME.name,date:U.today(),startTime:t,startLat:pos.lat,startLng:pos.lng,startPlace:office,
+endTime:null,endLat:null,endLng:null,endPlace:null,returnDest:null,legs:[],totalKm:0,totalMeetingMins:0,finalLegKm:0,ts:new Date().toISOString()};
+self._attSave().then(function(){
+/* Also record attendance */
+var attRec={userId:ME.id,userName:ME.name,date:U.today(),time:t,lat:pos.lat,lng:pos.lng,location:office,late:late,out:null,outLat:null,outLng:null,outLocation:null};
+F.push('attendance',attRec).then(function(id){self._myAttId=id;_att=[];F.g('attendance').then(function(d){_att=F.arr(d)})}).catch(function(){});
+self._attStartGps();self._attStartTick();
+S.p('att');U.toast('✅ Logged in at '+office+(late?' (Late)':''),'ok');
+/* Update top bar */
+document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+t;document.getElementById('att-p').onclick=null;
+document.getElementById('att-out').style.display='flex';
+self.renderAttend();hideLoad()}).catch(function(e){U.toast('Error: '+e.message,'err');hideLoad()})})},
+
+showArriveModal:function(){if(!this._att_j||this._att_j.endTime)return;
+var st=this._attState();if(st==='at_client'){U.toast('Leave current client first','warn');return}
+var purposeOpts='';Object.keys(C.VT_PURPOSES).forEach(function(k){purposeOpts+='<option value="'+k+'">'+C.VT_PURPOSES[k]+'</option>'});
+var html='<div class="att-modal-bg" id="att-modal-arrive" onclick="if(event.target===this)this.remove()"><div class="att-modal">';
+html+='<div class="att-modal-t">📍 Arrived at Client <button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'att-modal-arrive\').remove()">✕</button></div>';
+html+='<div class="fg"><label class="fl">Client Name *</label><input class="fi" id="att-arr-client" placeholder="e.g. Ahmed Electronics"></div>';
+html+='<div class="fg"><label class="fl">Purpose *</label><select class="fi fi-sel" id="att-arr-purpose"><option value="">— Select —</option>'+purposeOpts+'</select></div>';
+html+='<div class="fg"><label class="fl">Type</label><div class="dt-mode"><div class="dt-btn on" id="att-arr-unplanned" onclick="App._attSetPlan(false)">📍 Unplanned</div><div class="dt-btn" id="att-arr-planned" onclick="App._attSetPlan(true)">📅 Planned</div></div></div>';
+html+='<button class="btn btn-R" style="width:100%;margin-top:10px" onclick="App.attendArrive()">📍 Confirm Arrival</button>';
+html+='</div></div>';
+document.body.insertAdjacentHTML('beforeend',html);this._att_planned=false},
+_attSetPlan:function(v){this._att_planned=v;document.getElementById('att-arr-planned').classList.toggle('on',v);document.getElementById('att-arr-unplanned').classList.toggle('on',!v)},
+
+attendArrive:function(){var client=document.getElementById('att-arr-client').value.trim();
+var purpose=document.getElementById('att-arr-purpose').value;
+if(!client){U.toast('Enter client name','warn');return}if(!purpose){U.toast('Select purpose','warn');return}
+var self=this;var j=this._att_j;var planned=this._att_planned||false;
+showLoad('Marking Arrival','Getting GPS...');
+this._attGps(function(pos){if(!pos){hideLoad();return}
+var legs=j.legs||[];var prevLat=legs.length?(legs[legs.length-1].leaveLat||j.startLat):j.startLat;
+var prevLng=legs.length?(legs[legs.length-1].leaveLng||j.startLng):j.startLng;
+/* Calculate KM from GPS track */
+var track=self._att_gpsTrack.slice();self._att_gpsTrack=[];
+self._osrmKm(track.length>=2?track:[{lat:prevLat,lng:prevLng},{lat:pos.lat,lng:pos.lng}]).then(function(km){
+var kmMethod=track.length>=2?'gps':'haversine';
+legs.push({seq:legs.length+1,clientName:client,purpose:purpose,planned:planned,
+arriveTime:U.time(),arriveLat:pos.lat,arriveLng:pos.lng,
+leaveTime:null,leaveLat:null,leaveLng:null,meetingMins:0,
+km:km,kmMethod:kmMethod,outcome:null,notes:'',photos:[],visitTags:[],
+afterHours:self._attIsOT(),locked:false,selfieUrl:null});
+j.legs=legs;
+self._attSave().then(function(){var modal=document.getElementById('att-modal-arrive');if(modal)modal.remove();
+S.p('ok');U.toast('📍 Arrived at '+client+' · '+km+' km','ok');self.renderAttend();hideLoad()}).catch(function(){hideLoad()})
+}).catch(function(){hideLoad()})})},
+
+showLeaveModal:function(){var j=this._att_j;if(!j)return;var legs=j.legs||[];var last=legs[legs.length-1];
+if(!last||last.leaveTime){U.toast('Not at a client','warn');return}
+var outcomeOpts='';Object.keys(C.OUTCOMES).forEach(function(k){outcomeOpts+='<option value="'+k+'">'+C.OUTCOMES[k]+'</option>'});
+var isOT=this._attIsOT();
+var html='<div class="att-modal-bg" id="att-modal-leave" onclick="if(event.target===this)this.remove()"><div class="att-modal">';
+html+='<div class="att-modal-t">🚶 Leaving '+U.esc(last.clientName)+' <button class="btn btn-ghost btn-sm" onclick="document.getElementById(\'att-modal-leave\').remove()">✕</button></div>';
+html+='<div class="fg"><label class="fl">Outcome *</label><select class="fi fi-sel" id="att-lv-outcome"><option value="">— Select —</option>'+outcomeOpts+'</select></div>';
+html+='<div class="fg"><label class="fl">Notes</label><textarea class="fi fi-ta" id="att-lv-notes" placeholder="Meeting notes..." style="min-height:60px"></textarea></div>';
+html+='<div class="fg"><label class="fl">Photos (up to 5)</label><div class="att-ph-grid" id="att-lv-photos"></div><label class="btn btn-ghost btn-sm" style="margin-top:6px;display:inline-block"><span>📷 Add Photo</span><input type="file" accept="image/*" capture="environment" multiple style="display:none" onchange="App._attAddPhotos(event)"></label></div>';
+if(isOT){html+='<div class="att-selfie-zone" id="att-selfie-zone"><div style="font-size:14px;margin-bottom:6px">🤳 Overtime Selfie Required</div><div style="font-size:11px;color:var(--G5);margin-bottom:8px">Leaving after 17:00 — verification selfie required.</div><label class="btn btn-R btn-sm"><span>📸 Take Selfie</span><input type="file" accept="image/*" capture="user" style="display:none" onchange="App._attCaptureSelfie(event)"></label><img id="att-selfie-preview" class="att-selfie-preview"></div>'}
+html+='<button class="btn btn-R" style="width:100%;margin-top:12px" onclick="App.attendLeave()">🔒 Lock Visit & Leave</button>';
+html+='</div></div>';
+this._att_photos=[];this._att_selfieB64=null;
+document.body.insertAdjacentHTML('beforeend',html)},
+
+_attAddPhotos:async function(e){var files=e.target.files;if(!files.length)return;
+for(var i=0;i<Math.min(files.length,5-this._att_photos.length);i++){
+var b64=await U.compImg(files[i],200);this._att_photos.push(b64)}
+var grid=document.getElementById('att-lv-photos');if(grid)grid.innerHTML=this._att_photos.map(function(p){return'<img src="'+p+'">'}).join('')},
+
+_attCaptureSelfie:function(e){var f=e.target.files[0];if(!f)return;var self=this;
+var r=new FileReader();r.onload=function(ev){self._att_selfieB64=ev.target.result;
+var prev=document.getElementById('att-selfie-preview');if(prev){prev.src=ev.target.result;prev.style.display='block'}
+var zone=document.getElementById('att-selfie-zone');if(zone)zone.classList.add('done')};r.readAsDataURL(f)},
+
+attendLeave:function(){var outcome=document.getElementById('att-lv-outcome').value;
+if(!outcome){U.toast('Select outcome','warn');return}
+if(this._attIsOT()&&!this._att_selfieB64){U.toast('Take selfie for overtime verification','warn');return}
+var notes=(document.getElementById('att-lv-notes').value||'').trim();
+var self=this;var j=this._att_j;var legs=j.legs||[];var last=legs[legs.length-1];
+showLoad('Locking Visit','Getting GPS...');
+this._attGps(function(pos){if(!pos){hideLoad();return}
+last.leaveTime=U.time();last.leaveLat=pos.lat;last.leaveLng=pos.lng;
+last.meetingMins=self._attMins(last.arriveTime,last.leaveTime);
+last.outcome=outcome;last.notes=notes;last.locked=true;
+/* Upload photos via imgbb */
+var uploadPhotos=function(photos){if(!photos.length)return Promise.resolve([]);
+return Promise.all(photos.map(function(b64){var fd=new FormData();fd.append('key','6af5a22ef5a180b52b9c2b259ce0179c');fd.append('image',b64.split(',')[1]);
+return fetch('https://api.imgbb.com/1/upload',{method:'POST',body:fd}).then(function(r){return r.json()}).then(function(d){return d.success?d.data.url:null}).catch(function(){return null})}))};
+uploadPhotos(self._att_photos).then(function(urls){
+last.photos=urls.filter(function(u){return u});
+/* Upload selfie if OT */
+var selfiePromise=self._att_selfieB64?uploadPhotos([self._att_selfieB64]).then(function(u){return u[0]}):Promise.resolve(null);
+return selfiePromise.then(function(selfieUrl){
+last.selfieUrl=selfieUrl;last.afterHours=self._attIsOT();
+/* Push to clientVisits */
+F.push('clientVisits',{clientName:last.clientName,purpose:last.purpose,planned:last.planned,
+userId:ME.id,userName:ME.name,journeyId:self._attKey(),date:U.today(),
+arriveTime:last.arriveTime,leaveTime:last.leaveTime,arriveLat:last.arriveLat,arriveLng:last.arriveLng,
+leaveLat:last.leaveLat,leaveLng:last.leaveLng,durationMins:last.meetingMins,
+outcome:last.outcome,notes:last.notes,photos:last.photos,visitTags:last.visitTags||[],
+selfieUrl:last.selfieUrl,afterHours:last.afterHours,locked:true,
+ts:new Date().toISOString()}).catch(function(){});
+j.totalKm=Math.round(legs.reduce(function(s,l){return s+(l.km||0)},0)*10)/10;
+j.totalMeetingMins=legs.reduce(function(s,l){return s+(l.meetingMins||0)},0);
+return self._attSave()})}).then(function(){
+var modal=document.getElementById('att-modal-leave');if(modal)modal.remove();
+self._att_photos=[];self._att_selfieB64=null;
+S.p('sub');U.toast('🔒 Locked — '+(C.OUTCOMES[outcome]||outcome),'ok');
+self._attStartGps(); /* restart GPS for next leg */
+self.renderAttend();hideLoad()}).catch(function(e){hideLoad();U.toast('Error: '+e.message,'err')})})},
+
+attendLogOut:function(){var self=this;var j=this._att_j;if(!j){U.toast('Not logged in','warn');return}
+if(this._attState()==='at_client'){U.toast('Leave current client first','warn');return}
+showLoad('Logging Out','Calculating final route...');
+this._attGps(function(pos){if(!pos){hideLoad();return}
+var legs=j.legs||[];var track=self._att_gpsTrack.slice();self._att_gpsTrack=[];
+var prevLat=legs.length?(legs[legs.length-1].leaveLat||j.startLat):j.startLat;
+var prevLng=legs.length?(legs[legs.length-1].leaveLng||j.startLng):j.startLng;
+self._osrmKm(track.length>=2?track:[{lat:prevLat,lng:prevLng},{lat:pos.lat,lng:pos.lng}]).then(function(finalKm){
+var dest=self._attNearOffice(pos.lat,pos.lng)||'Field';
+j.endTime=U.time();j.endLat=pos.lat;j.endLng=pos.lng;j.endPlace=dest;j.returnDest=dest;j.finalLegKm=finalKm;
+j.totalKm=Math.round((legs.reduce(function(s,l){return s+(l.km||0)},0)+finalKm)*10)/10;
+j.totalMeetingMins=legs.reduce(function(s,l){return s+(l.meetingMins||0)},0);
+return self._attSave()}).then(function(){
+/* Also record attendance checkout */
+var mine=_att.filter(function(a){return a.userId===ME.id&&a.date===U.today()&&!a.out}).sort(function(a,b){return(b.ts||b.time||'').localeCompare(a.ts||a.time||'')});
+if(mine.length){var rec=mine[0];F.up('attendance/'+rec.id,{out:U.time(),outLat:pos.lat,outLng:pos.lng,outLocation:j.endPlace}).catch(function(){})}
+self._attStopGps();self._attStopTick();
+/* Update top bar */
+document.getElementById('att-out').className='tb-att tb-ad';document.getElementById('att-out').onclick=null;document.getElementById('att-ot').textContent='🏠 '+U.time();
+_att=[];F.g('attendance').then(function(d){_att=F.arr(d)}).catch(function(){});
+S.p('sub');U.toast('🔴 Logged out — '+j.totalKm+' km total','ok');self.renderAttend();hideLoad()}).catch(function(e){hideLoad();U.toast('Error','err');console.error(e)})})},
+
+renderAttend:function(){var j=this._att_j;var st=this._attState();
+var statusEl=document.getElementById('att-status');var liveEl=document.getElementById('att-live-bar');
+var actEl=document.getElementById('att-actions');var tlEl=document.getElementById('att-timeline');
+if(this._att_timer){clearInterval(this._att_timer);this._att_timer=null}
+/* === IDLE — not logged in === */
+if(st==='idle'){
+statusEl.innerHTML='<div class="jny-status"><div class="jny-status-i">📍</div><div class="jny-status-t">Not Logged In</div><div class="jny-status-s">Log in at office to start your day. GPS + geo-fence required.</div></div>';
+actEl.innerHTML='<button class="btn btn-R" style="width:100%;margin-top:8px" onclick="App.attendLogIn()">📍 Log In at Office</button>';
+liveEl.innerHTML='';tlEl.innerHTML='';return}
+var legs=j.legs||[];var legKm=legs.reduce(function(s,l){return s+(l.km||0)},0);
+var liveKm=this._att_gpsTrack.length>=2?this._havRoute(this._att_gpsTrack):0;
+var totalKmNow=j.endTime?j.totalKm:Math.round((legKm+liveKm+(j.finalLegKm||0))*10)/10;
+var meetMins=legs.reduce(function(s,l){return s+(l.meetingMins||0)},0);
+var elapsed=this._attMins(j.startTime,j.endTime||U.time());if(elapsed<0)elapsed+=1440;
+var visitCount=legs.filter(function(l){return l.locked}).length;
+/* === LIVE STATS BAR === */
+liveEl.innerHTML='<div class="att-live"><div class="att-live-s"><div class="att-live-n" id="att-km-live">'+totalKmNow.toFixed(1)+'</div><div class="att-live-l">KM</div></div><div class="att-live-s"><div class="att-live-n">'+visitCount+'</div><div class="att-live-l">Visits</div></div><div class="att-live-s"><div class="att-live-n" id="att-elapsed">'+this._fmtMins(elapsed)+'</div><div class="att-live-l">Elapsed</div></div><div class="att-live-s"><div class="att-live-n">'+this._fmtMins(meetMins)+'</div><div class="att-live-l">Meeting</div></div></div>';
+/* === STATUS CARD === */
+var sHtml='';
+if(st==='travelling'){var last=legs.length?legs[legs.length-1]:null;
+sHtml='<div class="jny-status" style="border-color:var(--grn)"><div class="jny-status-i">🚗</div><div class="jny-status-t">'+(last?'On the Road':'Left Office')+'</div><div class="jny-status-s">'+(last?'Left '+U.esc(last.clientName)+' at '+last.leaveTime:'Started '+j.startTime+' from '+j.startPlace)+'</div></div>'}
+else if(st==='at_client'){var cur=legs[legs.length-1];
+sHtml='<div class="jny-status" style="border-color:var(--amb)"><div class="jny-status-i">🤝</div><div class="jny-status-t">Meeting: '+U.esc(cur.clientName)+'</div><div class="jny-timer" id="att-meet-timer">'+Math.floor(this._attMins(cur.arriveTime,U.time())/60)+':'+String(this._attMins(cur.arriveTime,U.time())%60).padStart(2,'0')+'</div><div class="jny-status-s">Since '+cur.arriveTime+' · '+(C.VT_PURPOSES[cur.purpose]||cur.purpose||'')+'</div></div>'}
+else if(st==='done'){
+sHtml='<div class="jny-status" style="border-color:var(--grn);background:var(--grn-bg)"><div class="jny-status-i">✅</div><div class="jny-status-t">Day Complete</div><div class="jny-status-s">'+j.startTime+' → '+j.endTime+' · '+(j.startPlace||'')+' → '+(j.endPlace||j.returnDest||'')+'</div></div>';
+sHtml+='<div class="jny-totals"><div class="jny-tot"><div class="jny-tot-n">'+j.totalKm.toFixed(1)+'</div><div class="jny-tot-l">KM Total</div></div><div class="jny-tot"><div class="jny-tot-n">'+visitCount+'</div><div class="jny-tot-l">Visits</div></div><div class="jny-tot"><div class="jny-tot-n">'+this._fmtMins(meetMins)+'</div><div class="jny-tot-l">Meeting</div></div></div>';
+sHtml+='<div class="jny-totals" style="grid-template-columns:repeat(2,1fr)"><div class="jny-tot"><div class="jny-tot-n">'+this._fmtMins(elapsed)+'</div><div class="jny-tot-l">Duration</div></div><div class="jny-tot"><div class="jny-tot-n">Rs '+Math.round(j.totalKm*C.KM_RATE)+'</div><div class="jny-tot-l">KM Claim</div></div></div>'}
+statusEl.innerHTML=sHtml;
+/* === ACTION BUTTONS === */
+var aHtml='';
+if(st==='travelling'){aHtml='<div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-R" style="flex:1" onclick="App.showArriveModal()">📍 Arrived at Client</button><button class="btn btn-R" style="flex-shrink:0;background:var(--G2)" onclick="App.attendLogOut()">🔴 Log Out</button></div>'}
+else if(st==='at_client'){aHtml='<button class="btn btn-R" style="width:100%;margin-top:8px" onclick="App.showLeaveModal()">🚶 Leave Client</button>'}
+actEl.innerHTML=aHtml;
+/* === TIMELINE === */
+var tl='<div style="margin-top:14px">';
+tl+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot jny-dot-grn"></div><div class="jny-line"></div></div><div class="jny-leg-info"><div class="jny-leg-place">🟢 '+(j.startPlace||'Office')+'</div><div class="jny-leg-time">'+j.startTime+'</div><div class="jny-leg-meta"><a style="font-size:10px;color:var(--R);text-decoration:none;font-weight:700" href="https://maps.google.com/?q='+j.startLat+','+j.startLng+'" target="_blank">📍 Map</a></div></div></div>';
+legs.forEach(function(l,i){var oc=l.outcome?(C.OUTCOMES[l.outcome]||l.outcome):'';
+var pur=l.purpose?(C.VT_PURPOSES[l.purpose]||l.purpose):'';
+var dotCls=l.leaveTime?'jny-dot-blu':'jny-dot-red';var hasNext=i<legs.length-1||j.endTime;
+var meetTxt=l.arriveTime||'';
+if(l.leaveTime)meetTxt+=' → '+l.leaveTime+' ('+l.meetingMins+'m)';else meetTxt+=' · <span style="color:var(--amb);font-weight:700">in meeting…</span>';
+tl+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot '+dotCls+'"></div>'+(hasNext?'<div class="jny-line"></div>':'')+'</div><div class="jny-leg-info"><div class="jny-leg-place">'+(l.planned?'📅':'📍')+' '+U.esc(l.clientName||'')+' <span class="jny-leg-badge" style="background:'+(l.planned?'var(--grn)':'var(--blu)')+';color:#fff">'+(l.planned?'Planned':'Unplanned')+'</span>'+(l.afterHours?' <span style="background:#fef3c7;color:#92400e;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px">🌙 OT</span>':'')+'</div><div class="jny-leg-time">'+meetTxt+'</div><div class="jny-leg-meta">'+(l.km>0?'<span>🚗 '+l.km.toFixed(1)+' km'+(l.kmMethod==='gps'?' <span style="color:var(--grn)">GPS</span>':'')+'</span>':'')+(pur?' <span>'+pur+'</span>':'')+(oc?' <span>'+oc+'</span>':'')+'</div>'+(l.notes?'<div style="font-size:11px;color:var(--G4);margin-top:3px">'+U.esc(l.notes)+'</div>':'')+(l.photos&&l.photos.length?'<div style="display:flex;gap:3px;margin-top:4px">'+l.photos.map(function(p){return'<img src="'+p+'" style="width:40px;height:40px;object-fit:cover;border-radius:4px;cursor:pointer" onclick="window.open(this.src,\'_blank\')">'}).join('')+'</div>':'')+'</div></div>'});
+if(j.endTime){tl+='<div class="jny-leg"><div class="jny-leg-line"><div class="jny-dot jny-dot-red"></div></div><div class="jny-leg-info"><div class="jny-leg-place">🔴 '+(j.endPlace||j.returnDest||'End')+'</div><div class="jny-leg-time">'+j.endTime+'</div>'+(j.finalLegKm?'<div class="jny-leg-meta"><span>🚗 '+j.finalLegKm.toFixed(1)+' km return</span></div>':'')+'</div></div>'}
+tl+='</div>';tlEl.innerHTML=tl},
 _rpOffset:0,
 rpNav:function(dir){this._rpOffset=Math.max(0,this._rpOffset-dir);this.loadRpView();S.p('nav')},
 loadRpView:function(){var range=document.getElementById('rp-range').value;var q=(document.getElementById('rp-q').value||'').toLowerCase();
