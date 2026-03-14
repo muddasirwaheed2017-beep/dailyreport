@@ -1,0 +1,524 @@
+<!-- 
+  ================================================================
+  CNC Electric — Rule-Based Chatbot Widget (No AI / No API Key)
+  ================================================================
+  HOW TO INSTALL ON SHOPIFY:
+  1. Go to: Online Store → Themes → Edit Code
+  2. Open: theme.liquid
+  3. Paste this entire block just before </body>
+  ================================================================
+  This chatbot uses keyword matching — no Claude API key needed.
+  It still logs sessions to Firebase for the analytics dashboard.
+  ================================================================
+-->
+
+<script>
+(function() {
+  'use strict';
+
+  var DB = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+  // ── RESPONSE DATABASE ─────────────────────────────────────────
+  var RESPONSES = [
+    {
+      triggers: ['hello','hi','hey','salam','assalam','good morning','good afternoon'],
+      reply: "Hello! Welcome to CNC Electric Pakistan. I can help you with:\n\n• **MCBs, RCCBs, MCCBs, ACBs** and distribution products\n• **VFDs, contactors** and motor control\n• **Solar DC breakers** and new energy\n• Pricing, dealerships, and bulk orders\n\nWhat are you looking for today?",
+      quickReplies: ['MCB prices', 'Become a dealer', 'Solar products', 'Get a quote']
+    },
+    {
+      triggers: ['mcb','miniature circuit','rccb','rcbo'],
+      reply: "Our **MCB & Protection Range** includes:\n\n📦 **Axis 7 Series** — Premium MCBs, 1A–63A, B/C/D curve. IEC 60898-1 certified.\n📦 **ECO-8 Series** — Economy range, 1A–63A for standard applications.\n📦 **X-pert 9 Series** — High performance, up to 100A.\n\nRCCBs available in 25A–100A / 30mA–300mA sensitivity.\n\nFor pricing and availability, please contact:\n📧 sales@cncelectric.pk\n📱 WhatsApp: +92-300-0000000",
+      quickReplies: ['Axis 7 specs', 'ECO-8 pricing', 'Request catalogue']
+    },
+    {
+      triggers: ['mccb','molded','acb','air circuit','ats','automatic transfer','distribution panel'],
+      reply: "**Power Distribution Solutions:**\n\n• **MCCBs** — 100A to 1600A, adjustable thermal-magnetic\n• **ACBs** — 630A to 6300A, motorised draw-out type\n• **ATSs** — Auto Transfer Switches, 4-pole, 63A–3200A\n\nAll products include full test certificates. Suitable for commercial and industrial installations.\n\nContact us for project-specific pricing: sales@cncelectric.pk",
+      quickReplies: ['MCCB rating guide', 'ATS for generator', 'Project enquiry']
+    },
+    {
+      triggers: ['vfd','variable frequency','variable speed','drive'],
+      reply: "**VFD / Variable Frequency Drives:**\n\nRanges: 0.4kW to 630kW\n• Single-phase input (for small motors)\n• Three-phase input/output\n• Built-in EMC filter options\n• Modbus RTU communication\n\nIdeal for pumps, fans, conveyors, and HVAC systems.\n\nTechnical support available — share your motor rating for recommendations.",
+      quickReplies: ['VFD sizing guide', 'Request quote', 'Technical support']
+    },
+    {
+      triggers: ['contactor','starter','soft starter','motor starter','dol'],
+      reply: "**Motor Control Products:**\n\n• **Contactors** — 9A to 630A, AC-3 duty, 24V–415V coil options\n• **DOL Starters** — Complete sets with contactor + overload\n• **Soft Starters** — 7.5kW to 560kW, built-in bypass\n• **Overload Relays** — Thermal and electronic\n\nAsk us about control panel assembly services too.",
+      quickReplies: ['Contactor pricing', 'Soft starter quote', 'Panel assembly']
+    },
+    {
+      triggers: ['solar','photovoltaic','pv','renewable','dc breaker','string','combiner'],
+      reply: "**Solar & New Energy Range:**\n\n☀️ **DC Circuit Breakers** — 2A–63A, 1000VDC rated\n☀️ **String Fuses & Holders** — 10×38mm, 1000VDC\n☀️ **DC Isolators** — 2P/4P, lockable\n☀️ **Surge Protection** — DC SPDs for PV systems\n☀️ **AC Isolators & MCBs** — For inverter output protection\n\nSuitable for residential rooftop to utility-scale solar farms.",
+      quickReplies: ['DC breaker sizes', 'Solar project quote', 'DC isolator specs']
+    },
+    {
+      triggers: ['genset','generator','synchronisation','synchronization','avr','amf','ats panel'],
+      reply: "**Genset Synchronisation & Control:**\n\n• **AMF Controllers** — Auto Mains Failure panels\n• **Sync Panels** — For parallel generator operation\n• **Load Sharing Modules** — PLC-based load management\n• **AVRs** — Automatic Voltage Regulators\n\nWe supply complete engineered panels for 100kVA to 10MVA projects. Share your generator specs for a panel design.",
+      quickReplies: ['AMF panel quote', 'Parallel gen setup', 'Send specifications']
+    },
+    {
+      triggers: ['axis 7','axis7'],
+      reply: "**Axis 7 Series — Premium MCB Range:**\n\n✅ Rated: 1A, 2A, 4A, 6A, 10A, 16A, 20A, 25A, 32A, 40A, 50A, 63A\n✅ Curves: B, C, D\n✅ Breaking capacity: 6kA / 10kA versions\n✅ Pole: 1P, 2P, 3P, 4P\n✅ Certification: IEC 60898-1, CE\n✅ Operating temp: -25°C to +70°C\n\nDIN rail mounted. Compatible with our distribution boards.",
+      quickReplies: ['Axis 7 pricing', 'Compare with ECO-8', 'Download datasheet']
+    },
+    {
+      triggers: ['eco-8','eco8','eco 8','economy'],
+      reply: "**ECO-8 Series — Value MCB Range:**\n\n✅ Rated: 1A to 63A (B & C curve)\n✅ Breaking capacity: 4.5kA / 6kA\n✅ Pole: 1P, 2P, 3P, 4P\n✅ Certification: IEC 60898-1\n✅ Ideal for residential and light commercial\n\nBest-priced option without compromising on IEC compliance. Popular for large residential projects.",
+      quickReplies: ['ECO-8 pricing', 'Compare with Axis 7', 'Bulk availability']
+    },
+    {
+      triggers: ['x-pert','xpert','x pert'],
+      reply: "**X-pert 9 Series — High Performance MCB:**\n\n✅ Rated: 1A to 100A\n✅ Breaking capacity: 10kA / 15kA\n✅ Curves: B, C, D, K\n✅ Pole: 1P, 2P, 3P, 4P\n✅ Optional: Visi-trip indicator, auxiliary contact\n✅ For industrial and critical applications\n\nIdeal for data centres, hospitals, industrial plants.",
+      quickReplies: ['X-pert 9 pricing', 'Technical comparison', 'Request samples']
+    },
+    {
+      triggers: ['price','pricing','cost','rate','how much','charges','quote','quotation'],
+      reply: "For pricing, we offer:\n\n💼 **B2B pricing tiers:**\n• 1–49 units: Standard rate\n• 50–99 units: 8–12% discount\n• 100–499 units: 15–20% discount\n• 500+ units: Negotiated pricing\n\nPrices depend on product model and current stock. For a formal quotation:\n\n📧 sales@cncelectric.pk\n📱 WhatsApp: +92-300-0000000\n\nShare your product list and quantities for a quick turnaround.",
+      quickReplies: ['Send enquiry', 'WhatsApp us', 'Download catalogue']
+    },
+    {
+      triggers: ['dealer','dealership','distributor','reseller','franchise','partner','become a'],
+      reply: "**Dealership & Distribution Programme:**\n\nWe're actively expanding our dealer network across Pakistan.\n\n📋 **Requirements:**\n• Established electrical trading business\n• Storage/showroom space\n• Minimum opening order of PKR 2–5 lakh\n\n🎁 **Benefits:**\n• Dedicated pricing tier (18–25% margin)\n• Marketing materials & display support\n• Technical training\n• Credit terms available (subject to approval)\n\nEmail your business details to: dealers@cncelectric.pk",
+      quickReplies: ['Dealer application', 'Credit terms', 'Territory availability']
+    },
+    {
+      triggers: ['warranty','guarantee','after sales','service','return','replacement'],
+      reply: "**Warranty & After-Sales Policy:**\n\n✅ **Standard warranty:** 2 years from date of purchase\n✅ **Premium series:** 3 years (Axis 7 & X-pert 9)\n\n**Warranty covers:**\n• Manufacturing defects\n• Premature failure under normal use\n\n**Not covered:**\n• Physical damage, incorrect installation\n• Overloading beyond rated specs\n\nFor warranty claims, contact:\n📧 support@cncelectric.pk with invoice + photos",
+      quickReplies: ['File warranty claim', 'Technical support', 'Talk to engineer']
+    },
+    {
+      triggers: ['delivery','shipping','dispatch','lead time','stock','availability','in stock'],
+      reply: "**Delivery & Stock Information:**\n\n📦 **Karachi, Lahore, Islamabad:** 1–2 business days\n📦 **Other cities:** 2–4 business days via TCS/Leopards\n📦 **Large projects:** Phased delivery available\n\n**Stock status:**\nMost standard products are available ex-stock. For large quantities (500+), confirm availability before ordering.\n\nUrgent shipments can be arranged — please call us directly.",
+      quickReplies: ['Check availability', 'Track my order', 'Urgent delivery']
+    },
+    {
+      triggers: ['whatsapp','call','phone','contact','talk','speak','reach'],
+      reply: "**Contact CNC Electric:**\n\n📱 **WhatsApp:** +92-300-0000000 (9am–6pm PKT)\n📞 **Phone:** +92-21-0000000\n📧 **Email:** sales@cncelectric.pk\n🌐 **Website:** www.cncelectric.pk\n🏢 **Office:** [Your address here]\n\nFor technical queries, ask for our engineering team.\nFor pricing & orders, ask for sales.",
+      quickReplies: ['Send WhatsApp', 'Email us', 'Visit showroom']
+    },
+    {
+      triggers: ['catalogue','brochure','datasheet','specification','spec sheet','pdf','download'],
+      reply: "Our product catalogue and datasheets are available on request.\n\n📧 Email: info@cncelectric.pk with:\n• Products you're interested in\n• Your application/project type\n\nWe'll send you the relevant technical documentation within 24 hours.\n\nOur website also has product pages: www.cncelectric.pk/products",
+      quickReplies: ['Request catalogue', 'Specific datasheet', 'Visit website']
+    },
+    {
+      triggers: ['pakistan','lahore','karachi','islamabad','peshawar','city','location','office'],
+      reply: "**CNC Electric operates nationwide across Pakistan:**\n\n🏢 **Head Office:** [City] — [Address]\n🏢 **Regional Office:** [City] — [Address]\n\nDealer network in: Karachi, Lahore, Islamabad, Peshawar, Multan, Faisalabad, Quetta and more.\n\nFind your nearest dealer: www.cncelectric.pk/dealers",
+      quickReplies: ['Find local dealer', 'Head office address', 'Contact us']
+    },
+    {
+      triggers: ['project','industrial','commercial','building','hospital','factory','plant'],
+      reply: "**Project & Industrial Supply:**\n\nWe supply turnkey electrical material for:\n• 🏭 Industrial plants & factories\n• 🏢 Commercial buildings\n• 🏥 Hospitals & critical facilities\n• ☀️ Solar farms & power plants\n• 🔌 Infrastructure projects\n\n**Project services:**\n• Bill of Material (BOM) preparation\n• Site-specific product selection\n• Phased delivery scheduling\n• Technical support on-site\n\nShare your project requirements: projects@cncelectric.pk",
+      quickReplies: ['Submit project BOM', 'Talk to engineer', 'Get project quote']
+    },
+    {
+      triggers: ['thank','thanks','thankyou','thank you','shukria','jazak'],
+      reply: "You're very welcome! 😊\n\nIf you need anything else — product info, pricing, or technical support — don't hesitate to ask.\n\nFor quick human assistance:\n📱 WhatsApp: +92-300-0000000\n\nHave a great day! ⚡",
+      quickReplies: ['More questions', 'Get a quote', 'Contact team']
+    },
+    {
+      triggers: ['bye','goodbye','khuda hafiz','ok done','that\'s all','no thanks'],
+      reply: "Thank you for visiting CNC Electric! 👋\n\nFeel free to come back anytime. For direct support:\n\n📱 WhatsApp: +92-300-0000000\n📧 sales@cncelectric.pk\n\nHave a great day! ⚡",
+      quickReplies: []
+    }
+  ];
+
+  var DEFAULT_REPLY = {
+    reply: "I'm not sure about that specific query — let me connect you with our team.\n\n**Get quick help:**\n📱 WhatsApp: +92-300-0000000\n📧 sales@cncelectric.pk\n\nOr try one of these common topics:",
+    quickReplies: ['MCB products', 'Get a price quote', 'Dealership info', 'Contact us']
+  };
+
+  // ── STATE ─────────────────────────────────────────────────────
+  var sessionId = null;
+  var messageCount = 0;
+  var sessionTopics = [];
+  var isOpen = false;
+
+  var KEYWORDS = {
+    'MCB/Distribution':['mcb','rccb','rcbo'],
+    'Power Distribution':['mccb','acb','ats'],
+    'Motor Control':['vfd','contactor','soft starter'],
+    'Solar/New Energy':['solar','inverter','dc breaker'],
+    'Genset Sync':['genset','generator'],
+    'Pricing Inquiry':['price','discount','cost','rate'],
+    'Dealership Inquiry':['dealer','distributor'],
+    'Axis 7 Series':['axis 7'],
+    'ECO-8 Series':['eco-8','eco 8'],
+    'X-pert 9 Series':['x-pert','xpert'],
+    'Purchase Intent':['order','buy','quantity'],
+    'Contact Request':['whatsapp','call','phone','contact']
+  };
+
+  // ── STYLES ────────────────────────────────────────────────────
+  var style = document.createElement('style');
+  style.textContent = `
+    #cnc-rb-root * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'DM Sans', -apple-system, sans-serif; }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+    #cnc-rb-bubble {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, #c8973a, #e8b86d);
+      border: none; cursor: pointer;
+      box-shadow: 0 8px 32px rgba(200,151,58,0.35), 0 2px 8px rgba(200,151,58,0.2);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    #cnc-rb-bubble:hover { transform: scale(1.08); }
+    #cnc-rb-bubble svg { width: 24px; height: 24px; transition: opacity 0.2s; }
+    #cnc-rb-bubble .rb-chat { opacity: 1; position: absolute; }
+    #cnc-rb-bubble .rb-close { opacity: 0; position: absolute; }
+    #cnc-rb-bubble.open .rb-chat { opacity: 0; }
+    #cnc-rb-bubble.open .rb-close { opacity: 1; }
+
+    #cnc-rb-badge {
+      position: absolute; top: -4px; right: -4px;
+      background: #c0392b; color: white;
+      width: 20px; height: 20px; border-radius: 50%;
+      font-size: 11px; font-weight: 700;
+      display: none; align-items: center; justify-content: center;
+      border: 2px solid white; font-family: monospace;
+    }
+
+    #cnc-rb-window {
+      position: fixed; bottom: 96px; right: 28px; z-index: 9998;
+      width: 380px; max-width: calc(100vw - 40px);
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 24px 64px rgba(26,25,23,0.12), 0 4px 16px rgba(26,25,23,0.07);
+      border: 1px solid #e8e6e1;
+      display: flex; flex-direction: column;
+      max-height: calc(100vh - 130px);
+      opacity: 0; transform: translateY(16px) scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      overflow: hidden;
+    }
+
+    #cnc-rb-window.open { opacity: 1; transform: none; pointer-events: all; }
+
+    #cnc-rb-header {
+      padding: 15px 18px;
+      background: linear-gradient(135deg, #c8973a, #e8b86d);
+      border-radius: 16px 16px 0 0;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    #cnc-rb-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+
+    #cnc-rb-hname { font-size: 14px; font-weight: 600; color: white; }
+    #cnc-rb-hstatus { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 1px; }
+
+    #cnc-rb-messages {
+      flex: 1; overflow-y: auto; padding: 14px 14px;
+      display: flex; flex-direction: column; gap: 9px;
+      background: #fafaf9; min-height: 200px;
+    }
+
+    #cnc-rb-messages::-webkit-scrollbar { width: 4px; }
+    #cnc-rb-messages::-webkit-scrollbar-thumb { background: #d4d0c8; border-radius: 2px; }
+
+    .rb-msg { display: flex; flex-direction: column; max-width: 88%; animation: rbIn 0.18s ease; }
+    @keyframes rbIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+
+    .rb-msg.bot { align-self: flex-start; }
+    .rb-msg.user { align-self: flex-end; }
+
+    .rb-bubble {
+      padding: 10px 14px; border-radius: 12px;
+      font-size: 13.5px; line-height: 1.5;
+    }
+
+    .rb-msg.bot .rb-bubble {
+      background: white; border: 1px solid #e8e6e1;
+      border-radius: 4px 12px 12px 12px; color: #1a1917;
+      box-shadow: 0 1px 3px rgba(26,25,23,0.05);
+    }
+
+    .rb-msg.user .rb-bubble {
+      background: linear-gradient(135deg, #c8973a, #e8b86d);
+      color: white; border-radius: 12px 4px 12px 12px;
+    }
+
+    .rb-time {
+      font-size: 10px; color: #a8a49c; margin-top: 3px; padding: 0 2px;
+      font-family: monospace;
+    }
+
+    .rb-msg.user .rb-time { text-align: right; }
+
+    #cnc-rb-typing {
+      padding: 4px 14px 0;
+      background: #fafaf9;
+      display: none;
+    }
+
+    .rb-typing-bubble {
+      display: inline-flex; gap: 4px; align-items: center;
+      background: white; border: 1px solid #e8e6e1;
+      border-radius: 4px 12px 12px 12px;
+      padding: 10px 14px;
+      box-shadow: 0 1px 3px rgba(26,25,23,0.05);
+    }
+
+    .rb-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #c8973a; animation: rbDot 1s infinite ease-in-out;
+    }
+    .rb-dot:nth-child(2) { animation-delay: 0.15s; }
+    .rb-dot:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes rbDot { 0%,80%,100%{transform:scale(0.7);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+
+    #cnc-rb-qr {
+      display: flex; gap: 5px; flex-wrap: wrap;
+      padding: 0 14px 10px; background: #fafaf9;
+    }
+
+    .rb-qr {
+      background: white; border: 1px solid #d4d0c8;
+      border-radius: 14px; padding: 5px 11px;
+      font-size: 12px; color: #6b6860; cursor: pointer;
+      transition: all 0.15s; font-family: inherit;
+    }
+
+    .rb-qr:hover { border-color: #c8973a; color: #c8973a; background: #fdf3e3; }
+
+    #cnc-rb-input-area {
+      padding: 11px 14px; border-top: 1px solid #e8e6e1;
+      background: white; border-radius: 0 0 16px 16px;
+      display: flex; gap: 9px; align-items: flex-end;
+    }
+
+    #cnc-rb-input {
+      flex: 1; border: 1px solid #e8e6e1; border-radius: 10px;
+      padding: 9px 13px; font-size: 13.5px; color: #1a1917;
+      background: #fafaf9; resize: none; outline: none;
+      line-height: 1.45; max-height: 80px; overflow-y: auto;
+      font-family: inherit; transition: border-color 0.15s;
+    }
+
+    #cnc-rb-input:focus { border-color: #c8973a; background: white; }
+    #cnc-rb-input::placeholder { color: #a8a49c; }
+
+    #cnc-rb-send {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #c8973a, #e8b86d);
+      border: none; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.15s;
+    }
+
+    #cnc-rb-send:hover { opacity: 0.9; }
+    #cnc-rb-send svg { width: 16px; height: 16px; }
+
+    #cnc-rb-footer {
+      padding: 7px 14px; border-top: 1px solid #f5f4f2;
+      background: white; border-radius: 0 0 16px 16px;
+      font-size: 10.5px; color: #a8a49c; text-align: center;
+      font-family: monospace;
+    }
+
+    @media (max-width:480px) {
+      #cnc-rb-window { right: 12px; bottom: 80px; width: calc(100vw - 24px); }
+      #cnc-rb-bubble { right: 16px; bottom: 16px; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // ── HTML ──────────────────────────────────────────────────────
+  var root = document.createElement('div');
+  root.id = 'cnc-rb-root';
+  root.innerHTML = `
+    <button id="cnc-rb-bubble" onclick="cncRbChat.toggle()" aria-label="Chat with us">
+      <svg class="rb-chat" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <svg class="rb-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+      <div id="cnc-rb-badge">1</div>
+    </button>
+
+    <div id="cnc-rb-window">
+      <div id="cnc-rb-header">
+        <div id="cnc-rb-avatar">⚡</div>
+        <div>
+          <div id="cnc-rb-hname">CNC Support</div>
+          <div id="cnc-rb-hstatus">Typically replies instantly</div>
+        </div>
+      </div>
+      <div id="cnc-rb-messages"></div>
+      <div id="cnc-rb-typing"><div class="rb-typing-bubble"><div class="rb-dot"></div><div class="rb-dot"></div><div class="rb-dot"></div></div></div>
+      <div id="cnc-rb-qr"></div>
+      <div id="cnc-rb-input-area">
+        <textarea id="cnc-rb-input" placeholder="Type your question…" rows="1" onkeydown="cncRbChat.handleKey(event)" oninput="cncRbChat.autoResize(this)"></textarea>
+        <button id="cnc-rb-send" onclick="cncRbChat.send()" aria-label="Send">
+          <svg viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.8">
+            <line x1="14" y1="2" x2="2" y2="8"/><line x1="14" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="8" y2="14"/>
+          </svg>
+        </button>
+      </div>
+      <div id="cnc-rb-footer">CNC Electric Pakistan · Smart Assistant</div>
+    </div>
+  `;
+  document.body.appendChild(root);
+
+  // ── LOGIC ─────────────────────────────────────────────────────
+  window.cncRbChat = {
+    toggle: function() {
+      isOpen = !isOpen;
+      document.getElementById('cnc-rb-bubble').classList.toggle('open', isOpen);
+      document.getElementById('cnc-rb-window').classList.toggle('open', isOpen);
+      document.getElementById('cnc-rb-badge').style.display = 'none';
+      if (isOpen && messageCount === 0) this.addWelcome();
+      if (isOpen) setTimeout(function(){ document.getElementById('cnc-rb-input').focus(); }, 200);
+    },
+
+    addWelcome: function() {
+      var el = document.getElementById('cnc-rb-messages');
+      el.innerHTML = '';
+      this.addBotMsg("Hello! Welcome to **CNC Electric Pakistan**. 👋\n\nI can help you with product info, pricing, specifications, and more. What are you looking for?");
+      this.showQR(['MCB products', 'Get a quote', 'Become a dealer', 'Contact us']);
+    },
+
+    addBotMsg: function(text) {
+      var el = document.getElementById('cnc-rb-messages');
+      var d = document.createElement('div');
+      d.className = 'rb-msg bot';
+      d.innerHTML = '<div class="rb-bubble">'+this.fmt(text)+'</div><div class="rb-time">'+this.now()+'</div>';
+      el.appendChild(d);
+      el.scrollTop = el.scrollHeight;
+    },
+
+    addUserMsg: function(text) {
+      var el = document.getElementById('cnc-rb-messages');
+      var d = document.createElement('div');
+      d.className = 'rb-msg user';
+      d.innerHTML = '<div class="rb-bubble">'+this.esc(text)+'</div><div class="rb-time">'+this.now()+'</div>';
+      el.appendChild(d);
+      el.scrollTop = el.scrollHeight;
+    },
+
+    fmt: function(t) {
+      return this.esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    },
+
+    esc: function(s) {
+      return (s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    },
+
+    showQR: function(arr) {
+      var el = document.getElementById('cnc-rb-qr');
+      el.innerHTML = arr.map(function(r) {
+        return '<button class="rb-qr" onclick="cncRbChat.sendQuick(\''+r+'\')">'+r+'</button>';
+      }).join('');
+    },
+
+    sendQuick: function(text) {
+      document.getElementById('cnc-rb-qr').innerHTML = '';
+      document.getElementById('cnc-rb-input').value = text;
+      this.send();
+    },
+
+    handleKey: function(e) {
+      if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); this.send(); }
+    },
+
+    autoResize: function(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight,80)+'px';
+    },
+
+    send: function() {
+      var input = document.getElementById('cnc-rb-input');
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = ''; input.style.height = 'auto';
+      document.getElementById('cnc-rb-qr').innerHTML = '';
+      this.addUserMsg(text);
+      if (messageCount === 0) this.startSession();
+      messageCount++;
+
+      // Find response
+      var lower = text.toLowerCase();
+      var match = null;
+      for (var i=0; i<RESPONSES.length; i++) {
+        if (RESPONSES[i].triggers.some(function(t){ return lower.includes(t); })) {
+          match = RESPONSES[i]; break;
+        }
+      }
+      if (!match) match = DEFAULT_REPLY;
+
+      // Simulate typing delay
+      var typing = document.getElementById('cnc-rb-typing');
+      typing.style.display = 'block';
+      var self = this;
+      var delay = Math.min(600 + text.length * 10, 1800);
+      setTimeout(function() {
+        typing.style.display = 'none';
+        self.addBotMsg(match.reply);
+        if (match.quickReplies && match.quickReplies.length) self.showQR(match.quickReplies);
+        self.logMsg(text, match.reply);
+      }, delay);
+    },
+
+    startSession: function() {
+      sessionId = 'rb_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+      this.fb('PUT', '/chatSessions/'+sessionId+'.json', {
+        id: sessionId, startTime: new Date().toISOString(), status: 'active',
+        totalMessages: 0, lastMessage: null, endTime: null, topics: [],
+        leadScore: 0, notes: '', flagged: false,
+        referrer: document.referrer||'direct', page: window.location.pathname,
+        userAgent: navigator.userAgent, screenSize: screen.width+'x'+screen.height,
+        language: navigator.language, chatType: 'rule-based'
+      });
+    },
+
+    logMsg: function(q, a) {
+      if (!sessionId) return;
+      this.fb('POST', '/chatSessions/'+sessionId+'/messages.json', { q:q, a:a.slice(0,400), t:new Date().toISOString() });
+
+      var combined = (q+' '+a).toLowerCase();
+      Object.keys(KEYWORDS).forEach(function(cat) {
+        if (KEYWORDS[cat].some(function(k){ return combined.includes(k); }) && sessionTopics.indexOf(cat)<0) sessionTopics.push(cat);
+      });
+
+      var sc = 0;
+      if (/price|cost|rate/.test(combined)) sc+=3;
+      if (/order|buy|quantity/.test(combined)) sc+=5;
+      if (/whatsapp|call|phone/.test(combined)) sc+=4;
+      if (/dealer|distributor/.test(combined)) sc+=4;
+      if (messageCount>3) sc+=2;
+
+      this.fb('PATCH', '/chatSessions/'+sessionId+'.json', {
+        lastMessage: new Date().toISOString(), totalMessages: messageCount,
+        topics: sessionTopics, leadScore: sc, status: 'active'
+      });
+    },
+
+    fb: function(method, path, data) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, DB+path, true);
+      xhr.setRequestHeader('Content-Type','application/json');
+      xhr.send(JSON.stringify(data));
+    },
+
+    now: function() {
+      return new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});
+    }
+  };
+
+  setTimeout(function() {
+    if (!isOpen) document.getElementById('cnc-rb-badge').style.display = 'flex';
+  }, 4000);
+
+  window.addEventListener('beforeunload', function() {
+    if (!sessionId) return;
+    navigator.sendBeacon(DB+'/chatSessions/'+sessionId+'.json', JSON.stringify({ status:'ended', endTime: new Date().toISOString() }));
+  });
+
+})();
+</script>
