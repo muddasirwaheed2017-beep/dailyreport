@@ -970,6 +970,7 @@ _attStopTick:function(){if(this._att_tickIv){clearInterval(this._att_tickIv);thi
 _attState:function(){var j=this._att_j;if(!j)return'idle';if(j.endTime)return'done';var legs=j.legs||[];if(!legs.length)return'travelling';var last=legs[legs.length-1];if(last.arriveTime&&!last.leaveTime)return'at_client';return'travelling'},
 _attIsOT:function(){var h=parseInt(U.time().split(':')[0]);return h>=17||h<9},
 _attNearOffice:function(lat,lng){var near=null;C.OFFICES.forEach(function(o){var d=App._hav(lat,lng,o.lat,o.lng)*1000;if(d<=C.GEO_RADIUS)near=o.name});return near},
+_attNearClient:function(lat,lng){var best=null,bestD=Infinity;_att_clients.forEach(function(c){if(!c.lat||!c.lng)return;var d=App._hav(lat,lng,+c.lat,+c.lng)*1000;if(d<=C.LOC_R_CLIENT&&d<bestD){bestD=d;best={name:c.name,id:c.id,dist:Math.round(d)}}});return best},
 
 loadAttend:async function(){
   /* Find latest journey sequence for today */
@@ -984,20 +985,27 @@ loadAttend:async function(){
 
 attendLogIn:function(){var self=this;if(this._att_j){U.toast('Already logged in today','warn');return}
 showLoad('Logging In','Getting GPS...');
-this._attGps(function(pos){if(!pos){hideLoad();return}
+this._attGps(function(pos){if(!pos){hideLoad();U.toast('❌ GPS required for attendance','err');return}
+/* Check location: Office → Client → Unknown */
 var office=self._attNearOffice(pos.lat,pos.lng);
-if(!office){U.toast('❌ Must be at office to log in','err');hideLoad();return}
+var client=!office?self._attNearClient(pos.lat,pos.lng):null;
+var place,locStatus,locType;
+if(office){place=office;locStatus='At Office ('+office+')';locType='office'}
+else if(client){place=client.name;locStatus='At Client ('+client.name+' — '+client.dist+'m)';locType='client'}
+else{place='Unknown Location';locStatus='⏳ Unverified — needs admin review';locType='unknown'}
 var late=false;var t=U.time();var parts=t.split(':');var nowM=parseInt(parts[0])*60+parseInt(parts[1]);
 var startParts=C.START_TIME.split(':');var startM=parseInt(startParts[0])*60+parseInt(startParts[1]);
 if(nowM>startM)late=true;
-self._att_j={userId:ME.id,userName:ME.name,date:U.today(),startTime:t,startLat:pos.lat,startLng:pos.lng,startPlace:office,
+self._att_j={userId:ME.id,userName:ME.name,date:U.today(),startTime:t,startLat:pos.lat,startLng:pos.lng,startPlace:place,startLocType:locType,startLocStatus:locStatus,
 endTime:null,endLat:null,endLng:null,endPlace:null,returnDest:null,legs:[],totalKm:0,totalMeetingMins:0,finalLegKm:0,ts:new Date().toISOString()};
 self._attSave().then(function(){
 /* Also record attendance */
-var attRec={userId:ME.id,userName:ME.name,date:U.today(),time:t,lat:pos.lat,lng:pos.lng,location:office,late:late,out:null,outLat:null,outLng:null,outLocation:null};
+var attRec={userId:ME.id,userName:ME.name,date:U.today(),time:t,lat:pos.lat,lng:pos.lng,location:place,locType:locType,locStatus:locStatus,late:late,verified:locType!=='unknown',out:null,outLat:null,outLng:null,outLocation:null};
 F.push('attendance',attRec).then(function(id){self._myAttId=id;_att=[];F.g('attendance').then(function(d){_att=F.arr(d)})}).catch(function(){});
 self._attStartGps();self._attStartTick();
-S.p('att');U.toast('✅ Logged in at '+office+(late?' (Late)':''),'ok');
+S.p('att');
+var msg='✅ Logged in at '+place+(late?' (Late)':'');if(locType==='unknown')msg='⏳ Logged in — Unverified location'+(late?' (Late)':'');
+U.toast(msg,locType==='unknown'?'warn':'ok');
 /* Update top bar */
 document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+t;document.getElementById('att-p').onclick=null;
 document.getElementById('att-out').style.display='flex';
@@ -1259,8 +1267,8 @@ var actEl=document.getElementById('att-actions');var tlEl=document.getElementByI
 if(this._att_timer){clearInterval(this._att_timer);this._att_timer=null}
 /* === IDLE — not logged in === */
 if(st==='idle'){
-statusEl.innerHTML='<div class="jny-status"><div class="jny-status-i">📍</div><div class="jny-status-t">Not Logged In</div><div class="jny-status-s">Log in at office to start your day. GPS + geo-fence required.</div></div>';
-actEl.innerHTML='<button class="btn btn-R" style="width:100%;margin-top:8px" onclick="App.attendLogIn()">📍 Log In at Office</button>';
+statusEl.innerHTML='<div class="jny-status"><div class="jny-status-i">📍</div><div class="jny-status-t">Not Logged In</div><div class="jny-status-s">Log in to start your day. Works at office, client site, or any location.</div></div>';
+actEl.innerHTML='<button class="btn btn-R" style="width:100%;margin-top:8px" onclick="App.attendLogIn()">📍 Mark Attendance</button>';
 liveEl.innerHTML='';tlEl.innerHTML='';return}
 var legs=j.legs||[];var legKm=legs.reduce(function(s,l){return s+(l.km||0)},0);
 var liveKm=this._att_gpsTrack.length>=2?this._havRoute(this._att_gpsTrack):0;
@@ -1273,7 +1281,7 @@ liveEl.innerHTML='<div class="att-live"><div class="att-live-s"><div class="att-
 /* === STATUS CARD === */
 var sHtml='';
 if(st==='travelling'){var last=legs.length?legs[legs.length-1]:null;
-sHtml='<div class="jny-status" style="border-color:var(--grn)"><div class="jny-status-i">🚗</div><div class="jny-status-t">'+(last?'On the Road':'Left Office')+'</div><div class="jny-status-s">'+(last?'Left '+U.esc(last.clientName)+' at '+last.leaveTime:'Started '+j.startTime+' from '+j.startPlace)+'</div></div>'}
+sHtml='<div class="jny-status" style="border-color:var(--grn)"><div class="jny-status-i">🚗</div><div class="jny-status-t">'+(last?'On the Road':'Started')+'</div><div class="jny-status-s">'+(last?'Left '+U.esc(last.clientName)+' at '+last.leaveTime:'Started '+j.startTime+' from '+U.esc(j.startPlace)+(j.startLocType==='unknown'?' ⏳':''    ))+'</div></div>'}
 else if(st==='at_client'){var cur=legs[legs.length-1];
 sHtml='<div class="jny-status" style="border-color:var(--amb)"><div class="jny-status-i">🤝</div><div class="jny-status-t">Meeting: '+U.esc(cur.clientName)+'</div><div class="jny-timer" id="att-meet-timer">'+Math.floor(this._attMins(cur.arriveTime,U.time())/60)+':'+String(this._attMins(cur.arriveTime,U.time())%60).padStart(2,'0')+'</div><div class="jny-status-s">Since '+cur.arriveTime+' · '+(C.VT_PURPOSES[cur.purpose]||cur.purpose||'')+'</div></div>'}
 else if(st==='done'){
