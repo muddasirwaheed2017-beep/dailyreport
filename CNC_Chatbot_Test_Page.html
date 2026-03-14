@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Electric — Chatbot Test Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ffffff;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: #1a1917;
+  min-height: 100vh;
+}
+
+.topbar {
+  padding: 0 40px;
+  height: 56px;
+  border-bottom: 1px solid #e8e6e1;
+  display: flex; align-items: center; justify-content: space-between;
+  background: white;
+  position: sticky; top: 0; z-index: 100;
+}
+
+.topbar-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.topbar-sq {
+  width: 30px; height: 30px; border-radius: 6px;
+  background: #1a1917;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+.topbar-name {
+  font-size: 15px; font-weight: 600; letter-spacing: -0.2px;
+}
+
+.topbar-badge {
+  background: #fdf3e3; border: 1px solid #f0ddb5;
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11.5px; font-weight: 500; color: #92400e;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.3px;
+}
+
+/* MAIN */
+.main {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 60px 40px 200px;
+}
+
+.hero {
+  margin-bottom: 56px;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: #f5f4f2; border: 1px solid #e8e6e1;
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 11px; font-weight: 600; color: #6b6860;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-bottom: 16px; font-family: 'DM Mono', monospace;
+}
+
+.hero-title {
+  font-size: 38px; font-weight: 300; line-height: 1.15;
+  letter-spacing: -0.8px; color: #1a1917;
+  margin-bottom: 12px;
+}
+
+.hero-title strong { font-weight: 600; }
+
+.hero-sub {
+  font-size: 15px; color: #6b6860; line-height: 1.6; max-width: 500px;
+}
+
+/* CHATBOT SELECTOR */
+.selector {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 48px;
+}
+
+.selector-card {
+  border: 2px solid #e8e6e1; border-radius: 12px;
+  padding: 20px; cursor: pointer;
+  transition: all 0.18s;
+  background: white; text-align: left;
+}
+
+.selector-card:hover { border-color: #d4d0c8; box-shadow: 0 4px 16px rgba(26,25,23,0.07); }
+.selector-card.active { border-color: #c8973a; background: #fdf3e3; }
+.selector-card.active-dark { border-color: #1a1917; background: #fafaf9; }
+
+.sc-icon { font-size: 24px; margin-bottom: 10px; }
+.sc-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.sc-desc { font-size: 12.5px; color: #6b6860; line-height: 1.4; }
+
+.sc-tag {
+  display: inline-block; margin-top: 8px;
+  padding: 2px 8px; border-radius: 10px;
+  font-size: 10.5px; font-family: 'DM Mono', monospace; font-weight: 500;
+}
+
+.sc-tag.ai { background: #fdf3e3; color: #92400e; }
+.sc-tag.rule { background: #eef3fb; color: #1d4ed8; }
+
+/* API KEY INPUT */
+.api-section {
+  background: #fafaf9; border: 1px solid #e8e6e1;
+  border-radius: 10px; padding: 20px 22px; margin-bottom: 32px;
+  display: none;
+}
+
+.api-section.visible { display: block; }
+
+.api-label { font-size: 12px; font-weight: 600; color: #6b6860; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.api-row { display: flex; gap: 10px; }
+.api-input {
+  flex: 1; background: white; border: 1px solid #d4d0c8;
+  border-radius: 8px; padding: 9px 13px;
+  font-family: 'DM Mono', monospace; font-size: 13px; color: #1a1917;
+  outline: none;
+}
+.api-input:focus { border-color: #c8973a; }
+.api-save {
+  background: #1a1917; color: white; border: none;
+  border-radius: 8px; padding: 9px 18px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  cursor: pointer;
+}
+.api-save:hover { background: #2d2c29; }
+
+.api-hint { font-size: 11.5px; color: #a8a49c; margin-top: 6px; font-family: 'DM Mono', monospace; }
+
+/* LAUNCH BUTTON */
+.launch-wrap { margin-bottom: 40px; }
+
+.launch-btn {
+  width: 100%; padding: 16px;
+  border-radius: 10px; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all 0.18s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+.launch-btn.claude {
+  background: #1a1917; color: white;
+}
+.launch-btn.claude:hover { background: #2d2c29; }
+
+.launch-btn.rule {
+  background: linear-gradient(135deg, #c8973a, #e8b86d);
+  color: white;
+}
+.launch-btn.rule:hover { opacity: 0.92; }
+
+/* INFO SECTIONS */
+.info-section { margin-bottom: 40px; }
+
+.info-title {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1px; color: #a8a49c;
+  margin-bottom: 14px; font-family: 'DM Mono', monospace;
+}
+
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.info-card {
+  background: #fafaf9; border: 1px solid #e8e6e1;
+  border-radius: 8px; padding: 14px 16px;
+}
+
+.info-card-title { font-size: 12.5px; font-weight: 600; margin-bottom: 3px; }
+.info-card-desc { font-size: 12px; color: #6b6860; }
+
+/* INSTRUCTIONS */
+.steps { display: flex; flex-direction: column; gap: 12px; }
+
+.step {
+  display: flex; gap: 14px;
+  background: white; border: 1px solid #e8e6e1;
+  border-radius: 10px; padding: 14px 16px;
+}
+
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #1a1917; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-body {}
+.step-title { font-size: 13.5px; font-weight: 600; margin-bottom: 3px; }
+.step-desc { font-size: 12.5px; color: #6b6860; line-height: 1.5; }
+.step-code {
+  margin-top: 6px; background: #f5f4f2; border: 1px solid #e8e6e1;
+  border-radius: 6px; padding: 8px 12px;
+  font-family: 'DM Mono', monospace; font-size: 11.5px; color: #6b6860;
+  overflow-x: auto; white-space: nowrap;
+}
+
+/* STATUS BAR */
+.status-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 1px solid #e8e6e1;
+  padding: 10px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 90;
+}
+
+.status-left { display: flex; gap: 20px; align-items: center; }
+
+.status-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: #6b6860;
+}
+
+.status-dot { width: 7px; height: 7px; border-radius: 50%; }
+.dot-green { background: #2d7a57; }
+.dot-amber { background: #c8973a; animation: blink 2s infinite; }
+.dot-grey { background: #d4d0c8; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.status-right { font-size: 11.5px; color: #a8a49c; font-family: 'DM Mono', monospace; }
+
+.mode-indicator {
+  display: flex; align-items: center; gap: 6px;
+  background: #f5f4f2; border: 1px solid #e8e6e1;
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 11.5px; font-family: 'DM Mono', monospace;
+}
+
+/* DIVIDER */
+.divider {
+  border: none; border-top: 1px solid #e8e6e1; margin: 40px 0;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-sq">⚡</div>
+    <span class="topbar-name">CNC Electric Chatbot</span>
+  </div>
+  <div class="topbar-badge">TEST ENVIRONMENT</div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-tag">Chatbot Test Page</div>
+    <div class="hero-title">Test your chatbot.<br><strong>See results live.</strong></div>
+    <div class="hero-sub">Choose a chatbot version below, enter your API key if using Claude, then click Launch. Your conversations will appear live in the Analytics Dashboard.</div>
+  </div>
+
+  <!-- SELECTOR -->
+  <div class="selector">
+    <div class="selector-card active" id="card-claude" onclick="selectBot('claude')">
+      <div class="sc-icon">🤖</div>
+      <div class="sc-title">Claude AI Chatbot</div>
+      <div class="sc-desc">Powered by Claude — understands any question, natural conversation, full product knowledge.</div>
+      <div class="sc-tag ai">Requires API Key</div>
+    </div>
+    <div class="selector-card" id="card-rule" onclick="selectBot('rule')">
+      <div class="sc-icon">⚡</div>
+      <div class="sc-title">Rule-Based Chatbot</div>
+      <div class="sc-desc">Keyword matching — no API key needed. Fast responses on common product topics.</div>
+      <div class="sc-tag rule">No API Key Required</div>
+    </div>
+  </div>
+
+  <!-- API KEY -->
+  <div class="api-section visible" id="api-section">
+    <div class="api-label">Anthropic API Key</div>
+    <div class="api-row">
+      <input class="api-input" type="password" id="api-key-field" placeholder="sk-ant-api03-…" value="">
+      <button class="api-save" onclick="saveKey()">Save & Use</button>
+    </div>
+    <div class="api-hint" id="key-hint">Key stored locally in browser only — never sent to any server except Anthropic.</div>
+  </div>
+
+  <!-- LAUNCH -->
+  <div class="launch-wrap">
+    <button class="launch-btn claude" id="launch-btn" onclick="launchChat()">
+      💬 Launch Claude AI Chatbot
+    </button>
+  </div>
+
+  <hr class="divider">
+
+  <!-- WHAT TO EXPECT -->
+  <div class="info-section">
+    <div class="info-title">What to test</div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title">Product Questions</div>
+        <div class="info-card-desc">Ask about MCB ranges, VFDs, solar breakers — see topic detection in action</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Pricing Inquiries</div>
+        <div class="info-card-desc">Ask "how much for 100 MCBs?" — watch lead score increase in dashboard</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Dealer Interest</div>
+        <div class="info-card-desc">Ask about becoming a dealer — triggers Dealership Inquiry topic tag</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Contact Requests</div>
+        <div class="info-card-desc">Ask for WhatsApp or phone — pushes lead score to high-intent territory</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SHOPIFY INSTRUCTIONS -->
+  <div class="info-section">
+    <div class="info-title">How to add to your Shopify store</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Go to your Shopify Theme Code</div>
+          <div class="step-desc">Online Store → Themes → Edit Code → Open <code style="font-family:monospace;background:#f5f4f2;padding:1px 5px;border-radius:3px">theme.liquid</code></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Find the closing body tag</div>
+          <div class="step-code">&lt;/body&gt;</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Paste the chatbot script just before it</div>
+          <div class="step-desc">Use <strong>cnc_claude_chatbot_shopify.html</strong> for the AI version, or <strong>cnc_rulebased_chatbot_shopify.html</strong> for no-AI. Copy everything inside the file and paste it before &lt;/body&gt;.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Set your API key via the dashboard</div>
+          <div class="step-desc">Open <strong>CNC_Analytics_Dashboard.html</strong> → Settings tab → Enter your Anthropic API key. The chatbot reads it from your browser's local storage automatically.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Watch sessions appear in your dashboard</div>
+          <div class="step-desc">Open the Analytics Dashboard in another tab. Every customer conversation will show up in Live Sessions within seconds.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-left">
+    <div class="status-item">
+      <span class="status-dot dot-green"></span>
+      <span>Firebase connected</span>
+    </div>
+    <div class="status-item">
+      <span class="status-dot" id="s-key-dot" style="background:#d4d0c8"></span>
+      <span id="s-key-label">No API key</span>
+    </div>
+    <div class="mode-indicator" id="mode-indicator">
+      🤖 Claude AI Mode
+    </div>
+  </div>
+  <div class="status-right">cs-daily-reports-default-rtdb · /chatSessions</div>
+</div>
+
+<script>
+var currentBot = 'claude';
+var claudeLoaded = false;
+var ruleLoaded = false;
+
+function selectBot(type) {
+  currentBot = type;
+  document.getElementById('card-claude').className = 'selector-card' + (type==='claude'?' active':'');
+  document.getElementById('card-rule').className = 'selector-card' + (type==='rule'?' active-dark':'');
+  document.getElementById('api-section').className = 'api-section' + (type==='claude'?' visible':'');
+  var btn = document.getElementById('launch-btn');
+  if (type==='claude') {
+    btn.className = 'launch-btn claude';
+    btn.innerHTML = '💬 Launch Claude AI Chatbot';
+    document.getElementById('mode-indicator').innerHTML = '🤖 Claude AI Mode';
+  } else {
+    btn.className = 'launch-btn rule';
+    btn.innerHTML = '⚡ Launch Rule-Based Chatbot';
+    document.getElementById('mode-indicator').innerHTML = '⚡ Rule-Based Mode';
+  }
+}
+
+function saveKey() {
+  var val = document.getElementById('api-key-field').value.trim();
+  if (!val) return;
+  localStorage.setItem('cnc_api_key', val);
+  document.getElementById('key-hint').textContent = '✓ Key saved: ' + val.slice(0,14) + '…' + val.slice(-4);
+  document.getElementById('s-key-dot').className = 'status-dot dot-green';
+  document.getElementById('s-key-label').textContent = 'API key saved';
+}
+
+function launchChat() {
+  if (currentBot === 'claude') {
+    if (!claudeLoaded) {
+      loadScript('cnc_claude_chatbot_shopify.html');
+      claudeLoaded = true;
+    } else if (window.cncChat) {
+      cncChat.toggle();
+    }
+  } else {
+    if (!ruleLoaded) {
+      loadScript('cnc_rulebased_chatbot_shopify.html');
+      ruleLoaded = true;
+    } else if (window.cncRbChat) {
+      cncRbChat.toggle();
+    }
+  }
+}
+
+function loadScript(file) {
+  // For the test page, we inline the chatbot logic
+  // In production, this is embedded directly in theme.liquid
+  fetch(file)
+    .then(function(r){ return r.text(); })
+    .then(function(html) {
+      // Extract and inject the script tag
+      var div = document.createElement('div');
+      div.innerHTML = html;
+      var scripts = div.querySelectorAll('script');
+      scripts.forEach(function(s) {
+        var newScript = document.createElement('script');
+        newScript.textContent = s.textContent;
+        document.body.appendChild(newScript);
+      });
+      // Auto-open after short delay
+      setTimeout(function() {
+        if (currentBot==='claude' && window.cncChat) cncChat.toggle();
+        if (currentBot==='rule' && window.cncRbChat) cncRbChat.toggle();
+      }, 200);
+    })
+    .catch(function() {
+      // If files aren't co-located, show inline fallback message
+      alert('To test chatbots, make sure all 4 HTML files are in the same folder, then open this page from a local server or GitHub Pages.\n\nFor now, check that cnc_claude_chatbot_shopify.html or cnc_rulebased_chatbot_shopify.html is in the same directory.');
+    });
+}
+
+// Load saved key
+window.addEventListener('DOMContentLoaded', function() {
+  var key = localStorage.getItem('cnc_api_key') || '';
+  if (key) {
+    document.getElementById('api-key-field').value = key;
+    document.getElementById('key-hint').textContent = '✓ Key saved: ' + key.slice(0,14)+'…'+key.slice(-4);
+    document.getElementById('s-key-dot').className = 'status-dot dot-green';
+    document.getElementById('s-key-label').textContent = 'API key saved';
+  }
+});
+</script>
+
+</body>
+</html>
