@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Electric — AI Chatbot v2 Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg: #0a0908;
+  --bg2: #0f0e0c;
+  --bg3: #141210;
+  --border: rgba(255,255,255,0.06);
+  --orange: #ff6b00;
+  --amber: #ffaa00;
+  --text: #e8e4dc;
+  --text2: #9b9590;
+  --text3: #5a5550;
+  --green: #00d084;
+}
+
+body { background:var(--bg); color:var(--text); font-family:'Outfit',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+/* ANIMATED BG */
+.bg-grid {
+  position:fixed; inset:0; z-index:0;
+  background-image:
+    linear-gradient(rgba(255,107,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,0,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+}
+
+.bg-glow {
+  position:fixed; z-index:0; pointer-events:none;
+  border-radius:50%;
+  animation:glowMove 8s ease-in-out infinite alternate;
+}
+
+.bg-glow-1 {
+  width:500px; height:500px;
+  background:radial-gradient(circle, rgba(255,107,0,0.08) 0%, transparent 70%);
+  top:-100px; right:-100px;
+}
+
+.bg-glow-2 {
+  width:400px; height:400px;
+  background:radial-gradient(circle, rgba(255,170,0,0.05) 0%, transparent 70%);
+  bottom:-50px; left:-100px;
+  animation-delay:-4s;
+}
+
+@keyframes glowMove {
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(30px,20px) scale(1.1)}
+}
+
+/* TOPBAR */
+.topbar {
+  position:sticky; top:0; z-index:50;
+  padding:0 40px; height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(10,9,8,0.8); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+
+.topbar-logo { display:flex; align-items:center; gap:10px; }
+
+.logo-mark {
+  width:34px; height:34px; border-radius:9px;
+  background:linear-gradient(135deg,var(--orange),var(--amber));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:#0a0908;
+  box-shadow:0 4px 12px rgba(255,107,0,0.3);
+}
+
+.logo-name { font-family:'Syne',sans-serif; font-size:15px; font-weight:600; letter-spacing:-0.2px; }
+.logo-sub { font-size:11px; color:var(--text3); margin-top:1px; }
+
+.topbar-badge {
+  background:rgba(255,107,0,0.1); border:1px solid rgba(255,107,0,0.25);
+  border-radius:20px; padding:4px 12px;
+  font-size:11px; font-weight:600; color:var(--orange);
+  font-family:'Outfit',monospace; letter-spacing:0.5px;
+  animation:badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse{0%,100%{opacity:1}50%{opacity:0.7}}
+
+/* MAIN */
+.main { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:56px 32px 160px; }
+
+/* HERO */
+.hero { margin-bottom:48px; }
+
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(255,107,0,0.08); border:1px solid rgba(255,107,0,0.2);
+  border-radius:20px; padding:5px 14px; margin-bottom:20px;
+  font-size:11px; font-weight:600; color:var(--orange); letter-spacing:1px; text-transform:uppercase;
+}
+
+.hero-title {
+  font-family:'Syne',sans-serif; font-size:42px; font-weight:800;
+  line-height:1.1; letter-spacing:-1.5px; margin-bottom:14px;
+}
+
+.hero-title span {
+  background:linear-gradient(90deg,var(--orange),var(--amber));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.hero-sub { font-size:15px; color:var(--text2); line-height:1.65; max-width:500px; }
+
+/* KEY SECTION */
+.key-section {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:14px; padding:22px 24px; margin-bottom:28px;
+  position:relative; overflow:hidden;
+}
+.key-section::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--orange),var(--amber),transparent);
+}
+
+.key-label { font-size:11px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+.key-desc { font-size:13px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+
+.key-row { display:flex; gap:10px; }
+
+.key-input {
+  flex:1; background:#1a1815; border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:10px; padding:10px 14px;
+  font-family:'Outfit',monospace; font-size:13px; color:var(--text);
+  outline:none; transition:border-color 0.15s;
+}
+.key-input:focus { border-color:rgba(255,107,0,0.4); }
+.key-input::placeholder { color:var(--text3); }
+
+.key-btn {
+  background:linear-gradient(135deg,var(--orange),var(--amber));
+  color:#0a0908; border:none; border-radius:10px; padding:10px 20px;
+  font-family:'Syne',sans-serif; font-size:13px; font-weight:700;
+  cursor:pointer; white-space:nowrap; transition:all 0.15s;
+  box-shadow:0 4px 12px rgba(255,107,0,0.3);
+}
+.key-btn:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,107,0,0.4); }
+
+.key-status { font-size:11.5px; color:var(--text3); margin-top:8px; font-family:'Outfit',monospace; }
+.key-status.ok { color:var(--green); }
+.key-status.err { color:#ff4040; }
+
+/* LAUNCH */
+.launch-btn {
+  width:100%; padding:16px; border-radius:14px; border:none;
+  background:linear-gradient(135deg,var(--orange),var(--amber));
+  color:#0a0908; font-family:'Syne',sans-serif; font-size:15px; font-weight:700;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:all 0.2s; margin-bottom:36px;
+  box-shadow:0 8px 32px rgba(255,107,0,0.3);
+  position:relative; overflow:hidden;
+}
+.launch-btn::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+}
+.launch-btn:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(255,107,0,0.4); }
+.launch-btn:active { transform:translateY(0); }
+
+/* TEST CHIPS */
+.chips-label {
+  font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:1px;
+  color:var(--text3); margin-bottom:12px; font-family:'Outfit',monospace;
+}
+.chips-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:36px; }
+
+.chip {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:10px; padding:13px 16px; cursor:pointer;
+  transition:all 0.18s; text-align:left;
+  position:relative; overflow:hidden;
+}
+
+.chip::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,107,0,0.05),transparent);
+  opacity:0; transition:opacity 0.18s;
+}
+
+.chip:hover { border-color:rgba(255,107,0,0.3); }
+.chip:hover::before { opacity:1; }
+
+.chip-tag { font-size:10px; color:var(--orange); font-weight:600; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:4px; font-family:'Outfit',monospace; }
+.chip-text { font-size:13px; color:var(--text2); line-height:1.4; }
+.chip:hover .chip-text { color:var(--text); }
+
+/* FEATURE BADGES */
+.features { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:36px; }
+
+.feat-badge {
+  display:flex; align-items:center; gap:6px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:8px; padding:7px 12px;
+  font-size:12px; color:var(--text2);
+}
+.feat-badge .fi { font-size:14px; }
+
+/* INSTALL */
+.install {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:14px; overflow:hidden;
+  position:relative;
+}
+.install::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,var(--orange),transparent);
+}
+
+.install-hd {
+  padding:16px 22px; border-bottom:1px solid var(--border);
+  font-family:'Syne',sans-serif; font-size:14px; font-weight:600;
+}
+
+.install-steps { padding:16px 22px; display:flex; flex-direction:column; gap:12px; }
+
+.inst-step { display:flex; gap:12px; }
+.inst-num {
+  width:24px; height:24px; border-radius:50%;
+  background:linear-gradient(135deg,var(--orange),var(--amber));
+  color:#0a0908; display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:800; flex-shrink:0; margin-top:1px;
+  font-family:'Syne',sans-serif;
+}
+.inst-text { font-size:13px; color:var(--text2); line-height:1.55; }
+.inst-text strong { color:var(--text); }
+code { font-family:monospace; font-size:11.5px; background:rgba(255,107,0,0.1); padding:1px 6px; border-radius:4px; color:var(--orange); }
+
+/* STATUS BAR */
+.statusbar {
+  position:fixed; bottom:0; left:0; right:0; z-index:40;
+  background:rgba(10,9,8,0.9); backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:10px 32px; display:flex; align-items:center; justify-content:space-between;
+}
+.sb-left { display:flex; gap:20px; align-items:center; }
+.sb-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); }
+.sdot { width:7px; height:7px; border-radius:50%; }
+.sdot-green { background:var(--green); box-shadow:0 0 6px var(--green); }
+.sdot-grey { background:var(--text3); }
+.sdot-orange { background:var(--orange); box-shadow:0 0 6px var(--orange); animation:badgePulse 1.5s ease infinite; }
+.sb-right { font-size:10.5px; color:var(--text3); font-family:monospace; }
+
+/* CHATBOT WIDGET STYLES */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap');
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="logo-mark">CNC</div>
+    <div>
+      <div class="logo-name">CNC Electric Pakistan</div>
+      <div class="logo-sub">AI Chatbot v2</div>
+    </div>
+  </div>
+  <div class="topbar-badge">⚡ TEST ENVIRONMENT</div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span>🤖</span> Fully Trained on www.cncelectric.pk
+    </div>
+    <div class="hero-title">
+      Your AI Sales<br><span>Assistant is live.</span>
+    </div>
+    <div class="hero-sub">
+      Trained on all CNC Electric products, prices, FAQs, warranty, contact info, and more. Enter your API key and click Launch to test it.
+    </div>
+  </div>
+
+  <!-- KEY -->
+  <div class="key-section">
+    <div class="key-label">🔑 Anthropic API Key</div>
+    <div class="key-desc">Stored in your browser only — sent directly to Anthropic. Never saved on any server.</div>
+    <div class="key-row">
+      <input class="key-input" type="password" id="keyInput" placeholder="sk-ant-api03-…">
+      <button class="key-btn" onclick="saveKey()">Save Key</button>
+    </div>
+    <div class="key-status" id="keyStatus">No key saved yet</div>
+  </div>
+
+  <!-- LAUNCH -->
+  <button class="launch-btn" onclick="launchChat()">
+    ⚡ Launch AI Chatbot — bubble appears bottom-right ↘
+  </button>
+
+  <!-- FEATURES -->
+  <div class="features">
+    <div class="feat-badge"><span class="fi">🧠</span> Trained on full product catalogue</div>
+    <div class="feat-badge"><span class="fi">💰</span> Knows all prices & discounts</div>
+    <div class="feat-badge"><span class="fi">🛡️</span> 5-Year warranty info</div>
+    <div class="feat-badge"><span class="fi">☀️</span> Solar bundle expert</div>
+    <div class="feat-badge"><span class="fi">🇵🇰</span> Urdu & English</div>
+    <div class="feat-badge"><span class="fi">📊</span> Analytics logging</div>
+  </div>
+
+  <!-- TEST CHIPS -->
+  <div class="chips-label">Suggested test messages — click to send</div>
+  <div class="chips-grid">
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Pricing → Lead ↑↑</div>
+      <div class="chip-text">AC 2 Pole MCB ka price kya hai?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Solar</div>
+      <div class="chip-text">8KW solar system ke liye konsa DB bundle chahiye?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">WiFi Smart</div>
+      <div class="chip-text">Do you have WiFi circuit breakers with app control?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">ATS</div>
+      <div class="chip-text">4 Pole 63A ATS price and specs?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Contact → Lead ↑↑↑</div>
+      <div class="chip-text">WhatsApp number chahiye bulk order ke liye</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Warranty</div>
+      <div class="chip-text">What is the warranty on your breakers?</div>
+    </div>
+  </div>
+
+  <!-- INSTALL -->
+  <div class="install">
+    <div class="install-hd">📦 Install on Shopify</div>
+    <div class="install-steps">
+      <div class="inst-step"><div class="inst-num">1</div><div class="inst-text"><strong>Online Store → Themes → Edit Code</strong> → open <code>theme.liquid</code></div></div>
+      <div class="inst-step"><div class="inst-num">2</div><div class="inst-text">Find <code>&lt;/body&gt;</code> at the bottom of the file</div></div>
+      <div class="inst-step"><div class="inst-num">3</div><div class="inst-text">Open <strong>cnc_ai_chatbot_v2_shopify.html</strong> — copy everything and paste just before <code>&lt;/body&gt;</code></div></div>
+      <div class="inst-step"><div class="inst-num">4</div><div class="inst-text">Save your API key in <strong>CNC_Analytics_Dashboard → Settings</strong> — the chatbot reads it automatically from localStorage</div></div>
+      <div class="inst-step"><div class="inst-num">5</div><div class="inst-text">Every conversation logs to your <strong>Analytics Dashboard</strong> in real-time</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <div class="sb-left">
+    <div class="sb-item"><span class="sdot sdot-green"></span>Firebase ready</div>
+    <div class="sb-item"><span class="sdot sdot-grey" id="keyDot"></span><span id="keyLabel">No API key</span></div>
+    <div class="sb-item"><span class="sdot sdot-orange"></span><span>Claude AI · Trained on cncelectric.pk</span></div>
+  </div>
+  <div class="sb-right">cs-daily-reports-default-rtdb · /chatSessions</div>
+</div>
+
+<!-- CHATBOT WIDGET — fully inline -->
+<script>
+(function(){
+'use strict';
+
+var CFG = {
+  apiKey: localStorage.getItem('cnc_api_key') || '',
+  db: 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
+  model: 'claude-sonnet-4-20250514',
+  maxTokens: 600,
+  welcome: 'Assalam o Alaikum! ⚡ I\'m the CNC Electric AI assistant.\n\nI can help you with products, prices, technical specs, solar bundles, warranty info, and more.\n\nWhat can I help you with today?'
+};
+
+var SYSTEM = `You are the official AI assistant for CNC Electric Pakistan (www.cncelectric.pk) — sole importer and distributor of authentic CNC Electric products in Pakistan since 2022, backed by Cognitive Solutions.
+
+== COMPANY INFO ==
+- Founded: CNC Electric brand 1988 in Yueqing, China
+- Pakistan operations since 2022
+- Address: 6-A, PECO Road, Adjacent to Bank Alfalah, Main PECO Road, Lahore, Punjab, Pakistan
+- Phone/WhatsApp: +92 326-1111376
+- Email: support@cncelectric.pk
+- After-Sales Support: Mr. Khubaib, +92 346-6741791
+- Social: @CNCElectricPakistan (Facebook, Instagram, TikTok, YouTube)
+- Order tracking: https://one.instaworld.pk/track
+- Certifications: ISO 9001, ISO 14001, OHSAS 18001, CE, CB, SEMKO, KEMA, TÜV
+- 100+ countries worldwide
+- Major clients: PTCL, Sapphire, Mughal Steel, Nishat, Shaukat Khanum Hospital, FFC
+
+== WARRANTY ==
+- 5-YEAR REPLACEMENT WARRANTY on ALL breakers
+- 100% original, certified to IEC and ISO standards
+
+== SHIPPING ==
+- Free delivery on orders over Rs. 10,000
+- Secure payments, easy returns
+
+== PRODUCT PRICES ==
+
+AC/DC CIRCUIT BREAKERS:
+- AC 1P MCB (2A–63A): Rs.425 | AC 1P MCB 100A: Rs.1,050
+- AC 1P+N MCB (10A–40A): Rs.825
+- AC 2P MCB (10A–63A): Rs.850 | AC 3P MCB: Rs.1,300 | AC 4P MCB: Rs.1,850
+- DC 1P 500V 125A: Rs.1,100 | DC 2P 500V 125A: Rs.2,500
+- DC 2P 500V (20A–63A): Rs.1,550 | DC 4P 1000V: Rs.3,300
+
+WI-FI SMART BREAKERS:
+- WiFi 1P 40A: Rs.5,400 | WiFi 2P 63A: Rs.7,650
+- WiFi 1P 32A/63A: Rs.7,500 | WiFi 2P 100A: Rs.8,500 | WiFi 4P 100A: Rs.10,700
+- WiFi 2P with Display: Rs.37,800 | WiFi 4P with Display: Rs.39,000
+- WiFi 2P 4G with Display: Rs.42,300 | WiFi 4P 4G with Display: Rs.48,200
+
+VA PROTECTION:
+- VA 2P (40A–80A): Rs.1,700 | VA 2P KWH 63A: Rs.2,300
+- VA WiFi KWH Smart 10-in-1: Rs.5,200 | VA 4P 3-Phase: Rs.6,000
+- VA 2P Double Relay 63A: Rs.3,200 | VA 4P 63A: Rs.6,000
+- DIN-Rail Multi-Function Meter: Rs.2,900 | Phase Switch 3-Phase: Rs.8,700
+
+ATS (AUTOMATIC TRANSFER SWITCHES):
+- 2P 63A YCQ1B: Rs.6,000 | 4P 63A YCQ1B: Rs.7,800
+- 4P 63A YCQR (V/A protection): Rs.9,350 | 2P 63A YCQR: Rs.8,250
+- 2P 100A YCQ4: Rs.5,500 | 4P 100A YCQ4: Rs.7,500
+- DC 2P 500V Solar ATS: Rs.6,900
+- 4P 200A–630A YCS1: Rs.17,000 | 4P YCQ9 Generator: Rs.15,000
+
+SPD (SURGE PROTECTION):
+- AC 4P 385V 20KA-40KA: Rs.4,800 | DC 3P 1500V Solar: Rs.8,600
+- DC SPD 1000V Cartridge: Rs.1,150 | DC 2P 600V: Rs.2,900
+- AC 2P 275V–750V: Rs.2,500 | DC 600V Cartridge: Rs.850
+- DC 2P 1000V: Rs.3,700 | AC 440V Cartridge: Rs.950 | AC 275V/385V Cartridge: Rs.700
+
+SOLAR DB BUNDLES:
+- 3KW Hybrid (Steel): Rs.12,285 | 6KW Hybrid (Steel): Rs.12,285
+- 8KW Hybrid: Rs.18,075 | 10KW On-Grid: Rs.14,350
+- 10KW On-Grid + SPD: Rs.18,050 | 12KW + SPD: Rs.26,350
+- 15KW + DC SPD: Rs.26,350 | 20KW + DC SPD: Rs.26,350 | 25KW + DC SPD: Rs.38,050
+
+INDUSTRIAL:
+- WiFi 3-Phase Energy Meter: Rs.35,000 | Time Relays: Rs.2,200
+- Shunt Trip Release: Rs.1,400 | Limit Switches: Rs.600–1,400
+- EV Charger 3.5kW Type 2: Rs.90,000 | EV Charger 7kW 3-Phase: Rs.105,000
+- Aerosol Fire Extinguisher (DIN Rail): Rs.2,500
+
+OTHER: DB Boxes (Plastic/Metal/Waterproof), Fuses (AC/DC), MCCB, ACB, RCBO, Changeovers, MTS, MC4 Connectors, Miniature Relays, Energy Meters, Magnetic Contactors, VFDs, Phase Sequence Relays, Cooling Fans, Cables, Timers, Thermostats, Voltage Regulators, Industrial Plugs & Sockets, Power Capacitors, Push Buttons
+
+== RESPONSE GUIDELINES ==
+- Reply in customer's language: Urdu or English (detect from their message)
+- Be warm, professional, helpful
+- Include sale price AND original price when mentioning prices
+- For orders: www.cncelectric.pk or WhatsApp +92 326-1111376
+- For technical support: Mr. Khubaib +92 346-6741791
+- For installation: C-Solar.pk
+- Mention 5-year warranty when discussing breakers
+- Keep replies 3-5 sentences unless full detail is needed
+- Free delivery on orders over Rs.10,000`;
+
+var KEYWORDS={'MCB/Distribution':['mcb','rccb','rcbo','circuit breaker','breaker'],'WiFi Smart':['wifi','wi-fi','smart breaker','app','remote'],'VA Protection':['va protection','voltage protection','va device'],'ATS/Transfer':['ats','transfer switch','changeover','mts','generator'],'SPD/Surge':['spd','surge','lightning'],'Solar Products':['solar','pv','dc breaker','mc4','solar db'],'MCCB/ACB':['mccb','acb','molded'],'Industrial':['vfd','contactor','relay','timer','energy meter','limit switch','ev charger'],'DB Boxes':['db box','distribution box','panel box'],'Fire Safety':['fire extinguisher','fire','aerosol'],'Pricing Inquiry':['price','cost','rate','kitna','how much','Rs','rupee'],'Purchase Intent':['order','buy','purchase','cart','quantity','bulk'],'Warranty':['warranty','guarantee','replacement'],'Contact Request':['whatsapp','call','phone','contact','number'],'Dealership':['dealer','distributor','reseller','agent']};
+
+var sessionId=null,msgCount=0,topics=[],history=[],isOpen=false,isTyping=false,firstOpen=true,inactTimer=null;
+
+// Inject chatbot CSS
+var css=document.createElement('style');
+css.textContent=`
+#cnce-bubble{position:fixed;bottom:28px;right:28px;z-index:99999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#ff6b00,#ffaa00);border:none;cursor:pointer;box-shadow:0 8px 32px rgba(255,107,0,0.4),0 0 0 0 rgba(255,107,0,0.3);display:flex;align-items:center;justify-content:center;animation:cnce-pulse2 3s ease-in-out infinite;transition:transform 0.2s,box-shadow 0.2s;}
+#cnce-bubble:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(255,107,0,0.5);}
+#cnce-bubble.open{animation:none;background:linear-gradient(135deg,#1a1917,#2d2c29);box-shadow:0 8px 32px rgba(26,25,23,0.3);}
+@keyframes cnce-pulse2{0%,100%{box-shadow:0 8px 32px rgba(255,107,0,0.4),0 0 0 0 rgba(255,107,0,0.3)}50%{box-shadow:0 8px 32px rgba(255,107,0,0.5),0 0 0 12px rgba(255,107,0,0)}}
+.cnce-ic{position:absolute;transition:all 0.25s cubic-bezier(.4,0,.2,1);}
+.cnce-ic-chat{opacity:1;transform:scale(1) rotate(0deg);}
+.cnce-ic-close{opacity:0;transform:scale(0.5) rotate(-90deg);}
+#cnce-bubble.open .cnce-ic-chat{opacity:0;transform:scale(0.5) rotate(90deg);}
+#cnce-bubble.open .cnce-ic-close{opacity:1;transform:scale(1) rotate(0deg);}
+#cnce-notify{position:absolute;top:-5px;right:-5px;width:22px;height:22px;border-radius:50%;background:#ff3b30;color:white;font-size:11px;font-weight:700;display:none;align-items:center;justify-content:center;border:2.5px solid #0a0908;animation:cnce-nb 1s ease infinite alternate;}
+@keyframes cnce-nb{from{transform:scale(1)}to{transform:scale(1.15)}}
+#cnce-win{position:fixed;bottom:100px;right:28px;z-index:99998;width:390px;max-width:calc(100vw - 32px);background:#0f0e0c;border-radius:20px;border:1px solid rgba(255,107,0,0.2);display:none;flex-direction:column;max-height:calc(100vh - 120px);overflow:hidden;opacity:0;transform:translateY(20px) scale(0.95);transition:opacity 0.28s cubic-bezier(.4,0,.2,1),transform 0.28s cubic-bezier(.4,0,.2,1);box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(255,107,0,0.1),inset 0 1px 0 rgba(255,255,255,0.05);}
+#cnce-win.show{display:flex;}#cnce-win.visible{opacity:1;transform:none;}
+#cnce-hd{padding:16px 18px;background:linear-gradient(135deg,#1a0f00,#0f0e0c);border-bottom:1px solid rgba(255,107,0,0.15);position:relative;overflow:hidden;flex-shrink:0;}
+#cnce-hd::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at top left,rgba(255,107,0,0.15) 0%,transparent 60%);pointer-events:none;}
+.cnce-hd-top{display:flex;align-items:center;gap:12px;position:relative;}
+.cnce-logo-wrap{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#ff6b00,#ffaa00);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(255,107,0,0.4);}
+.cnce-logo-text{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#0f0e0c;letter-spacing:-0.5px;}
+.cnce-hd-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#ffffff;letter-spacing:-0.2px;}
+.cnce-hd-status{display:flex;align-items:center;gap:5px;margin-top:2px;}
+.cnce-hd-sdot{width:6px;height:6px;border-radius:50%;background:#00d084;box-shadow:0 0 6px #00d084;animation:cnce-sd 2s ease-in-out infinite;flex-shrink:0;}
+@keyframes cnce-sd{0%,100%{opacity:1}50%{opacity:0.5}}
+.cnce-hd-stext{font-family:'Outfit',sans-serif;font-size:11.5px;color:rgba(255,255,255,0.5);}
+.cnce-warranty-tag{background:rgba(255,107,0,0.15);border:1px solid rgba(255,107,0,0.3);border-radius:20px;padding:4px 10px;margin-top:10px;display:inline-flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;font-size:10.5px;color:#ff9a3c;position:relative;}
+#cnce-msgs{flex:1;overflow-y:auto;padding:16px 14px 8px;display:flex;flex-direction:column;gap:10px;background:#0f0e0c;min-height:200px;}
+#cnce-msgs::-webkit-scrollbar{width:3px;}#cnce-msgs::-webkit-scrollbar-thumb{background:rgba(255,107,0,0.3);border-radius:2px;}
+.cnce-msg{display:flex;flex-direction:column;max-width:90%;animation:cnce-mi 0.22s cubic-bezier(.4,0,.2,1);}
+@keyframes cnce-mi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.cnce-msg.bot{align-self:flex-start;}.cnce-msg.usr{align-self:flex-end;}
+.cnce-bm{padding:11px 15px;border-radius:14px;font-family:'Outfit',sans-serif;font-size:13.5px;line-height:1.55;}
+.cnce-msg.bot .cnce-bm{background:#1a1917;border:1px solid rgba(255,255,255,0.07);border-radius:4px 14px 14px 14px;color:#e8e4dc;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.cnce-msg.usr .cnce-bm{background:linear-gradient(135deg,#ff6b00,#ff8f00);color:#fff;border-radius:14px 4px 14px 14px;box-shadow:0 4px 16px rgba(255,107,0,0.3);}
+.cnce-mt{font-family:'Outfit',sans-serif;font-size:10px;margin-top:3px;padding:0 2px;}
+.cnce-msg.bot .cnce-mt{color:rgba(255,255,255,0.2);}.cnce-msg.usr .cnce-mt{color:rgba(255,255,255,0.5);text-align:right;}
+#cnce-typing{padding:0 14px 6px;display:none;}
+.cnce-tb{display:inline-flex;gap:5px;align-items:center;background:#1a1917;border:1px solid rgba(255,255,255,0.07);border-radius:4px 14px 14px 14px;padding:12px 16px;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.cnce-d{width:7px;height:7px;border-radius:50%;background:linear-gradient(135deg,#ff6b00,#ffaa00);animation:cnce-db 1.3s ease-in-out infinite;}
+.cnce-d:nth-child(2){animation-delay:.18s}.cnce-d:nth-child(3){animation-delay:.36s}
+@keyframes cnce-db{0%,80%,100%{transform:scale(0.6);opacity:0.4}40%{transform:scale(1.1);opacity:1}}
+#cnce-qr{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 10px;}
+.cnce-qb{background:rgba(255,107,0,0.08);border:1px solid rgba(255,107,0,0.25);border-radius:20px;padding:6px 13px;font-family:'Outfit',sans-serif;font-size:12px;color:#ff9a3c;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.cnce-qb:hover{background:rgba(255,107,0,0.18);border-color:rgba(255,107,0,0.5);color:#ffba6a;}
+#cnce-err{margin:0 14px 8px;padding:10px 14px;background:rgba(255,59,48,0.1);border:1px solid rgba(255,59,48,0.25);border-radius:10px;font-family:'Outfit',sans-serif;font-size:12.5px;color:#ff6b5e;display:none;line-height:1.5;}
+#cnce-ia{padding:12px 14px;border-top:1px solid rgba(255,255,255,0.05);background:#141210;display:flex;gap:10px;align-items:flex-end;flex-shrink:0;}
+#cnce-inp{flex:1;background:#1e1c18;border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 14px;font-family:'Outfit',sans-serif;font-size:13.5px;color:#e8e4dc;resize:none;outline:none;line-height:1.45;max-height:80px;overflow-y:auto;transition:border-color 0.15s,background 0.15s;}
+#cnce-inp::placeholder{color:rgba(255,255,255,0.25);}#cnce-inp:focus{border-color:rgba(255,107,0,0.5);background:#221e18;}
+#cnce-snd{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#ff6b00,#ff9a00);border:none;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:0 4px 12px rgba(255,107,0,0.3);}
+#cnce-snd:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(255,107,0,0.4);}
+#cnce-snd:active{transform:scale(0.97);}#cnce-snd:disabled{background:#2a2826;box-shadow:none;cursor:not-allowed;}
+#cnce-ft{padding:8px 14px;border-top:1px solid rgba(255,255,255,0.04);background:#0f0e0c;font-family:'Outfit',sans-serif;font-size:10.5px;color:rgba(255,255,255,0.2);text-align:center;flex-shrink:0;}
+@media(max-width:480px){#cnce-win{right:12px;bottom:82px;width:calc(100vw - 24px);}#cnce-bubble{right:16px;bottom:16px;}}
+`;
+document.head.appendChild(css);
+
+// HTML
+var root=document.createElement('div');
+root.innerHTML=`
+<button id="cnce-bubble" onclick="cnceToggle()" aria-label="Chat with CNC Electric">
+  <svg class="cnce-ic cnce-ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.477 2 2 6.25 2 11.5c0 2.232.82 4.28 2.185 5.88L3 21l4.042-1.274A10.08 10.08 0 0012 21c5.523 0 10-4.25 10-9.5S17.523 2 12 2z" fill="white"/><circle cx="8" cy="11.5" r="1.2" fill="#ff6b00"/><circle cx="12" cy="11.5" r="1.2" fill="#ff6b00"/><circle cx="16" cy="11.5" r="1.2" fill="#ff6b00"/></svg>
+  <svg class="cnce-ic cnce-ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <div id="cnce-notify">1</div>
+</button>
+<div id="cnce-win">
+  <div id="cnce-hd">
+    <div class="cnce-hd-top">
+      <div class="cnce-logo-wrap"><span class="cnce-logo-text">CNC</span></div>
+      <div><div class="cnce-hd-name">CNC Electric Pakistan</div><div class="cnce-hd-status"><span class="cnce-hd-sdot"></span><span class="cnce-hd-stext">AI Assistant · Always available</span></div></div>
+    </div>
+    <div class="cnce-warranty-tag">🛡️ 5-Year Replacement Warranty on all Breakers</div>
+  </div>
+  <div id="cnce-msgs"></div>
+  <div id="cnce-typing"><div class="cnce-tb"><div class="cnce-d"></div><div class="cnce-d"></div><div class="cnce-d"></div></div></div>
+  <div id="cnce-qr"></div>
+  <div id="cnce-err"></div>
+  <div id="cnce-ia">
+    <textarea id="cnce-inp" placeholder="Ask about products, prices, specs…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cnceS();}"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+    <button id="cnce-snd" onclick="cnceS()">
+      <svg width="17" height="17" viewBox="0 0 17 17" fill="none"><path d="M15 8.5L2 2l3 6.5-3 6.5 13-6.5z" fill="white"/></svg>
+    </button>
+  </div>
+  <div id="cnce-ft">Powered by Claude AI · CNC Electric Pakistan © 2024</div>
+</div>`;
+document.body.appendChild(root);
+
+function cnceToggle(){
+  isOpen=!isOpen;
+  document.getElementById('cnce-bubble').classList.toggle('open',isOpen);
+  document.getElementById('cnce-notify').style.display='none';
+  var win=document.getElementById('cnce-win');
+  if(isOpen){
+    win.style.display='flex';
+    setTimeout(function(){win.classList.add('visible');},10);
+    if(firstOpen){firstOpen=false;addWelcome();}
+    setTimeout(function(){var i=document.getElementById('cnce-inp');if(i)i.focus();},280);
+  } else {
+    win.classList.remove('visible');
+    setTimeout(function(){win.style.display='none';},280);
+  }
+}
+
+function addWelcome(){
+  document.getElementById('cnce-msgs').innerHTML='';
+  addBot(CFG.welcome);
+  showQR(['Product Prices 💰','Solar Bundles ☀️','WiFi Breakers 📱','ATS / Transfer Switch','5-Year Warranty 🛡️','Contact Support']);
+}
+
+function cnceS(){
+  var inp=document.getElementById('cnce-inp');
+  var txt=inp.value.trim();
+  if(!txt||isTyping) return;
+  inp.value=''; inp.style.height='auto';
+  document.getElementById('cnce-qr').innerHTML='';
+  document.getElementById('cnce-err').style.display='none';
+  addUsr(txt);
+  if(!msgCount) startSession();
+  msgCount++;
+  callAPI(txt);
+}
+
+function addBot(text){
+  var el=document.getElementById('cnce-msgs');
+  var d=document.createElement('div');
+  d.className='cnce-msg bot';
+  d.innerHTML='<div class="cnce-bm">'+fmt(text)+'</div><div class="cnce-mt">'+now()+'</div>';
+  el.appendChild(d); scrollD();
+}
+
+function addUsr(text){
+  var el=document.getElementById('cnce-msgs');
+  var d=document.createElement('div');
+  d.className='cnce-msg usr';
+  d.innerHTML='<div class="cnce-bm">'+esc(text)+'</div><div class="cnce-mt">'+now()+'</div>';
+  el.appendChild(d); scrollD();
+}
+
+function showQR(arr){
+  var el=document.getElementById('cnce-qr');
+  el.innerHTML=arr.map(function(r){
+    var clean=r.replace(/[⚡☀️📱🛡️💰]/g,'').trim();
+    return '<button class="cnce-qb" onclick="document.getElementById(\'cnce-inp\').value=\''+esc(clean)+'\';cnceS()">'+r+'</button>';
+  }).join('');
+}
+
+function callAPI(text){
+  var key=localStorage.getItem('cnc_api_key')||CFG.apiKey;
+  if(!key){showErr('No API key saved. Enter your key above and click Save Key.');return;}
+  history.push({role:'user',content:text});
+  setTyping(true);
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:CFG.model,max_tokens:CFG.maxTokens,system:SYSTEM,messages:history})
+  })
+  .then(function(r){if(!r.ok)return r.json().then(function(e){throw{s:r.status,m:(e.error&&e.error.message)||'API error '+r.status};});return r.json();})
+  .then(function(d){
+    setTyping(false);
+    var reply=d.content&&d.content[0]&&d.content[0].text;
+    if(!reply)throw{m:'Empty response'};
+    history.push({role:'assistant',content:reply});
+    addBot(reply);
+    logMsg(text,reply);
+    setTimeout(function(){showContextQR(text+' '+reply);},300);
+  })
+  .catch(function(e){
+    setTyping(false);
+    var m=e.m||e.message||'Unknown error';
+    if(e.s===401||/auth|invalid|key/i.test(m)) showErr('Invalid API key. Check your key above and re-save.');
+    else if(e.s===429) showErr('Rate limit — please wait a moment and try again.');
+    else showErr('Error: '+m);
+  });
+}
+
+function showContextQR(combined){
+  var lower=combined.toLowerCase();
+  var qrs=[];
+  if(/price|cost|rate|how much|kitna/i.test(lower)) qrs=['View All Products','Place Order','WhatsApp Us'];
+  else if(/solar|pv/i.test(lower)) qrs=['Solar DB Bundles','DC Breakers','MC4 Connectors'];
+  else if(/ats|transfer|generator/i.test(lower)) qrs=['ATS Prices','Generator Changeover','Contact Support'];
+  else if(/wifi|smart|remote/i.test(lower)) qrs=['WiFi Breaker Prices','VA Protection','Place Order'];
+  else if(/order|buy|purchase/i.test(lower)) qrs=['Visit Website','WhatsApp Order','Track My Order'];
+  else if(/warranty|guarantee/i.test(lower)) qrs=['Contact Support','Product Details','Order Now'];
+  else qrs=['Product Catalogue','Get a Quote','WhatsApp Support'];
+  if(qrs.length) showQR(qrs);
+}
+
+function setTyping(on){
+  isTyping=on;
+  document.getElementById('cnce-snd').disabled=on;
+  document.getElementById('cnce-typing').style.display=on?'block':'none';
+  if(on) scrollD();
+}
+
+function showErr(m){
+  var el=document.getElementById('cnce-err');
+  el.innerHTML='⚠ '+esc(m);
+  el.style.display='block'; scrollD();
+}
+
+function scrollD(){var el=document.getElementById('cnce-msgs');setTimeout(function(){el.scrollTop=el.scrollHeight;},50);}
+function fmt(t){return esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code style="background:rgba(255,107,0,0.15);padding:1px 5px;border-radius:3px;font-size:12px;color:#ff9a3c">$1</code>').replace(/\n/g,'<br>');}
+function esc(s){return(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function now(){return new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'});}
+
+function startSession(){
+  sessionId='cs_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);
+  topics=[];
+  fb('PUT','/chatSessions/'+sessionId+'.json',{id:sessionId,startTime:new Date().toISOString(),status:'active',totalMessages:0,lastMessage:null,endTime:null,topics:[],leadScore:0,notes:'',flagged:false,referrer:document.referrer||'test',page:'/test-v2',userAgent:navigator.userAgent,screenSize:screen.width+'x'+screen.height,language:navigator.language,chatType:'claude-ai-v2'});
+}
+
+function logMsg(q,a){
+  if(!sessionId)return;
+  fb('POST','/chatSessions/'+sessionId+'/messages.json',{q:q,a:a,t:new Date().toISOString()});
+  var combined=(q+' '+a).toLowerCase();
+  Object.keys(KEYWORDS).forEach(function(cat){if(KEYWORDS[cat].some(function(k){return combined.includes(k);})&&topics.indexOf(cat)<0)topics.push(cat);});
+  var sc=0;
+  if(/price|cost|rate|kitna/.test(combined))sc+=3;
+  if(/order|buy|purchase|bulk/.test(combined))sc+=5;
+  if(/whatsapp|call|phone|contact/.test(combined))sc+=4;
+  if(/dealer|distributor/.test(combined))sc+=4;
+  if(msgCount>3)sc+=2; if(msgCount>6)sc+=2;
+  fb('PATCH','/chatSessions/'+sessionId+'.json',{lastMessage:new Date().toISOString(),totalMessages:msgCount,topics:topics,leadScore:sc,status:'active'});
+  clearTimeout(inactTimer);
+  inactTimer=setTimeout(function(){fb('PATCH','/chatSessions/'+sessionId+'.json',{status:'ended',endTime:new Date().toISOString()});},5*60*1000);
+}
+
+function fb(method,path,data){var xhr=new XMLHttpRequest();xhr.open(method,CFG.db+path,true);xhr.setRequestHeader('Content-Type','application/json');xhr.send(JSON.stringify(data));}
+
+window.addEventListener('beforeunload',function(){if(!sessionId)return;navigator.sendBeacon(CFG.db+'/chatSessions/'+sessionId+'.json',JSON.stringify({status:'ended',endTime:new Date().toISOString()}));});
+setTimeout(function(){if(!isOpen){var n=document.getElementById('cnce-notify');if(n)n.style.display='flex';}},4000);
+
+})();
+
+// ── PAGE JS ────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded',function(){
+  var saved=localStorage.getItem('cnc_api_key')||'';
+  if(saved){ document.getElementById('keyInput').value=saved; updateKeyUI(saved); }
+});
+
+function saveKey(){
+  var v=document.getElementById('keyInput').value.trim();
+  if(!v){setKeyErr('Please enter your API key');return;}
+  if(!v.startsWith('sk-')){setKeyErr('Key should start with sk-ant-… — check you copied it correctly');return;}
+  localStorage.setItem('cnc_api_key',v);
+  updateKeyUI(v);
+}
+
+function updateKeyUI(key){
+  document.getElementById('keyStatus').textContent='✓ Key saved: '+key.slice(0,16)+'…'+key.slice(-4);
+  document.getElementById('keyStatus').className='key-status ok';
+  document.getElementById('keyDot').className='sdot sdot-orange';
+  document.getElementById('keyLabel').textContent='API key saved';
+}
+
+function setKeyErr(msg){
+  document.getElementById('keyStatus').textContent='✗ '+msg;
+  document.getElementById('keyStatus').className='key-status err';
+}
+
+function launchChat(){
+  var key=localStorage.getItem('cnc_api_key');
+  if(!key){setKeyErr('Please save your API key first');document.getElementById('keyInput').focus();return;}
+  document.getElementById('cnce-bubble').style.display='flex';
+  if(typeof cnceToggle==='function') setTimeout(cnceToggle,100);
+}
+
+function sendChip(el){
+  var text=el.querySelector('.chip-text').textContent;
+  var key=localStorage.getItem('cnc_api_key');
+  if(!key){setKeyErr('Save your API key first then click the chip again');document.getElementById('keyInput').focus();return;}
+  var bubble=document.getElementById('cnce-bubble');
+  if(!bubble||bubble.style.display==='none'){
+    launchChat();
+    setTimeout(function(){var i=document.getElementById('cnce-inp');if(i){i.value=text;cnceS();}},600);
+  } else {
+    if(typeof cnceToggle==='function'&&!document.getElementById('cnce-win').classList.contains('visible')){cnceToggle();setTimeout(function(){var i=document.getElementById('cnce-inp');if(i){i.value=text;cnceS();}},400);}
+    else{var i=document.getElementById('cnce-inp');if(i){i.value=text;cnceS();}}
+  }
+}
+</script>
+
+</body>
+</html>
