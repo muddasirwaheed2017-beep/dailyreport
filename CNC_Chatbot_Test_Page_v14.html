@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>CNC Electric — Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--red:#d42027;--red2:#ff3b30;--fd:'Sora',sans-serif;--fm:'Space Mono',monospace}
+[data-theme="light"]{--bg:#f8f7f4;--fg:#1a1a1f;--muted:#5c5c64;--gb:rgba(0,0,0,.1);--gb2:rgba(0,0,0,.16);--card:#ffffff;--panel:#ffffff}
+[data-theme="dark"]{--bg:#0a0a0c;--fg:#f5f2ec;--muted:#9a9790;--gb:rgba(255,255,255,.1);--gb2:rgba(255,255,255,.18);--card:rgba(255,255,255,.06);--panel:#111114}
+
+html,body{height:100%;background:var(--bg);font-family:var(--fd);color:var(--fg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── PAGE ── */
+.page{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 20px 120px;
+  text-align:center;
+}
+
+.logo{font-size:26px;font-weight:800;letter-spacing:2px;color:var(--red);margin-bottom:4px}
+.logo span{color:var(--fg);font-weight:300}
+.tagline{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-family:var(--fm);margin-bottom:36px}
+
+/* theme toggle */
+.tg-wrap{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:32px;font-size:13px;color:var(--muted)}
+.tg{width:46px;height:24px;border-radius:99px;background:var(--gb);border:1.5px solid var(--gb2);cursor:pointer;position:relative;flex-shrink:0;transition:all .3s}
+.tg::after{content:'';width:16px;height:16px;border-radius:50%;background:var(--fg);position:absolute;top:50%;left:3px;transform:translateY(-50%);transition:transform .3s}
+[data-theme="light"] .tg::after{transform:translateY(-50%) translateX(22px)}
+
+/* chips */
+.chips-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);font-family:var(--fm);margin-bottom:12px;text-align:left;width:100%;max-width:500px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:500px;margin-bottom:20px}
+.chip{border:1.5px solid var(--gb);border-radius:14px;background:var(--card);padding:13px 14px;cursor:pointer;text-align:left;transition:all .2s;active:transform:scale(.97)}
+.chip:active{transform:scale(.97);border-color:rgba(212,32,39,.4)}
+.chip-tag{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-family:var(--fm);margin-bottom:3px}
+.chip-text{font-size:12.5px;color:var(--muted);line-height:1.4}
+
+/* ── CHAT PANEL — full screen on mobile ── */
+.ai-fab{
+  position:fixed;bottom:20px;right:20px;z-index:2000;
+  width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,var(--red),var(--red2));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 28px rgba(212,32,39,.4);
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+}
+.ai-fab:active{transform:scale(.92)}
+.ai-fab svg{width:26px;height:26px;fill:#fff;transition:transform .3s}
+.ai-fab.open svg{transform:rotate(90deg)}
+.ai-pulse{position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--red);opacity:0;animation:pulse 2.5s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.95);opacity:.5}100%{transform:scale(1.6);opacity:0}}
+
+/* Panel — full screen on mobile, floating on desktop */
+.ai-panel{
+  position:fixed;
+  inset:0;/* full screen mobile */
+  z-index:1999;
+  background:var(--panel);
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:all .35s cubic-bezier(.16,1,.3,1);
+  /* no border-radius on mobile */
+}
+.ai-panel.open{transform:translateY(0);opacity:1;visibility:visible;pointer-events:auto}
+
+/* Desktop: floating panel */
+@media(min-width:520px){
+  .ai-panel{
+    inset:auto;
+    bottom:88px;right:20px;
+    width:390px;height:560px;
+    max-height:calc(100vh - 110px);
+    border-radius:20px;
+    border:1.5px solid var(--gb);
+    box-shadow:0 20px 60px rgba(0,0,0,.25),0 4px 16px rgba(0,0,0,.1);
+    transform:translateY(16px) scale(.95);
+  }
+  .ai-panel.open{transform:translateY(0) scale(1)}
+}
+
+/* Header */
+.ai-head{
+  padding:14px 16px;
+  border-bottom:1px solid var(--gb);
+  display:flex;align-items:center;gap:10px;
+  flex-shrink:0;
+  background:var(--panel);
+  /* safe area top on iPhone */
+  padding-top:max(14px, env(safe-area-inset-top));
+}
+.ai-dot{width:9px;height:9px;border-radius:50%;background:#ccc;flex-shrink:0;transition:all .3s}
+.ai-dot.live{background:var(--red);box-shadow:0 0 8px rgba(212,32,39,.5)}
+.ai-head-name{font-size:15px;font-weight:700;flex:1;letter-spacing:-.2px}
+.ai-head-status{font-size:11px;color:var(--muted);font-family:var(--fm);margin-top:1px}
+.ai-head-btns{display:flex;align-items:center;gap:4px}
+.ai-icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:8px;font-size:16px;line-height:1;border-radius:8px;transition:all .2s}
+.ai-icon-btn:active{background:var(--gb)}
+
+/* Setup screen */
+.ai-setup{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:32px 24px;text-align:center;gap:14px;
+  overflow-y:auto;
+}
+.ai-setup.hidden{display:none}
+.ai-setup-ico{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red2));display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(212,32,39,.3)}
+.ai-setup-ico svg{width:30px;height:30px;fill:#fff}
+.ai-setup h3{font-size:20px;font-weight:700;letter-spacing:-.3px}
+.ai-setup p{font-size:14px;color:var(--muted);line-height:1.55;max-width:280px}
+.ai-key-inp{
+  width:100%;max-width:320px;
+  background:var(--card);border:2px solid var(--gb);
+  border-radius:14px;padding:15px 18px;
+  font-size:15px;color:var(--fg);font-family:var(--fm);
+  outline:none;text-align:center;letter-spacing:.5px;
+  transition:border .2s;
+  -webkit-appearance:none;
+}
+.ai-key-inp::placeholder{color:var(--muted);letter-spacing:0;font-family:var(--fd)}
+.ai-key-inp:focus{border-color:var(--red)}
+.ai-key-btn{
+  width:100%;max-width:320px;
+  padding:16px;background:var(--red);color:#fff;
+  border:none;border-radius:14px;
+  font-size:16px;font-weight:700;font-family:var(--fd);
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px rgba(212,32,39,.3);
+}
+.ai-key-btn:active{transform:scale(.97)}
+.ai-key-btn:disabled{opacity:.4;cursor:default;box-shadow:none}
+.ai-key-err{font-size:13px;color:var(--red);min-height:18px;font-family:var(--fm)}
+
+/* Chat screen */
+.ai-chat{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+.ai-chat.hidden{display:none}
+.ai-body{
+  flex:1;overflow-y:auto;
+  padding:14px 16px;
+  display:flex;flex-direction:column;gap:10px;
+  -webkit-overflow-scrolling:touch;
+}
+.ai-body::-webkit-scrollbar{width:3px}
+.ai-body::-webkit-scrollbar-thumb{background:var(--gb2);border-radius:99px}
+
+.ai-msg{
+  max-width:82%;padding:11px 15px;
+  border-radius:18px;
+  font-size:14px;line-height:1.6;font-weight:400;
+  animation:msgIn .25s ease;word-break:break-word;
+}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ai-msg.usr{align-self:flex-end;background:var(--red);color:#fff;border-bottom-right-radius:4px}
+.ai-msg.bot{align-self:flex-start;background:var(--card);border:1px solid var(--gb);color:var(--fg);border-bottom-left-radius:4px}
+
+.ai-typing{align-self:flex-start;display:flex;gap:5px;padding:13px 18px;background:var(--card);border:1px solid var(--gb);border-radius:18px;border-bottom-left-radius:4px}
+.ai-typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.ai-typing span:nth-child(2){animation-delay:.2s}.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+/* Input footer */
+.ai-foot{
+  padding:10px 12px;
+  padding-bottom:max(10px, env(safe-area-inset-bottom));
+  border-top:1px solid var(--gb);
+  display:flex;gap:8px;align-items:center;
+  flex-shrink:0;
+  background:var(--panel);
+}
+.ai-inp{
+  flex:1;
+  background:var(--card);border:1.5px solid var(--gb);
+  border-radius:22px;padding:11px 16px;
+  font-size:16px;/* 16px prevents iOS zoom */
+  color:var(--fg);font-family:var(--fd);
+  outline:none;
+  transition:border .2s;
+  -webkit-appearance:none;
+}
+.ai-inp:focus{border-color:var(--red)}
+.ai-inp::placeholder{color:var(--muted)}
+.ai-send{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--red);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .2s;
+}
+.ai-send:active{transform:scale(.9)}
+.ai-send svg{width:18px;height:18px;fill:#fff}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="logo">CNC<span> Electric</span></div>
+  <div class="tagline">Chat Assistant</div>
+
+  <div class="tg-wrap">
+    <span>Dark</span>
+    <button class="tg" onclick="document.documentElement.setAttribute('data-theme',document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')"></button>
+    <span>Light</span>
+  </div>
+
+  <div class="chips-label">Tap to test</div>
+  <div class="chips">
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Price</div>
+      <div class="chip-text">AC 2P MCB ka price?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Solar</div>
+      <div class="chip-text">8KW solar DB bundle?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">WiFi</div>
+      <div class="chip-text">App-controlled WiFi breaker?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">ATS</div>
+      <div class="chip-text">4P 100A ATS price?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Warranty</div>
+      <div class="chip-text">Breaker warranty?</div>
+    </div>
+    <div class="chip" onclick="sendChip(this)">
+      <div class="chip-tag">Contact</div>
+      <div class="chip-text">Bulk order WhatsApp?</div>
+    </div>
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="ai-fab" id="aiFab">
+  <div class="ai-pulse"></div>
+  <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+
+<!-- PANEL -->
+<div class="ai-panel" id="aiPanel">
+
+  <!-- HEADER -->
+  <div class="ai-head">
+    <div class="ai-dot" id="aiDot"></div>
+    <div style="flex:1">
+      <div class="ai-head-name">CNC Electric</div>
+      <div class="ai-head-status" id="aiStatus">Paste your API key to start</div>
+    </div>
+    <div class="ai-head-btns">
+      <button class="ai-icon-btn" onclick="resetKey()" title="Change key">🔑</button>
+      <button class="ai-icon-btn" id="aiClose">✕</button>
+    </div>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div class="ai-setup" id="aiSetup">
+    <div class="ai-setup-ico">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    </div>
+    <h3>CNC Electric Assistant</h3>
+    <p>Enter your Anthropic API key once — it saves to your browser forever.</p>
+    <input class="ai-key-inp" id="aiKeyInp" type="password" placeholder="sk-ant-api03-..." autocomplete="off" inputmode="text">
+    <button class="ai-key-btn" id="aiKeyBtn" disabled>Start Chatting</button>
+    <div class="ai-key-err" id="aiKeyErr"></div>
+  </div>
+
+  <!-- CHAT SCREEN -->
+  <div class="ai-chat hidden" id="aiChat">
+    <div class="ai-body" id="aiBody">
+      <div class="ai-msg bot">Assalam o Alaikum! I'm the CNC Electric assistant. Ask me about products, prices, solar bundles, warranty — anything.</div>
+    </div>
+    <div class="ai-foot">
+      <input class="ai-inp" id="aiInp" placeholder="Ask anything..." autocomplete="off" inputmode="text">
+      <button class="ai-send" id="aiSend">
+        <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var DB = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+
+var SYSTEM = 'You are the official AI assistant for CNC Electric Pakistan (www.cncelectric.pk), sole importer since 2022 backed by Cognitive Solutions. Brand founded 1988 Yueqing China. 100+ countries.\n\nCOMPANY: Address: 6-A PECO Road Lahore. WhatsApp: +92 326-1111376. Email: support@cncelectric.pk. After-Sales: Mr. Khubaib +92 346-6741791. Social @CNCElectricPakistan. Tracking: https://one.instaworld.pk/track. Certs: ISO 9001 ISO 14001 CE CB KEMA TUV. Clients: PTCL Sapphire Mughal Steel Nishat Shaukat Khanum FFC.\n\nWARRANTY: 5-YEAR REPLACEMENT WARRANTY on ALL breakers. SHIPPING: Free delivery over Rs.10,000.\n\nPRICES: AC 1P MCB (2A-63A) Rs.425 | AC 1P 100A Rs.1050 | AC 1P+N Rs.825 | AC 2P Rs.850 | AC 3P Rs.1300 | AC 4P Rs.1850 | DC 1P 500V 125A Rs.1100 | DC 2P 500V 125A Rs.2500 | DC 2P 500V Rs.1550 | DC 4P 1000V Rs.3300 | WiFi 1P 40A Rs.5400 | WiFi 2P 63A Rs.7650 | WiFi 1P 32/63A Rs.7500 | WiFi 2P 100A Rs.8500 | WiFi 4P 100A Rs.10700 | WiFi 2P+Display Rs.37800 | WiFi 4P+Display Rs.39000 | WiFi 2P 4G Rs.42300 | WiFi 4P 4G Rs.48200 | VA 2P Rs.1700 | VA 2P KWH Rs.2300 | VA WiFi Smart Rs.5200 | VA 4P 3Ph Rs.6000 | ATS 2P 63A Rs.6000 | ATS 4P 63A Rs.7800 | ATS 4P YCQR Rs.9350 | ATS 2P YCQR Rs.8250 | ATS 2P 100A Rs.5500 | ATS 4P 100A Rs.7500 | ATS Solar 2P Rs.6900 | ATS 4P 630A Rs.17000 | ATS Generator Rs.15000 | SPD AC 4P Rs.4800 | SPD DC 3P Rs.8600 | Solar 3KW Rs.12285 | 6KW Rs.12285 | 8KW Rs.18075 | 10KW Rs.14350 | 10KW+SPD Rs.18050 | 12KW+SPD Rs.26350 | 15KW+SPD Rs.26350 | 20KW+SPD Rs.26350 | 25KW+SPD Rs.38050 | EV 3.5kW Rs.90000 | EV 7kW Rs.105000 | Fire Ext Rs.2500\n\nSTYLE: Reply in customer language Urdu or English. Write like a friendly human — natural sentences, NO bullets, NO bold, NO markdown, NO emojis. 2-4 sentences max. Mention 5-year warranty naturally for breakers. Orders: cncelectric.pk or WhatsApp +92 326-1111376.';
+
+// elements
+var fab    = document.getElementById('aiFab');
+var panel  = document.getElementById('aiPanel');
+var setup  = document.getElementById('aiSetup');
+var chat   = document.getElementById('aiChat');
+var body   = document.getElementById('aiBody');
+var inp    = document.getElementById('aiInp');
+var snd    = document.getElementById('aiSend');
+var keyInp = document.getElementById('aiKeyInp');
+var keyBtn = document.getElementById('aiKeyBtn');
+var keyErr = document.getElementById('aiKeyErr');
+var dot    = document.getElementById('aiDot');
+var status = document.getElementById('aiStatus');
+
+var apiKey = '', hist = [], sending = false;
+var sessionId = null, msgCount = 0, topics = [];
+
+// ── open/close ───────────────────────────────────────
+function openPanel() {
+  panel.classList.add('open');
+  fab.classList.add('open');
+  // focus correct field after animation
+  setTimeout(function() {
+    if (apiKey) inp.focus();
+    else keyInp.focus();
+  }, 380);
+}
+
+function closePanel() {
+  panel.classList.remove('open');
+  fab.classList.remove('open');
+}
+
+fab.addEventListener('click', function() {
+  panel.classList.contains('open') ? closePanel() : openPanel();
+});
+
+document.getElementById('aiClose').addEventListener('click', closePanel);
+
+// close on backdrop tap (mobile)
+panel.addEventListener('click', function(e) {
+  if (e.target === panel) closePanel();
+});
+
+// ── key input ────────────────────────────────────────
+keyInp.addEventListener('input', function() {
+  keyBtn.disabled = this.value.trim().length < 20;
+  keyErr.textContent = '';
+});
+
+keyInp.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); if (!keyBtn.disabled) tryConnect(); }
+});
+
+keyBtn.addEventListener('click', tryConnect);
+
+function tryConnect() {
+  var k = keyInp.value.trim();
+  if (k.length < 20) return;
+  keyBtn.disabled = true;
+  keyBtn.textContent = 'Connecting...';
+  keyErr.textContent = '';
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': k,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 10, messages: [{ role: 'user', content: 'Hi' }] })
+  })
+  .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function() {
+    apiKey = k;
+    try { localStorage.setItem('cnc-ai-key', k); } catch(e) {}
+    activateChat();
+    setTimeout(function() { inp.focus(); }, 200);
+  })
+  .catch(function(e) {
+    var msg = e.message === '401' ? 'Invalid key. Check and try again.' : 'Connection failed. Try again.';
+    keyErr.textContent = msg;
+    keyBtn.disabled = false;
+    keyBtn.textContent = 'Start Chatting';
+  });
+}
+
+function activateChat() {
+  setup.classList.add('hidden');
+  chat.classList.remove('hidden');
+  dot.classList.add('live');
+  status.textContent = 'Online — ready to help';
+}
+
+function resetKey() {
+  try { localStorage.removeItem('cnc-ai-key'); } catch(e) {}
+  apiKey = ''; hist = [];
+  chat.classList.add('hidden');
+  setup.classList.remove('hidden');
+  dot.classList.remove('live');
+  status.textContent = 'Paste your API key to start';
+  keyInp.value = '';
+  keyBtn.disabled = true;
+  keyBtn.textContent = 'Start Chatting';
+  keyErr.textContent = '';
+  setTimeout(function() { keyInp.focus(); }, 100);
+}
+
+// ── chat ─────────────────────────────────────────────
+inp.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { e.preventDefault(); doSend(); }
+});
+snd.addEventListener('click', doSend);
+
+function doSend() {
+  var q = inp.value.trim();
+  if (!q || sending) return;
+  addMsg(q, 'usr');
+  inp.value = '';
+  sending = true;
+  snd.disabled = true;
+  showTyping();
+  if (!sessionId) startSession();
+  msgCount++;
+  hist.push({ role: 'user', content: q });
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 600, system: SYSTEM, messages: hist })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    hideTyping();
+    var txt = d.content && d.content[0] ? d.content[0].text : 'Sorry, something went wrong.';
+    hist.push({ role: 'assistant', content: txt });
+    addMsg(txt, 'bot');
+    logMsg(q, txt);
+    sending = false;
+    snd.disabled = false;
+    inp.focus();
+  })
+  .catch(function() {
+    hideTyping();
+    addMsg('Connection error. Please try again.', 'bot');
+    sending = false;
+    snd.disabled = false;
+  });
+}
+
+function addMsg(t, c) {
+  var d = document.createElement('div');
+  d.className = 'ai-msg ' + c;
+  d.textContent = t;
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTyping() {
+  var d = document.createElement('div');
+  d.className = 'ai-typing'; d.id = 'aiTyp';
+  d.innerHTML = '<span></span><span></span><span></span>';
+  body.appendChild(d);
+  body.scrollTop = body.scrollHeight;
+}
+
+function hideTyping() {
+  var t = document.getElementById('aiTyp');
+  if (t) t.remove();
+}
+
+// ── firebase ─────────────────────────────────────────
+var KW = { 'MCB':['mcb','breaker','rccb'], 'WiFi':['wifi','smart'], 'ATS':['ats','transfer','generator'], 'Solar':['solar','pv'], 'Pricing':['price','cost','kitna'], 'Purchase':['order','buy','bulk'], 'Contact':['whatsapp','call','phone'] };
+
+function startSession() {
+  sessionId = 'cs_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+  topics = [];
+  fb('PUT', '/chatSessions/' + sessionId + '.json', { id: sessionId, startTime: new Date().toISOString(), status: 'active', totalMessages: 0, topics: [], leadScore: 0, notes: '', flagged: false, referrer: document.referrer || 'test', page: '/v14', language: navigator.language, chatType: 'v14' });
+}
+
+function logMsg(q, a) {
+  if (!sessionId) return;
+  fb('POST', '/chatSessions/' + sessionId + '/messages.json', { q: q, a: a, t: new Date().toISOString() });
+  var c = (q + ' ' + a).toLowerCase();
+  Object.keys(KW).forEach(function(k) { if (KW[k].some(function(w){ return c.includes(w); }) && topics.indexOf(k) < 0) topics.push(k); });
+  var sc = 0;
+  if (/price|cost|kitna/.test(c)) sc += 3;
+  if (/order|buy|bulk/.test(c)) sc += 5;
+  if (/whatsapp|call/.test(c)) sc += 4;
+  if (msgCount > 3) sc += 2;
+  fb('PATCH', '/chatSessions/' + sessionId + '.json', { lastMessage: new Date().toISOString(), totalMessages: msgCount, topics: topics, leadScore: sc, status: 'active' });
+}
+
+function fb(m, p, d) {
+  var x = new XMLHttpRequest();
+  x.open(m, DB + p, true);
+  x.setRequestHeader('Content-Type', 'application/json');
+  x.send(JSON.stringify(d));
+}
+
+window.addEventListener('beforeunload', function() {
+  if (sessionId) navigator.sendBeacon(DB + '/chatSessions/' + sessionId + '.json', JSON.stringify({ status: 'ended', endTime: new Date().toISOString() }));
+});
+
+// ── chips ─────────────────────────────────────────────
+function sendChip(el) {
+  var text = el.querySelector('.chip-text').textContent;
+  openPanel();
+  setTimeout(function() {
+    if (apiKey) { inp.value = text; doSend(); }
+    else keyInp.focus();
+  }, 420);
+}
+
+// ── init: always clear old key, always ask fresh ──────
+try { localStorage.removeItem('cnc-ai-key'); localStorage.removeItem('cnc_api_key'); } catch(e) {}
+apiKey = '';
+
+// open panel automatically
+setTimeout(openPanel, 700);
+</script>
+</body>
+</html>
