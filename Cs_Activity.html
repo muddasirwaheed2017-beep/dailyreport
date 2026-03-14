@@ -264,10 +264,17 @@ input,select,textarea,button{font-family:var(--font)}
 .ai-sum-hd h4{font-size:12px;font-weight:700}
 .ai-sum-body{padding:12px;font-size:12px;line-height:1.6;color:var(--G3);white-space:pre-wrap;max-height:50vh;overflow-y:auto}
 .btn-ai{padding:7px 14px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;font-size:11px;font-weight:700;border:none;border-radius:6px;cursor:pointer}
+.load-ov{display:none;position:fixed;inset:0;background:rgba(26,26,26,.6);z-index:9998;align-items:center;justify-content:center;flex-direction:column;gap:12px;backdrop-filter:blur(2px)}
+.load-ov.on{display:flex}
+.load-ov .load-box{background:var(--W);border-radius:16px;padding:24px 32px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.2);border:2px solid var(--G8)}
+.load-ov .load-spin{width:32px;height:32px;border:3px solid var(--G8);border-top-color:var(--R);border-radius:50%;animation:sp .6s linear infinite;margin:0 auto 10px}
+.load-ov .load-msg{font-size:13px;font-weight:600;color:var(--G3)}
+.load-ov .load-sub{font-size:10px;color:var(--G5);margin-top:4px}
 </style>
 </head>
 <body>
 <div id="toasts"></div><div id="offline-bar">⚠️ Offline</div>
+<div class="load-ov" id="load-ov"><div class="load-box"><div class="load-spin"></div><div class="load-msg" id="load-msg">Loading...</div><div class="load-sub" id="load-sub"></div></div></div>
 <div id="s-login" class="scr on"><div class="lw"><div class="lh"><div class="lh-icon">📍</div><div class="lh-t">CS <em>Activity Reporter</em></div><div class="lh-s">© Cognitive Solutions Pvt Ltd</div></div><div class="lc"><div class="ltabs"><div class="ltab on" id="lt-si" onclick="App.ltab('si')">Sign In</div><div class="ltab" id="lt-rg" onclick="App.ltab('rg')">Register</div></div><div id="lf-si"><div class="fg"><label class="fl">Username</label><input class="fi" id="li-u" placeholder="Username"></div><div class="fg"><label class="fl">Password</label><input class="fi" id="li-p" type="password" placeholder="Password"></div><button class="btn btn-R" id="si-btn" onclick="App.signIn()">Sign In →</button></div><div id="lf-rg" style="display:none"><div class="fg"><label class="fl">Full Name</label><input class="fi" id="rg-n"></div><div class="fi-row"><div class="fg"><label class="fl">Username</label><input class="fi" id="rg-u"></div><div class="fg"><label class="fl">Password</label><input class="fi" id="rg-p" type="password"></div></div><div class="fg"><label class="fl">WhatsApp</label><input class="fi" id="rg-w" type="tel" placeholder="+92..."></div><button class="btn btn-R" id="rg-btn" onclick="App.register()">Register →</button></div></div></div></div>
 <div id="s-emp" class="scr"><div id="admin-view-bar" style="display:none;background:var(--blu);color:#fff;padding:8px 16px;font-size:12px;font-weight:700;align-items:center;justify-content:space-between"><span id="admin-view-name">Viewing as: —</span><button style="background:#fff;color:var(--blu);border:none;padding:4px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer" onclick="App.exitViewAs()">← Back to Admin</button></div><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Activity Reporter</em></div></div><div class="tb-r"><div class="tb-att tb-ap" id="att-p" onclick="App.markAtt()"><span id="att-pt">📍 Mark Attendance</span></div><div id="att-out" class="tb-att" style="display:none;border-color:var(--R);color:var(--R)" onclick="App.markOut()"><span id="att-ot">🏠 Leave Office</span></div><div class="tb-help" onclick="App.showHelp()">?</div><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="tkw" id="tkw"><div class="tk" id="tk"></div></div><div class="ct">
 <div id="ep-home" class="pg on"><div class="welc"><div class="w-av" id="w-av"></div><div><div class="w-nm" id="w-nm"></div><div class="w-un" id="w-un"></div></div></div><div class="mst"><div class="ms"><div class="ms-n" id="ms-rpt">—</div><div class="ms-l">Reports</div></div><div class="ms"><div class="ms-n" id="ms-vis">—</div><div class="ms-l">Visits</div></div><div class="ms"><div class="ms-n" id="ms-km">—</div><div class="ms-l">KM</div><div class="ms-sub" id="ms-km-rs"></div></div><div class="ms" style="border-top:3px solid var(--R)"><div class="ms-n" style="color:var(--R)" id="ms-ded">—</div><div class="ms-l">Deductions</div></div></div><div class="qar"><div class="qa" onclick="App.nav('visit')"><div class="qa-i">📍</div><div class="qa-t"><div class="qa-n">Submit Visit Report</div><div class="qa-d">GPS + Photos</div></div></div><div class="qa" onclick="App.nav('activity')"><div class="qa-i">📝</div><div class="qa-t"><div class="qa-n">Enter Daily/Old Activity</div><div class="qa-d">Submit report</div></div></div></div><div class="sec" style="cursor:pointer" onclick="App.toggleLeave()"><span id="lv-toggle">▶ Request Leave</span></div>
@@ -317,6 +324,8 @@ var d={click:function(o,g,t){o.frequency.setValueAtTime(800,t);o.frequency.expon
 return{p:function(t){try{var x=gc(),o=x.createOscillator(),g=x.createGain();o.connect(g);g.connect(x.destination);(d[t]||d.click)(o,g,x.currentTime)}catch(e){}}}})();
 document.addEventListener('click',function(e){if(e.target.closest('button,.btn,.bn,.qa,.ltab,.pslot,.cal-d,.cal-btn,.htag,.ai-qb,.help-q,.qf'))S.p('click')},true);
 
+function showLoad(msg,sub){var ov=document.getElementById('load-ov');document.getElementById('load-msg').textContent=msg||'Loading...';document.getElementById('load-sub').textContent=sub||'';ov.classList.add('on')}
+function hideLoad(){document.getElementById('load-ov').classList.remove('on')}
 const U={COLORS:['#7f1d1d','#991b1b','#b91c1c','#dc2626','#404040','#666','#1a1a1a','#2d2d2d'],
 clr:function(n){n=n||'';var h=0;for(var i=0;i<n.length;i++)h=(h<<5)-h+n.charCodeAt(i)|0;return this.COLORS[Math.abs(h)%this.COLORS.length]},
 ini:function(n){return(n||'').split(' ').map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()||'?'},
@@ -404,25 +413,25 @@ if(prevAtt){U.toast('⚠️ No logout for '+yd+'. Contact admin.','warn')}
 /* Count today's sessions */
 var todaySessions=_att.filter(function(a){return a.userId===ME.id&&a.date===U.today()});
 var seq=todaySessions.length+1;
-document.getElementById('att-pt').textContent='📡...';
+document.getElementById('att-pt').textContent='📡...';showLoad('Marking Attendance','Checking your location...');
 this._geoCheck(async function(geo){
 try{
-if(!geo){U.toast('❌ GPS required for attendance. Enable location services.','err');document.getElementById('att-pt').textContent='📍 Mark Attendance';return}
-if(!geo.near){U.toast('❌ You must be at office to mark attendance.','err');document.getElementById('att-pt').textContent='📍 Mark Attendance';return}
+if(!geo){U.toast('❌ GPS required for attendance. Enable location services.','err');document.getElementById('att-pt').textContent='📍 Mark Attendance';hideLoad();return}
+if(!geo.near){U.toast('❌ You must be at office to mark attendance.','err');document.getElementById('att-pt').textContent='📍 Mark Attendance';hideLoad();return}
 var rec={userId:ME.id,userName:ME.name,date:U.today(),time:U.time(),ts:new Date().toISOString(),session:seq};
 rec.inLat=geo.lat;rec.inLng=geo.lng;rec.inDist=geo.dist;rec.inNear=true;
 rec.inStatus='At Office ('+geo.officeName+')';rec.inOffice=geo.officeName||'';
 var res=await F.push('attendance',rec);_att=F.arr(await F.g('attendance'));S.p('att');
 U.toast('✅ Logged in at '+geo.officeName+' (Session '+seq+')','ok');
 document.getElementById('att-p').className='tb-att tb-ad';document.getElementById('att-pt').textContent='✅ '+U.time();document.getElementById('att-p').onclick=null;document.getElementById('att-out').style.display='flex';
-App.checkAtt()}catch(e){U.toast('Error','err');document.getElementById('att-pt').textContent='📍 Mark Attendance'}})},
-markOut:async function(){document.getElementById('att-ot').textContent='📡...';
+App.checkAtt();hideLoad()}catch(e){U.toast('Error','err');document.getElementById('att-pt').textContent='📍 Mark Attendance';hideLoad()}})},
+markOut:async function(){document.getElementById('att-ot').textContent='📡...';showLoad('Leaving Office','Checking your location...');
 this._geoCheck(async function(geo){
 try{
 /* ── Must be at office to mark departure ── */
-if(!geo){U.toast('GPS required to leave office','err');document.getElementById('att-ot').textContent='🏠 Leave Office';return}
-if(!geo.near){U.toast('❌ Must be at office to mark departure. You are '+geo.dist+'m from '+geo.officeName,'err');document.getElementById('att-ot').textContent='🏠 Leave Office';return}
-var mine=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()&&!a.out});if(!mine){U.toast('No active login found','err');document.getElementById('att-ot').textContent='🏠 Leave Office';return}
+if(!geo){U.toast('GPS required to leave office','err');document.getElementById('att-ot').textContent='🏠 Leave Office';hideLoad();return}
+if(!geo.near){U.toast('❌ You must be at office to mark departure.','err');document.getElementById('att-ot').textContent='🏠 Leave Office';hideLoad();return}
+var mine=_att.find(function(a){return a.userId===ME.id&&a.date===U.today()&&!a.out});if(!mine){U.toast('No active login found','err');document.getElementById('att-ot').textContent='🏠 Leave Office';hideLoad();return}
 var upd={out:U.time(),outTs:new Date().toISOString()};
 upd.outLat=geo.lat;upd.outLng=geo.lng;upd.outDist=geo.dist;upd.outNear=geo.near;
 upd.outStatus='At Office ('+geo.officeName+')';upd.outOffice=geo.officeName;
@@ -431,7 +440,7 @@ var hrs=U.workHrs(mine.time,U.time());var status=hrs<4?'Half day':'';
 var msg='🏠 Logged out at '+geo.officeName;
 if(status)msg+=' ('+status+')';U.toast(msg,'ok');
 document.getElementById('att-out').className='tb-att tb-ad';document.getElementById('att-out').onclick=null;document.getElementById('att-ot').textContent='🏠 '+U.time();
-App.loadStats()}catch(e){U.toast('Error: '+e.message,'err');document.getElementById('att-ot').textContent='🏠 Leave Office'}})},
+App.loadStats();hideLoad()}catch(e){U.toast('Error: '+e.message,'err');document.getElementById('att-ot').textContent='🏠 Leave Office';hideLoad()}})},
 loadTicker:async function(){try{var all=F.arr(await F.g('instructions')).filter(function(m){return m.toId===ME.id||m.toId==='all'}).sort(function(a,b){return(b.ts||'').localeCompare(a.ts||'')}).slice(0,8);
 if(!all.length){document.getElementById('tkw').classList.remove('on');return}
 var pc={urgent:'tk-u',important:'tk-i',routine:'tk-r',good:'tk-g'},pi={urgent:'🔴',important:'🟡',routine:'🔵',good:'🟢'};
