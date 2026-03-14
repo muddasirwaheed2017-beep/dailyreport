@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Electric — Chatbot Test Page</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #ffffff;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  color: #1a1917;
+  min-height: 100vh;
+}
+
+.topbar {
+  padding: 0 40px;
+  height: 56px;
+  border-bottom: 1px solid #e8e6e1;
+  display: flex; align-items: center; justify-content: space-between;
+  background: white;
+  position: sticky; top: 0; z-index: 100;
+}
+
+.topbar-logo { display: flex; align-items: center; gap: 10px; }
+.topbar-sq { width: 30px; height: 30px; border-radius: 6px; background: #1a1917; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.topbar-name { font-size: 15px; font-weight: 600; }
+.topbar-badge { background: #fdf3e3; border: 1px solid #f0ddb5; border-radius: 20px; padding: 3px 10px; font-size: 11.5px; font-weight: 500; color: #92400e; font-family: 'DM Mono', monospace; }
+
+.main { max-width: 640px; margin: 0 auto; padding: 52px 32px 140px; }
+
+.hero { margin-bottom: 40px; }
+.hero-tag { display: inline-block; background: #f5f4f2; border: 1px solid #e8e6e1; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: #6b6860; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 14px; font-family: 'DM Mono', monospace; }
+.hero-title { font-size: 34px; font-weight: 300; line-height: 1.2; letter-spacing: -0.6px; margin-bottom: 10px; }
+.hero-title strong { font-weight: 600; }
+.hero-sub { font-size: 14.5px; color: #6b6860; line-height: 1.6; }
+
+.key-card { background: #fafaf9; border: 1px solid #e8e6e1; border-radius: 12px; padding: 22px 24px; margin-bottom: 28px; }
+.key-card-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.key-card-sub { font-size: 12.5px; color: #6b6860; margin-bottom: 14px; }
+.key-row { display: flex; gap: 10px; }
+.key-input { flex: 1; background: white; border: 1.5px solid #d4d0c8; border-radius: 8px; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 13px; color: #1a1917; outline: none; transition: border-color 0.15s; }
+.key-input:focus { border-color: #c8973a; }
+.key-btn { background: #1a1917; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.key-btn:hover { background: #2d2c29; }
+.key-status { font-size: 11.5px; color: #a8a49c; margin-top: 8px; font-family: 'DM Mono', monospace; }
+.key-status.ok { color: #2d7a57; }
+.key-status.err { color: #c0392b; }
+
+.bot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.bot-card { border: 2px solid #e8e6e1; border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.18s; background: white; text-align: left; }
+.bot-card:hover { border-color: #c8973a; }
+.bot-card.active-card { border-color: #1a1917; background: #1a1917; }
+.bot-card.active-card .bc-title { color: white; }
+.bot-card.active-card .bc-desc { color: rgba(255,255,255,0.55); }
+.bot-card.active-card .bc-tag { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); border-color: transparent; }
+.bc-icon { font-size: 22px; margin-bottom: 6px; }
+.bc-title { font-size: 14px; font-weight: 600; color: #1a1917; }
+.bc-desc { font-size: 12px; color: #6b6860; line-height: 1.4; margin-top: 3px; }
+.bc-tag { display: inline-block; margin-top: 8px; padding: 2px 8px; border-radius: 10px; font-size: 10.5px; font-family: 'DM Mono', monospace; font-weight: 500; background: #f5f4f2; border: 1px solid #e8e6e1; color: #6b6860; }
+
+.launch-btn { width: 100%; padding: 15px; border-radius: 10px; border: none; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.18s; margin-bottom: 32px; background: #1a1917; color: white; }
+.launch-btn:hover { background: #2d2c29; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,25,23,0.18); }
+
+.tips-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #a8a49c; font-family: 'DM Mono', monospace; margin-bottom: 12px; }
+.tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 32px; }
+.tip-chip { background: #fafaf9; border: 1px solid #e8e6e1; border-radius: 8px; padding: 11px 14px; cursor: pointer; transition: all 0.15s; text-align: left; }
+.tip-chip:hover { border-color: #c8973a; background: #fdf3e3; }
+.tip-chip-label { font-size: 10.5px; color: #a8a49c; font-family: 'DM Mono', monospace; margin-bottom: 3px; }
+.tip-chip-text { font-size: 13px; color: #1a1917; }
+
+.install-section { background: #fafaf9; border: 1px solid #e8e6e1; border-radius: 12px; padding: 22px 24px; }
+.install-title { font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+.step-list { display: flex; flex-direction: column; gap: 10px; }
+.step-item { display: flex; gap: 12px; }
+.step-n { width: 24px; height: 24px; border-radius: 50%; background: #1a1917; color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.step-text { font-size: 13px; color: #6b6860; line-height: 1.5; }
+.step-text strong { color: #1a1917; }
+code { font-family: 'DM Mono', monospace; font-size: 11.5px; background: #eeece8; padding: 1px 5px; border-radius: 3px; color: #1a1917; }
+
+.statusbar { position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid #e8e6e1; padding: 10px 32px; display: flex; align-items: center; justify-content: space-between; z-index: 90; }
+.sb-left { display: flex; gap: 20px; align-items: center; }
+.sb-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6b6860; }
+.sd { width: 7px; height: 7px; border-radius: 50%; }
+.sd-green { background: #2d7a57; }
+.sd-grey { background: #d4d0c8; }
+.sb-right { font-size: 11px; color: #a8a49c; font-family: 'DM Mono', monospace; }
+
+/* ── CHATBOT WIDGET ── */
+#cnc-bubble {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #1a1917; border: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(26,25,23,0.25);
+  display: none; align-items: center; justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#cnc-bubble:hover { transform: scale(1.08); }
+#cnc-bubble .ic { position: absolute; transition: opacity 0.2s; }
+#cnc-bubble .ic-open { opacity: 1; }
+#cnc-bubble .ic-close { opacity: 0; }
+#cnc-bubble.is-open .ic-open { opacity: 0; }
+#cnc-bubble.is-open .ic-close { opacity: 1; }
+#cnc-unread { position: absolute; top: -4px; right: -4px; background: #c8973a; color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 700; font-family: monospace; display: none; align-items: center; justify-content: center; border: 2px solid white; }
+
+#cnc-win { position: fixed; bottom: 96px; right: 28px; z-index: 9998; width: 380px; max-width: calc(100vw - 40px); background: #fff; border-radius: 16px; box-shadow: 0 24px 64px rgba(26,25,23,0.14); border: 1px solid #e8e6e1; display: none; flex-direction: column; max-height: calc(100vh - 130px); overflow: hidden; opacity: 0; transform: translateY(16px) scale(0.96); transition: opacity 0.22s ease, transform 0.22s ease; }
+#cnc-win.showing { display: flex; }
+#cnc-win.visible { opacity: 1; transform: none; }
+
+#cnc-hd { padding: 16px 18px; background: #1a1917; border-radius: 16px 16px 0 0; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.cnc-av { width: 36px; height: 36px; border-radius: 50%; background: #c8973a; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.cnc-hname { font-size: 14px; font-weight: 600; color: white; }
+.cnc-hsub { font-size: 11.5px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
+.cnc-sdot { width: 6px; height: 6px; border-radius: 50%; background: #2d7a57; }
+
+#cnc-msgs { flex: 1; overflow-y: auto; padding: 14px 14px 8px; display: flex; flex-direction: column; gap: 9px; background: #fafaf9; min-height: 220px; }
+#cnc-msgs::-webkit-scrollbar { width: 4px; }
+#cnc-msgs::-webkit-scrollbar-thumb { background: #d4d0c8; border-radius: 2px; }
+
+.cm { display: flex; flex-direction: column; max-width: 88%; animation: cmIn 0.18s ease; }
+@keyframes cmIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+.cm.bot { align-self: flex-start; }
+.cm.usr { align-self: flex-end; }
+.cm-bub { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; line-height: 1.5; }
+.cm.bot .cm-bub { background: white; border: 1px solid #e8e6e1; border-radius: 4px 12px 12px 12px; color: #1a1917; box-shadow: 0 1px 3px rgba(26,25,23,0.05); }
+.cm.usr .cm-bub { background: #1a1917; color: white; border-radius: 12px 4px 12px 12px; }
+.cm-time { font-size: 10px; color: #a8a49c; margin-top: 3px; padding: 0 2px; font-family: 'DM Mono', monospace; }
+.cm.usr .cm-time { text-align: right; }
+
+#cnc-typing { padding: 0 14px 6px; background: #fafaf9; display: none; }
+.cnc-ti { display: inline-flex; gap: 4px; align-items: center; background: white; border: 1px solid #e8e6e1; border-radius: 4px 12px 12px 12px; padding: 10px 14px; box-shadow: 0 1px 3px rgba(26,25,23,0.05); }
+.cnc-ti span { width: 6px; height: 6px; border-radius: 50%; background: #a8a49c; animation: td 1.2s infinite ease-in-out; display: block; }
+.cnc-ti span:nth-child(2){animation-delay:.2s} .cnc-ti span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,80%,100%{transform:scale(0.7);opacity:0.4}40%{transform:scale(1);opacity:1}}
+
+#cnc-qr { display: flex; gap: 5px; flex-wrap: wrap; padding: 0 14px 10px; background: #fafaf9; }
+.cnc-q { background: white; border: 1px solid #d4d0c8; border-radius: 14px; padding: 5px 11px; font-size: 12px; color: #6b6860; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+.cnc-q:hover { border-color: #c8973a; color: #c8973a; background: #fdf3e3; }
+
+#cnc-err { margin: 0 14px 10px; padding: 10px 14px; background: #fdf0ee; border: 1px solid #f5c6c1; border-radius: 8px; font-size: 12.5px; color: #c0392b; display: none; line-height: 1.5; }
+
+#cnc-ia { padding: 11px 14px; border-top: 1px solid #e8e6e1; background: white; border-radius: 0 0 16px 16px; display: flex; gap: 9px; align-items: flex-end; flex-shrink: 0; }
+#cnc-inp { flex: 1; border: 1.5px solid #e8e6e1; border-radius: 10px; padding: 9px 13px; font-size: 13.5px; color: #1a1917; background: #fafaf9; resize: none; outline: none; line-height: 1.45; max-height: 80px; overflow-y: auto; font-family: 'DM Sans', sans-serif; transition: border-color 0.15s; }
+#cnc-inp:focus { border-color: #c8973a; background: white; }
+#cnc-inp::placeholder { color: #a8a49c; }
+#cnc-snd { width: 38px; height: 38px; border-radius: 10px; background: #1a1917; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+#cnc-snd:hover { background: #2d2c29; }
+#cnc-snd:disabled { background: #d4d0c8; cursor: not-allowed; }
+#cnc-ft { padding: 8px 14px; border-top: 1px solid #f5f4f2; background: white; font-size: 10.5px; color: #a8a49c; text-align: center; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+
+@media (max-width:480px) { #cnc-win{right:12px;bottom:80px;width:calc(100vw - 24px);} #cnc-bubble{right:16px;bottom:16px;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-logo">
+    <div class="topbar-sq">⚡</div>
+    <span class="topbar-name">CNC Electric Chatbot</span>
+  </div>
+  <div class="topbar-badge">TEST ENVIRONMENT</div>
+</div>
+
+<div class="main">
+  <div class="hero">
+    <div class="hero-tag">Chatbot Sandbox</div>
+    <div class="hero-title">Test your chatbot.<br><strong>See results live.</strong></div>
+    <div class="hero-sub">Enter your API key, choose a mode, and hit Launch. Sessions appear instantly in your Analytics Dashboard open in another tab.</div>
+  </div>
+
+  <div class="key-card">
+    <div class="key-card-title">🔑 Anthropic API Key</div>
+    <div class="key-card-sub">Required for Claude AI mode. Stored in your browser only — sent directly to Anthropic, nowhere else.</div>
+    <div class="key-row">
+      <input class="key-input" type="password" id="keyInput" placeholder="sk-ant-api03-…">
+      <button class="key-btn" onclick="saveKey()">Save Key</button>
+    </div>
+    <div class="key-status" id="keyStatus">No key saved yet</div>
+  </div>
+
+  <div class="bot-grid">
+    <div class="bot-card active-card" id="card-ai" onclick="selectMode('ai')">
+      <div class="bc-icon">🤖</div>
+      <div class="bc-title">Claude AI</div>
+      <div class="bc-desc">Natural conversation. Understands any question about your products.</div>
+      <div class="bc-tag">Needs API Key</div>
+    </div>
+    <div class="bot-card" id="card-rule" onclick="selectMode('rule')">
+      <div class="bc-icon">⚡</div>
+      <div class="bc-title">Rule-Based</div>
+      <div class="bc-desc">Keyword matching. No API key needed. Instant responses.</div>
+      <div class="bc-tag">No Key Required</div>
+    </div>
+  </div>
+
+  <button class="launch-btn" id="launchBtn" onclick="launchChat()">
+    💬 Launch Chatbot — bubble appears bottom-right ↘
+  </button>
+
+  <div class="tips-title">Suggested test messages — click to send directly</div>
+  <div class="tips-grid">
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Pricing → lead score ↑</div>
+      <div class="tip-chip-text">What's the price for 100 Axis 7 MCBs?</div>
+    </div>
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Product inquiry</div>
+      <div class="tip-chip-text">Do you have 3-phase VFDs for 11kW motors?</div>
+    </div>
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Dealer → lead score ↑</div>
+      <div class="tip-chip-text">I want to become a dealer in Lahore</div>
+    </div>
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Solar products</div>
+      <div class="tip-chip-text">What DC breakers do you have for solar farms?</div>
+    </div>
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Contact → lead score ↑↑</div>
+      <div class="tip-chip-text">Can I have your WhatsApp for bulk orders?</div>
+    </div>
+    <div class="tip-chip" onclick="sendTip(this)">
+      <div class="tip-chip-label">Technical spec</div>
+      <div class="tip-chip-text">What's the breaking capacity of the X-pert 9?</div>
+    </div>
+  </div>
+
+  <div class="install-section">
+    <div class="install-title">📦 How to add to your Shopify store</div>
+    <div class="step-list">
+      <div class="step-item"><div class="step-n">1</div><div class="step-text">Go to <strong>Online Store → Themes → Edit Code</strong> → open <code>theme.liquid</code></div></div>
+      <div class="step-item"><div class="step-n">2</div><div class="step-text">Find <code>&lt;/body&gt;</code> near the very bottom of the file</div></div>
+      <div class="step-item"><div class="step-n">3</div><div class="step-text">Open <strong>cnc_claude_chatbot_shopify.html</strong>, copy everything inside it, and paste just before <code>&lt;/body&gt;</code></div></div>
+      <div class="step-item"><div class="step-n">4</div><div class="step-text">Save your API key in <strong>CNC_Analytics_Dashboard → Settings tab</strong> — the chatbot reads it from localStorage automatically</div></div>
+      <div class="step-item"><div class="step-n">5</div><div class="step-text">Open the dashboard in another tab — every conversation appears in <strong>Live Sessions</strong> within seconds</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="statusbar">
+  <div class="sb-left">
+    <div class="sb-item"><span class="sd sd-green"></span>Firebase ready</div>
+    <div class="sb-item"><span class="sd sd-grey" id="keyDot"></span><span id="keyLabel">No API key</span></div>
+    <div class="sb-item" style="font-weight:500" id="modeLabel">Mode: Claude AI</div>
+  </div>
+  <div class="sb-right">cs-daily-reports-default-rtdb · /chatSessions</div>
+</div>
+
+<!-- CHATBOT WIDGET HTML -->
+<button id="cnc-bubble" onclick="cncToggle()">
+  <svg class="ic ic-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg class="ic ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <div id="cnc-unread">1</div>
+</button>
+
+<div id="cnc-win">
+  <div id="cnc-hd">
+    <div class="cnc-av">⚡</div>
+    <div>
+      <div class="cnc-hname" id="cnc-hname">CNC Assistant</div>
+      <div class="cnc-hsub"><span class="cnc-sdot"></span><span id="cnc-hsub">AI-powered · Always available</span></div>
+    </div>
+  </div>
+  <div id="cnc-msgs"></div>
+  <div id="cnc-typing"><div class="cnc-ti"><span></span><span></span><span></span></div></div>
+  <div id="cnc-qr"></div>
+  <div id="cnc-err"></div>
+  <div id="cnc-ia">
+    <textarea id="cnc-inp" placeholder="Ask about products, pricing, specs…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();cncSend();}"
+      oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+    <button id="cnc-snd" onclick="cncSend()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-width="1.8"><line x1="14" y1="2" x2="2" y2="8"/><line x1="14" y1="2" x2="8" y2="14"/><line x1="2" y1="8" x2="8" y2="14"/></svg>
+    </button>
+  </div>
+  <div id="cnc-ft">Powered by Claude AI · CNC Electric Pakistan</div>
+</div>
+
+<script>
+var DB = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+var currentMode = 'ai';
+var isOpen = false;
+var isTyping = false;
+var firstOpen = true;
+var sessionId = null;
+var msgCount = 0;
+var sessionTopics = [];
+var chatHistory = [];
+
+var SYSTEM = 'You are a helpful sales assistant for CNC Electric Pakistan — a B2B supplier of MCBs (Axis 7, ECO-8, X-pert 9), RCCBs, MCCBs, ACBs, ATSs, VFDs, contactors, soft starters, solar DC breakers, and genset sync panels. Axis 7: premium MCBs 1A-63A 6kA/10kA IEC certified. ECO-8: economy 1A-63A. X-pert 9: high-perf 1A-100A 10kA/15kA. B2B pricing: 1-49 standard, 50-99 8-12% off, 100+ 15-20% off. For quotes: sales@cncelectric.pk, WhatsApp +92-300-0000000. Be concise, professional, and helpful. Reply in the customer language (Urdu or English).';
+
+var KEYWORDS = {'MCB/Distribution':['mcb','rccb','rcbo'],'Power Distribution':['mccb','acb','ats'],'Motor Control':['vfd','contactor','soft starter'],'Solar/New Energy':['solar','inverter','dc breaker'],'Genset Sync':['genset','generator'],'Pricing Inquiry':['price','discount','cost','rate','how much'],'Dealership Inquiry':['dealer','distributor'],'Axis 7 Series':['axis 7'],'ECO-8 Series':['eco-8','eco 8'],'X-pert 9 Series':['x-pert','xpert'],'Purchase Intent':['order','buy','quantity','purchase'],'Contact Request':['whatsapp','call','phone','contact']};
+
+var RULES = [
+  {t:['hello','hi','hey','salam','assalam'],r:"Hello! Welcome to CNC Electric Pakistan. 👋\n\nI can help with:\n• MCBs, RCCBs, MCCBs and distribution products\n• VFDs, contactors and motor control\n• Solar DC breakers\n• Pricing, dealerships and B2B orders\n\nWhat are you looking for?",q:['MCB prices','Become a dealer','Solar products','Get a quote']},
+  {t:['mcb','rccb','rcbo','miniature'],r:"Our MCB & Protection Range:\n\n📦 **Axis 7** — Premium, 1A–63A, B/C/D curve, 6kA/10kA, IEC certified\n📦 **ECO-8** — Economy, 1A–63A, 4.5kA/6kA\n📦 **X-pert 9** — High performance, 1A–100A, 10kA/15kA\n\nFor pricing:\n📧 sales@cncelectric.pk\n📱 WhatsApp: +92-300-0000000",q:['Axis 7 specs','ECO-8 pricing','Request catalogue']},
+  {t:['mccb','acb','ats','transfer','distribution'],r:"Power Distribution:\n\n• MCCBs — 100A to 1600A\n• ACBs — 630A to 6300A, motorised draw-out\n• ATSs — 4-pole, 63A–3200A\n\nAll with test certificates. Contact us for project pricing.",q:['MCCB sizing','ATS for generator','Project enquiry']},
+  {t:['vfd','variable frequency','variable speed','drive'],r:"VFD / Variable Frequency Drives:\n\nRanges: 0.4kW to 630kW\n• Single & three-phase input\n• Built-in EMC filter\n• Modbus RTU\n\nFor pumps, fans, conveyors, HVAC. Share your motor kW for a recommendation.",q:['VFD sizing','Request quote']},
+  {t:['contactor','soft starter','motor starter','dol'],r:"Motor Control:\n\n• Contactors — 9A to 630A, AC-3 duty\n• DOL Starters — Contactor + overload sets\n• Soft Starters — 7.5kW to 560kW\n• Overload Relays — Thermal and electronic\n\nContact us for a selection guide.",q:['Contactor pricing','Soft starter quote']},
+  {t:['solar','pv','photovoltaic','dc breaker','renewable'],r:"Solar & New Energy Range:\n\n☀️ DC Circuit Breakers — 2A–63A, 1000VDC rated\n☀️ DC Isolators — 2P/4P, lockable\n☀️ String Fuses — 10×38mm, 1000VDC\n☀️ AC MCBs — For inverter output\n☀️ Surge Protection — DC SPDs\n\nFor residential to utility-scale solar.",q:['DC breaker sizes','Solar project quote']},
+  {t:['genset','generator','synchronis','amf'],r:"Genset Synchronisation:\n\n• AMF Controllers — Auto Mains Failure panels\n• Sync Panels — Parallel generator operation\n• Load Sharing Modules — PLC-based\n• AVRs — Automatic Voltage Regulators\n\nComplete engineered panels for 100kVA to 10MVA. Share your generator specs.",q:['AMF panel quote','Parallel gen setup']},
+  {t:['axis 7','axis7'],r:"Axis 7 Series — Premium MCB:\n\n✅ 1A to 63A, curves B/C/D\n✅ Breaking: 6kA & 10kA\n✅ Poles: 1P, 2P, 3P, 4P\n✅ IEC 60898-1, CE certified\n✅ Temp: -25°C to +70°C\n\nDIN rail mount. Ideal for commercial and industrial.",q:['Axis 7 pricing','Compare ECO-8']},
+  {t:['eco-8','eco8','eco 8'],r:"ECO-8 Series — Economy MCB:\n\n✅ 1A to 63A, B & C curve\n✅ Breaking: 4.5kA / 6kA\n✅ Poles: 1P, 2P, 3P, 4P\n✅ IEC 60898-1 certified\n\nBest-value for residential and light commercial.",q:['ECO-8 pricing','Compare Axis 7']},
+  {t:['x-pert','xpert','x pert'],r:"X-pert 9 Series — High Performance:\n\n✅ 1A to 100A, curves B/C/D/K\n✅ Breaking: 10kA / 15kA\n✅ Optional: Visi-trip, auxiliary contact\n\nFor data centres, hospitals, industrial plants.",q:['X-pert pricing','Technical comparison']},
+  {t:['price','cost','rate','how much','quote','quotation'],r:"B2B Pricing Tiers:\n\n• 1–49 units: Standard rate\n• 50–99 units: 8–12% discount\n• 100–499 units: 15–20% discount\n• 500+ units: Negotiated pricing\n\nFor a formal quote:\n📧 sales@cncelectric.pk\n📱 WhatsApp: +92-300-0000000",q:['Send enquiry','WhatsApp us']},
+  {t:['dealer','dealership','distributor','reseller','partner','become'],r:"Dealership Programme:\n\n📋 Requirements: Electrical trading business, storage, min PKR 2–5 lakh opening order\n🎁 Benefits: 18–25% margin, marketing support, technical training, credit terms available\n\nEmail: dealers@cncelectric.pk",q:['Dealer application','Credit terms']},
+  {t:['warranty','guarantee','return','after sales'],r:"Warranty Policy:\n\n✅ Standard: 2 years from purchase\n✅ Axis 7 & X-pert 9: 3 years\n\nCovers manufacturing defects.\nClaims: support@cncelectric.pk with invoice + photos.",q:['File warranty claim']},
+  {t:['whatsapp','call','phone','contact','reach','email'],r:"Contact CNC Electric:\n\n📱 WhatsApp: +92-300-0000000\n📞 Phone: +92-21-0000000\n📧 Email: sales@cncelectric.pk\n🌐 Website: www.cncelectric.pk",q:['WhatsApp now','Email us']},
+  {t:['thank','thanks','shukria','jazak'],r:"You're welcome! 😊 Feel free to ask anything else.\n\nFor quick help: +92-300-0000000\n\nHave a great day! ⚡",q:[]}
+];
+var RULE_DEFAULT = {r:"I'm not sure about that specific query — let me connect you with our team.\n\n📱 WhatsApp: +92-300-0000000\n📧 sales@cncelectric.pk\n\nOr try one of these topics:",q:['MCB products','Get a quote','Dealership info','Contact us']};
+
+// ── INIT ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  var saved = localStorage.getItem('cnc_api_key') || '';
+  if (saved) { document.getElementById('keyInput').value = saved; updateKeyUI(saved); }
+});
+
+function saveKey() {
+  var v = document.getElementById('keyInput').value.trim();
+  if (!v) { setKeyErr('Please enter your API key'); return; }
+  if (!v.startsWith('sk-')) { setKeyErr('Key should start with sk-ant-… — check you copied it correctly'); return; }
+  localStorage.setItem('cnc_api_key', v);
+  updateKeyUI(v);
+}
+
+function updateKeyUI(key) {
+  document.getElementById('keyStatus').textContent = '✓ Key saved: ' + key.slice(0,16) + '…' + key.slice(-4);
+  document.getElementById('keyStatus').className = 'key-status ok';
+  document.getElementById('keyDot').className = 'sd sd-green';
+  document.getElementById('keyLabel').textContent = 'API key saved';
+}
+
+function setKeyErr(msg) {
+  document.getElementById('keyStatus').textContent = '✗ ' + msg;
+  document.getElementById('keyStatus').className = 'key-status err';
+}
+
+function selectMode(m) {
+  currentMode = m;
+  document.getElementById('card-ai').className = 'bot-card' + (m==='ai'?' active-card':'');
+  document.getElementById('card-rule').className = 'bot-card' + (m==='rule'?' active-card':'');
+  document.getElementById('modeLabel').textContent = 'Mode: ' + (m==='ai'?'Claude AI':'Rule-Based');
+  document.getElementById('cnc-hname').textContent = m==='ai'?'CNC Assistant':'CNC Support';
+  document.getElementById('cnc-hsub').textContent = m==='ai'?'AI-powered · Always available':'Smart assistant · Instant replies';
+  document.getElementById('cnc-ft').textContent = m==='ai'?'Powered by Claude AI · CNC Electric Pakistan':'CNC Electric Pakistan · Smart Assistant';
+}
+
+function launchChat() {
+  if (currentMode === 'ai') {
+    var key = localStorage.getItem('cnc_api_key');
+    if (!key) { setKeyErr('Please save your API key first, then click Launch'); document.getElementById('keyInput').focus(); return; }
+  }
+  var bubble = document.getElementById('cnc-bubble');
+  bubble.style.display = 'flex';
+  if (!isOpen) { setTimeout(cncToggle, 100); }
+}
+
+function cncToggle() {
+  isOpen = !isOpen;
+  document.getElementById('cnc-bubble').classList.toggle('is-open', isOpen);
+  document.getElementById('cnc-unread').style.display = 'none';
+  var win = document.getElementById('cnc-win');
+  if (isOpen) {
+    win.style.display = 'flex';
+    setTimeout(function(){ win.classList.add('visible'); }, 10);
+    if (firstOpen) { firstOpen = false; showWelcome(); }
+    setTimeout(function(){ document.getElementById('cnc-inp').focus(); }, 260);
+  } else {
+    win.classList.remove('visible');
+    setTimeout(function(){ win.style.display='none'; }, 230);
+  }
+}
+
+function showWelcome() {
+  document.getElementById('cnc-msgs').innerHTML = '';
+  document.getElementById('cnc-err').style.display = 'none';
+  if (currentMode === 'ai') {
+    addBot("Hello! I'm the CNC Electric AI assistant. I can help with product info, technical specs, pricing, and B2B enquiries. How can I help you today?");
+    showQR(['MCB price list','Axis 7 specs','Become a dealer','Solar DC breakers']);
+  } else {
+    addBot("Hello! Welcome to CNC Electric Pakistan. 👋\n\nI can help with MCBs, VFDs, solar breakers, pricing and dealerships.\n\nWhat are you looking for?");
+    showQR(['MCB products','Get a quote','Become a dealer','Contact us']);
+  }
+}
+
+function cncSend() {
+  var inp = document.getElementById('cnc-inp');
+  var text = inp.value.trim();
+  if (!text || isTyping) return;
+  inp.value = ''; inp.style.height = 'auto';
+  document.getElementById('cnc-qr').innerHTML = '';
+  document.getElementById('cnc-err').style.display = 'none';
+  addUser(text);
+  if (msgCount === 0) startSession();
+  msgCount++;
+  if (currentMode === 'ai') callClaude(text);
+  else callRule(text);
+}
+
+function callClaude(text) {
+  var key = localStorage.getItem('cnc_api_key');
+  if (!key) { showErr('No API key saved — enter your key at the top of the page and click Save Key'); return; }
+  chatHistory.push({role:'user', content:text});
+  setTyping(true);
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 500,
+      system: SYSTEM,
+      messages: chatHistory
+    })
+  })
+  .then(function(r) {
+    if (!r.ok) return r.json().then(function(e){ throw {status:r.status, msg:(e.error&&e.error.message)||'API error'}; });
+    return r.json();
+  })
+  .then(function(d) {
+    setTyping(false);
+    var reply = d.content && d.content[0] && d.content[0].text;
+    if (!reply) throw {msg:'Empty response'};
+    chatHistory.push({role:'assistant', content:reply});
+    addBot(reply);
+    logMessage(text, reply);
+  })
+  .catch(function(e) {
+    setTyping(false);
+    var msg = e.msg || e.message || 'Unknown error';
+    var status = e.status || 0;
+    if (status===401 || msg.toLowerCase().includes('auth') || msg.toLowerCase().includes('invalid')) {
+      showErr('API key is invalid or expired. Go to console.anthropic.com to check your key, then re-save it above.');
+    } else if (status===429) {
+      showErr('Rate limit reached — wait a moment and try again.');
+    } else if (status===500 || status===529) {
+      showErr('Anthropic API is temporarily unavailable. Try again in a moment.');
+    } else {
+      showErr('Error: ' + msg);
+    }
+  });
+}
+
+function callRule(text) {
+  setTyping(true);
+  var lower = text.toLowerCase();
+  var match = null;
+  for (var i=0; i<RULES.length; i++) {
+    if (RULES[i].t.some(function(t){ return lower.includes(t); })) { match=RULES[i]; break; }
+  }
+  if (!match) match = RULE_DEFAULT;
+  var delay = Math.min(500 + text.length * 8, 1500);
+  setTimeout(function() {
+    setTyping(false);
+    addBot(match.r);
+    if (match.q && match.q.length) showQR(match.q);
+    logMessage(text, match.r);
+  }, delay);
+}
+
+function setTyping(on) {
+  isTyping = on;
+  document.getElementById('cnc-snd').disabled = on;
+  document.getElementById('cnc-typing').style.display = on ? 'block' : 'none';
+  if (on) scrollBottom();
+}
+
+function addBot(text) {
+  var el = document.getElementById('cnc-msgs');
+  var d = document.createElement('div');
+  d.className = 'cm bot';
+  d.innerHTML = '<div class="cm-bub">' + fmt(text) + '</div><div class="cm-time">' + now() + '</div>';
+  el.appendChild(d); scrollBottom();
+}
+
+function addUser(text) {
+  var el = document.getElementById('cnc-msgs');
+  var d = document.createElement('div');
+  d.className = 'cm usr';
+  d.innerHTML = '<div class="cm-bub">' + esc(text) + '</div><div class="cm-time">' + now() + '</div>';
+  el.appendChild(d); scrollBottom();
+}
+
+function showQR(arr) {
+  document.getElementById('cnc-qr').innerHTML = arr.map(function(r) {
+    return '<button class="cnc-q" onclick="document.getElementById(\'cnc-inp\').value=\'' + r.replace(/'/g,"\\'") + '\';cncSend()">' + esc(r) + '</button>';
+  }).join('');
+}
+
+function showErr(msg) {
+  var el = document.getElementById('cnc-err');
+  el.innerHTML = '⚠ ' + esc(msg);
+  el.style.display = 'block'; scrollBottom();
+}
+
+function scrollBottom() {
+  var el = document.getElementById('cnc-msgs');
+  setTimeout(function(){ el.scrollTop = el.scrollHeight; }, 50);
+}
+
+function fmt(t) { return esc(t).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'); }
+function esc(s) { return (s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function now() { return new Date().toLocaleTimeString('en-PK',{hour:'2-digit',minute:'2-digit'}); }
+
+// Firebase logging
+function startSession() {
+  sessionId = (currentMode==='ai'?'cs_':'rb_') + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+  sessionTopics = [];
+  fb('PUT','/chatSessions/'+sessionId+'.json',{id:sessionId,startTime:new Date().toISOString(),status:'active',totalMessages:0,lastMessage:null,endTime:null,topics:[],leadScore:0,notes:'',flagged:false,referrer:'test-page',page:'/test',chatType:currentMode,userAgent:navigator.userAgent,screenSize:screen.width+'x'+screen.height,language:navigator.language});
+}
+
+function logMessage(q, a) {
+  if (!sessionId) return;
+  fb('POST','/chatSessions/'+sessionId+'/messages.json',{q:q,a:a,t:new Date().toISOString()});
+  var combined=(q+' '+a).toLowerCase();
+  Object.keys(KEYWORDS).forEach(function(cat){ if(KEYWORDS[cat].some(function(k){return combined.includes(k);})&&sessionTopics.indexOf(cat)<0) sessionTopics.push(cat); });
+  var sc=0;
+  if(/price|cost|rate|how much/.test(combined)) sc+=3;
+  if(/order|buy|quantity|purchase/.test(combined)) sc+=5;
+  if(/whatsapp|call|phone|contact/.test(combined)) sc+=4;
+  if(/dealer|distributor/.test(combined)) sc+=4;
+  if(msgCount>3) sc+=2;
+  if(msgCount>6) sc+=2;
+  fb('PATCH','/chatSessions/'+sessionId+'.json',{lastMessage:new Date().toISOString(),totalMessages:msgCount,topics:sessionTopics,leadScore:sc,status:'active'});
+}
+
+function fb(method, path, data) {
+  var xhr=new XMLHttpRequest();
+  xhr.open(method,DB+path,true);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.send(JSON.stringify(data));
+}
+
+window.addEventListener('beforeunload',function(){
+  if(!sessionId) return;
+  navigator.sendBeacon(DB+'/chatSessions/'+sessionId+'.json',JSON.stringify({status:'ended',endTime:new Date().toISOString()}));
+});
+
+// Test chips
+function sendTip(el) {
+  var text = el.querySelector('.tip-chip-text').textContent;
+  var bubble = document.getElementById('cnc-bubble');
+  if (bubble.style.display === 'none' || !bubble.style.display) {
+    launchChat();
+    setTimeout(function(){ document.getElementById('cnc-inp').value=text; cncSend(); }, 500);
+  } else {
+    if (!isOpen) { cncToggle(); setTimeout(function(){ document.getElementById('cnc-inp').value=text; cncSend(); }, 350); }
+    else { document.getElementById('cnc-inp').value=text; cncSend(); }
+  }
+}
+
+setTimeout(function() {
+  var b = document.getElementById('cnc-bubble');
+  if (b.style.display !== 'none' && !isOpen) document.getElementById('cnc-unread').style.display = 'flex';
+}, 3500);
+</script>
+
+</body>
+</html>
