@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V9.6 — 15 Mar 2026 21:15 PKT</title>
+<title>CS Activity Reporter V9.7 — 15 Mar 2026 21:25 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -179,8 +179,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V9.6</span>
-    <span class="tb-date">15Mar2026 · 21:15</span>
+    <span class="tb-ver">V9.7</span>
+    <span class="tb-date">15Mar2026 · 21:25</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -242,8 +242,6 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   <button class="jbtn jbtn-red" id="out-confirm-btn" style="display:none;margin-top:8px" onclick="App.outsideContinue()">✅ Confirm & Mark Attendance</button>
   <button class="jbtn jbtn-ghost" style="margin-top:6px" onclick="App.jgo('idle')">← Back</button>
 </div>
-
-<!-- ═══ STATE 3: AT LOCATION (outside login — already at destination) ═══ -->
 <div id="s-at_location" class="jstate">
   <div class="loc-bar" style="border-color:var(--amb);border-left:4px solid var(--amb);background:var(--amb-bg)">
     <div class="loc-icon">📍</div>
@@ -293,7 +291,11 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   </div>
 
   <button class="jbtn jbtn-grn" onclick="App.checkInAtLocation()">✅ Check In — Start Meeting</button>
-  <button class="jbtn jbtn-ghost" onclick="App.jgo('outside')">← Back</button>
+  <div id="atloc-type-picker" style="display:none;margin-bottom:8px"></div>
+  <div style="display:flex;gap:5px;margin-top:4px">
+    <button class="jbtn jbtn-ghost" style="flex:1;margin:0;font-size:11px" onclick="App.changeLocationType()">🔄 Change Type</button>
+    <button class="jbtn jbtn-ghost" style="flex:1;margin:0;font-size:11px;color:var(--R);border-color:var(--Rl)" onclick="App.cancelAttendance()">✕ Cancel Attendance</button>
+  </div>
 </div>
 
 <!-- ═══ STATE 9: DAY DONE ═══ -->
@@ -336,7 +338,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V9.6',date:'15-Mar-2026',time:'21:15 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V9.7',date:'15-Mar-2026',time:'21:25 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -723,6 +725,61 @@ selAtlocClient:function(el){
 },
 
 /* ── Check in at location (outside login) ── */
+/* ═══════════════════════════════════════
+   CANCEL ATTENDANCE (delete record, start fresh)
+   ═══════════════════════════════════════ */
+cancelAttendance:async function(){
+  if(!_myAttId){this.jgo('idle');return}
+  if(!confirm('Cancel this attendance? Record will be deleted.')){return}
+  showLoad('Cancelling','Removing attendance record...');
+  try{
+    await F.del('attendance/'+_myAttId);
+    _att=F.arr(await F.g('attendance'));
+    _myAttId=null;_loginTime=null;
+    if(_officeTimer)clearInterval(_officeTimer);
+    S.p('err');
+    U.toast('Attendance cancelled','warn');
+    this.jgo('idle');
+  }catch(e){U.toast('Error cancelling','err')}
+  hideLoad();
+},
+
+/* ═══════════════════════════════════════
+   CHANGE LOCATION TYPE (switch client/lead/complaint)
+   ═══════════════════════════════════════ */
+changeLocationType:function(){
+  S.p('click');
+  /* Show a simple picker */
+  var types=['client','lead','complaint'];
+  var labels={'client':'🏢 Client Visit','lead':'🆕 Lead Visit','complaint':'🔄 Complaint'};
+  var current=this._outsideReason||'client';
+  var html='<div style="font-size:13px;font-weight:800;color:var(--G2);margin-bottom:8px">Change visit type:</div>';
+  types.forEach(function(t){
+    var sel=t===current?'client-opt-hi':'';
+    html+='<div class="client-opt '+sel+'" onclick="App.doChangeType(\''+t+'\')">'+
+      '<div class="co-icon">'+labels[t].split(' ')[0]+'</div>'+
+      '<div><div class="co-title">'+labels[t].substring(labels[t].indexOf(' ')+1)+'</div></div></div>';
+  });
+  /* Replace At Location content temporarily */
+  var el=document.getElementById('atloc-type-picker');
+  if(el){el.innerHTML=html;el.style.display='block'}
+},
+
+doChangeType:async function(newType){
+  this._outsideReason=newType;
+  /* Update Firebase */
+  if(_myAttId){
+    try{await F.up('attendance/'+_myAttId,{outsideReason:newType})}catch(e){}
+  }
+  /* Refresh At Location view */
+  var rec=_att.find(function(a){return a.id===_myAttId});
+  if(rec){rec.outsideReason=newType}
+  var el=document.getElementById('atloc-type-picker');
+  if(el)el.style.display='none';
+  this.showAtLocation(rec||{time:_loginTime,inNear:false,outsideReason:newType,inLat:0,inLng:0});
+  U.toast('Changed to '+newType,'ok');
+},
+
 checkInAtLocation:async function(){
   var reason=this._outsideReason;
   if(reason==='client'&&!this._atlocSelected){U.toast('Select a client','warn');return}
