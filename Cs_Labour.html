@@ -3,63 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Labour حاضری V2</title>
+<title>CS Labour حاضری V4</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--R:#b91c1c;--Rbg:#fef2f2;--G1:#111827;--G2:#1f2937;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;--grn:#16a34a;--grn-bg:#f0fdf4;--amb:#d97706;--amb-bg:#fffbeb;--r:12px;--rl:16px}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Naskh Arabic',sans-serif;background:var(--G9);color:var(--G2);-webkit-tap-highlight-color:transparent;overflow-x:hidden;min-height:100dvh;font-size:16px}
+:root{--R:#b91c1c;--G1:#111827;--G2:#1f2937;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;--grn:#16a34a;--grn-bg:#f0fdf4;--amb:#d97706;--amb-bg:#fffbeb;--r:12px;--rl:16px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Naskh Arabic',sans-serif;background:var(--G9);color:var(--G2);-webkit-tap-highlight-color:transparent;min-height:100dvh;font-size:16px}
 button,input{font-family:inherit;border:none;outline:none;font-size:16px}
-.topbar{background:var(--G1);color:var(--W);padding:0 14px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--R)}
-.tb-t{font-size:15px;font-weight:800}.tb-t em{color:var(--R);font-style:normal}
-.tb-left{display:flex;align-items:center;gap:6px}
-.tb-ver{font-size:8px;font-weight:800;padding:2px 6px;border-radius:6px;background:var(--R);color:var(--W)}
-.tb-date{font-size:7px;color:var(--G5)}
-.tb-speak{background:none;color:var(--W);font-size:24px;cursor:pointer;padding:6px;border:2px solid rgba(255,255,255,.2);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center}
-.tb-speak:active{background:rgba(255,255,255,.15)}
+
+/* Topbar */
+.top{background:var(--G1);color:var(--W);padding:0 14px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--R)}
+.top-t{font-size:15px;font-weight:800}.top-t em{color:var(--R);font-style:normal}
+.top-l{display:flex;align-items:center;gap:6px}
+.top-v{font-size:8px;font-weight:800;padding:2px 6px;border-radius:6px;background:var(--R);color:var(--W)}
+.top-d{font-size:7px;color:var(--G5)}
+.btn-spk{background:none;color:var(--W);font-size:24px;cursor:pointer;padding:6px;border:2px solid rgba(255,255,255,.2);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center}
+.btn-spk:active{background:rgba(255,255,255,.2)}
+
+/* Content */
 .ct{padding:14px 16px 30px;direction:rtl;text-align:right}
-.jstate{display:none}.jstate.on{display:block}
-.bcard{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:20px;margin-bottom:14px;box-shadow:0 3px 0 var(--G7);text-align:center}
-.bcard-icon{font-size:48px;margin-bottom:8px}.bcard-t{font-size:20px;font-weight:800;line-height:1.4}.bcard-s{font-size:14px;color:var(--G5);margin-top:4px;line-height:1.6}
-.bbtn{width:100%;padding:18px;border-radius:var(--r);font-size:18px;font-weight:800;cursor:pointer;text-align:center;border:2px solid transparent;margin-bottom:8px;transition:transform .1s}
-.bbtn:active{transform:scale(.97)}
-.bbtn-red{background:var(--R);color:var(--W);box-shadow:0 4px 0 #7f1d1d}
-.bbtn-grn{background:var(--grn);color:var(--W);box-shadow:0 4px 0 #14532d}
-.bbtn-dark{background:var(--G2);color:var(--W);box-shadow:0 4px 0 var(--G1)}
-.bbtn-ghost{background:var(--W);color:var(--G5);border:2px solid var(--G8);box-shadow:0 2px 0 var(--G8);font-size:15px;padding:14px}
-.name-grid{display:flex;flex-direction:column;gap:6px;margin:10px 0}
-.name-btn{padding:16px;border-radius:var(--r);font-size:17px;font-weight:700;background:var(--W);border:2px solid var(--G8);cursor:pointer;text-align:right;box-shadow:0 2px 0 var(--G7);display:flex;align-items:center;justify-content:space-between}
-.name-btn:active{transform:scale(.98);box-shadow:none}
-.name-btn.sel{border-color:var(--grn);background:var(--grn-bg);color:var(--grn);border-right:5px solid var(--grn)}
-.name-code{font-size:11px;font-weight:600;color:var(--G5)}
-.search-box{width:100%;padding:14px;border:2px solid var(--G8);border-radius:var(--r);font-size:16px;background:var(--W);text-align:right;margin-bottom:10px}
-.search-box:focus{border-color:var(--R)}
-.cam-wrap{position:relative;width:200px;height:200px;border-radius:50%;border:5px solid var(--G8);margin:0 auto 14px;overflow:hidden;background:#000}
-.cam-wrap.ok{border-color:var(--grn)}
-.cam-wrap video,.cam-wrap img{width:100%;height:100%;object-fit:cover;display:block}
-.cam-badge{position:absolute;bottom:6px;right:6px;width:40px;height:40px;border-radius:50%;background:var(--grn);color:var(--W);display:none;align-items:center;justify-content:center;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
-.cam-wrap.ok .cam-badge{display:flex}
+.pg{display:none}.pg.on{display:block}
+
+/* Cards */
+.card{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:20px;margin-bottom:14px;box-shadow:0 3px 0 var(--G7);text-align:center}
+.card-i{font-size:48px;margin-bottom:8px}
+.card-h{font-size:20px;font-weight:800;line-height:1.4}
+.card-p{font-size:14px;color:var(--G5);margin-top:4px;line-height:1.6}
+
+/* Buttons */
+.btn{width:100%;padding:18px;border-radius:var(--r);font-size:18px;font-weight:800;cursor:pointer;text-align:center;margin-bottom:8px;border:none}
+.btn:active{transform:scale(.97)}
+.btn-r{background:var(--R);color:var(--W);box-shadow:0 4px 0 #7f1d1d}
+.btn-g{background:var(--grn);color:var(--W);box-shadow:0 4px 0 #14532d}
+.btn-d{background:var(--G2);color:var(--W);box-shadow:0 4px 0 var(--G1)}
+.btn-o{background:var(--W);color:var(--G5);border:2px solid var(--G8);box-shadow:0 2px 0 var(--G8);font-size:15px;padding:14px}
+
+/* Names */
+.nm{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.nm-b{padding:16px;border-radius:var(--r);font-size:17px;font-weight:700;background:var(--W);border:2px solid var(--G8);cursor:pointer;box-shadow:0 2px 0 var(--G7);display:flex;align-items:center;justify-content:space-between}
+.nm-b:active{transform:scale(.98);box-shadow:none}
+.nm-b.on{border-color:var(--grn);background:var(--grn-bg);color:var(--grn);border-right:5px solid var(--grn)}
+.nm-s{font-size:11px;font-weight:600;color:var(--G5)}
+.srch{width:100%;padding:14px;border:2px solid var(--G8);border-radius:var(--r);font-size:16px;background:var(--W);text-align:right;margin-bottom:10px}
+.srch:focus{border-color:var(--R)}
+
+/* Camera */
+.cam{position:relative;width:200px;height:200px;border-radius:50%;border:5px solid var(--G8);margin:0 auto 14px;overflow:hidden;background:#000}
+.cam.ok{border-color:var(--grn)}
+.cam video,.cam img{width:100%;height:100%;object-fit:cover}
 .cam-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--G9);font-size:50px;color:var(--G7)}
-.gps-bar{text-align:center;font-size:12px;padding:8px;background:var(--W);border-radius:8px;border:1px solid var(--G8);margin-bottom:10px;font-weight:600;color:var(--G5)}
-.info-card{background:var(--W);border-radius:var(--rl);padding:14px;margin-bottom:10px;border:2px solid var(--G8);box-shadow:0 2px 0 var(--G7)}
-.ir{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--G9)}.ir:last-child{border:none}
-.il{font-size:13px;font-weight:600;color:var(--G5)}.iv{font-size:15px;font-weight:800;direction:ltr}
-.ig{color:var(--grn)}.ia{color:var(--amb)}.ie{color:var(--R)}
-.sb{border-radius:var(--rl);padding:16px;text-align:center;margin-bottom:14px}
-.sb-g{background:var(--grn-bg);border:2px solid var(--grn)}.sb-a{background:var(--amb-bg);border:2px solid var(--amb)}
-.sb-i{font-size:42px;margin-bottom:6px}.sb-t{font-size:18px;font-weight:800;line-height:1.4}.sb-s{font-size:13px;color:var(--G5);margin-top:4px}
-.big-t{font-size:44px;font-weight:800;font-family:'Courier New',monospace;text-align:center;padding:10px;direction:ltr}
-.tl{font-size:12px;font-weight:700;color:var(--G5);text-align:center;margin-bottom:4px}
+.cam-ok{position:absolute;bottom:6px;right:6px;width:40px;height:40px;border-radius:50%;background:var(--grn);color:var(--W);align-items:center;justify-content:center;font-size:22px;display:none;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.cam.ok .cam-ok{display:flex}
+
+/* GPS */
+.gps{text-align:center;font-size:12px;padding:8px;background:var(--W);border-radius:8px;border:1px solid var(--G8);margin-bottom:10px;font-weight:600;color:var(--G5)}
+
+/* Info rows */
+.inf{background:var(--W);border-radius:var(--rl);padding:14px;margin-bottom:10px;border:2px solid var(--G8);box-shadow:0 2px 0 var(--G7)}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--G9)}.row:last-child{border:none}
+.row-l{font-size:13px;font-weight:600;color:var(--G5)}
+.row-v{font-size:15px;font-weight:800;direction:ltr}
+.c-g{color:var(--grn)}.c-a{color:var(--amb)}.c-r{color:var(--R)}
+
+/* Status banner */
+.sts{border-radius:var(--rl);padding:16px;text-align:center;margin-bottom:14px}
+.sts-g{background:var(--grn-bg);border:2px solid var(--grn)}
+.sts-a{background:var(--amb-bg);border:2px solid var(--amb)}
+.sts-i{font-size:42px;margin-bottom:6px}.sts-h{font-size:18px;font-weight:800}.sts-p{font-size:13px;color:var(--G5);margin-top:4px}
+
+/* Timer */
+.timer{font-size:44px;font-weight:800;font-family:'Courier New',monospace;text-align:center;padding:10px;direction:ltr}
+.timer-l{font-size:12px;font-weight:700;color:var(--G5);text-align:center;margin-bottom:4px}
+
+/* OT badge */
 .ot{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800}
-.ot-y{background:var(--amb-bg);color:var(--amb);border:2px solid var(--amb)}.ot-n{background:var(--G9);color:var(--G5);border:2px solid var(--G8)}
-.rec-wrap{text-align:center;margin:14px 0}
-.rec-b{width:80px;height:80px;border-radius:50%;border:none;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer}
-.rec-i{background:var(--G8);color:var(--G5)}.rec-o{background:var(--R);color:var(--W);animation:rp 1s infinite}.rec-d{background:var(--grn);color:var(--W)}
+.ot-y{background:var(--amb-bg);color:var(--amb);border:2px solid var(--amb)}
+.ot-n{background:var(--G9);color:var(--G5);border:2px solid var(--G8)}
+
+/* Recorder */
+.rec{text-align:center;margin:14px 0;position:relative;z-index:10}
+.rec-b{width:90px;height:90px;border-radius:50%;border:none;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer;-webkit-user-select:none;user-select:none;position:relative;z-index:11}
+.rec-i{background:var(--G8);color:var(--G5)}
+.rec-a{background:var(--R);color:var(--W);animation:rp 1s infinite}
+.rec-d{background:var(--grn);color:var(--W)}
 @keyframes rp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 .rec-l{font-size:13px;font-weight:700;color:var(--G5);margin-bottom:6px}
 .rec-t{font-size:24px;font-weight:800;font-family:monospace;color:var(--R);direction:ltr;margin-bottom:8px}
-.rec-a{display:flex;gap:6px;justify-content:center}
+.rec-acts{display:flex;gap:8px;justify-content:center}
 .rec-ab{padding:10px 20px;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;border:2px solid var(--G8);background:var(--W)}
 .rec-ab:active{background:var(--G9)}
+
+/* Debug */
+.dbg{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);color:#0f0;font-size:10px;font-family:monospace;padding:6px 10px 30px;max-height:140px;overflow-y:auto;z-index:999;direction:ltr;text-align:left;display:none}
+.dbg-x{position:fixed;bottom:2px;right:10px;z-index:1000;background:#333;color:#fff;border:none;padding:4px 12px;border-radius:4px;font-size:10px;cursor:pointer;display:none}
+
+/* Toast */
 #toasts{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:4px;max-width:90%}
 .toast{padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;color:var(--W);animation:ti .3s,to .3s 2.5s forwards}
 .t-ok{background:var(--grn)}.t-err{background:var(--R)}.t-warn{background:var(--amb)}.t-info{background:var(--G2)}
@@ -68,202 +105,586 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 </head>
 <body>
 <div id="toasts"></div>
-<div class="topbar">
-  <div class="tb-left">
-    <button class="tb-speak" onclick="V.replay()">🔊</button>
-    <span class="tb-ver">V2</span>
-    <span class="tb-date">15Mar26 · 23:05</span>
+<div class="dbg" id="dbg"></div>
+<button class="dbg-x" id="dbg-x" onclick="document.getElementById('dbg').style.display='none';this.style.display='none'">✕ Close Log</button>
+
+<div class="top">
+  <div class="top-l">
+    <button class="btn-spk" onclick="V.replay()">🔊</button>
+    <span class="top-v">V4</span>
+    <span class="top-d">16Mar2026 · 01:00</span>
   </div>
-  <div class="tb-t">CS <em>حاضری</em></div>
+  <div class="top-t">CS <em>حاضری</em></div>
 </div>
 <div class="ct">
 
-<!-- 1: SELECT -->
-<div id="s-select" class="jstate on">
-  <div class="bcard"><div class="bcard-icon">📍</div><div class="bcard-t">حاضری لگائیں</div><div class="bcard-s">اپنا نام منتخب کریں</div></div>
-  <input class="search-box" placeholder="🔍 نام تلاش کریں..." oninput="App.filter(this.value)">
-  <div class="name-grid" id="names"></div>
-  <button class="bbtn bbtn-red" id="btn-next" style="display:none" onclick="App.goSelfie()">آگے بڑھیں →</button>
+<!-- 1: SELECT NAME -->
+<div id="p-select" class="pg on">
+  <div class="card"><div class="card-i">📍</div><div class="card-h">حاضری لگائیں</div><div class="card-p">اپنا نام منتخب کریں</div></div>
+  <input class="srch" placeholder="🔍 نام تلاش کریں..." oninput="App.filt(this.value)">
+  <div class="nm" id="nms"></div>
+  <button class="btn btn-r" id="btn-go" style="display:none" onclick="App.toSelfie()">آگے بڑھیں →</button>
 </div>
 
-<!-- 2: SELFIE+GPS -->
-<div id="s-selfie" class="jstate">
-  <div class="gps-bar" id="gps-bar">📡 GPS چیک ہو رہی ہے...</div>
-  <div style="text-align:center;margin-bottom:8px"><div style="font-size:17px;font-weight:800" id="sf-nm">—</div><div style="font-size:12px;color:var(--G5)" id="sf-rl">—</div></div>
-  <div class="cam-wrap" id="cam-w"><div class="cam-ph" id="cam-ph">📷</div><video id="cam-v" autoplay playsinline muted style="display:none"></video><img id="cam-i" style="display:none"><canvas id="cam-c" style="display:none"></canvas><div class="cam-badge">✓</div></div>
-  <button class="bbtn bbtn-red" id="b-open" onclick="App.openCam()">📸 کیمرہ کھولیں</button>
-  <button class="bbtn bbtn-dark" id="b-snap" style="display:none" onclick="App.snap()">📸 تصویر لیں</button>
-  <button class="bbtn bbtn-grn" id="b-ci" style="display:none" onclick="App.checkIn()">✅ حاضری لگائیں</button>
-  <button class="bbtn bbtn-ghost" id="b-re" style="display:none" onclick="App.retake()">🔄 دوبارہ لیں</button>
-  <button class="bbtn bbtn-ghost" onclick="App.go('select')">← واپس</button>
+<!-- 2: SELFIE + GPS -->
+<div id="p-selfie" class="pg">
+  <div class="gps" id="gps">📡 GPS لوڈ ہو رہی ہے...</div>
+  <div style="text-align:center;margin-bottom:8px">
+    <div style="font-size:17px;font-weight:800" id="sf-n">—</div>
+    <div style="font-size:12px;color:var(--G5)" id="sf-r">—</div>
+  </div>
+  <div class="cam" id="cam">
+    <div class="cam-ph" id="cam-ph">📷</div>
+    <video id="vid" autoplay playsinline muted style="display:none"></video>
+    <img id="foto" style="display:none">
+    <canvas id="cv" style="display:none"></canvas>
+    <div class="cam-ok">✓</div>
+  </div>
+  <button class="btn btn-r" id="b-cam" onclick="App.camOpen()">📸 کیمرہ کھولیں</button>
+  <button class="btn btn-d" id="b-snap" onclick="App.camSnap()" style="display:none">📸 تصویر لیں</button>
+  <button class="btn btn-g" id="b-ci" onclick="App.doCheckIn()" style="display:none">✅ حاضری لگائیں</button>
+  <button class="btn btn-o" id="b-redo" onclick="App.camRedo()" style="display:none">🔄 دوبارہ لیں</button>
+  <button class="btn btn-o" onclick="App.show('select')">← واپس</button>
 </div>
 
 <!-- 3: CHECKED IN -->
-<div id="s-checked_in" class="jstate">
-  <div class="sb sb-g"><div class="sb-i">✅</div><div class="sb-t" style="color:var(--grn)">حاضری لگ گئی</div><div class="sb-s" id="ci-sub">—</div></div>
-  <div class="info-card" id="ci-info"></div>
-  <button class="bbtn bbtn-dark" onclick="App.goWork()">👍 ٹھیک ہے — کام شروع</button>
+<div id="p-in" class="pg">
+  <div class="sts sts-g"><div class="sts-i">✅</div><div class="sts-h" style="color:var(--grn)">حاضری لگ گئی</div><div class="sts-p" id="in-sub">—</div></div>
+  <div class="inf" id="in-info"></div>
+  <button class="btn btn-d" onclick="App.toWork()">👍 ٹھیک ہے — کام شروع</button>
 </div>
 
 <!-- 4: WORKING -->
-<div id="s-working" class="jstate">
+<div id="p-work" class="pg">
   <div style="background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
-    <div style="font-size:28px">🟢</div><div><div style="font-size:15px;font-weight:800;color:var(--grn)">کام جاری ہے</div><div style="font-size:12px;color:var(--G5)" id="wk-sub">—</div></div>
+    <div style="font-size:28px">🟢</div>
+    <div><div style="font-size:15px;font-weight:800;color:var(--grn)">کام جاری ہے</div><div style="font-size:12px;color:var(--G5)" id="wk-s">—</div></div>
   </div>
-  <div class="tl">کام کا وقت</div>
-  <div class="big-t" id="wk-t">00:00:00</div>
-  <div class="info-card" id="wk-info"></div>
-  <button class="bbtn bbtn-red" style="margin-top:10px" onclick="App.goCo()">🏠 رخصت — گھر جائیں</button>
+  <div class="timer-l">کام کا وقت</div>
+  <div class="timer" id="wk-t">00:00:00</div>
+  <div class="inf" id="wk-info"></div>
+  <button class="btn btn-r" style="margin-top:10px" onclick="App.toCo()">🏠 رخصت — گھر جائیں</button>
 </div>
 
-<!-- 5: CHECKOUT+VOICE -->
-<div id="s-checkout" class="jstate">
-  <div class="bcard"><div class="bcard-t">🏠 رخصت</div><div class="bcard-s">وائس پیغام (اختیاری)</div></div>
-  <div class="rec-wrap">
-    <button class="rec-b rec-i" id="rb" onclick="App.togRec()">🎙️</button>
-    <div class="rec-l" id="rl">دبائیں ریکارڈ کے لیے</div>
+<!-- 5: CHECKOUT + VOICE -->
+<div id="p-co" class="pg">
+  <div class="card"><div class="card-h">🏠 رخصت</div><div class="card-p">وائس پیغام ریکارڈ کریں (اختیاری)</div></div>
+  <div class="rec">
+    <button class="rec-b rec-i" id="rb" onclick="App.recTog()">🎙️</button>
+    <div class="rec-l" id="rl">🎙️ دبائیں ریکارڈ کے لیے</div>
     <div class="rec-t" id="rt" style="display:none">00:00</div>
-    <div class="rec-a" id="ra" style="display:none">
-      <button class="rec-ab" onclick="App.playR()">▶️ سنیں</button>
-      <button class="rec-ab" style="color:var(--R)" onclick="App.delR()">🗑 حذف</button>
+    <div class="rec-acts" id="ra" style="display:none">
+      <button class="rec-ab" onclick="App.recPlay()">▶️ سنیں</button>
+      <button class="rec-ab" style="color:var(--R)" onclick="App.recDel()">🗑 حذف</button>
     </div>
   </div>
-  <div class="info-card" id="co-info"></div>
-  <button class="bbtn bbtn-red" onclick="App.doneOut()">✅ رخصت کی تصدیق</button>
-  <button class="bbtn bbtn-ghost" onclick="App.go('working')">← واپس</button>
+  <div class="inf" id="co-info"></div>
+  <button class="btn btn-r" onclick="App.doneOut()">✅ رخصت کی تصدیق</button>
+  <button class="btn btn-o" onclick="App.show('work')">← واپس — ابھی نہیں</button>
 </div>
 
 <!-- 6: DONE -->
-<div id="s-done" class="jstate">
-  <div class="sb" id="d-sb"><div class="sb-i" id="d-i">🏠</div><div class="sb-t" id="d-t">رخصت ہو گئی</div><div class="sb-s">اللہ حافظ — کل ملیں گے</div></div>
-  <div class="info-card" id="d-info"></div>
-  <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--G5);line-height:1.8">📍 GPS محفوظ · 📸 سیلفی محفوظ · 🎙️ <span id="d-v">—</span></div>
+<div id="p-done" class="pg">
+  <div class="sts" id="dn-sts"><div class="sts-i" id="dn-i">🏠</div><div class="sts-h" id="dn-h">رخصت ہو گئی</div><div class="sts-p">اللہ حافظ — کل ملیں گے</div></div>
+  <div class="inf" id="dn-info"></div>
+  <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--G5);line-height:1.8">📍 GPS · 📸 سیلفی · 🎙️ <span id="dn-v">—</span></div>
 </div>
 
 </div>
 <script>
-var OFFICES=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
-var KR=6.5,ST='09:00',OTS='18:00';
-var STAFF=[
-  {n:'اکبر خان',c:'1001',r:'الیکٹریشن'},{n:'محمد اسلم',c:'1002',r:'ٹیکنیشن'},{n:'عبدالرحمان',c:'1003',r:'مزدور'},
-  {n:'نذیر احمد',c:'1004',r:'ہیلپر'},{n:'فیاض حسین',c:'1005',r:'ٹیکنیشن'},{n:'ساجد محمود',c:'1006',r:'الیکٹریشن'},
-  {n:'وسیم اکرم',c:'1007',r:'مزدور'},{n:'طارق مسعود',c:'1008',r:'ہیلپر'},{n:'عامر شہزاد',c:'1009',r:'ٹیکنیشن'},{n:'بلال احمد',c:'1010',r:'مزدور'}
+/* ═══ CONFIG ═══ */
+var OFC=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
+var KR=6.5, ST='09:00', OTS='18:00';
+var PPL=[
+  {n:'اکبر خان',c:'1001',r:'الیکٹریشن'},{n:'محمد اسلم',c:'1002',r:'ٹیکنیشن'},
+  {n:'عبدالرحمان',c:'1003',r:'مزدور'},{n:'نذیر احمد',c:'1004',r:'ہیلپر'},
+  {n:'فیاض حسین',c:'1005',r:'ٹیکنیشن'},{n:'ساجد محمود',c:'1006',r:'الیکٹریشن'},
+  {n:'وسیم اکرم',c:'1007',r:'مزدور'},{n:'طارق مسعود',c:'1008',r:'ہیلپر'},
+  {n:'عامر شہزاد',c:'1009',r:'ٹیکنیشن'},{n:'بلال احمد',c:'1010',r:'مزدور'}
 ];
 
-var _s=null,_g=null,_sf=null,_ci=null,_str=null,_wi=null;
-var _mr=null,_ch=[],_ab=null,_au=null,_ri=null,_rs=0,_cs='select';
+/* ═══ GLOBALS ═══ */
+var _who = null;    // selected person
+var _geo = null;    // GPS data
+var _pic = null;    // selfie base64
+var _inTime = null; // check-in time
+var _stream = null; // camera stream
+var _wkInt = null;  // work timer interval
+var _mRec = null;   // MediaRecorder
+var _mChunks = [];  // audio chunks
+var _mBlob = null;  // recorded blob
+var _mUrl = null;   // audio URL
+var _rInt = null;   // rec timer interval
+var _rSec = 0;      // rec seconds
+var _curPg = 'select';
 
-function $(i){return document.getElementById(i)}
-function toast(m,t){var e=document.createElement('div');e.className='toast t-'+(t||'info');e.textContent=m;$('toasts').appendChild(e);setTimeout(function(){e.remove()},3000)}
-function tN(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
-function dst(a,b,c,d){var R=6371e3,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180;var x=Math.sin(dL/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
-
-/* Voice */
-var V={
-  L:{select:'حاضری لگائیں۔ نام منتخب کریں',selfie:'سیلفی لیں',checked_in:'حاضری لگ گئی',working:'کام جاری ہے',checkout:'رخصت کے لیے تصدیق کریں',done:'رخصت ہو گئی۔ اللہ حافظ'},
-  say:function(t){try{if(!speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ur-PK';u.rate=.85;var vs=speechSynthesis.getVoices(),v=vs.find(function(x){return x.lang.indexOf('ur')>=0})||vs.find(function(x){return x.lang.indexOf('hi')>=0});if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}},
-  replay:function(){if(this.L[_cs])this.say(this.L[_cs])},
-  speak:function(s){if(this.L[s])this.say(this.L[s])}
-};
-if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoiceschanged=function(){speechSynthesis.getVoices()}}
-
-var App={
-go:function(s){_cs=s;document.querySelectorAll('.jstate').forEach(function(e){e.classList.remove('on')});$('s-'+s).classList.add('on');window.scrollTo(0,0);V.speak(s)},
-
-initN:function(){var h='';STAFF.forEach(function(s,i){h+='<div class="name-btn" onclick="App.pick('+i+')" data-i="'+i+'"><span>'+s.n+'</span><span class="name-code">'+s.r+' · '+s.c+'</span></div>'});$('names').innerHTML=h},
-
-pick:function(i){_s=STAFF[i];document.querySelectorAll('.name-btn').forEach(function(b){b.classList.remove('sel')});document.querySelector('[data-i="'+i+'"]').classList.add('sel');$('btn-next').style.display='block';V.say(_s.n)},
-
-filter:function(q){q=(q||'').toLowerCase();document.querySelectorAll('.name-btn').forEach(function(b){b.style.display=b.textContent.toLowerCase().indexOf(q)>=0?'flex':'none'})},
-
-goSelfie:function(){
-  if(!_s){toast('نام منتخب کریں','warn');return}
-  this.go('selfie');$('sf-nm').textContent=_s.n;$('sf-rl').textContent=_s.r+' · '+_s.c;
-  _sf=null;_g=null;$('cam-w').classList.remove('ok');$('cam-ph').style.display='flex';$('cam-v').style.display='none';$('cam-i').style.display='none';
-  $('b-open').style.display='block';$('b-snap').style.display='none';$('b-ci').style.display='none';$('b-re').style.display='none';
-  $('gps-bar').innerHTML='📡 GPS چیک ہو رہی ہے...';
-  if(navigator.geolocation){navigator.geolocation.getCurrentPosition(function(p){
-    var la=p.coords.latitude,ln=p.coords.longitude,best=null;
-    OFFICES.forEach(function(o){var d=dst(la,ln,o.la,o.ln);if(!best||d<best.d)best={d:d,n:o.n}});
-    _g={la:la,ln:ln,km:+(best.d/1000).toFixed(1),of:best.n};
-    $('gps-bar').innerHTML='📡 <span style="color:var(--grn);font-weight:800">✅ لوکیشن مل گئی</span> · '+_g.km+'km '+_g.of+' سے';
-  },function(){$('gps-bar').innerHTML='📡 <span style="color:var(--R);font-weight:800">❌ GPS نہیں ملی</span> — لوکیشن آن کریں'},{enableHighAccuracy:true,timeout:15000})}
-},
-
-openCam:function(){
-  $('cam-ph').style.display='none';$('cam-v').style.display='block';$('b-open').style.display='none';$('b-snap').style.display='block';
-  navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:480},height:{ideal:480}},audio:false})
-    .then(function(s){_str=s;$('cam-v').srcObject=s;toast('کیمرہ تیار','ok')})
-    .catch(function(e){toast('کیمرہ: '+e.message,'err');$('cam-ph').style.display='flex';$('cam-v').style.display='none';$('b-open').style.display='block';$('b-snap').style.display='none'})
-},
-
-snap:function(){
-  var v=$('cam-v'),c=$('cam-c'),im=$('cam-i');c.width=v.videoWidth||320;c.height=v.videoHeight||320;
-  c.getContext('2d').drawImage(v,0,0,c.width,c.height);_sf=c.toDataURL('image/jpeg',.7);
-  im.src=_sf;im.style.display='block';v.style.display='none';
-  if(_str){_str.getTracks().forEach(function(t){t.stop()});_str=null}
-  $('cam-w').classList.add('ok');$('b-snap').style.display='none';$('b-ci').style.display='block';$('b-re').style.display='block';
-  V.say('تصویر لے لی گئی')
-},
-
-retake:function(){_sf=null;$('cam-w').classList.remove('ok');$('cam-i').style.display='none';$('b-ci').style.display='none';$('b-re').style.display='none';this.openCam()},
-
-checkIn:function(){
-  if(!_sf){toast('سیلفی لیں','warn');return}
-  if(!_g){toast('GPS ضروری ہے','warn');return}
-  _ci=tN();var late=_ci>ST,ta=Math.round(_g.km*KR);
-  this.go('checked_in');$('ci-sub').textContent=_s.n+' · '+_s.r+' · '+_ci;
-  $('ci-info').innerHTML='<div class="ir"><span class="il">📍 لوکیشن</span><span class="iv">'+_g.of+'</span></div><div class="ir"><span class="il">🚗 فاصلہ</span><span class="iv">'+_g.km+' km</span></div><div class="ir"><span class="il">💰 TA</span><span class="iv ig">Rs '+ta+'</span></div><div class="ir"><span class="il">⏰ وقت</span><span class="iv">'+_ci+'</span></div><div class="ir"><span class="il">📊 حالت</span><span class="iv '+(late?'ia':'ig')+'">'+(late?'⏰ لیٹ':'✅ وقت پر')+'</span></div><div class="ir"><span class="il">📸</span><span class="iv ig">✅ سیلفی</span></div><div class="ir"><span class="il">📡</span><span class="iv" style="font-size:11px">'+_g.la.toFixed(4)+', '+_g.ln.toFixed(4)+'</span></div>'
-},
-
-goWork:function(){
-  this.go('working');$('wk-sub').textContent=_s.n+' · '+_s.r;
-  var ta=Math.round(_g.km*KR);
-  $('wk-info').innerHTML='<div class="ir"><span class="il">⏰ حاضری</span><span class="iv">'+_ci+'</span></div><div class="ir"><span class="il">🚗</span><span class="iv">'+_g.km+' km</span></div><div class="ir"><span class="il">💰 TA</span><span class="iv ig">Rs '+ta+'</span></div>';
-  if(_wi)clearInterval(_wi);
-  _wi=setInterval(function(){var cp=_ci.split(':'),now=new Date();var sec=(now.getHours()*3600+now.getMinutes()*60+now.getSeconds())-(+cp[0]*3600+ +cp[1]*60);if(sec<0)sec=0;
-    $('wk-t').textContent=String(Math.floor(sec/3600)).padStart(2,'0')+':'+String(Math.floor(sec%3600/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')},1000)
-},
-
-goCo:function(){
-  this.go('checkout');var out=tN();
-  var cp=_ci.split(':'),op=out.split(':'),tm=(+op[0]*60+ +op[1])-(+cp[0]*60+ +cp[1]);if(tm<0)tm=0;
-  var h=Math.floor(tm/60),m=tm%60;
-  var otS=+OTS.split(':')[0]*60+ +OTS.split(':')[1],oM=+op[0]*60+ +op[1];var ot=oM>otS?oM-otS:0;
-  var ta=Math.round(_g.km*KR);
-  $('co-info').innerHTML='<div class="ir"><span class="il">⏰ حاضری</span><span class="iv">'+_ci+'</span></div><div class="ir"><span class="il">🕐 رخصت</span><span class="iv">'+out+'</span></div><div class="ir"><span class="il">📊 وقت</span><span class="iv" style="font-size:17px">'+h+' گھنٹے '+m+' منٹ</span></div><div class="ir"><span class="il">🕐 OT</span><span class="iv">'+(ot>0?'<span class="ot ot-y">'+Math.floor(ot/60)+'h '+ot%60+'m</span>':'<span class="ot ot-n">0</span>')+'</span></div><div class="ir"><span class="il">💰 TA</span><span class="iv ig">Rs '+ta+'</span></div>';
-  _ab=null;_au=null;_rs=0;$('rb').className='rec-b rec-i';$('rb').textContent='🎙️';$('rl').textContent='دبائیں ریکارڈ کے لیے';$('rt').style.display='none';$('ra').style.display='none'
-},
-
-togRec:function(){if(_mr&&_mr.state==='recording')this.stopR();else this.startR()},
-startR:function(){_ch=[];_rs=0;
-  navigator.mediaDevices.getUserMedia({audio:true}).then(function(s){
-    _mr=new MediaRecorder(s);_mr.ondataavailable=function(e){if(e.data.size>0)_ch.push(e.data)};
-    _mr.onstop=function(){s.getTracks().forEach(function(t){t.stop()});_ab=new Blob(_ch,{type:'audio/webm'});_au=URL.createObjectURL(_ab);
-      $('rb').className='rec-b rec-d';$('rb').textContent='✅';$('rl').textContent='ریکارڈ: '+_rs+' سیکنڈ';$('ra').style.display='flex';if(_ri){clearInterval(_ri);_ri=null}};
-    _mr.start();$('rb').className='rec-b rec-o';$('rb').textContent='⏹';$('rl').textContent='🔴 ریکارڈنگ...';$('rt').style.display='block';$('ra').style.display='none';
-    _ri=setInterval(function(){_rs++;$('rt').textContent=String(Math.floor(_rs/60)).padStart(2,'0')+':'+String(_rs%60).padStart(2,'0')},1000);
-    toast('ریکارڈنگ شروع','ok')
-  }).catch(function(e){toast('مائیک: '+e.message,'err')})
-},
-stopR:function(){if(_mr&&_mr.state==='recording')_mr.stop()},
-playR:function(){if(_au){new Audio(_au).play()}},
-delR:function(){_ab=null;_au=null;_rs=0;$('rb').className='rec-b rec-i';$('rb').textContent='🎙️';$('rl').textContent='دبائیں ریکارڈ کے لیے';$('rt').style.display='none';$('ra').style.display='none'},
-
-doneOut:function(){
-  if(_wi){clearInterval(_wi);_wi=null}
-  var out=tN(),cp=_ci.split(':'),op=out.split(':'),tm=(+op[0]*60+ +op[1])-(+cp[0]*60+ +cp[1]);if(tm<0)tm=0;
-  var h=Math.floor(tm/60),m=tm%60,late=_ci>ST;
-  var otS=+OTS.split(':')[0]*60+ +OTS.split(':')[1],oM=+op[0]*60+ +op[1],ot=oM>otS?oM-otS:0;
-  var ta=Math.round(_g.km*KR);
-  if(ot>0){$('d-sb').className='sb sb-a';$('d-i').textContent='🕐';$('d-t').textContent='اوور ٹائم کے ساتھ رخصت';$('d-t').style.color='var(--amb)'}
-  else{$('d-sb').className='sb sb-g';$('d-i').textContent='🏠';$('d-t').textContent='رخصت ہو گئی';$('d-t').style.color='var(--grn)'}
-  $('d-info').innerHTML='<div class="ir"><span class="il">👤</span><span class="iv">'+_s.n+'</span></div><div class="ir"><span class="il">🔧</span><span class="iv">'+_s.r+'</span></div><div class="ir"><span class="il">📅</span><span class="iv" style="direction:ltr">'+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+'</span></div><div class="ir"><span class="il">⏰ حاضری</span><span class="iv">'+(late?'<span class="ia">'+_ci+' ⏰</span>':_ci)+'</span></div><div class="ir"><span class="il">🕐 رخصت</span><span class="iv">'+out+'</span></div><div class="ir"><span class="il">📊 وقت</span><span class="iv" style="font-size:17px;direction:ltr">'+h+'h '+m+'m</span></div><div class="ir"><span class="il">🕐 OT</span><span class="iv">'+(ot>0?'<span class="ot ot-y">'+Math.floor(ot/60)+'h '+ot%60+'m</span>':'<span class="ot ot-n">0</span>')+'</span></div><div class="ir"><span class="il">🚗</span><span class="iv" style="direction:ltr">'+_g.km+' km</span></div><div class="ir"><span class="il">💰 TA</span><span class="iv ig" style="direction:ltr">Rs '+ta+'</span></div><div class="ir"><span class="il">📸</span><span class="iv ig">✅</span></div><div class="ir"><span class="il">📡</span><span class="iv" style="font-size:10px;direction:ltr">'+_g.la.toFixed(4)+', '+_g.ln.toFixed(4)+'</span></div>';
-  $('d-v').textContent=_ab?'وائس ✅ ('+_rs+'s)':'—';
-  this.go('done')
+/* ═══ HELPERS ═══ */
+function $(id) { return document.getElementById(id); }
+function toast(m, t) {
+  var e = document.createElement('div');
+  e.className = 'toast t-' + (t || 'info');
+  e.textContent = m;
+  $('toasts').appendChild(e);
+  setTimeout(function() { e.remove(); }, 3000);
 }
+function timeNow() {
+  var d = new Date();
+  return String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+}
+function gDist(a, b, c, d) {
+  var R = 6371000, dL = (c-a)*Math.PI/180, dN = (d-b)*Math.PI/180;
+  var x = Math.sin(dL/2)*Math.sin(dL/2) + Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)*Math.sin(dN/2);
+  return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1-x));
+}
+function log(m) {
+  console.log('[CS]', m);
+  var d = $('dbg');
+  d.style.display = 'block';
+  $('dbg-x').style.display = 'block';
+  d.innerHTML += '<span style="color:#888">' + new Date().toLocaleTimeString() + '</span> ' + m + '<br>';
+  d.scrollTop = d.scrollHeight;
+}
+
+/* ═══ VOICE ═══ */
+var V = {
+  lines: {
+    select: 'حاضری لگائیں۔ نام منتخب کریں',
+    selfie: 'کیمرہ کھولیں اور سیلفی لیں',
+    in: 'حاضری لگ گئی۔ شکریہ',
+    work: 'کام جاری ہے',
+    co: 'رخصت کے لیے تصدیق کریں',
+    done: 'رخصت ہو گئی۔ اللہ حافظ'
+  },
+  say: function(txt) {
+    try {
+      if (!window.speechSynthesis) { log('Speech API not available'); return; }
+      speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(txt);
+      u.lang = 'ur-PK';
+      u.rate = 0.85;
+      u.volume = 1.0;
+      // Find best voice
+      var voices = speechSynthesis.getVoices();
+      log('Voices found: ' + voices.length);
+      var v = voices.find(function(x) { return x.lang && x.lang.indexOf('ur') >= 0; });
+      if (!v) v = voices.find(function(x) { return x.lang && x.lang.indexOf('hi') >= 0; });
+      if (!v && voices.length > 0) v = voices[0]; // fallback to any voice
+      if (v) { u.voice = v; log('Voice: ' + v.name + ' (' + v.lang + ')'); }
+      else { log('No voice found, using default'); }
+      speechSynthesis.speak(u);
+    } catch(e) { log('Speech error: ' + e.message); }
+  },
+  replay: function() {
+    var line = this.lines[_curPg];
+    if (line) this.say(line);
+    else log('No voice line for: ' + _curPg);
+  }
 };
-App.initN();
+
+// Load voices (async on some browsers)
+if (window.speechSynthesis) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = function() {
+    var v = speechSynthesis.getVoices();
+    log('Voices loaded: ' + v.length);
+  };
+}
+
+/* ═══ APP ═══ */
+var App = {
+
+  show: function(pg) {
+    _curPg = pg;
+    document.querySelectorAll('.pg').forEach(function(e) { e.classList.remove('on'); });
+    var el = $('p-' + pg);
+    if (el) el.classList.add('on');
+    window.scrollTo(0, 0);
+    // Speech called directly — no setTimeout (iOS requires direct user gesture)
+    if (V.lines[pg]) V.say(V.lines[pg]);
+  },
+
+  /* ── 1: Name list ── */
+  init: function() {
+    var h = '';
+    PPL.forEach(function(p, i) {
+      h += '<div class="nm-b" onclick="App.pick(' + i + ')" id="nm' + i + '"><span>' + p.n + '</span><span class="nm-s">' + p.r + ' · ' + p.c + '</span></div>';
+    });
+    $('nms').innerHTML = h;
+  },
+
+  pick: function(i) {
+    _who = PPL[i];
+    document.querySelectorAll('.nm-b').forEach(function(b) { b.classList.remove('on'); });
+    $('nm' + i).classList.add('on');
+    $('btn-go').style.display = 'block';
+    log('Selected: ' + _who.n);
+  },
+
+  filt: function(q) {
+    q = (q || '').toLowerCase();
+    document.querySelectorAll('.nm-b').forEach(function(b) {
+      b.style.display = b.textContent.toLowerCase().indexOf(q) >= 0 ? 'flex' : 'none';
+    });
+  },
+
+  /* ── 2: Selfie + GPS ── */
+  toSelfie: function() {
+    if (!_who) { toast('نام منتخب کریں', 'warn'); return; }
+    this.show('selfie');
+    $('sf-n').textContent = _who.n;
+    $('sf-r').textContent = _who.r + ' · ' + _who.c;
+    // Reset camera state
+    _pic = null; _geo = null;
+    $('cam').classList.remove('ok');
+    $('cam-ph').style.display = 'flex';
+    $('vid').style.display = 'none';
+    $('foto').style.display = 'none';
+    $('b-cam').style.display = 'block';
+    $('b-snap').style.display = 'none';
+    $('b-ci').style.display = 'none';
+    $('b-redo').style.display = 'none';
+    // GPS
+    this.getGPS();
+  },
+
+  getGPS: function() {
+    $('gps').innerHTML = '📡 GPS لوڈ ہو رہی ہے...';
+    if (!navigator.geolocation) {
+      $('gps').innerHTML = '📡 <span style="color:var(--R);font-weight:800">GPS دستیاب نہیں ❌</span>';
+      log('Geolocation API not available');
+      return;
+    }
+    log('Requesting GPS...');
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var la = pos.coords.latitude, ln = pos.coords.longitude;
+        var best = null;
+        OFC.forEach(function(o) {
+          var d = gDist(la, ln, o.la, o.ln);
+          if (!best || d < best.d) best = { d: d, n: o.n };
+        });
+        _geo = { la: la, ln: ln, km: +(best.d / 1000).toFixed(1), of: best.n };
+        $('gps').innerHTML = '📡 <span style="color:var(--grn);font-weight:800">✅ لوکیشن مل گئی</span> · ' + _geo.km + ' km ' + _geo.of + ' سے';
+        log('GPS OK: ' + la.toFixed(4) + ',' + ln.toFixed(4) + ' → ' + _geo.km + 'km from ' + _geo.of);
+      },
+      function(err) {
+        $('gps').innerHTML = '📡 <span style="color:var(--R);font-weight:800">❌ GPS نہیں ملی</span> — لوکیشن آن کریں';
+        log('GPS Error: ' + err.message + ' (code:' + err.code + ')');
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    );
+  },
+
+  camOpen: function() {
+    log('Opening camera...');
+    $('cam-ph').style.display = 'none';
+    $('vid').style.display = 'block';
+    $('b-cam').style.display = 'none';
+    $('b-snap').style.display = 'block';
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast('کیمرہ سپورٹ نہیں — HTTPS ضروری ہے', 'err');
+      log('getUserMedia NOT available. Protocol: ' + location.protocol);
+      $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
+      $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+      .then(function(stream) {
+        _stream = stream;
+        var vid = $('vid');
+        vid.setAttribute('autoplay', '');
+        vid.setAttribute('playsinline', '');
+        vid.setAttribute('muted', '');
+        vid.srcObject = stream;
+        // iOS requires explicit play() from user gesture
+        var playPromise = vid.play();
+        if (playPromise !== undefined) {
+          playPromise.then(function() {
+            log('Camera playing OK');
+          }).catch(function(e) {
+            log('Video play failed: ' + e.message);
+          });
+        }
+        log('Camera stream OK. Tracks: ' + stream.getVideoTracks().length);
+        toast('کیمرہ تیار ✅', 'ok');
+      })
+      .catch(function(err) {
+        log('Camera FAILED: ' + err.name + ' - ' + err.message);
+        toast('کیمرہ ایرر: ' + err.name, 'err');
+        $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
+        $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
+      });
+  },
+
+  camSnap: function() {
+    log('Taking photo...');
+    var vid = $('vid'), cv = $('cv'), img = $('foto');
+    var w = vid.videoWidth || 320, h = vid.videoHeight || 320;
+    cv.width = w; cv.height = h;
+    cv.getContext('2d').drawImage(vid, 0, 0, w, h);
+    _pic = cv.toDataURL('image/jpeg', 0.7);
+    img.src = _pic;
+    img.style.display = 'block';
+    vid.style.display = 'none';
+    // Stop camera
+    if (_stream) {
+      _stream.getTracks().forEach(function(t) { t.stop(); });
+      _stream = null;
+      log('Camera stream stopped');
+    }
+    $('cam').classList.add('ok');
+    $('b-snap').style.display = 'none';
+    $('b-ci').style.display = 'block';
+    $('b-redo').style.display = 'block';
+    log('Photo captured: ' + _pic.length + ' bytes');
+    V.say('تصویر لے لی گئی');
+  },
+
+  camRedo: function() {
+    log('Retaking photo...');
+    _pic = null;
+    $('cam').classList.remove('ok');
+    $('foto').style.display = 'none';
+    $('b-ci').style.display = 'none';
+    $('b-redo').style.display = 'none';
+    this.camOpen();
+  },
+
+  /* ── 3: Check In ── */
+  doCheckIn: function() {
+    if (!_pic) { toast('سیلفی لیں', 'warn'); return; }
+    if (!_geo) { toast('GPS ضروری ہے — انتظار کریں', 'warn'); return; }
+    _inTime = timeNow();
+    var late = _inTime > ST;
+    var ta = Math.round(_geo.km * KR);
+    log('Check-in: ' + _inTime + ' late=' + late + ' km=' + _geo.km + ' ta=' + ta);
+
+    this.show('in');
+    $('in-sub').textContent = _who.n + ' · ' + _who.r + ' · ' + _inTime;
+    $('in-info').innerHTML =
+      this._row('📍 لوکیشن', _geo.of) +
+      this._row('🚗 فاصلہ', _geo.km + ' km') +
+      this._row('💰 TA', 'Rs ' + ta, 'c-g') +
+      this._row('⏰ وقت', _inTime) +
+      this._row('📊 حالت', late ? '⏰ لیٹ' : '✅ وقت پر', late ? 'c-a' : 'c-g') +
+      this._row('📸 سیلفی', '✅', 'c-g') +
+      this._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+  },
+
+  _row: function(l, v, cls) {
+    return '<div class="row"><span class="row-l">' + l + '</span><span class="row-v ' + (cls||'') + '">' + v + '</span></div>';
+  },
+
+  /* ── 4: Working ── */
+  toWork: function() {
+    this.show('work');
+    $('wk-s').textContent = _who.n + ' · ' + _who.r;
+    var ta = Math.round(_geo.km * KR);
+    $('wk-info').innerHTML =
+      this._row('⏰ حاضری', _inTime) +
+      this._row('🚗 فاصلہ', _geo.km + ' km') +
+      this._row('💰 TA', 'Rs ' + ta, 'c-g');
+    // Timer
+    if (_wkInt) clearInterval(_wkInt);
+    _wkInt = setInterval(function() {
+      var cp = _inTime.split(':'), now = new Date();
+      var sec = (now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds()) - (parseInt(cp[0])*3600 + parseInt(cp[1])*60);
+      if (sec < 0) sec = 0;
+      var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+      $('wk-t').textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }, 1000);
+  },
+
+  /* ── 5: Checkout ── */
+  toCo: function() {
+    this.show('co');
+    var out = timeNow();
+    var cp = _inTime.split(':'), op = out.split(':');
+    var tm = (parseInt(op[0])*60 + parseInt(op[1])) - (parseInt(cp[0])*60 + parseInt(cp[1]));
+    if (tm < 0) tm = 0;
+    var h = Math.floor(tm/60), m = tm%60;
+    var otS = parseInt(OTS.split(':')[0])*60 + parseInt(OTS.split(':')[1]);
+    var oM = parseInt(op[0])*60 + parseInt(op[1]);
+    var ot = oM > otS ? oM - otS : 0;
+    var ta = Math.round(_geo.km * KR);
+
+    $('co-info').innerHTML =
+      this._row('⏰ حاضری', _inTime) +
+      this._row('🕐 رخصت', out) +
+      this._row('📊 وقت', h + ' گھنٹے ' + m + ' منٹ') +
+      this._row('🕐 OT', ot > 0 ? '<span class="ot ot-y">' + Math.floor(ot/60) + 'h ' + (ot%60) + 'm</span>' : '<span class="ot ot-n">0</span>') +
+      this._row('💰 TA', 'Rs ' + ta, 'c-g');
+
+    // Reset recorder
+    _mBlob = null; _mUrl = null; _rSec = 0;
+    $('rb').className = 'rec-b rec-i'; $('rb').textContent = '🎙️';
+    $('rl').textContent = '🎙️ دبائیں ریکارڈ کے لیے';
+    $('rt').style.display = 'none'; $('ra').style.display = 'none';
+  },
+
+  /* ── Voice Recording ── */
+  recTog: function() {
+    if (_mRec && _mRec.state === 'recording') {
+      this.recStop();
+    } else {
+      this.recStart();
+    }
+  },
+
+  recStart: function() {
+    log('Starting recording...');
+    _mChunks = []; _rSec = 0;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast('مائیکروفون دستیاب نہیں', 'err');
+      log('getUserMedia not available for audio');
+      return;
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(function(stream) {
+        log('Mic stream OK. Tracks: ' + stream.getTracks().length);
+
+        // Check MediaRecorder support
+        if (typeof MediaRecorder === 'undefined') {
+          toast('ریکارڈنگ سپورٹ نہیں', 'err');
+          log('MediaRecorder not supported');
+          stream.getTracks().forEach(function(t) { t.stop(); });
+          return;
+        }
+
+        // Try different MIME types
+        var options = {};
+        if (MediaRecorder.isTypeSupported('audio/webm')) {
+          options.mimeType = 'audio/webm';
+        } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+          options.mimeType = 'audio/mp4';
+        } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+          options.mimeType = 'audio/ogg';
+        }
+        log('Recording MIME: ' + (options.mimeType || 'default'));
+
+        try {
+          _mRec = new MediaRecorder(stream, options);
+        } catch(e) {
+          _mRec = new MediaRecorder(stream);
+          log('Fallback MediaRecorder (no mime)');
+        }
+
+        _mRec.ondataavailable = function(e) {
+          if (e.data && e.data.size > 0) {
+            _mChunks.push(e.data);
+            log('Audio chunk: ' + e.data.size + ' bytes');
+          }
+        };
+
+        _mRec.onstop = function() {
+          stream.getTracks().forEach(function(t) { t.stop(); });
+          _mBlob = new Blob(_mChunks, { type: options.mimeType || 'audio/webm' });
+          _mUrl = URL.createObjectURL(_mBlob);
+          log('Recording done: ' + _mBlob.size + ' bytes, ' + _rSec + 's');
+          $('rb').className = 'rec-b rec-d'; $('rb').textContent = '✅';
+          $('rl').textContent = '✅ ریکارڈ: ' + _rSec + ' سیکنڈ';
+          $('ra').style.display = 'flex';
+          if (_rInt) { clearInterval(_rInt); _rInt = null; }
+        };
+
+        _mRec.onerror = function(e) {
+          log('MediaRecorder error: ' + e.error);
+          toast('ریکارڈنگ ایرر', 'err');
+        };
+
+        _mRec.start(); // No timeslice — iOS doesn't support it well
+        log('MediaRecorder started');
+        $('rb').className = 'rec-b rec-a'; $('rb').textContent = '⏹';
+        $('rl').textContent = '🔴 ریکارڈنگ جاری ہے...';
+        $('rt').style.display = 'block'; $('ra').style.display = 'none';
+        toast('🔴 ریکارڈنگ شروع', 'ok');
+
+        _rInt = setInterval(function() {
+          _rSec++;
+          $('rt').textContent = String(Math.floor(_rSec/60)).padStart(2,'0') + ':' + String(_rSec%60).padStart(2,'0');
+        }, 1000);
+      })
+      .catch(function(err) {
+        log('Mic FAILED: ' + err.name + ' - ' + err.message);
+        toast('مائیک: ' + err.message, 'err');
+      });
+  },
+
+  recStop: function() {
+    if (_mRec && _mRec.state === 'recording') {
+      _mRec.stop();
+      log('Recording stopped');
+    }
+  },
+
+  recPlay: function() {
+    if (_mUrl) {
+      log('Playing recording...');
+      var a = new Audio(_mUrl);
+      a.play().catch(function(e) { log('Play error: ' + e.message); });
+    }
+  },
+
+  recDel: function() {
+    _mBlob = null; _mUrl = null; _rSec = 0;
+    $('rb').className = 'rec-b rec-i'; $('rb').textContent = '🎙️';
+    $('rl').textContent = '🎙️ دبائیں ریکارڈ کے لیے';
+    $('rt').style.display = 'none'; $('ra').style.display = 'none';
+    log('Recording deleted');
+  },
+
+  /* ── 6: Done ── */
+  doneOut: function() {
+    if (_wkInt) { clearInterval(_wkInt); _wkInt = null; }
+    var out = timeNow();
+    var cp = _inTime.split(':'), op = out.split(':');
+    var tm = (parseInt(op[0])*60 + parseInt(op[1])) - (parseInt(cp[0])*60 + parseInt(cp[1]));
+    if (tm < 0) tm = 0;
+    var h = Math.floor(tm/60), m = tm%60;
+    var late = _inTime > ST;
+    var otS = parseInt(OTS.split(':')[0])*60 + parseInt(OTS.split(':')[1]);
+    var oM = parseInt(op[0])*60 + parseInt(op[1]);
+    var ot = oM > otS ? oM - otS : 0;
+    var ta = Math.round(_geo.km * KR);
+
+    if (ot > 0) {
+      $('dn-sts').className = 'sts sts-a';
+      $('dn-i').textContent = '🕐';
+      $('dn-h').textContent = 'اوور ٹائم کے ساتھ رخصت';
+      $('dn-h').style.color = 'var(--amb)';
+    } else {
+      $('dn-sts').className = 'sts sts-g';
+      $('dn-i').textContent = '🏠';
+      $('dn-h').textContent = 'رخصت ہو گئی';
+      $('dn-h').style.color = 'var(--grn)';
+    }
+
+    $('dn-info').innerHTML =
+      this._row('👤 نام', _who.n) +
+      this._row('🔧 عہدہ', _who.r) +
+      this._row('📅 تاریخ', new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})) +
+      this._row('⏰ حاضری', late ? '<span class="c-a">' + _inTime + ' ⏰</span>' : _inTime) +
+      this._row('🕐 رخصت', out) +
+      this._row('📊 وقت', h + 'h ' + m + 'm') +
+      this._row('🕐 OT', ot > 0 ? '<span class="ot ot-y">' + Math.floor(ot/60) + 'h ' + (ot%60) + 'm</span>' : '<span class="ot ot-n">0</span>') +
+      this._row('🚗 فاصلہ', _geo.km + ' km') +
+      this._row('💰 TA', 'Rs ' + ta, 'c-g') +
+      this._row('📸 سیلفی', '✅', 'c-g') +
+      this._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+
+    $('dn-v').textContent = _mBlob ? 'وائس ✅ (' + _rSec + 's)' : '—';
+    this.show('done');
+    log('Day done. OT=' + ot + 'm, TA=Rs' + ta);
+  }
+};
+
+/* ═══ INIT ═══ */
+App.init();
+log('App loaded. HTTPS=' + (location.protocol === 'https:') + ' Camera=' + (!!navigator.mediaDevices) + ' GPS=' + (!!navigator.geolocation) + ' Speech=' + (!!window.speechSynthesis));
 </script>
 </body>
 </html>
