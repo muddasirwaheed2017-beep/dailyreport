@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>CS Labour حاضری V1</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --R:#b91c1c;--Rbg:#fef2f2;--Rl:#fca5a5;
+  --G1:#111827;--G2:#1f2937;--G3:#374151;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;
+  --grn:#16a34a;--grn-bg:#f0fdf4;--blu:#2563eb;--blu-bg:#eff6ff;--amb:#d97706;--amb-bg:#fffbeb;
+  --r:12px;--rl:16px;--sh:0 3px 0 var(--G7)
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Naskh Arabic',sans-serif;background:var(--G9);color:var(--G2);-webkit-tap-highlight-color:transparent;overflow-x:hidden;min-height:100dvh;font-size:16px}
+button,input{font-family:inherit;border:none;outline:none;font-size:16px}
+
+.topbar{background:var(--G1);color:var(--W);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--R)}
+.tb-t{font-size:16px;font-weight:800}.tb-t em{color:var(--R);font-style:normal}
+.tb-ver{font-size:9px;font-weight:800;padding:2px 8px;border-radius:8px;background:var(--R);color:var(--W)}
+.tb-speak{background:none;color:var(--W);font-size:22px;cursor:pointer;padding:4px 8px;border-radius:8px;border:none}
+.tb-speak:active{background:rgba(255,255,255,.15)}
+
+.ct{padding:14px 16px 30px;direction:rtl;text-align:right}
+.jstate{display:none}.jstate.on{display:block}
+
+.bcard{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:20px;margin-bottom:14px;box-shadow:0 3px 0 var(--G7);text-align:center}
+.bcard-icon{font-size:48px;margin-bottom:10px}
+.bcard-t{font-size:20px;font-weight:800;color:var(--G2);line-height:1.4}
+.bcard-s{font-size:14px;color:var(--G5);margin-top:6px;line-height:1.6}
+
+.bbtn{width:100%;padding:18px;border-radius:var(--r);font-size:18px;font-weight:800;cursor:pointer;text-align:center;border:2px solid transparent;margin-bottom:8px;transition:transform .1s}
+.bbtn:active{transform:scale(.97)}
+.bbtn-red{background:var(--R);color:var(--W);border-color:var(--R);box-shadow:0 4px 0 #7f1d1d}
+.bbtn-grn{background:var(--grn);color:var(--W);border-color:var(--grn);box-shadow:0 4px 0 #14532d}
+.bbtn-dark{background:var(--G2);color:var(--W);border-color:var(--G2);box-shadow:0 4px 0 var(--G1)}
+.bbtn-ghost{background:var(--W);color:var(--G3);border:2px solid var(--G8);box-shadow:0 2px 0 var(--G8);font-size:15px;padding:14px}
+
+.name-grid{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.name-btn{padding:16px;border-radius:var(--r);font-size:17px;font-weight:700;background:var(--W);border:2px solid var(--G8);color:var(--G2);cursor:pointer;text-align:right;box-shadow:0 2px 0 var(--G7);display:flex;align-items:center;justify-content:space-between;direction:rtl}
+.name-btn:active{transform:scale(.98);box-shadow:none}
+.name-btn.sel{border-color:var(--grn);background:var(--grn-bg);color:var(--grn);border-right:5px solid var(--grn)}
+.name-code{font-size:11px;font-weight:600;color:var(--G5);direction:rtl}
+
+.search-box{width:100%;padding:14px;border:2px solid var(--G8);border-radius:var(--r);font-size:16px;background:var(--W);color:var(--G2);text-align:right;margin-bottom:10px;direction:rtl}
+.search-box:focus{border-color:var(--R)}
+
+/* ── Selfie ── */
+.selfie-area{position:relative;width:180px;height:180px;border-radius:50%;border:4px solid var(--G8);margin:0 auto 14px;overflow:hidden;background:#000}
+.selfie-area.done{border-color:var(--grn);border-width:5px}
+.selfie-area video{width:100%;height:100%;object-fit:cover}
+.selfie-area img{width:100%;height:100%;object-fit:cover}
+.selfie-area canvas{display:none}
+.selfie-badge{position:absolute;bottom:4px;right:4px;width:36px;height:36px;border-radius:50%;background:var(--grn);color:var(--W);display:none;align-items:center;justify-content:center;font-size:20px;font-weight:800;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.selfie-area.done .selfie-badge{display:flex}
+
+/* ── Info card ── */
+.info-card{background:var(--W);border-radius:var(--rl);padding:14px;margin-bottom:10px;border:2px solid var(--G8);box-shadow:0 2px 0 var(--G7)}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--G9);direction:rtl}
+.info-row:last-child{border:none}
+.info-label{font-size:13px;font-weight:600;color:var(--G5)}
+.info-val{font-size:15px;font-weight:800;color:var(--G2);direction:ltr}
+.info-val-grn{color:var(--grn)}.info-val-red{color:var(--R)}.info-val-amb{color:var(--amb)}
+
+.status-grn{background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:16px;text-align:center;margin-bottom:14px}
+.status-grn .s-icon{font-size:42px;margin-bottom:6px}
+.status-grn .s-text{font-size:18px;font-weight:800;color:var(--grn)}
+.status-grn .s-sub{font-size:13px;color:var(--G5);margin-top:4px}
+
+.big-timer{font-size:42px;font-weight:800;font-family:monospace;color:var(--G2);text-align:center;padding:10px;direction:ltr}
+.timer-label{font-size:11px;font-weight:700;color:var(--G5);text-transform:uppercase;text-align:center;margin-bottom:4px}
+
+.ot-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;margin-top:4px}
+.ot-yes{background:var(--amb-bg);color:var(--amb);border:2px solid var(--amb)}
+.ot-no{background:var(--G9);color:var(--G5);border:2px solid var(--G8)}
+
+/* ── Voice recorder ── */
+.rec-btn{width:80px;height:80px;border-radius:50%;border:none;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:32px;cursor:pointer;transition:all .2s}
+.rec-btn-idle{background:var(--G8);color:var(--G5)}
+.rec-btn-active{background:var(--R);color:var(--W);animation:recPulse 1s infinite}
+.rec-btn-done{background:var(--grn);color:var(--W)}
+@keyframes recPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.rec-status{text-align:center;font-size:13px;font-weight:700;color:var(--G5);margin-bottom:8px}
+.rec-timer{text-align:center;font-size:22px;font-weight:800;font-family:monospace;color:var(--R);direction:ltr}
+.rec-play{width:100%;padding:12px;border-radius:var(--r);background:var(--W);border:2px solid var(--G8);font-size:14px;font-weight:700;color:var(--G2);cursor:pointer;margin-bottom:8px;text-align:center}
+.rec-play:active{background:var(--G9)}
+
+/* ── GPS status ── */
+.gps-status{text-align:center;font-size:12px;color:var(--G5);padding:8px;background:var(--W);border-radius:8px;border:1px solid var(--G8);margin-bottom:10px}
+.gps-ok{color:var(--grn);font-weight:800}
+.gps-err{color:var(--R);font-weight:800}
+
+/* ── Loading ── */
+.load-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;display:none;align-items:center;justify-content:center}
+.load-ov.on{display:flex}
+.load-box{background:var(--W);border-radius:var(--rl);padding:28px;text-align:center;width:80%;max-width:280px}
+.load-spin{width:30px;height:30px;border:4px solid var(--G8);border-top-color:var(--R);border-radius:50%;animation:spin .6s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-msg{font-size:14px;font-weight:800;color:var(--G2)}.load-sub{font-size:11px;color:var(--G5);margin-top:4px}
+
+/* ── Toast ── */
+#toasts{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:4px;max-width:90%}
+.toast{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:700;color:var(--W);animation:tIn .3s ease,tOut .3s ease 2.5s forwards;white-space:nowrap}
+.t-ok{background:var(--grn)}.t-err{background:var(--R)}.t-warn{background:var(--amb)}.t-info{background:var(--G3)}
+@keyframes tIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+@keyframes tOut{to{opacity:0;transform:translateY(-10px)}}
+</style>
+</head>
+<body>
+
+<div id="toasts"></div>
+<div class="load-ov" id="load-ov"><div class="load-box"><div class="load-spin"></div><div class="load-msg" id="load-msg">Loading...</div><div class="load-sub" id="load-sub"></div></div></div>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="tb-speak" onclick="replayVoice()">🔊</button>
+    <span class="tb-ver">V1</span>
+  </div>
+  <div class="tb-t">CS <em>حاضری</em></div>
+</div>
+
+<div class="ct">
+
+<!-- ═══ STATE 1: SELECT NAME ═══ -->
+<div id="s-select" class="jstate on">
+  <div class="bcard">
+    <div class="bcard-icon">📍</div>
+    <div class="bcard-t">حاضری لگائیں</div>
+    <div class="bcard-s">اپنا نام منتخب کریں</div>
+  </div>
+  <input class="search-box" placeholder="🔍 نام تلاش کریں..." oninput="filterNames(this.value)">
+  <div class="name-grid" id="name-list">
+    <div class="name-btn" onclick="pickName(this)" data-name="اکبر خان" data-code="1001" data-role="الیکٹریشن"><span>اکبر خان</span><span class="name-code">الیکٹریشن · 1001</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="محمد اسلم" data-code="1002" data-role="ٹیکنیشن"><span>محمد اسلم</span><span class="name-code">ٹیکنیشن · 1002</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="عبدالرحمان" data-code="1003" data-role="مزدور"><span>عبدالرحمان</span><span class="name-code">مزدور · 1003</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="نذیر احمد" data-code="1004" data-role="ہیلپر"><span>نذیر احمد</span><span class="name-code">ہیلپر · 1004</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="فیاض حسین" data-code="1005" data-role="ٹیکنیشن"><span>فیاض حسین</span><span class="name-code">ٹیکنیشن · 1005</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="ساجد محمود" data-code="1006" data-role="الیکٹریشن"><span>ساجد محمود</span><span class="name-code">الیکٹریشن · 1006</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="وسیم اکرم" data-code="1007" data-role="مزدور"><span>وسیم اکرم</span><span class="name-code">مزدور · 1007</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="طارق مسعود" data-code="1008" data-role="ہیلپر"><span>طارق مسعود</span><span class="name-code">ہیلپر · 1008</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="عامر شہزاد" data-code="1009" data-role="ٹیکنیشن"><span>عامر شہزاد</span><span class="name-code">ٹیکنیشن · 1009</span></div>
+    <div class="name-btn" onclick="pickName(this)" data-name="بلال احمد" data-code="1010" data-role="مزدور"><span>بلال احمد</span><span class="name-code">مزدور · 1010</span></div>
+  </div>
+  <button class="bbtn bbtn-red" id="select-btn" style="display:none" onclick="goSelfie()">آگے بڑھیں →</button>
+</div>
+
+<!-- ═══ STATE 2: SELFIE + GPS ═══ -->
+<div id="s-selfie" class="jstate">
+  <div class="gps-status" id="gps-status">📡 لوکیشن چیک ہو رہی ہے...</div>
+  
+  <div style="text-align:center;margin-bottom:10px">
+    <div style="font-size:16px;font-weight:800;color:var(--G2)" id="selfie-name">—</div>
+    <div style="font-size:12px;color:var(--G5);margin-top:2px" id="selfie-role">—</div>
+  </div>
+
+  <div class="selfie-area" id="selfie-area">
+    <video id="cam-video" autoplay playsinline muted></video>
+    <img id="cam-photo" style="display:none">
+    <canvas id="cam-canvas"></canvas>
+    <div class="selfie-badge" id="selfie-badge">✓</div>
+  </div>
+
+  <button class="bbtn bbtn-red" id="btn-capture" onclick="captureSelfie()">📸 سیلفی لیں</button>
+  <button class="bbtn bbtn-grn" id="btn-confirm" style="display:none" onclick="confirmCheckIn()">✅ حاضری لگائیں</button>
+  <button class="bbtn bbtn-ghost" id="btn-retake" style="display:none" onclick="retakeSelfie()">🔄 دوبارہ لیں</button>
+  <button class="bbtn bbtn-ghost" onclick="goState('select')">← واپس</button>
+</div>
+
+<!-- ═══ STATE 3: CHECKED IN ═══ -->
+<div id="s-checked_in" class="jstate">
+  <div class="status-grn">
+    <div class="s-icon">✅</div>
+    <div class="s-text">حاضری لگ گئی</div>
+    <div class="s-sub" id="ci-name-time">—</div>
+  </div>
+  <div class="info-card" id="ci-info"></div>
+  <div style="text-align:center;font-size:13px;color:var(--G5);margin-bottom:14px;line-height:1.6">📸 سیلفی ریکارڈ ہو گئی<br>📍 GPS لوکیشن محفوظ ہو گئی</div>
+  <button class="bbtn bbtn-dark" onclick="goWorking()">👍 ٹھیک ہے — کام شروع</button>
+</div>
+
+<!-- ═══ STATE 4: WORKING ═══ -->
+<div id="s-working" class="jstate">
+  <div style="background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;direction:rtl">
+    <div style="font-size:28px">🟢</div>
+    <div>
+      <div style="font-size:15px;font-weight:800;color:var(--grn)">کام جاری ہے</div>
+      <div style="font-size:12px;color:var(--G5)" id="work-name-role">—</div>
+    </div>
+  </div>
+  <div class="timer-label">کام کا وقت</div>
+  <div class="big-timer" id="work-timer">00:00:00</div>
+  <div class="info-card" id="work-info"></div>
+  <button class="bbtn bbtn-red" style="margin-top:10px" onclick="goCheckout()">🏠 رخصت — گھر جائیں</button>
+</div>
+
+<!-- ═══ STATE 5: CHECKOUT — voice note ═══ -->
+<div id="s-checkout" class="jstate">
+  <div class="bcard">
+    <div class="bcard-icon">🏠</div>
+    <div class="bcard-t">رخصت</div>
+    <div class="bcard-s">وائس پیغام ریکارڈ کریں (اختیاری)</div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="rec-btn rec-btn-idle" id="rec-btn" onclick="toggleRecording()">🎙️</button>
+  </div>
+  <div class="rec-status" id="rec-status">ریکارڈ کرنے کے لیے دبائیں</div>
+  <div class="rec-timer" id="rec-timer" style="display:none">00:00</div>
+
+  <div id="rec-playback" style="display:none;margin:10px 0">
+    <button class="rec-play" onclick="playRecording()">▶️ سنیں</button>
+    <button class="rec-play" style="color:var(--R);border-color:var(--Rl)" onclick="deleteRecording()">🗑 حذف کریں</button>
+  </div>
+
+  <div class="info-card" id="co-summary"></div>
+
+  <button class="bbtn bbtn-red" onclick="confirmCheckout()">✅ رخصت کی تصدیق</button>
+  <button class="bbtn bbtn-ghost" onclick="goState('working')">← واپس — ابھی نہیں</button>
+</div>
+
+<!-- ═══ STATE 6: DONE ═══ -->
+<div id="s-done" class="jstate">
+  <div class="status-grn" id="done-header">
+    <div class="s-icon">🏠</div>
+    <div class="s-text">رخصت ہو گئی</div>
+    <div class="s-sub">اللہ حافظ — کل ملیں گے</div>
+  </div>
+  <div class="info-card" id="done-info"></div>
+  <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--G5);line-height:1.6">
+    📍 GPS ریکارڈ محفوظ<br>📸 سیلفی محفوظ<br>🎙️ <span id="done-voice">—</span><br>✅ ڈیٹا محفوظ ہو گیا
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ═══ CONFIG ═══ */
+var C={
+  OFFICES:[
+    {name:'Lahore HO (PECO Road)',lat:31.462915,lng:74.320000},
+    {name:'Brandreth Road, Lahore',lat:31.575249,lng:74.323730},
+    {name:'Karachi Office',lat:24.857580,lng:67.043633}
+  ],
+  KM_RATE:6.5,
+  START_TIME:'09:00',
+  OT_START:'18:00',
+  OT_HOURS:9
+};
+
+/* ═══ STATE ═══ */
+var _selected=null;
+var _currentState='select';
+var _selfieData=null;
+var _geoData=null;
+var _checkInTime=null;
+var _workTimerInterval=null;
+var _workStartTs=null;
+var _mediaStream=null;
+var _mediaRecorder=null;
+var _audioChunks=[];
+var _audioBlob=null;
+var _audioUrl=null;
+var _recInterval=null;
+var _recSec=0;
+
+/* ═══ UTILS ═══ */
+function toast(m,t){var e=document.createElement('div');e.className='toast t-'+(t||'info');e.textContent=m;document.getElementById('toasts').appendChild(e);setTimeout(function(){e.remove()},2800)}
+function showLoad(m,s){document.getElementById('load-msg').textContent=m||'';document.getElementById('load-sub').textContent=s||'';document.getElementById('load-ov').classList.add('on')}
+function hideLoad(){document.getElementById('load-ov').classList.remove('on')}
+function timeNow(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+function geoDist(lat1,lng1,lat2,lng2){var R=6371000;var dLat=(lat2-lat1)*Math.PI/180;var dLng=(lng2-lng1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
+
+/* ═══ VOICE GUIDANCE ═══ */
+var VOICE={
+  select:'حاضری لگائیں۔ اپنا نام منتخب کریں',
+  selfie:'اپنی سیلفی لیں',
+  checked_in:'آپ کی حاضری لگ گئی ہے۔ شکریہ',
+  working:'کام جاری ہے',
+  checkout:'رخصت کے لیے وائس پیغام ریکارڈ کریں',
+  done:'رخصت ہو گئی۔ اللہ حافظ۔ کل ملیں گے'
+};
+
+function speak(text){
+  try{
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='ur-PK';u.rate=0.85;u.pitch=1;u.volume=1;
+    var voices=window.speechSynthesis.getVoices();
+    var v=voices.find(function(v){return v.lang.indexOf('ur')>=0})||voices.find(function(v){return v.lang.indexOf('hi')>=0});
+    if(v)u.voice=v;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function replayVoice(){if(VOICE[_currentState])speak(VOICE[_currentState])}
+if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices()};
+
+/* ═══ NAVIGATION ═══ */
+function goState(state){
+  _currentState=state;
+  document.querySelectorAll('.jstate').forEach(function(el){el.classList.remove('on')});
+  var el=document.getElementById('s-'+state);if(el)el.classList.add('on');
+  window.scrollTo(0,0);
+  if(VOICE[state])setTimeout(function(){speak(VOICE[state])},400);
+}
+
+/* ═══ STATE 1: NAME SELECT ═══ */
+function pickName(el){
+  document.querySelectorAll('.name-btn').forEach(function(b){b.classList.remove('sel')});
+  el.classList.add('sel');
+  _selected={name:el.dataset.name,code:el.dataset.code,role:el.dataset.role};
+  document.getElementById('select-btn').style.display='block';
+  speak(_selected.name+'۔ آگے بڑھیں');
+}
+function filterNames(q){
+  q=(q||'').toLowerCase();
+  document.querySelectorAll('.name-btn').forEach(function(b){b.style.display=b.textContent.toLowerCase().indexOf(q)>=0?'flex':'none'});
+}
+
+/* ═══ STATE 2: SELFIE + GPS ═══ */
+function goSelfie(){
+  if(!_selected){toast('پہلے نام منتخب کریں','warn');return}
+  goState('selfie');
+  document.getElementById('selfie-name').textContent=_selected.name;
+  document.getElementById('selfie-role').textContent=_selected.role+' · '+_selected.code;
+  _selfieData=null;_geoData=null;
+  document.getElementById('selfie-area').classList.remove('done');
+  document.getElementById('cam-photo').style.display='none';
+  document.getElementById('btn-capture').style.display='block';
+  document.getElementById('btn-confirm').style.display='none';
+  document.getElementById('btn-retake').style.display='none';
+  startCamera();
+  getLocation();
+}
+
+function startCamera(){
+  var video=document.getElementById('cam-video');
+  video.style.display='block';
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'user'},audio:false})
+    .then(function(stream){
+      _mediaStream=stream;video.srcObject=stream;
+    })
+    .catch(function(e){
+      toast('کیمرہ نہیں کھل سکا','err');
+      document.getElementById('gps-status').innerHTML='📷 <span class="gps-err">کیمرہ نہیں ملا</span>';
+    });
+}
+
+function stopCamera(){
+  if(_mediaStream){_mediaStream.getTracks().forEach(function(t){t.stop()});_mediaStream=null}
+}
+
+function captureSelfie(){
+  var video=document.getElementById('cam-video');
+  var canvas=document.getElementById('cam-canvas');
+  var photo=document.getElementById('cam-photo');
+  canvas.width=video.videoWidth||320;canvas.height=video.videoHeight||240;
+  canvas.getContext('2d').drawImage(video,0,0);
+  _selfieData=canvas.toDataURL('image/jpeg',0.7);
+  photo.src=_selfieData;photo.style.display='block';
+  video.style.display='none';
+  stopCamera();
+  document.getElementById('selfie-area').classList.add('done');
+  document.getElementById('btn-capture').style.display='none';
+  document.getElementById('btn-confirm').style.display='block';
+  document.getElementById('btn-retake').style.display='block';
+  speak('تصویر لے لی گئی');
+}
+
+function retakeSelfie(){
+  _selfieData=null;
+  document.getElementById('selfie-area').classList.remove('done');
+  document.getElementById('cam-photo').style.display='none';
+  document.getElementById('btn-capture').style.display='block';
+  document.getElementById('btn-confirm').style.display='none';
+  document.getElementById('btn-retake').style.display='none';
+  startCamera();
+}
+
+function getLocation(){
+  document.getElementById('gps-status').innerHTML='📡 لوکیشن چیک ہو رہی ہے...';
+  if(!navigator.geolocation){document.getElementById('gps-status').innerHTML='📡 <span class="gps-err">GPS دستیاب نہیں</span>';return}
+  navigator.geolocation.getCurrentPosition(function(pos){
+    var lat=pos.coords.latitude,lng=pos.coords.longitude;
+    var best=null;
+    C.OFFICES.forEach(function(o){var d=geoDist(lat,lng,o.lat,o.lng);if(!best||d<best.dist)best={dist:Math.round(d),name:o.name,km:d/1000}});
+    _geoData={lat:lat,lng:lng,dist:best.dist,km:parseFloat(best.km.toFixed(1)),office:best.name};
+    document.getElementById('gps-status').innerHTML='📡 <span class="gps-ok">لوکیشن مل گئی</span> · '+_geoData.km+' km '+_geoData.office+' سے';
+  },function(){
+    document.getElementById('gps-status').innerHTML='📡 <span class="gps-err">لوکیشن نہیں ملی — GPS آن کریں</span>';
+  },{enableHighAccuracy:true,timeout:15000});
+}
+
+/* ═══ STATE 3: CONFIRM CHECK IN ═══ */
+function confirmCheckIn(){
+  if(!_selfieData){toast('پہلے سیلفی لیں','warn');return}
+  if(!_geoData){toast('GPS لوکیشن ضروری ہے','warn');getLocation();return}
+  
+  _checkInTime=timeNow();
+  var isLate=_checkInTime>C.START_TIME;
+  var ta=Math.round(_geoData.km*C.KM_RATE);
+
+  goState('checked_in');
+  document.getElementById('ci-name-time').textContent=_selected.name+' · '+_selected.role+' · '+_checkInTime;
+  document.getElementById('ci-info').innerHTML=
+    '<div class="info-row"><span class="info-label">📍 لوکیشن</span><span class="info-val">'+_geoData.office+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val">'+_geoData.km+' km</span></div>'+
+    '<div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs '+ta+'</span></div>'+
+    '<div class="info-row"><span class="info-label">⏰ وقت</span><span class="info-val">'+_checkInTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">📊 حالت</span><span class="info-val '+(isLate?'info-val-amb':'info-val-grn')+'">'+(isLate?'⏰ لیٹ':'✅ وقت پر')+'</span></div>';
+  
+  stopCamera();
+}
+
+/* ═══ STATE 4: WORKING ═══ */
+function goWorking(){
+  goState('working');
+  _workStartTs=Date.now();
+  document.getElementById('work-name-role').textContent=_selected.name+' · '+_selected.role;
+  
+  var ta=Math.round(_geoData.km*C.KM_RATE);
+  document.getElementById('work-info').innerHTML=
+    '<div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val">'+_checkInTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val">'+_geoData.km+' km</span></div>'+
+    '<div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs '+ta+'</span></div>';
+  
+  if(_workTimerInterval)clearInterval(_workTimerInterval);
+  _workTimerInterval=setInterval(function(){
+    var sec=Math.floor((Date.now()-_workStartTs)/1000);
+    /* Add time from check-in to now */
+    var ciParts=_checkInTime.split(':');
+    var ciMin=parseInt(ciParts[0])*60+parseInt(ciParts[1]);
+    var now=new Date();var nowMin=now.getHours()*60+now.getMinutes();
+    var totalSec=(nowMin-ciMin)*60+now.getSeconds();
+    if(totalSec<0)totalSec=0;
+    var h=Math.floor(totalSec/3600),m=Math.floor((totalSec%3600)/60),s=totalSec%60;
+    document.getElementById('work-timer').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  },1000);
+}
+
+/* ═══ STATE 5: CHECKOUT + VOICE NOTE ═══ */
+function goCheckout(){
+  goState('checkout');
+  var outTime=timeNow();
+  var ciParts=_checkInTime.split(':');var ciMin=parseInt(ciParts[0])*60+parseInt(ciParts[1]);
+  var outParts=outTime.split(':');var outMin=parseInt(outParts[0])*60+parseInt(outParts[1]);
+  var totalMin=outMin-ciMin;if(totalMin<0)totalMin=0;
+  var h=Math.floor(totalMin/60),m=totalMin%60;
+  var otMin=0;
+  var otStartParts=C.OT_START.split(':');var otStartMin=parseInt(otStartParts[0])*60+parseInt(otStartParts[1]);
+  if(outMin>otStartMin)otMin=outMin-otStartMin;
+  var otH=Math.floor(otMin/60),otM=otMin%60;
+  var ta=Math.round(_geoData.km*C.KM_RATE);
+
+  document.getElementById('co-summary').innerHTML=
+    '<div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val">'+_checkInTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🕐 رخصت</span><span class="info-val">'+outTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">📊 کل وقت</span><span class="info-val" style="font-size:17px">'+h+' گھنٹے '+m+' منٹ</span></div>'+
+    '<div class="info-row"><span class="info-label">🕐 اوور ٹائم</span><span class="info-val">'+(otMin>0?'<span class="ot-badge ot-yes">'+otH+'h '+otM+'m OT</span>':'<span class="ot-badge ot-no">0</span>')+'</span></div>'+
+    '<div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs '+ta+'</span></div>';
+  
+  /* Reset recording */
+  _audioBlob=null;_audioUrl=null;_recSec=0;
+  document.getElementById('rec-btn').className='rec-btn rec-btn-idle';
+  document.getElementById('rec-btn').textContent='🎙️';
+  document.getElementById('rec-status').textContent='ریکارڈ کرنے کے لیے دبائیں';
+  document.getElementById('rec-timer').style.display='none';
+  document.getElementById('rec-playback').style.display='none';
+}
+
+/* ═══ VOICE RECORDING ═══ */
+function toggleRecording(){
+  if(_mediaRecorder&&_mediaRecorder.state==='recording'){
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording(){
+  _audioChunks=[];_recSec=0;
+  navigator.mediaDevices.getUserMedia({audio:true})
+    .then(function(stream){
+      _mediaRecorder=new MediaRecorder(stream);
+      _mediaRecorder.ondataavailable=function(e){if(e.data.size>0)_audioChunks.push(e.data)};
+      _mediaRecorder.onstop=function(){
+        stream.getTracks().forEach(function(t){t.stop()});
+        _audioBlob=new Blob(_audioChunks,{type:'audio/webm'});
+        _audioUrl=URL.createObjectURL(_audioBlob);
+        document.getElementById('rec-btn').className='rec-btn rec-btn-done';
+        document.getElementById('rec-btn').textContent='✅';
+        document.getElementById('rec-status').textContent='ریکارڈ ہو گیا — '+_recSec+' سیکنڈ';
+        document.getElementById('rec-playback').style.display='block';
+        if(_recInterval){clearInterval(_recInterval);_recInterval=null}
+      };
+      _mediaRecorder.start();
+      document.getElementById('rec-btn').className='rec-btn rec-btn-active';
+      document.getElementById('rec-btn').textContent='⏹';
+      document.getElementById('rec-status').textContent='🔴 ریکارڈنگ جاری ہے...';
+      document.getElementById('rec-timer').style.display='block';
+      _recInterval=setInterval(function(){
+        _recSec++;
+        var m=Math.floor(_recSec/60),s=_recSec%60;
+        document.getElementById('rec-timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+      },1000);
+    })
+    .catch(function(){toast('مائیکروفون نہیں کھل سکا','err')});
+}
+
+function stopRecording(){
+  if(_mediaRecorder&&_mediaRecorder.state==='recording')_mediaRecorder.stop();
+}
+
+function playRecording(){
+  if(_audioUrl){var a=new Audio(_audioUrl);a.play()}
+}
+
+function deleteRecording(){
+  _audioBlob=null;_audioUrl=null;_recSec=0;
+  document.getElementById('rec-btn').className='rec-btn rec-btn-idle';
+  document.getElementById('rec-btn').textContent='🎙️';
+  document.getElementById('rec-status').textContent='ریکارڈ کرنے کے لیے دبائیں';
+  document.getElementById('rec-timer').style.display='none';
+  document.getElementById('rec-playback').style.display='none';
+  toast('وائس پیغام حذف ہو گیا','info');
+}
+
+/* ═══ STATE 6: CONFIRM CHECKOUT ═══ */
+function confirmCheckout(){
+  if(_workTimerInterval){clearInterval(_workTimerInterval);_workTimerInterval=null}
+  
+  var outTime=timeNow();
+  var ciParts=_checkInTime.split(':');var ciMin=parseInt(ciParts[0])*60+parseInt(ciParts[1]);
+  var outParts=outTime.split(':');var outMin=parseInt(outParts[0])*60+parseInt(outParts[1]);
+  var totalMin=outMin-ciMin;if(totalMin<0)totalMin=0;
+  var h=Math.floor(totalMin/60),m=totalMin%60;
+  var otStartParts=C.OT_START.split(':');var otStartMin=parseInt(otStartParts[0])*60+parseInt(otStartParts[1]);
+  var otMin=outMin>otStartMin?outMin-otStartMin:0;
+  var otH=Math.floor(otMin/60),otM=otMin%60;
+  var ta=Math.round(_geoData.km*C.KM_RATE);
+  var isLate=_checkInTime>C.START_TIME;
+
+  /* OT header style */
+  if(otMin>0){
+    document.getElementById('done-header').style.background=C.amb_bg||'#fffbeb';
+    document.getElementById('done-header').style.borderColor='#d97706';
+    document.getElementById('done-header').querySelector('.s-icon').textContent='🕐';
+    document.getElementById('done-header').querySelector('.s-text').textContent='اوور ٹائم کے ساتھ رخصت';
+    document.getElementById('done-header').querySelector('.s-text').style.color='#d97706';
+  }
+
+  document.getElementById('done-info').innerHTML=
+    '<div class="info-row"><span class="info-label">👤 نام</span><span class="info-val">'+_selected.name+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🔧 عہدہ</span><span class="info-val">'+_selected.role+'</span></div>'+
+    '<div class="info-row"><span class="info-label">📅 تاریخ</span><span class="info-val" style="direction:ltr">'+new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+'</span></div>'+
+    '<div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val">'+_checkInTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🕐 رخصت</span><span class="info-val">'+outTime+'</span></div>'+
+    '<div class="info-row"><span class="info-label">📊 کل وقت</span><span class="info-val" style="font-size:17px;direction:ltr">'+h+'h '+m+'m</span></div>'+
+    '<div class="info-row"><span class="info-label">🕐 اوور ٹائم</span><span class="info-val">'+(otMin>0?'<span class="ot-badge ot-yes">'+otH+'h '+otM+'m</span>':'<span class="ot-badge ot-no">0</span>')+'</span></div>'+
+    '<div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val" style="direction:ltr">'+_geoData.km+' km</span></div>'+
+    '<div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn" style="direction:ltr">Rs '+ta+'</span></div>'+
+    '<div class="info-row"><span class="info-label">📸 سیلفی</span><span class="info-val info-val-grn">✅ موجود</span></div>';
+  
+  document.getElementById('done-voice').textContent=_audioBlob?'✅ وائس پیغام موجود ('+_recSec+'s)':'⚪ کوئی پیغام نہیں';
+
+  goState('done');
+}
+
+/* ═══ INIT ═══ */
+setTimeout(function(){speak(VOICE.select)},800);
+</script>
+</body>
+</html>
