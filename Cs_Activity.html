@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V9 — 15 Mar 2026 20:00 PKT</title>
+<title>CS Activity Reporter V9.2 — 15 Mar 2026 20:30 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -114,9 +114,11 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 .tl-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--G9)}.tl-item:last-child{border:none}
 .tl-line{width:16px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
 .tl-dot{width:10px;height:10px;border-radius:50%;border:3px solid var(--G7);background:var(--W);z-index:1}
-.tl-dot-grn{border-color:var(--grn)}
+.tl-dot-grn{border-color:var(--grn)}.tl-dot-red{border-color:var(--R)}.tl-dot-amb{border-color:var(--amb)}.tl-dot-blu{border-color:var(--blu)}
+.tl-place{font-size:12px;font-weight:700;color:var(--G2)}.tl-time{font-size:10px;color:var(--G5);font-weight:600;margin-top:1px}
+.tl-wire{width:2px;flex:1;background:var(--G8);min-height:14px}
 .badge{font-size:8px;font-weight:700;padding:2px 5px;border-radius:4px;display:inline-block}
-.bg-grn{background:var(--grn-bg);color:var(--grn)}.bg-amb{background:var(--amb-bg);color:var(--amb)}
+.bg-grn{background:var(--grn-bg);color:var(--grn)}.bg-amb{background:var(--amb-bg);color:var(--amb)}.bg-red{background:var(--Rbg);color:var(--R)}.bg-blu{background:var(--blu-bg);color:var(--blu)}
 
 /* ── Collapsible ── */
 .sec{font-size:11px;font-weight:700;color:var(--G5);text-transform:uppercase;letter-spacing:.4px;padding:8px 0 5px;border-bottom:1px solid var(--G8);margin-bottom:6px;cursor:pointer}
@@ -167,8 +169,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V9</span>
-    <span class="tb-date">15Mar2026 · 20:00</span>
+    <span class="tb-ver">V9.2</span>
+    <span class="tb-date">15Mar2026 · 20:30</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -224,10 +226,11 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div id="s-outside" class="jstate">
   <div class="warn-card"><div class="warn-title">⚠️ Outside Office — Unauthorized</div><div class="warn-sub" id="outside-detail">—</div></div>
   <div style="font-size:13px;font-weight:800;color:var(--G2);margin:8px 0 6px">What's the reason?</div>
-  <div class="client-opt client-opt-hi" onclick="App.outsideContinue('client')"><div class="co-icon">🏢</div><div><div class="co-title">Client Visit</div><div class="co-sub">Visiting an existing client</div></div></div>
-  <div class="client-opt" onclick="App.outsideContinue('lead')"><div class="co-icon">🆕</div><div><div class="co-title">Lead Visit</div><div class="co-sub">New prospect / unapproved client</div></div></div>
-  <div class="client-opt" onclick="App.outsideContinue('complaint')"><div class="co-icon">🔄</div><div><div class="co-title">Complaint</div><div class="co-sub">Assigned or phone-received</div></div></div>
-  <button class="jbtn jbtn-ghost" style="margin-top:6px" onclick="App.jgo('idle')">← Cancel</button>
+  <div class="client-opt" id="out-opt-client" onclick="App.pickOutsideReason('client',this)"><div class="co-icon">🏢</div><div><div class="co-title">Client Visit</div><div class="co-sub">Visiting an existing client</div></div></div>
+  <div class="client-opt" id="out-opt-lead" onclick="App.pickOutsideReason('lead',this)"><div class="co-icon">🆕</div><div><div class="co-title">Lead Visit</div><div class="co-sub">New prospect / unapproved client</div></div></div>
+  <div class="client-opt" id="out-opt-complaint" onclick="App.pickOutsideReason('complaint',this)"><div class="co-icon">🔄</div><div><div class="co-title">Complaint</div><div class="co-sub">Assigned or phone-received</div></div></div>
+  <button class="jbtn jbtn-red" id="out-confirm-btn" style="display:none;margin-top:8px" onclick="App.outsideContinue()">✅ Confirm & Mark Attendance</button>
+  <button class="jbtn jbtn-ghost" style="margin-top:6px" onclick="App.jgo('idle')">← Back</button>
 </div>
 
 <!-- ═══ STATE 9: DAY DONE ═══ -->
@@ -237,7 +240,11 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
     <div style="font-size:16px;font-weight:800;color:var(--grn)">Checked Out</div>
     <div style="font-size:11px;color:var(--G5);margin-top:3px" id="done-detail">—</div>
   </div>
-  <button class="jbtn jbtn-ghost" onclick="App.markAttendance()">🔄 Log Back In — Returned to Office</button>
+  <!-- Day totals -->
+  <div class="live-stats" id="done-totals"></div>
+  <!-- Day timeline -->
+  <div class="tl"><div class="tl-hd">Today's Sessions</div><div id="done-tl-items"></div></div>
+  <button class="jbtn jbtn-ghost" style="margin-top:10px" onclick="App.markAttendance()">🔄 Log Back In — Returned to Office</button>
 </div>
 
 </div><!-- /pg-home -->
@@ -266,7 +273,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V9',date:'15-Mar-2026',time:'20:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V9.2',date:'15-Mar-2026',time:'20:30 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -460,6 +467,8 @@ checkSession:function(){
     /* Show done state with option to re-login */
     this.jgo('done');
     document.getElementById('done-detail').textContent=lastDone.time+' → '+lastDone.out+' · '+(lastDone.inOffice||'');
+    this.renderDayTimeline('done-tl-items');
+    this.renderDoneTotals();
   } else {
     this.jgo('idle');
   }
@@ -511,6 +520,9 @@ markAttendance:async function(){
       } else {
         /* ── OUTSIDE OFFICE — show reason picker ── */
         App._pendingGeo=geo;
+        App._outsideReason=null;
+        document.querySelectorAll('#s-outside .client-opt').forEach(function(c){c.classList.remove('client-opt-hi')});
+        document.getElementById('out-confirm-btn').style.display='none';
         App.jgo('outside');
         document.getElementById('outside-detail').textContent=
           'You are '+geo.dist+'m from '+geo.officeName+'. GPS location will be recorded.';
@@ -520,10 +532,21 @@ markAttendance:async function(){
   });
 },
 
-/* ── Outside office — continue with reason ── */
+/* ── Outside office — pick reason (highlight only, no save yet) ── */
 _pendingGeo:null,
-outsideContinue:async function(reason){
-  var geo=this._pendingGeo;if(!geo)return;
+_outsideReason:null,
+pickOutsideReason:function(reason,el){
+  S.p('click');
+  this._outsideReason=reason;
+  document.querySelectorAll('#s-outside .client-opt').forEach(function(c){c.classList.remove('client-opt-hi')});
+  el.classList.add('client-opt-hi');
+  document.getElementById('out-confirm-btn').style.display='block';
+},
+
+/* ── Outside office — confirm and write to Firebase ── */
+outsideContinue:async function(){
+  var geo=this._pendingGeo;var reason=this._outsideReason;
+  if(!geo||!reason){U.toast('Select a reason','warn');return}
   showLoad('Saving','Recording attendance...');
   try{
     var timeNow=U.time();
@@ -555,7 +578,7 @@ outsideContinue:async function(reason){
 showAtOffice:function(rec){
   this.jgo('at_office');
   var isOutside=rec.inNear===false;
-  var oName=isOutside?'Outside Office ('+( rec.outsideReason||'—')+')':(rec.inOffice||'Office');
+  var oName=isOutside?'Outside Office ('+(rec.outsideReason||'—')+')':(rec.inOffice||'Office');
   var isLate=(rec.time||'')>C.START_TIME;
   var badge=isLate?'<span class="badge bg-amb">Late</span>':'<span class="badge bg-grn">On Time</span>';
   if(isOutside) badge='<span class="badge bg-amb">Unauthorized</span>';
@@ -563,18 +586,86 @@ showAtOffice:function(rec){
   document.getElementById('office-name').textContent=oName;
   document.getElementById('office-detail').innerHTML='Since '+rec.time+' · '+badge;
 
-  /* Timeline */
-  var icon=isOutside?'⚠️':'🟢';
-  document.getElementById('tl-items').innerHTML=
-    '<div class="tl-item"><div class="tl-line"><div class="tl-dot tl-dot-grn"></div></div>'+
-    '<div class="tl-info"><div class="tl-place">'+icon+' '+oName+'</div>'+
-    '<div class="tl-time">'+rec.time+' · '+badge+'</div></div></div>';
+  /* Render full day timeline */
+  this.renderDayTimeline('tl-items');
 
   /* Start office timer */
   var self=this;
   if(_officeTimer)clearInterval(_officeTimer);
   _officeTimer=setInterval(function(){self._updateOfficeTime()},30000);
   this._updateOfficeTime();
+},
+
+/* ═══════════════════════════════════════
+   RENDER DAY TIMELINE (all sessions)
+   ═══════════════════════════════════════ */
+renderDayTimeline:function(targetId){
+  var today=U.today();
+  var myToday=_att.filter(function(a){return a.userId===ME.id&&a.date===today})
+    .sort(function(a,b){return(a.time||'').localeCompare(b.time||'')});
+
+  if(!myToday.length){document.getElementById(targetId).innerHTML='<div style="font-size:11px;color:var(--G5);padding:8px">No sessions today</div>';return}
+
+  var html='';var totalMin=0;var sessions=myToday.length;
+
+  myToday.forEach(function(s,i){
+    var isOutside=s.inNear===false;
+    var icon=isOutside?'⚠️':'🟢';
+    var place=isOutside?'Outside ('+(s.outsideReason||'—')+')':(s.inOffice||'Office');
+    var isLate=(s.time||'')>C.START_TIME;
+    var statusBadge=isLate?'<span class="badge bg-amb">Late</span>':'<span class="badge bg-grn">On Time</span>';
+    if(isOutside) statusBadge='<span class="badge bg-amb">Unauthorized</span>';
+    var sessionBadge='<span class="badge bg-blu">Session '+(i+1)+'</span>';
+
+    /* Calculate duration */
+    var durText='';
+    if(s.out){
+      var inP=s.time.split(':'),outP=s.out.split(':');
+      var mins=(parseInt(outP[0])*60+parseInt(outP[1]))-(parseInt(inP[0])*60+parseInt(inP[1]));
+      if(mins<0)mins=0;totalMin+=mins;
+      var h=Math.floor(mins/60),m=mins%60;
+      durText=' ('+(h?h+'h ':'')+(m<10?'0':'')+m+'m)';
+    }
+
+    /* Has wire if not last item */
+    var wire=(i<myToday.length-1||!s.out)?'<div class="tl-wire"></div>':'';
+    var dotClr=s.out?'tl-dot-grn':'tl-dot-blu';
+
+    html+='<div class="tl-item"><div class="tl-line"><div class="tl-dot '+dotClr+'"></div>'+wire+'</div>';
+    html+='<div class="tl-info"><div class="tl-place">'+icon+' '+place+'</div>';
+    html+='<div class="tl-time">'+s.time+(s.out?' → '+s.out+durText:' · <span style="color:var(--grn);font-weight:700">Active</span>')+' · '+statusBadge+' '+sessionBadge+'</div>';
+
+    /* Flags */
+    var flagsHtml='';
+    if(s.flags&&s.flags.length){
+      s.flags.forEach(function(f){
+        if(f==='late') flagsHtml+='<span class="badge bg-amb">⏰ Late</span> ';
+        else if(f==='early') flagsHtml+='<span class="badge bg-blu">⚡ Early</span> ';
+        else if(f==='outside-login') flagsHtml+='<span class="badge bg-red">📍 Outside</span> ';
+        else if(f==='off-day') flagsHtml+='<span class="badge bg-amb">📅 Off-day</span> ';
+      });
+      if(flagsHtml) html+='<div style="margin-top:2px">'+flagsHtml+'</div>';
+    }
+
+    /* Logout location */
+    if(s.out&&s.outStatus){
+      var locBadge=s.outNear?'<span class="badge bg-grn">'+s.outStatus+'</span>':'<span class="badge bg-red">'+s.outStatus+'</span>';
+      html+='<div style="margin-top:2px">Checkout: '+locBadge+'</div>';
+    }
+
+    html+='</div></div>';
+  });
+
+  /* Day summary strip */
+  var totalH=Math.floor(totalMin/60),totalM=totalMin%60;
+  var summaryHtml='<div style="margin-top:8px;padding:8px;background:var(--G9);border-radius:8px;font-size:10px;color:var(--G5);display:flex;gap:12px;flex-wrap:wrap">';
+  summaryHtml+='<span><strong>'+sessions+'</strong> session'+(sessions>1?'s':'')+'</span>';
+  summaryHtml+='<span><strong>'+(totalH?totalH+'h ':'')+(totalM<10?'0':'')+totalM+'m</strong> total</span>';
+  var activeSess=myToday.find(function(s){return!s.out});
+  if(activeSess) summaryHtml+='<span style="color:var(--grn);font-weight:700">● Active now</span>';
+  summaryHtml+='</div>';
+
+  document.getElementById(targetId).innerHTML=html+summaryHtml;
 },
 
 _updateOfficeTime:function(){
@@ -613,9 +704,38 @@ goHome:async function(){
       U.toast('✅ Checked out at '+timeNow+(isEarly?' (Early)':''),'ok');
       App.jgo('done');
       document.getElementById('done-detail').textContent=_loginTime+' → '+timeNow+' · '+(geo&&geo.near?geo.officeName:'Remote');
+      App.renderDayTimeline('done-tl-items');
+      App.renderDoneTotals();
     }catch(e){U.toast('Error','err')}
     hideLoad();
   });
+},
+
+/* ═══════════════════════════════════════
+   DONE TOTALS
+   ═══════════════════════════════════════ */
+renderDoneTotals:function(){
+  var today=U.today();
+  var myToday=_att.filter(function(a){return a.userId===ME.id&&a.date===today});
+  var totalMin=0,sessions=myToday.length;
+  var firstIn='',lastOut='';
+  myToday.sort(function(a,b){return(a.time||'').localeCompare(b.time||'')});
+  myToday.forEach(function(s){
+    if(!firstIn||s.time<firstIn) firstIn=s.time;
+    if(s.out&&(!lastOut||s.out>lastOut)) lastOut=s.out;
+    if(s.out&&s.time){
+      var inP=s.time.split(':'),outP=s.out.split(':');
+      var mins=(parseInt(outP[0])*60+parseInt(outP[1]))-(parseInt(inP[0])*60+parseInt(inP[1]));
+      if(mins>0) totalMin+=mins;
+    }
+  });
+  var h=Math.floor(totalMin/60),m=totalMin%60;
+  var html='';
+  html+='<div class="ls"><div class="ls-n">'+sessions+'</div><div class="ls-l">Sessions</div></div>';
+  html+='<div class="ls"><div class="ls-n">'+(h?h+'h':'')+(m<10?'0':'')+m+'m</div><div class="ls-l">Total Time</div></div>';
+  html+='<div class="ls"><div class="ls-n">'+(firstIn||'—')+'</div><div class="ls-l">First In</div></div>';
+  html+='<div class="ls"><div class="ls-n">'+(lastOut||'—')+'</div><div class="ls-l">Last Out</div></div>';
+  document.getElementById('done-totals').innerHTML=html;
 },
 
 /* ═══════════════════════════════════════
