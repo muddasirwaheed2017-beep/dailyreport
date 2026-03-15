@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a1a1a">
-<title>CS Admin Portal V23</title>
+<title>CS Admin Portal V23 — 15 Mar 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -410,8 +410,8 @@ input,select,textarea,button{font-family:var(--font)}
 <body>
 <div id="toasts"></div><div id="offline-bar">⚠️ Offline</div>
 <div class="load-ov" id="load-ov"><div class="load-box"><div class="load-spin"></div><div class="load-msg" id="load-msg">Loading...</div><div class="load-sub" id="load-sub"></div></div></div>
-<div id="s-login" class="scr on"><div class="lw"><div class="lh"><div class="lh-icon">⚙️</div><div class="lh-t">CS <em>Admin Portal</em></div><div class="lh-s">Cognitive Solutions Pvt Ltd — Management Console</div></div><div class="lc"><div style="padding:4px 0 14px;text-align:center"><span style="font-size:10px;font-weight:700;padding:4px 12px;border-radius:12px;background:var(--R);color:var(--W);letter-spacing:.5px">ADMIN ACCESS ONLY</span></div><div class="fg"><label class="fl">Username</label><input class="fi" id="li-u" placeholder="admin"></div><div class="fg"><label class="fl">Password</label><input class="fi" id="li-p" type="password" placeholder="Password"></div><button class="btn btn-R" id="si-btn" onclick="App.signIn()">Sign In →</button><div style="text-align:center;margin-top:14px;font-size:11px;color:var(--G5)">Employees → <a href="Cs_Activity.html" style="color:var(--R);font-weight:700;text-decoration:none">Employee Portal</a></div></div></div></div>
-<div id="s-admin" class="scr"><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Admin Portal</em></div><span style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:16px;background:var(--R);color:var(--W)">V23</span></div><div class="tb-r"><span style="font-size:12px;color:var(--G5)" id="a-nm"></span><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="ct" style="padding-bottom:66px"><div id="ap-dash" class="pg on">
+<div id="s-login" class="scr" style="display:none"></div>
+<div id="s-admin" class="scr"><div class="topbar"><div class="tb-l"><div class="tb-b">CS <em>Admin Portal</em></div><span style="font-size:9px;font-weight:700;padding:3px 10px;border-radius:16px;background:var(--R);color:var(--W)">V23</span><span style="font-size:8px;color:var(--G5);margin-left:4px">15Mar2026</span></div><div class="tb-r"><span style="font-size:12px;color:var(--G5)" id="a-nm"></span><button class="tb-out" onclick="App.logout()">Out</button></div></div><div class="ct" style="padding-bottom:66px"><div id="ap-dash" class="pg on">
 <!-- Welcome Header -->
 <div style="background:var(--G1);border-radius:var(--rl);padding:16px;margin-bottom:12px;border:2px solid var(--G3);box-shadow:var(--sh3d)">
 <div style="display:flex;align-items:center;justify-content:space-between">
@@ -678,6 +678,7 @@ compImg:function(f,kb){return new Promise(function(ok){var r=new FileReader();r.
 
 var ME=null,LOC={v:null},PH={v:[]},MAP=null,_calY,_calM,_calSel,_rpts=[],_att=[],_plans=[],_myAttId=null,_dateMode={v:'today',a:'today'},_calFil='all',_vPlanId=null,_adminBackup=null;
 
+var APP_VERSION={ver:'V23',date:'15-Mar-2026',time:'16:00 PKT',build:'CS_Portal_Admin_V23.html'};
 var App={
 ltab:function(t){S.p('nav');document.getElementById('lt-si').classList.toggle('on',t==='si');document.getElementById('lt-rg').classList.toggle('on',t==='rg');document.getElementById('lf-si').style.display=t==='si'?'':'none';document.getElementById('lf-rg').style.display=t==='rg'?'':'none'},
 signIn:async function(){var u=document.getElementById('li-u').value.trim().toLowerCase();if(!u){U.toast('Enter username','warn');return}
@@ -690,7 +691,7 @@ await F.push('users',{name:n,username:u,password:document.getElementById('rg-p')
 U.toast('Registered!','ok');S.p('ok');this.ltab('si')}catch(e){U.toast('Error','err')}finally{btn.innerHTML='Register →';btn.disabled=false}},
 logout:function(){S.p('nav');ME=null;_adminBackup=null;_rpts=[];_att=[];_plans=[];if(App._dashClock)clearInterval(App._dashClock);localStorage.removeItem('cs_s');this.scr('s-login')},
 save:function(){localStorage.setItem('cs_s',JSON.stringify(ME))},
-restore:function(){try{var s=JSON.parse(localStorage.getItem('cs_s'));if(s&&s.role==='admin'){ME=s;this.showAdmin()}}catch(e){}},
+restore:function(){ME={id:'admin',name:C.ADMIN_N,role:'admin'};this.save();this.showAdmin()},
 scr:function(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on')},
 showAdmin:function(){this.scr('s-admin');document.getElementById('a-nm').textContent=ME.name;this.loadDash()},
 showEmp:async function(){this.scr('s-emp');
