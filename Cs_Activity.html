@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V9.4 — 15 Mar 2026 21:00 PKT</title>
+<title>CS Activity Reporter V9.6 — 15 Mar 2026 21:15 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -179,8 +179,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V9.4</span>
-    <span class="tb-date">15Mar2026 · 21:00</span>
+    <span class="tb-ver">V9.6</span>
+    <span class="tb-date">15Mar2026 · 21:15</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -336,7 +336,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V9.4',date:'15-Mar-2026',time:'21:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V9.6',date:'15-Mar-2026',time:'21:15 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -416,22 +416,23 @@ ltab:function(t){S.p('click');document.getElementById('lt-si').classList.toggle(
 signIn:async function(){
   var u=document.getElementById('li-u').value.trim().toLowerCase();
   if(!u){U.toast('Enter username','warn');return}
-  /* Admin redirect — don't save, just redirect */
-  if(u===C.ADMIN_U){
-    localStorage.removeItem('csvt8');
-    localStorage.removeItem('cs_s');
-    U.toast('Admin → Redirecting to Admin Portal','info');
-    setTimeout(function(){window.location.href='CS_Portal_Admin_V24.html'},500);
-    return;
-  }
   var btn=document.getElementById('si-btn');btn.innerHTML='<div class="spinner"></div>';btn.disabled=true;
   try{
     var users=F.arr(await F.g('users'));
     var user=users.find(function(x){return(x.username||'').toLowerCase()===u});
-    if(!user){U.toast('Not found','err');return}
-    if(user.approved!==true){U.toast('Pending approval','warn');return}
-    ME={id:user.id,name:user.name,username:user.username,role:'employee'};
-    this.save();S.p('ok');this.showEmp();
+    if(user){
+      /* Found in Firebase — log in as employee */
+      if(user.approved!==true){U.toast('Pending approval','warn');return}
+      ME={id:user.id,name:user.name,username:user.username,role:'employee'};
+      this.save();S.p('ok');this.showEmp();
+    } else if(u===C.ADMIN_U){
+      /* Not an employee — check if it's admin */
+      localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
+      U.toast('Admin → Redirecting to Admin Portal','info');
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V25.html'},500);
+    } else {
+      U.toast('Not found','err');
+    }
   }catch(e){U.toast('Connection error','err')}
   finally{btn.innerHTML='Sign In →';btn.disabled=false}
 },
