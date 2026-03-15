@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V8.1 — 15 Mar 2026 19:45 PKT</title>
+<title>CS Activity Reporter V9 — 15 Mar 2026 20:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -147,8 +147,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
     <div class="ltabs"><div class="ltab on" id="lt-si" onclick="App.ltab('si')">Sign In</div><div class="ltab" id="lt-rg" onclick="App.ltab('rg')">Register</div></div>
     <div id="lf-si">
       <div class="fg"><label class="fl">Username</label><input class="fi" id="li-u" placeholder="Username" autocomplete="username"></div>
-      <!-- Password disabled for testing -->
-      <input type="hidden" id="li-p">
+      
+      <div class="fg"><label class="fl">Password</label><input class="fi" id="li-p" type="password" placeholder="Password" autocomplete="current-password"></div>
       <button class="btn btn-R" id="si-btn" onclick="App.signIn()">Sign In →</button>
     </div>
     <div id="lf-rg" style="display:none">
@@ -167,8 +167,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V8.1</span>
-    <span class="tb-date">15Mar2026 · 19:45</span>
+    <span class="tb-ver">V9</span>
+    <span class="tb-date">15Mar2026 · 20:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -266,7 +266,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V8.1',date:'15-Mar-2026',time:'19:45 PKT',build:'Cs_Activity_V8.html'};
+var APP_VERSION={ver:'V9',date:'15-Mar-2026',time:'20:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
