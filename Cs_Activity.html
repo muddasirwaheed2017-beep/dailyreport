@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V9.2 — 15 Mar 2026 20:30 PKT</title>
+<title>CS Activity Reporter V9.4 — 15 Mar 2026 21:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -108,6 +108,16 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 .client-opt-hi{border-color:var(--R);border-left:4px solid var(--R)}
 .co-icon{font-size:22px;flex-shrink:0}.co-title{font-size:13px;font-weight:800;color:var(--G2)}.co-sub{font-size:10px;color:var(--G5);margin-top:1px}
 
+/* ── Purpose chips ── */
+.purp-chip{padding:6px 10px;border-radius:16px;font-size:11px;font-weight:700;background:var(--G9);border:2px solid var(--G8);color:var(--G3);cursor:pointer;display:inline-block}
+.purp-chip:active{transform:scale(.96)}
+.purp-chip.on{background:var(--R);color:var(--W);border-color:var(--R)}
+
+/* ── Client search row ── */
+.cl-row{padding:10px 12px;border-bottom:1px solid var(--G8);font-size:12px;font-weight:600;color:var(--G2);cursor:pointer}
+.cl-row:active{background:var(--grn-bg)}
+.cl-row.sel{background:var(--grn-bg);color:var(--grn);font-weight:800;border-left:3px solid var(--grn)}
+
 /* ── Timeline ── */
 .tl{margin-top:10px}
 .tl-hd{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--G5);margin-bottom:8px}
@@ -169,8 +179,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V9.2</span>
-    <span class="tb-date">15Mar2026 · 20:30</span>
+    <span class="tb-ver">V9.4</span>
+    <span class="tb-date">15Mar2026 · 21:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -233,6 +243,59 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   <button class="jbtn jbtn-ghost" style="margin-top:6px" onclick="App.jgo('idle')">← Back</button>
 </div>
 
+<!-- ═══ STATE 3: AT LOCATION (outside login — already at destination) ═══ -->
+<div id="s-at_location" class="jstate">
+  <div class="loc-bar" style="border-color:var(--amb);border-left:4px solid var(--amb);background:var(--amb-bg)">
+    <div class="loc-icon">📍</div>
+    <div>
+      <div class="loc-name" id="atloc-title">At Location</div>
+      <div class="loc-detail" id="atloc-detail">—</div>
+    </div>
+  </div>
+
+  <!-- For Client Visit: client search -->
+  <div id="atloc-client" style="display:none">
+    <div style="font-size:13px;font-weight:800;color:var(--G2);margin:6px 0 4px">Select Client</div>
+    <div class="fg"><input class="fi" id="atloc-search" placeholder="Type client name..." oninput="App.filterAtlocClients()"></div>
+    <div id="atloc-client-list" style="max-height:150px;overflow-y:auto;border:1px solid var(--G8);border-radius:8px;margin-bottom:10px"></div>
+  </div>
+
+  <!-- For Lead Visit: new lead form -->
+  <div id="atloc-lead" style="display:none">
+    <div style="background:var(--blu-bg);border:2px solid var(--blu);border-left:4px solid var(--blu);border-radius:var(--rl);padding:10px;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--blu)">🆕 New Lead — saved as unapproved. Admin reviews.</div>
+    </div>
+    <div class="fg"><label class="fl">Company / Person Name *</label><input class="fi" id="atloc-lead-name" placeholder="Enter name"></div>
+    <div class="fg"><label class="fl">Contact Number</label><input class="fi" id="atloc-lead-phone" type="tel" placeholder="0321-XXXXXXX"></div>
+    <div class="fg"><label class="fl">City / Area</label><input class="fi" id="atloc-lead-city" placeholder="e.g. Industrial Area, Lahore"></div>
+  </div>
+
+  <!-- For Complaint -->
+  <div id="atloc-complaint" style="display:none">
+    <div style="background:var(--Rbg);border:2px solid var(--R);border-left:4px solid var(--R);border-radius:var(--rl);padding:10px;margin-bottom:8px">
+      <div style="font-size:11px;font-weight:700;color:var(--R)">🔄 Complaint Visit</div>
+    </div>
+    <div class="fg"><label class="fl">Client / Company *</label><input class="fi" id="atloc-comp-client" placeholder="Client name"></div>
+    <div class="fg"><label class="fl">Complaint Details</label><input class="fi" id="atloc-comp-detail" placeholder="Brief description"></div>
+  </div>
+
+  <!-- Purpose -->
+  <div style="font-size:12px;font-weight:800;color:var(--G2);margin:10px 0 4px">Purpose of Visit</div>
+  <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px" id="atloc-purpose">
+    <div class="purp-chip" onclick="App.togglePurp(this)">🛒 Order</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">📅 Follow-up</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">📋 Demo</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">💰 Recovery</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">📄 Quote</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">🤝 Intro</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">🔄 Complaint</div>
+    <div class="purp-chip" onclick="App.togglePurp(this)">🚪 Cold</div>
+  </div>
+
+  <button class="jbtn jbtn-grn" onclick="App.checkInAtLocation()">✅ Check In — Start Meeting</button>
+  <button class="jbtn jbtn-ghost" onclick="App.jgo('outside')">← Back</button>
+</div>
+
 <!-- ═══ STATE 9: DAY DONE ═══ -->
 <div id="s-done" class="jstate">
   <div style="background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:14px;text-align:center;margin-bottom:10px;box-shadow:var(--sh3d)">
@@ -273,7 +336,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V9.2',date:'15-Mar-2026',time:'20:30 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V9.4',date:'15-Mar-2026',time:'21:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -353,8 +416,14 @@ ltab:function(t){S.p('click');document.getElementById('lt-si').classList.toggle(
 signIn:async function(){
   var u=document.getElementById('li-u').value.trim().toLowerCase();
   if(!u){U.toast('Enter username','warn');return}
-  /* Admin redirect */
-  if(u===C.ADMIN_U){window.location.href='CS_Portal_Admin_V24.html';return}
+  /* Admin redirect — don't save, just redirect */
+  if(u===C.ADMIN_U){
+    localStorage.removeItem('csvt8');
+    localStorage.removeItem('cs_s');
+    U.toast('Admin → Redirecting to Admin Portal','info');
+    setTimeout(function(){window.location.href='CS_Portal_Admin_V24.html'},500);
+    return;
+  }
   var btn=document.getElementById('si-btn');btn.innerHTML='<div class="spinner"></div>';btn.disabled=true;
   try{
     var users=F.arr(await F.g('users'));
@@ -383,8 +452,21 @@ register:async function(){
 
 /* ── Session ── */
 save:function(){localStorage.setItem('csvt8',JSON.stringify(ME))},
-logout:function(){S.p('click');ME=null;_att=[];_myAttId=null;if(_officeTimer)clearInterval(_officeTimer);localStorage.removeItem('csvt8');this.scr('s-login')},
-restore:function(){try{var s=JSON.parse(localStorage.getItem('csvt8'));if(s&&s.role==='employee'){ME=s;this.showEmp()}}catch(e){}},
+logout:function(){S.p('click');ME=null;_att=[];_myAttId=null;if(_officeTimer)clearInterval(_officeTimer);localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');this.scr('s-login')},
+restore:function(){
+  try{
+    /* Clear old V7 key if exists */
+    var old=localStorage.getItem('cs_s');
+    if(old){localStorage.removeItem('cs_s')}
+    var s=JSON.parse(localStorage.getItem('csvt8'));
+    if(s&&s.role==='employee'){ME=s;this.showEmp()}
+    else if(s&&s.role==='admin'){
+      /* Admin shouldn't be in employee portal — clear and show login */
+      localStorage.removeItem('csvt8');
+      this.scr('s-login');
+    }
+  }catch(e){this.scr('s-login')}
+},
 scr:function(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on')});document.getElementById(id).classList.add('on')},
 
 /* ── Show Employee Portal ── */
@@ -462,7 +544,13 @@ checkSession:function(){
     /* Resume active session */
     _myAttId=active.id;
     _loginTime=active.time;
-    this.showAtOffice(active);
+    /* Outside login that hasn't checked in at client yet */
+    if(active.inNear===false&&active.outsideReason&&!active.checkedInClient){
+      this._outsideReason=active.outsideReason;
+      this.showAtLocation(active);
+    } else {
+      this.showAtOffice(active);
+    }
   } else if(lastDone){
     /* Show done state with option to re-login */
     this.jgo('done');
@@ -567,8 +655,98 @@ outsideContinue:async function(){
     _myAttId=pushId;_loginTime=timeNow;
     S.p('att');
     U.toast('⚠️ Logged in — Outside Office ('+reason+')','warn');
-    this.showAtOffice(rec);
+    this.showAtLocation(rec);
   }catch(e){U.toast('Error','err')}
+  hideLoad();
+},
+
+/* ═══════════════════════════════════════
+   SHOW "AT LOCATION" STATE (outside login)
+   ═══════════════════════════════════════ */
+showAtLocation:function(rec){
+  var reason=rec.outsideReason||'client';
+  this.jgo('at_location');
+  document.getElementById('atloc-title').textContent=
+    reason==='client'?'Client Visit — Pick Client':
+    reason==='lead'?'Lead Visit — Add New Lead':
+    'Complaint Visit';
+  document.getElementById('atloc-detail').textContent='Logged in at '+rec.time+(rec.inLat?' · GPS: '+rec.inLat.toFixed(4)+', '+rec.inLng.toFixed(4):'');
+
+  /* Show relevant form */
+  document.getElementById('atloc-client').style.display=reason==='client'?'block':'none';
+  document.getElementById('atloc-lead').style.display=reason==='lead'?'block':'none';
+  document.getElementById('atloc-complaint').style.display=reason==='complaint'?'block':'none';
+
+  /* Reset purpose chips */
+  document.querySelectorAll('#atloc-purpose .purp-chip').forEach(function(c){c.classList.remove('on')});
+  if(reason==='complaint'){
+    document.querySelectorAll('#atloc-purpose .purp-chip').forEach(function(c){if(c.textContent.indexOf('Complaint')>=0)c.classList.add('on')});
+  }
+
+  /* Load client list for client visit */
+  if(reason==='client') this.loadAtlocClients();
+},
+
+togglePurp:function(el){S.p('click');el.classList.toggle('on')},
+
+/* ── Load clients for picker ── */
+loadAtlocClients:async function(){
+  try{
+    var clients=C.CLIENTS||[];
+    /* Also fetch custom_clients from Firebase */
+    var custom=F.arr(await F.g('custom_clients'));
+    var all=clients.slice();
+    custom.forEach(function(c){if(c.name)all.push(c.name)});
+    all.sort();
+    App._atlocClients=all;
+    App._atlocSelected=null;
+    var html='';
+    all.forEach(function(name){html+='<div class="cl-row" onclick="App.selAtlocClient(this)">'+name+'</div>'});
+    document.getElementById('atloc-client-list').innerHTML=html||'<div style="padding:10px;font-size:11px;color:var(--G5)">No clients found</div>';
+  }catch(e){document.getElementById('atloc-client-list').innerHTML='<div style="padding:10px;font-size:11px;color:var(--R)">Error loading clients</div>'}
+},
+
+filterAtlocClients:function(){
+  var q=(document.getElementById('atloc-search').value||'').toLowerCase();
+  document.querySelectorAll('#atloc-client-list .cl-row').forEach(function(r){
+    r.style.display=r.textContent.toLowerCase().indexOf(q)>=0?'block':'none';
+  });
+},
+
+_atlocSelected:null,
+selAtlocClient:function(el){
+  S.p('click');
+  document.querySelectorAll('#atloc-client-list .cl-row').forEach(function(r){r.classList.remove('sel')});
+  el.classList.add('sel');
+  this._atlocSelected=el.textContent.trim();
+},
+
+/* ── Check in at location (outside login) ── */
+checkInAtLocation:async function(){
+  var reason=this._outsideReason;
+  if(reason==='client'&&!this._atlocSelected){U.toast('Select a client','warn');return}
+  if(reason==='lead'&&!document.getElementById('atloc-lead-name').value.trim()){U.toast('Enter lead name','warn');return}
+  if(reason==='complaint'&&!document.getElementById('atloc-comp-client').value.trim()){U.toast('Enter client name','warn');return}
+
+  var purposes=[];
+  document.querySelectorAll('#atloc-purpose .purp-chip.on').forEach(function(c){purposes.push(c.textContent.trim())});
+
+  var clientName=reason==='client'?this._atlocSelected:
+    reason==='lead'?document.getElementById('atloc-lead-name').value.trim():
+    document.getElementById('atloc-comp-client').value.trim();
+
+  showLoad('Checking In','Saving client info...');
+  try{
+    /* Save to Firebase */
+    var upd={checkedInClient:clientName,clientType:reason,purposes:purposes,checkedInAt:U.time()};
+    await F.up('attendance/'+_myAttId,upd);
+    /* Refresh local data */
+    _att=F.arr(await F.g('attendance'));
+    S.p('ok');
+    U.toast('✅ Checked in at '+clientName,'ok');
+    var rec=_att.find(function(a){return a.id===_myAttId});
+    this.showAtOffice(rec||{time:_loginTime,inNear:false,outsideReason:reason,inOffice:clientName,checkedInClient:clientName});
+  }catch(e){U.toast('Error saving','err')}
   hideLoad();
 },
 
@@ -578,13 +756,16 @@ outsideContinue:async function(){
 showAtOffice:function(rec){
   this.jgo('at_office');
   var isOutside=rec.inNear===false;
-  var oName=isOutside?'Outside Office ('+(rec.outsideReason||'—')+')':(rec.inOffice||'Office');
+  var hasClient=rec.checkedInClient;
+  var oName=hasClient?'📍 '+rec.checkedInClient:
+    isOutside?'Outside Office ('+(rec.outsideReason||'—')+')':(rec.inOffice||'Office');
   var isLate=(rec.time||'')>C.START_TIME;
   var badge=isLate?'<span class="badge bg-amb">Late</span>':'<span class="badge bg-grn">On Time</span>';
-  if(isOutside) badge='<span class="badge bg-amb">Unauthorized</span>';
+  if(isOutside&&!hasClient) badge='<span class="badge bg-amb">Unauthorized</span>';
+  if(hasClient) badge='<span class="badge bg-grn">At Client</span>';
 
   document.getElementById('office-name').textContent=oName;
-  document.getElementById('office-detail').innerHTML='Since '+rec.time+' · '+badge;
+  document.getElementById('office-detail').innerHTML='Since '+rec.time+(rec.checkedInAt?' · Checked in '+rec.checkedInAt:'')+' · '+badge;
 
   /* Render full day timeline */
   this.renderDayTimeline('tl-items');
