@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>CS Labour حاضری — Demo</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --R:#b91c1c;--Rbg:#fef2f2;
+  --G1:#111827;--G2:#1f2937;--G3:#374151;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;
+  --grn:#16a34a;--grn-bg:#f0fdf4;--blu:#2563eb;--blu-bg:#eff6ff;--amb:#d97706;--amb-bg:#fffbeb;
+  --r:12px;--rl:16px;--sh:0 3px 0 var(--G7)
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Naskh Arabic',sans-serif;background:var(--G9);color:var(--G2);-webkit-tap-highlight-color:transparent;overflow-x:hidden;min-height:100dvh;font-size:16px}
+button,input{font-family:inherit;border:none;outline:none;font-size:16px}
+
+/* ── Topbar ── */
+.topbar{background:var(--G1);color:var(--W);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:3px solid var(--R)}
+.tb-t{font-size:16px;font-weight:800}.tb-t em{color:var(--R);font-style:normal}
+.tb-ver{font-size:9px;font-weight:800;padding:2px 8px;border-radius:8px;background:var(--R);color:var(--W)}
+.tb-speak{background:none;color:var(--W);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:8px}
+.tb-speak:active{background:rgba(255,255,255,.15)}
+
+/* ── Content ── */
+.ct{padding:14px 16px 30px;direction:rtl;text-align:right}
+
+/* ── States ── */
+.jstate{display:none}.jstate.on{display:block}
+
+/* ── Big card ── */
+.bcard{background:var(--W);border-radius:var(--rl);border:2px solid var(--G8);padding:20px;margin-bottom:14px;box-shadow:0 3px 0 var(--G7);text-align:center}
+.bcard-icon{font-size:48px;margin-bottom:10px}
+.bcard-t{font-size:20px;font-weight:800;color:var(--G2);line-height:1.4}
+.bcard-s{font-size:14px;color:var(--G5);margin-top:6px;line-height:1.6}
+
+/* ── Big button ── */
+.bbtn{width:100%;padding:18px;border-radius:var(--r);font-size:18px;font-weight:800;cursor:pointer;text-align:center;border:2px solid transparent;margin-bottom:8px;transition:transform .1s}
+.bbtn:active{transform:scale(.97)}
+.bbtn-red{background:var(--R);color:var(--W);border-color:var(--R);box-shadow:0 4px 0 #7f1d1d}
+.bbtn-grn{background:var(--grn);color:var(--W);border-color:var(--grn);box-shadow:0 4px 0 #14532d}
+.bbtn-dark{background:var(--G2);color:var(--W);border-color:var(--G2);box-shadow:0 4px 0 var(--G1)}
+.bbtn-ghost{background:var(--W);color:var(--G3);border:2px solid var(--G8);box-shadow:0 2px 0 var(--G8);font-size:15px;padding:14px}
+
+/* ── Name list ── */
+.name-grid{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.name-btn{padding:16px;border-radius:var(--r);font-size:17px;font-weight:700;background:var(--W);border:2px solid var(--G8);color:var(--G2);cursor:pointer;text-align:right;box-shadow:0 2px 0 var(--G7);display:flex;align-items:center;justify-content:space-between;direction:rtl}
+.name-btn:active{transform:scale(.98);box-shadow:none}
+.name-btn.sel{border-color:var(--grn);background:var(--grn-bg);color:var(--grn);border-right:5px solid var(--grn)}
+.name-code{font-size:11px;font-weight:600;color:var(--G5);direction:rtl;display:flex;gap:4px;align-items:center}
+
+/* ── Selfie ── */
+.selfie-box{width:140px;height:140px;border-radius:50%;border:4px solid var(--G8);margin:0 auto 14px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--G9);cursor:pointer}
+.selfie-box.done{border-color:var(--grn)}
+.selfie-box img{width:100%;height:100%;object-fit:cover}
+.selfie-placeholder{font-size:40px;color:var(--G7)}
+
+/* ── Info card ── */
+.info-card{background:var(--W);border-radius:var(--rl);padding:14px;margin-bottom:10px;border:2px solid var(--G8);box-shadow:0 2px 0 var(--G7)}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--G9);direction:rtl}
+.info-row:last-child{border:none}
+.info-label{font-size:13px;font-weight:600;color:var(--G5)}
+.info-val{font-size:15px;font-weight:800;color:var(--G2);direction:ltr}
+.info-val-grn{color:var(--grn)}.info-val-red{color:var(--R)}.info-val-amb{color:var(--amb)}
+
+/* ── Status banner ── */
+.status-grn{background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:16px;text-align:center;margin-bottom:14px}
+.status-grn .s-icon{font-size:42px;margin-bottom:6px}
+.status-grn .s-text{font-size:18px;font-weight:800;color:var(--grn)}
+.status-grn .s-sub{font-size:13px;color:var(--G5);margin-top:4px}
+
+/* ── Timer ── */
+.big-timer{font-size:42px;font-weight:800;font-family:monospace;color:var(--G2);text-align:center;padding:10px;direction:ltr}
+.timer-label{font-size:11px;font-weight:700;color:var(--G5);text-transform:uppercase;text-align:center;margin-bottom:4px}
+
+/* ── OT badge ── */
+.ot-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:800;margin-top:6px}
+.ot-yes{background:var(--amb-bg);color:var(--amb);border:2px solid var(--amb)}
+.ot-no{background:var(--G9);color:var(--G5);border:2px solid var(--G8)}
+
+/* ── Demo bar ── */
+.demo-bar{display:flex;gap:4px;margin-bottom:12px;overflow-x:auto;direction:ltr;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.demo-bar::-webkit-scrollbar{display:none}
+.demo-btn{padding:6px 10px;border-radius:10px;font-size:10px;font-weight:700;background:var(--W);border:2px solid var(--G8);color:var(--G5);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.demo-btn.on{background:var(--G1);color:var(--W);border-color:var(--G1)}
+
+/* ── Search ── */
+.search-box{width:100%;padding:14px;border:2px solid var(--G8);border-radius:var(--r);font-size:16px;background:var(--W);color:var(--G2);text-align:right;margin-bottom:10px;direction:rtl}
+.search-box:focus{border-color:var(--R)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:8px">
+    <button class="tb-speak" onclick="replayVoice()">🔊</button>
+    <span class="tb-ver">Demo</span>
+  </div>
+  <div class="tb-t">CS <em>حاضری</em></div>
+</div>
+
+<div class="ct">
+
+<!-- Demo switcher -->
+<div class="demo-bar">
+  <div class="demo-btn on" onclick="go('select')">1 Select</div>
+  <div class="demo-btn" onclick="go('selfie')">2 Selfie</div>
+  <div class="demo-btn" onclick="go('checked_in')">3 Checked In</div>
+  <div class="demo-btn" onclick="go('working')">4 Working</div>
+  <div class="demo-btn" onclick="go('checkout')">5 Checkout</div>
+  <div class="demo-btn" onclick="go('done')">6 Done</div>
+</div>
+
+<!-- ═══ STATE 1: SELECT NAME ═══ -->
+<div id="s-select" class="jstate on">
+  <div class="bcard">
+    <div class="bcard-icon">📍</div>
+    <div class="bcard-t">حاضری لگائیں</div>
+    <div class="bcard-s">اپنا نام منتخب کریں</div>
+  </div>
+
+  <input class="search-box" placeholder="🔍 نام تلاش کریں..." oninput="filterNames(this.value)">
+
+  <div class="name-grid" id="name-list">
+    <div class="name-btn" onclick="pickName(this)"><span>اکبر خان</span><span class="name-code">الیکٹریشن · 1001</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>محمد اسلم</span><span class="name-code">ٹیکنیشن · 1002</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>عبدالرحمان</span><span class="name-code">مزدور · 1003</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>نذیر احمد</span><span class="name-code">ہیلپر · 1004</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>فیاض حسین</span><span class="name-code">ٹیکنیشن · 1005</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>ساجد محمود</span><span class="name-code">الیکٹریشن · 1006</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>وسیم اکرم</span><span class="name-code">مزدور · 1007</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>طارق مسعود</span><span class="name-code">ہیلپر · 1008</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>عامر شہزاد</span><span class="name-code">ٹیکنیشن · 1009</span></div>
+    <div class="name-btn" onclick="pickName(this)"><span>بلال احمد</span><span class="name-code">مزدور · 1010</span></div>
+  </div>
+
+  <button class="bbtn bbtn-red" id="select-btn" style="display:none" onclick="go('selfie')">آگے بڑھیں →</button>
+</div>
+
+<!-- ═══ STATE 2: SELFIE ═══ -->
+<div id="s-selfie" class="jstate">
+  <div class="bcard">
+    <div class="bcard-t">📸 سیلفی لیں</div>
+    <div class="bcard-s">حاضری کی تصدیق کے لیے اپنی تصویر لیں</div>
+  </div>
+
+  <div class="selfie-box" id="selfie-box" onclick="takeSelfie()">
+    <div class="selfie-placeholder" id="selfie-ph">📷</div>
+  </div>
+
+  <div style="text-align:center;margin-bottom:14px">
+    <div style="font-size:14px;font-weight:700;color:var(--G2)" id="selfie-name">اکبر خان</div>
+    <div style="font-size:12px;color:var(--G5);margin-top:2px">سیلفی لازمی ہے</div>
+  </div>
+
+  <button class="bbtn bbtn-grn" id="selfie-confirm" style="display:none" onclick="go('checked_in')">✅ حاضری لگائیں</button>
+  <button class="bbtn bbtn-red" onclick="takeSelfie()">📸 کیمرہ کھولیں</button>
+  <button class="bbtn bbtn-ghost" onclick="go('select')">← واپس</button>
+</div>
+
+<!-- ═══ STATE 3: CHECKED IN ═══ -->
+<div id="s-checked_in" class="jstate">
+  <div class="status-grn">
+    <div class="s-icon">✅</div>
+    <div class="s-text">حاضری لگ گئی</div>
+    <div class="s-sub">اکبر خان · 09:15</div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row"><span class="info-label">📍 لوکیشن</span><span class="info-val">سائٹ — لاہور</span></div>
+    <div class="info-row"><span class="info-label">🚗 دفتر سے فاصلہ</span><span class="info-val">12.5 km</span></div>
+    <div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs 81</span></div>
+    <div class="info-row"><span class="info-label">⏰ وقت</span><span class="info-val">09:15</span></div>
+    <div class="info-row"><span class="info-label">📊 حالت</span><span class="info-val info-val-grn">وقت پر ✅</span></div>
+  </div>
+
+  <div style="text-align:center;font-size:13px;color:var(--G5);margin-bottom:14px;line-height:1.6">
+    📸 سیلفی ریکارڈ ہو گئی<br>
+    📍 GPS لوکیشن محفوظ ہو گئی
+  </div>
+
+  <button class="bbtn bbtn-dark" onclick="go('working')">👍 ٹھیک ہے — کام شروع</button>
+</div>
+
+<!-- ═══ STATE 4: WORKING (day view) ═══ -->
+<div id="s-working" class="jstate">
+  <div style="background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;direction:rtl">
+    <div style="font-size:28px">🟢</div>
+    <div>
+      <div style="font-size:15px;font-weight:800;color:var(--grn)">کام جاری ہے</div>
+      <div style="font-size:12px;color:var(--G5)">اکبر خان · سائٹ لاہور</div>
+    </div>
+  </div>
+
+  <div class="timer-label">کام کا وقت</div>
+  <div class="big-timer" id="work-timer">04:32:15</div>
+
+  <div class="info-card">
+    <div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val">09:15</span></div>
+    <div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val">12.5 km</span></div>
+    <div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs 81</span></div>
+  </div>
+
+  <button class="bbtn bbtn-red" onclick="go('checkout')" style="margin-top:10px">🏠 رخصت — گھر جائیں</button>
+</div>
+
+<!-- ═══ STATE 5: CHECKOUT ═══ -->
+<div id="s-checkout" class="jstate">
+  <div class="bcard">
+    <div class="bcard-icon">🏠</div>
+    <div class="bcard-t">رخصت ہونا چاہتے ہیں؟</div>
+    <div class="bcard-s">آپ کی حاضری بند ہو جائے گی</div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val">09:15</span></div>
+    <div class="info-row"><span class="info-label">🕐 رخصت</span><span class="info-val">17:30</span></div>
+    <div class="info-row"><span class="info-label">📊 کل وقت</span><span class="info-val" style="font-size:18px">8 گھنٹے 15 منٹ</span></div>
+    <div class="info-row"><span class="info-label">🕐 اوور ٹائم</span><span class="info-val"><span class="ot-badge ot-no">0 — کوئی OT نہیں</span></span></div>
+    <div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val">12.5 km</span></div>
+    <div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn">Rs 81</span></div>
+  </div>
+
+  <button class="bbtn bbtn-red" onclick="go('done')">✅ رخصت کی تصدیق</button>
+  <button class="bbtn bbtn-ghost" onclick="go('working')">← واپس — ابھی نہیں</button>
+</div>
+
+<!-- ═══ STATE 6: DONE ═══ -->
+<div id="s-done" class="jstate">
+  <div class="status-grn">
+    <div class="s-icon">🏠</div>
+    <div class="s-text">رخصت ہو گئی</div>
+    <div class="s-sub">اللہ حافظ — کل ملیں گے</div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row"><span class="info-label">👤 نام</span><span class="info-val">اکبر خان</span></div>
+    <div class="info-row"><span class="info-label">📅 تاریخ</span><span class="info-val" style="direction:ltr">15 Mar 2026</span></div>
+    <div class="info-row"><span class="info-label">⏰ حاضری</span><span class="info-val" style="direction:ltr">09:15</span></div>
+    <div class="info-row"><span class="info-label">🕐 رخصت</span><span class="info-val" style="direction:ltr">17:30</span></div>
+    <div class="info-row"><span class="info-label">📊 کل وقت</span><span class="info-val" style="font-size:17px;direction:ltr">8h 15m</span></div>
+    <div class="info-row"><span class="info-label">🕐 اوور ٹائم</span><span class="info-val"><span class="ot-badge ot-no">0</span></span></div>
+    <div class="info-row"><span class="info-label">🚗 دفتر سے فاصلہ</span><span class="info-val" style="direction:ltr">12.5 km</span></div>
+    <div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn" style="direction:ltr">Rs 81</span></div>
+    <div class="info-row"><span class="info-label">📸 سیلفی</span><span class="info-val info-val-grn">✅ موجود</span></div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--G5);line-height:1.6">
+    📍 GPS ریکارڈ محفوظ<br>
+    📸 سیلفی محفوظ<br>
+    ✅ ایڈمن کو بھیج دیا گیا
+  </div>
+</div>
+
+<!-- ═══ OT EXAMPLE — switch demo btn 6 shows this ═══ -->
+<div id="s-done_ot" class="jstate">
+  <div class="status-grn" style="background:var(--amb-bg);border-color:var(--amb)">
+    <div class="s-icon">🕐</div>
+    <div class="s-text" style="color:var(--amb)">اوور ٹائم کے ساتھ رخصت</div>
+    <div class="s-sub">اکبر خان · 09:15 → 20:00</div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-row"><span class="info-label">📊 کل وقت</span><span class="info-val" style="font-size:17px;direction:ltr">10h 45m</span></div>
+    <div class="info-row"><span class="info-label">⏰ معمول</span><span class="info-val" style="direction:ltr">9h (09:15 → 18:00)</span></div>
+    <div class="info-row"><span class="info-label">🕐 اوور ٹائم</span><span class="info-val"><span class="ot-badge ot-yes">1h 45m OT ⏰</span></span></div>
+    <div class="info-row"><span class="info-label">🚗 فاصلہ</span><span class="info-val" style="direction:ltr">12.5 km</span></div>
+    <div class="info-row"><span class="info-label">💰 سفری الاؤنس</span><span class="info-val info-val-grn" style="direction:ltr">Rs 81</span></div>
+  </div>
+</div>
+
+</div><!-- /ct -->
+
+<script>
+var _selected=null;
+var _currentState='select';
+
+function replayVoice(){
+  if(VOICE_LINES[_currentState]) speak(VOICE_LINES[_currentState]);
+}
+
+function go(state){
+  _currentState=state;
+  document.querySelectorAll('.jstate').forEach(function(el){el.classList.remove('on')});
+  var el=document.getElementById('s-'+state);
+  if(el)el.classList.add('on');
+  var states=['select','selfie','checked_in','working','checkout','done'];
+  document.querySelectorAll('.demo-btn').forEach(function(btn,i){btn.classList.toggle('on',states[i]===state)});
+  window.scrollTo(0,0);
+  /* Voice */
+  if(VOICE_LINES[state]) setTimeout(function(){speak(VOICE_LINES[state])},300);
+}
+
+function pickName(el){
+  document.querySelectorAll('.name-btn').forEach(function(b){b.classList.remove('sel')});
+  el.classList.add('sel');
+  _selected=el.querySelector('span').textContent;
+  document.getElementById('select-btn').style.display='block';
+  document.getElementById('selfie-name').textContent=_selected;
+}
+
+function filterNames(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.name-btn').forEach(function(b){
+    b.style.display=b.textContent.toLowerCase().indexOf(q)>=0?'flex':'none';
+  });
+}
+
+function takeSelfie(){
+  /* Demo: simulate selfie taken */
+  var box=document.getElementById('selfie-box');
+  box.classList.add('done');
+  document.getElementById('selfie-ph').innerHTML='<div style="width:100%;height:100%;background:var(--grn-bg);display:flex;align-items:center;justify-content:center;font-size:40px">✅</div>';
+  document.getElementById('selfie-confirm').style.display='block';
+}
+
+/* Work timer simulation */
+var workSec=4*3600+32*60+15;
+setInterval(function(){
+  workSec++;
+  var h=Math.floor(workSec/3600),m=Math.floor((workSec%3600)/60),s=workSec%60;
+  var el=document.getElementById('work-timer');
+  if(el)el.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+},1000);
+
+/* ═══ VOICE — Urdu Speech ═══ */
+var VOICE_LINES={
+  select:'حاضری لگائیں۔ اپنا نام منتخب کریں',
+  selfie:'سیلفی لیں۔ اپنی تصویر لیں',
+  checked_in:'حاضری لگ گئی۔ شکریہ',
+  working:'کام جاری ہے',
+  checkout:'رخصت ہونا چاہتے ہیں؟',
+  done:'رخصت ہو گئی۔ اللہ حافظ'
+};
+
+function speak(text){
+  try{
+    if(!window.speechSynthesis)return;
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='ur-PK';u.rate=0.9;u.pitch=1;u.volume=1;
+    /* Try to find Urdu or Hindi voice */
+    var voices=window.speechSynthesis.getVoices();
+    var urdu=voices.find(function(v){return v.lang.indexOf('ur')>=0});
+    if(!urdu) urdu=voices.find(function(v){return v.lang.indexOf('hi')>=0});
+    if(urdu) u.voice=urdu;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* Load voices (some browsers load async) */
+if(window.speechSynthesis){
+  window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices()};
+}
+
+/* Speak on first load */
+setTimeout(function(){speak(VOICE_LINES.select)},800);
+</script>
+</body>
+</html>
