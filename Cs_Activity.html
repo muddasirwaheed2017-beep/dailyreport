@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V10.2 — 16 Mar 2026 03:30 PKT</title>
+<title>CS Activity Reporter V11 — 16 Mar 2026 04:30 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V10.2</span>
-    <span class="tb-date">16Mar2026 · 03:30</span>
+    <span class="tb-ver">V11</span>
+    <span class="tb-date">16Mar2026 · 04:30</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -469,51 +469,96 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
       <div style="font-size:15px;font-weight:800;color:var(--G2)" id="a-title">📝 Daily Activity</div>
       <div style="font-size:11px;color:var(--G5);font-weight:600" id="a-date"></div>
     </div>
-    <div style="display:flex;gap:4px">
-      <span style="font-size:8px;font-weight:800;padding:3px 6px;border-radius:6px;background:var(--amb-bg);color:var(--amb);display:none" id="a-draft-badge">DRAFT</span>
-    </div>
+    <span style="font-size:8px;font-weight:800;padding:3px 6px;border-radius:6px;background:var(--amb-bg);color:var(--amb);display:none" id="a-draft-badge">DRAFT</span>
   </div>
   <div class="jcard" style="padding:14px">
-    <!-- Today / Old toggle -->
     <div style="display:flex;gap:4px;margin-bottom:12px">
       <button class="purp-chip on" id="a-dm-today" onclick="App.setDateMode('today')" style="flex:1;text-align:center;padding:10px;font-size:13px">📅 Today</button>
       <button class="purp-chip" id="a-dm-old" onclick="App.setDateMode('old')" style="flex:1;text-align:center;padding:10px;font-size:13px">📋 Old Report</button>
     </div>
-    <!-- Date picker for old -->
     <div id="a-date-pick" style="display:none;margin-bottom:10px">
-      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Report Date *</label>
+      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Report Date * (last 1 working day only)</label>
       <input type="date" id="a-old-date" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:14px">
     </div>
-    <!-- Message -->
     <div style="margin-bottom:10px">
       <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Activity Summary * <span style="color:var(--G5);font-weight:400" id="a-msg-wc">0/2000</span></label>
-      <textarea id="a-msg" placeholder="آج کیا کیا؟ Calls, clients, proposals... #tags" style="width:100%;padding:12px;border:2px solid var(--G8);border-radius:8px;font-size:14px;min-height:140px;font-family:inherit;resize:vertical" oninput="App.wordCheck(this)"></textarea>
+      <textarea id="a-msg" placeholder="آج کیا کیا؟ Calls, clients, proposals... #tags" style="width:100%;padding:12px;border:2px solid var(--G8);border-radius:8px;font-size:14px;min-height:120px;font-family:inherit;resize:vertical" oninput="App.wordCheck(this)"></textarea>
     </div>
-    <!-- Quick Tags -->
     <div style="margin-bottom:10px">
       <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Quick Tags</label>
       <div style="display:flex;flex-wrap:wrap;gap:4px" id="a-tags"></div>
     </div>
-    <!-- Action buttons -->
     <div style="display:flex;gap:4px;margin-bottom:10px">
       <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.saveDraft()">💾 Save</button>
       <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.fetchYesterday()">📥 Fetch</button>
       <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.clearActForm()">🗑 Clear</button>
     </div>
-    <!-- Submit -->
     <button class="jbtn jbtn-red" id="a-btn" onclick="App.subAct()">Submit ✓</button>
+  </div>
+
+  <!-- ═══ Last 7 Days ═══ -->
+  <div style="margin-top:14px">
+    <div class="sec" onclick="var el=document.getElementById('a7-wrap');el.style.display=el.style.display==='none'?'block':'none';this.textContent=el.style.display==='none'?'▸ Last 7 Days':'▾ Last 7 Days'">▾ Last 7 Days</div>
+    <div id="a7-wrap">
+      <div id="a7-list"></div>
+    </div>
+  </div>
+
+  <!-- ═══ Monthly Calendar ═══ -->
+  <div style="margin-top:10px">
+    <div class="sec" onclick="var el=document.getElementById('acal-wrap');el.style.display=el.style.display==='none'?'block':'none';this.textContent=el.style.display==='none'?'▸ Monthly Calendar':'▾ Monthly Calendar'">▸ Monthly Calendar</div>
+    <div id="acal-wrap" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0">
+        <button class="jbtn jbtn-ghost" style="width:auto;padding:6px 12px;margin:0;font-size:12px" onclick="App.acalNav(-1)">◀</button>
+        <div style="font-size:14px;font-weight:800" id="acal-title">—</div>
+        <button class="jbtn jbtn-ghost" style="width:auto;padding:6px 12px;margin:0;font-size:12px" onclick="App.acalNav(1)">▶</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;margin-bottom:4px">
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Mon</div>
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Tue</div>
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Wed</div>
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Thu</div>
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Fri</div>
+        <div style="font-size:9px;font-weight:700;color:var(--G5);padding:4px">Sat</div>
+        <div style="font-size:9px;font-weight:700;color:var(--R);padding:4px">Sun</div>
+      </div>
+      <div id="acal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"></div>
+      <div style="font-size:10px;color:var(--G5);margin-top:6px;text-align:center" id="acal-sum">—</div>
+    </div>
   </div>
 </div>
 <div id="pg-cal" class="page"><div class="jcard"><div class="jcard-icon">📅</div><div class="jcard-title">Calendar</div><div class="jcard-sub">Coming in Part 2</div></div></div>
 <div id="pg-inbox" class="page"><div class="jcard"><div class="jcard-icon">💬</div><div class="jcard-title">Inbox</div><div class="jcard-sub">Coming in Part 2</div></div></div>
-<div id="pg-summary" class="page"><div class="jcard"><div class="jcard-icon">📊</div><div class="jcard-title">Summary</div><div class="jcard-sub">Coming in Part 2</div></div></div>
-<div id="pg-reports" class="page"><div class="jcard"><div class="jcard-icon">📑</div><div class="jcard-title">Reports</div><div class="jcard-sub">Coming in Part 2</div></div></div>
+<div id="pg-summary" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="font-size:15px;font-weight:800">📊 Performance Summary</div>
+  </div>
+  <div style="display:flex;gap:4px;margin-bottom:10px">
+    <button class="purp-chip on" id="sum-week" onclick="App.loadSummary('week')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Week</button>
+    <button class="purp-chip" id="sum-month" onclick="App.loadSummary('month')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Month</button>
+  </div>
+  <div id="sum-content"></div>
+</div>
+
+<div id="pg-reports" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div style="font-size:15px;font-weight:800">📑 My Reports</div>
+    <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--G9);color:var(--G5)" id="rpt-cnt">0</span>
+  </div>
+  <div style="display:flex;gap:4px;margin-bottom:10px">
+    <button class="purp-chip on" id="rf-all" onclick="App.filterRpts('all',this)" style="flex:1;text-align:center;padding:8px;font-size:12px">All</button>
+    <button class="purp-chip" id="rf-act" onclick="App.filterRpts('activity',this)" style="flex:1;text-align:center;padding:8px;font-size:12px">📝 Activity</button>
+    <button class="purp-chip" id="rf-vis" onclick="App.filterRpts('visit',this)" style="flex:1;text-align:center;padding:8px;font-size:12px">📍 Visit</button>
+  </div>
+  <div id="rpt-list"></div>
+  <button class="jbtn jbtn-ghost" id="rpt-more" style="display:none;font-size:12px" onclick="App.moreRpts()">Load More ↓</button>
+</div>
 
 <!-- ═══ BOTTOM NAV ═══ -->
 <div class="bnav">
   <div class="bn on" onclick="App.nav('home',this)"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div>
-  <div class="bn" onclick="App.nav('plan',this)"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div>
   <div class="bn" onclick="App.nav('activity',this)"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div>
+  <div class="bn" onclick="App.nav('plan',this)"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div>
   <div class="bn" onclick="App.nav('cal',this)"><div class="bn-i">📅</div><div class="bn-l">Calendar</div></div>
   <div class="bn" onclick="App.nav('inbox',this)"><div class="bn-i">💬</div><div class="bn-l">Inbox</div></div>
   <div class="bn" onclick="App.nav('summary',this)"><div class="bn-i">📊</div><div class="bn-l">Summary</div></div>
@@ -525,7 +570,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V10.2',date:'16-Mar-2026',time:'03:30 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V11',date:'16-Mar-2026',time:'04:30 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -623,7 +668,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V28.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V29.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -688,6 +733,8 @@ nav:function(pg,btn){
   window.scrollTo(0,0);
   /* Page-specific init */
   if(pg==='activity') this.initActPage();
+  if(pg==='reports') this.renderRpts();
+  if(pg==='summary') this.loadSummary('week');
 },
 
 /* ── Journey state ── */
@@ -1474,13 +1521,17 @@ _getFormDate:function(){
     var d=document.getElementById('a-old-date').value;
     if(!d){U.toast('Select date','warn');return null}
     if(d>=U.today()){U.toast('Must be past date','warn');return null}
-    /* Max 3 days back */
-    var dObj=new Date(d+'T00:00:00');var now=new Date();var diff=Math.floor((now-dObj)/(1000*60*60*24));
-    if(diff>3){U.toast('Max 3 days back','warn');return null}
+    /* Find last working day (skip Sundays) */
+    var lastWD=new Date();
+    do{lastWD.setDate(lastWD.getDate()-1)}while(lastWD.getDay()===0);
+    var lwdStr=lastWD.getFullYear()+'-'+String(lastWD.getMonth()+1).padStart(2,'0')+'-'+String(lastWD.getDate()).padStart(2,'0');
+    if(d<lwdStr){U.toast('Only last working day allowed: '+lwdStr,'warn');return null}
     return d;
   }
   return U.today();
 },
+
+_acalY:0,_acalM:0,
 
 initActPage:function(){
   this.setDateMode('today');
@@ -1488,6 +1539,9 @@ initActPage:function(){
   this.setActTitle();
   this.loadDraft();
   document.getElementById('a-msg-wc').textContent='0/'+C.MAX_WORDS;
+  this.render7Days();
+  var now=new Date();this._acalY=now.getFullYear();this._acalM=now.getMonth();
+  this.renderActCal();
 },
 
 setActTitle:function(){
@@ -1499,6 +1553,129 @@ setActTitle:function(){
   } else {
     document.getElementById('a-title').textContent='📝 Daily Activity';
   }
+},
+
+/* ═══ LAST 7 DAYS VIEW ═══ */
+render7Days:function(){
+  var myR=(_rpts||[]).filter(function(r){return r.userId===ME.id&&r.type==='activity'});
+  var rByDate={};myR.forEach(function(r){if(!rByDate[r.date])rByDate[r.date]=[];rByDate[r.date].push(r)});
+  var todayStr=U.today();
+  /* Find last working day for "Submit Now" */
+  var lastWD=new Date();
+  do{lastWD.setDate(lastWD.getDate()-1)}while(lastWD.getDay()===0);
+  var lwdStr=lastWD.getFullYear()+'-'+String(lastWD.getMonth()+1).padStart(2,'0')+'-'+String(lastWD.getDate()).padStart(2,'0');
+
+  var h='';
+  for(var i=0;i<7;i++){
+    var d=new Date();d.setDate(d.getDate()-i);
+    var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    var dayName=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    var isSun=d.getDay()===0;
+    var isFuture=ds>todayStr;
+    var reports=rByDate[ds]||[];
+    var isToday=ds===todayStr;
+
+    if(isSun){
+      h+='<div style="background:var(--W);border:2px solid var(--G8);border-radius:10px;padding:10px 12px;margin-bottom:4px;opacity:.5;display:flex;justify-content:space-between;align-items:center">';
+      h+='<span style="font-size:12px;font-weight:600;color:var(--G5)">'+dayName+'</span>';
+      h+='<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--G9);color:var(--G5)">⚪ Sunday</span>';
+      h+='</div>';
+    } else if(reports.length>0){
+      var r=reports[reports.length-1];
+      var preview=(r.message||'').substring(0,80);if(preview.length>=80)preview+='...';
+      var tags=r.tags&&r.tags.length?r.tags.slice(0,4).map(function(t){return'<span style="font-size:9px;color:var(--R);font-weight:600">#'+t+'</span>'}).join(' '):'';
+      var lateBadge=r.lateReport?'<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--amb-bg);color:var(--amb)">⏰ Late</span>':'';
+      var statusBadge=isToday?'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--grn-bg);color:var(--grn)">✅ Today</span>':'<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--grn-bg);color:var(--grn)">✅ Done</span>';
+      if(reports.length>1) statusBadge+=' <span style="font-size:8px;color:var(--G5)">×'+reports.length+'</span>';
+      h+='<div style="background:var(--W);border:2px solid var(--G8);border-left:4px solid var(--grn);border-radius:10px;padding:10px 12px;margin-bottom:4px;cursor:pointer" onclick="this.querySelector(\'.a7d\').style.display=this.querySelector(\'.a7d\').style.display===\'none\'?\'block\':\'none\'">';
+      h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--G2)">'+dayName+'</span><span>'+statusBadge+' '+lateBadge+'</span></div>';
+      h+='<div style="font-size:11px;color:var(--G5);margin-top:4px;line-height:1.4">'+preview+'</div>';
+      if(tags) h+='<div style="margin-top:3px">'+tags+'</div>';
+      h+='<div class="a7d" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--G8);font-size:12px;color:var(--G3);line-height:1.5;white-space:pre-wrap">';
+      reports.forEach(function(rp,idx){
+        h+='<div style="'+(idx>0?'margin-top:8px;padding-top:8px;border-top:1px dashed var(--G8);':'')+'">';
+        h+='<div style="font-size:10px;color:var(--G5);margin-bottom:2px">'+(rp.reportLabel||'Report')+' · '+rp.time+'</div>';
+        h+=(rp.message||'');
+        h+='</div>';
+      });
+      h+='</div></div>';
+    } else if(!isFuture) {
+      /* Missing */
+      var canSubmit=ds===lwdStr||ds===todayStr;
+      h+='<div style="background:var(--W);border:2px solid var(--G8);border-left:4px solid var(--R);border-radius:10px;padding:10px 12px;margin-bottom:4px">';
+      h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700;color:var(--G2)">'+dayName+'</span>';
+      h+='<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--Rbg);color:var(--R)">❌ Missing</span></div>';
+      h+='<div style="font-size:11px;color:var(--G5);margin-top:3px">No activity report submitted</div>';
+      if(canSubmit&&!isToday){
+        h+='<button class="jbtn jbtn-ghost" style="margin-top:6px;font-size:11px;padding:6px 12px;width:auto;color:var(--R);border-color:var(--Rl)" onclick="App.quickSubmitOld(\''+ds+'\')">📝 Submit Now</button>';
+      }
+      h+='</div>';
+    }
+  }
+  document.getElementById('a7-list').innerHTML=h;
+},
+
+quickSubmitOld:function(date){
+  S.p('click');
+  this.setDateMode('old');
+  document.getElementById('a-old-date').value=date;
+  window.scrollTo(0,0);
+  document.getElementById('a-msg').focus();
+  U.toast('Enter report for '+date,'info');
+},
+
+/* ═══ MONTHLY ACTIVITY CALENDAR ═══ */
+acalNav:function(dir){
+  this._acalM+=dir;
+  if(this._acalM<0){this._acalM=11;this._acalY--}
+  if(this._acalM>11){this._acalM=0;this._acalY++}
+  this.renderActCal();
+},
+
+renderActCal:function(){
+  var y=this._acalY,m=this._acalM;
+  var months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('acal-title').textContent=months[m]+' '+y;
+
+  var myR=(_rpts||[]).filter(function(r){return r.userId===ME.id&&r.type==='activity'});
+  var rDates={};myR.forEach(function(r){rDates[r.date]=true});
+
+  var first=new Date(y,m,1);var lastDay=new Date(y,m+1,0).getDate();
+  var startDay=(first.getDay()+6)%7; /* Monday=0 */
+  var todayStr=U.today();
+
+  var h='';var submitted=0,missing=0,lateRpt=0;
+
+  /* Empty cells before first day */
+  for(var e=0;e<startDay;e++) h+='<div style="padding:6px"></div>';
+
+  for(var d=1;d<=lastDay;d++){
+    var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    var dt=new Date(y,m,d);
+    var isSun=dt.getDay()===0;
+    var isFuture=ds>todayStr;
+    var isToday=ds===todayStr;
+    var has=rDates[ds];
+
+    var bg='var(--W)';var clr='var(--G2)';var border='1px solid var(--G8)';var dot='';
+    if(isSun){clr='var(--G7)';bg='var(--G9)'}
+    else if(isFuture){clr='var(--G7)'}
+    else if(has){bg='var(--grn-bg)';border='2px solid var(--grn)';dot='🟢';submitted++}
+    else{bg='var(--Rbg)';border='2px solid var(--R)';dot='🔴';missing++}
+    if(isToday) border='2px solid var(--G2)';
+
+    /* Check late reports */
+    var dayRpts=myR.filter(function(r){return r.date===ds&&r.lateReport});
+    if(dayRpts.length) lateRpt++;
+
+    h+='<div style="padding:4px 2px;text-align:center;background:'+bg+';border:'+border+';border-radius:6px;font-size:12px;font-weight:700;color:'+clr+';min-height:32px;display:flex;flex-direction:column;align-items:center;justify-content:center">';
+    h+=d;
+    if(dot) h+='<div style="font-size:6px;line-height:1">'+dot+'</div>';
+    h+='</div>';
+  }
+
+  document.getElementById('acal-grid').innerHTML=h;
+  document.getElementById('acal-sum').textContent=months[m]+': ✅ '+submitted+' submitted · ❌ '+missing+' missing'+(lateRpt?' · ⏰ '+lateRpt+' late':'');
 },
 
 initTags:function(){
@@ -1615,10 +1792,152 @@ subAct:async function(){
     _rpts=F.arr(await F.g('reports'));
     S.p('ok');U.toast(label+' ✅','ok');
     this.clearActForm();
-    this.nav('home',document.querySelector('.bnav .bn'));
+    this.setActTitle();
+    this.render7Days();
+    this.renderActCal();
     this.loadStats();
   }catch(e){U.toast('Error submitting','err')}
   finally{btn.innerHTML='Submit ✓';btn.disabled=false}
+},
+
+/* ═══════════════════════════════════════
+   REPORTS TAB — view past reports
+   ═══════════════════════════════════════ */
+_rptFilter:'all',
+_rptOffset:0,
+_rptFiltered:[],
+
+filterRpts:function(type,btn){
+  S.p('click');
+  this._rptFilter=type;this._rptOffset=0;
+  document.querySelectorAll('#pg-reports .purp-chip').forEach(function(c){c.classList.remove('on')});
+  if(btn)btn.classList.add('on');
+  this.renderRpts();
+},
+
+renderRpts:function(){
+  var myR=(_rpts||[]).filter(function(r){return r.userId===ME.id}).sort(function(a,b){return(b.ts||'').localeCompare(a.ts||'')});
+  if(this._rptFilter!=='all') myR=myR.filter(function(r){return r.type===App._rptFilter});
+  this._rptFiltered=myR;this._rptOffset=0;
+  document.getElementById('rpt-cnt').textContent=myR.length;
+  document.getElementById('rpt-list').innerHTML='';
+  if(!myR.length){document.getElementById('rpt-list').innerHTML='<div style="text-align:center;padding:20px;font-size:13px;color:var(--G5)">No reports found</div>';document.getElementById('rpt-more').style.display='none';return}
+  this.moreRpts();
+},
+
+moreRpts:function(){
+  var batch=this._rptFiltered.slice(this._rptOffset,this._rptOffset+10);
+  var h='';
+  batch.forEach(function(r){
+    var isAct=r.type==='activity';
+    var typeBadge=isAct?'<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--grn-bg);color:var(--grn)">📝 Activity</span>':
+      '<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--blu-bg);color:var(--blu)">📍 Visit</span>';
+    var lateBadge=r.lateReport?'<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--amb-bg);color:var(--amb)">⏰ Late</span>':'';
+    var dateStr=r.date?new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}):'';
+    var preview=isAct?(r.message||'').substring(0,100):(r.client||'—')+' · '+(r.outcome||'');
+    if(preview.length>100) preview=preview.substring(0,100)+'...';
+    var tags='';
+    if(r.tags&&r.tags.length){tags=r.tags.map(function(t){return'<span style="font-size:9px;color:var(--R);font-weight:600">#'+t+'</span>'}).join(' ')}
+    h+='<div style="background:var(--W);border:2px solid var(--G8);border-radius:12px;padding:12px;margin-bottom:6px;box-shadow:0 2px 0 var(--G7);cursor:pointer" onclick="this.querySelector(\'.rpt-detail\').style.display=this.querySelector(\'.rpt-detail\').style.display===\'none\'?\'block\':\'none\'">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center">'+
+      '<div>'+typeBadge+' '+lateBadge+'</div>'+
+      '<div style="font-size:10px;color:var(--G5);font-weight:600">'+dateStr+' · '+(r.time||'')+'</div>'+
+      '</div>'+
+      '<div style="font-size:13px;font-weight:600;color:var(--G2);margin-top:6px;line-height:1.4">'+preview+'</div>'+
+      (tags?'<div style="margin-top:4px">'+tags+'</div>':'')+
+      '<div class="rpt-detail" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--G8);font-size:12px;color:var(--G5);line-height:1.5;white-space:pre-wrap">'+(r.message||r.description||'No details')+'</div>'+
+      '</div>';
+  });
+  document.getElementById('rpt-list').innerHTML+=h;
+  this._rptOffset+=10;
+  document.getElementById('rpt-more').style.display=this._rptOffset<this._rptFiltered.length?'block':'none';
+},
+
+/* ═══════════════════════════════════════
+   SUMMARY TAB — performance overview
+   ═══════════════════════════════════════ */
+loadSummary:function(period){
+  S.p('click');
+  document.getElementById('sum-week').classList.toggle('on',period==='week');
+  document.getElementById('sum-month').classList.toggle('on',period==='month');
+
+  var now=new Date();var start,label;
+  if(period==='week'){
+    var day=now.getDay()||7;
+    var mon=new Date(now);mon.setDate(now.getDate()-(day-1));
+    start=mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');
+    label='This Week';
+  } else {
+    start=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01';
+    label='This Month';
+  }
+
+  var myR=(_rpts||[]).filter(function(r){return r.userId===ME.id&&r.date>=start});
+  var myA=(_att||[]).filter(function(a){return a.userId===ME.id&&a.date>=start});
+  var acts=myR.filter(function(r){return r.type==='activity'});
+  var visits=myR.filter(function(r){return r.type==='visit'});
+
+  /* Attendance stats */
+  var onTime=0,late=0;
+  myA.forEach(function(a){if((a.time||'')>C.START_TIME)late++;else onTime++});
+
+  /* Working days */
+  var d=new Date(start+'T00:00:00'),todayStr=U.today(),workdays=0;
+  while(d<=now){
+    var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    if(d.getDay()!==0&&ds<=todayStr) workdays++;
+    d.setDate(d.getDate()+1);
+  }
+  var absent=workdays-onTime-late;if(absent<0)absent=0;
+
+  /* KM */
+  var totalKm=0;myA.forEach(function(a){if(a.totalKm)totalKm+=parseFloat(a.totalKm)});
+
+  /* Tags */
+  var tagMap={};myR.forEach(function(r){if(r.tags)r.tags.forEach(function(t){tagMap[t]=(tagMap[t]||0)+1})});
+  var topTags=Object.entries(tagMap).sort(function(a,b){return b[1]-a[1]}).slice(0,6);
+
+  /* Build HTML */
+  var h='';
+
+  /* Attendance card */
+  var attPct=workdays?Math.round((onTime+late)/workdays*100):0;
+  h+='<div class="jcard" style="padding:14px;margin-bottom:8px"><div style="font-size:12px;font-weight:800;color:var(--G5);margin-bottom:8px">📅 ATTENDANCE</div>';
+  h+='<div class="live-stats"><div class="ls"><div class="ls-n" style="color:var(--grn)">'+onTime+'</div><div class="ls-l">On Time</div></div>';
+  h+='<div class="ls"><div class="ls-n" style="color:var(--amb)">'+late+'</div><div class="ls-l">Late</div></div>';
+  h+='<div class="ls"><div class="ls-n" style="color:var(--R)">'+absent+'</div><div class="ls-l">Absent</div></div>';
+  h+='<div class="ls"><div class="ls-n">'+attPct+'%</div><div class="ls-l">Rate</div></div></div></div>';
+
+  /* Reports card */
+  h+='<div class="jcard" style="padding:14px;margin-bottom:8px"><div style="font-size:12px;font-weight:800;color:var(--G5);margin-bottom:8px">📝 REPORTS</div>';
+  h+='<div class="live-stats"><div class="ls"><div class="ls-n">'+myR.length+'</div><div class="ls-l">Total</div></div>';
+  h+='<div class="ls"><div class="ls-n">'+acts.length+'</div><div class="ls-l">Activity</div></div>';
+  h+='<div class="ls"><div class="ls-n">'+visits.length+'</div><div class="ls-l">Visits</div></div>';
+  var lateRpts=myR.filter(function(r){return r.lateReport}).length;
+  h+='<div class="ls"><div class="ls-n" style="color:var(--amb)">'+lateRpts+'</div><div class="ls-l">Late Rpt</div></div></div></div>';
+
+  /* Financials */
+  var dedLate=late*C.DED_LATE,dedAbsent=absent*C.DED_ABSENT,dedTotal=dedLate+dedAbsent;
+  var kmClaim=Math.round(totalKm*C.KM_RATE);
+  h+='<div class="jcard" style="padding:14px;margin-bottom:8px"><div style="font-size:12px;font-weight:800;color:var(--G5);margin-bottom:8px">💰 FINANCIALS</div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">KM Travelled</span><span style="font-size:13px;font-weight:800">'+totalKm.toFixed(1)+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">KM Claim</span><span style="font-size:13px;font-weight:800;color:var(--grn)">Rs '+kmClaim+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Late Deduction ('+late+'d × Rs '+C.DED_LATE+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedLate+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Absent Deduction ('+absent+'d × Rs '+C.DED_ABSENT+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedAbsent+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:2px solid var(--G8)"><span style="font-size:13px;font-weight:800">Total Deduction</span><span style="font-size:15px;font-weight:800;color:var(--R)">Rs '+dedTotal+'</span></div>';
+  h+='</div>';
+
+  /* Top tags */
+  if(topTags.length){
+    h+='<div class="jcard" style="padding:14px;margin-bottom:8px"><div style="font-size:12px;font-weight:800;color:var(--G5);margin-bottom:8px">#️⃣ TOP TAGS</div>';
+    h+='<div style="display:flex;flex-wrap:wrap;gap:4px">';
+    topTags.forEach(function(t){
+      h+='<span style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:12px;background:var(--Rbg);color:var(--R)">#'+t[0]+' <span style="font-weight:800">'+t[1]+'</span></span>';
+    });
+    h+='</div></div>';
+  }
+
+  document.getElementById('sum-content').innerHTML=h;
 },
 
 /* ═══════════════════════════════════════
