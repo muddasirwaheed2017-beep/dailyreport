@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V16 — 16 Mar 2026 02:30 PKT</title>
+<title>CS Activity Reporter V16.1 — 16 Mar 2026 03:30 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V16</span>
-    <span class="tb-date">16Mar2026 · 02:30</span>
+    <span class="tb-ver">V16.1</span>
+    <span class="tb-date">16Mar2026 · 03:30</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -645,7 +645,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V16',date:'16-Mar-2026',time:'02:30 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V16.1',date:'16-Mar-2026',time:'03:30 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -700,6 +700,7 @@ function hideLoad(){document.getElementById('load-ov').classList.remove('on')}
 var U={
   toast:function(m,t){var e=document.createElement('div');e.className='toast t-'+(t||'info');e.textContent=m;document.getElementById('toasts').appendChild(e);setTimeout(function(){e.remove()},2800)},
   today:function(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
+  dedCutoff:function(){var n=new Date();if(n.getHours()<17){n.setDate(n.getDate()-1)}return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')},
   time:function(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')},
   clr:function(n){n=n||'';var h=0;for(var i=0;i<n.length;i++)h=(h<<5)-h+n.charCodeAt(i)|0;return['#7f1d1d','#991b1b','#b91c1c','#dc2626','#404040','#1a1a1a'][Math.abs(h)%6]},
   ini:function(n){return(n||'').split(' ').map(function(w){return w[0]}).join('').slice(0,2).toUpperCase()||'?'}
@@ -743,7 +744,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V37.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V39.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -1628,7 +1629,8 @@ loadMyAtt:async function(period){
   /* Calculate stats + deductions */
   var onTime=0,late=0,absentDays=0,leaveDays=0,holidayDays=0,workingDays=0;
   var absentDed=0,lateDed=0;
-  var dc=new Date(start+'T00:00:00'),de=new Date(todayStr+'T00:00:00');
+  var dedCut=U.dedCutoff();/* Exclude today if before 11 AM */
+  var dc=new Date(start+'T00:00:00'),de=new Date(dedCut+'T00:00:00');
   while(dc<=de){
     var ds=dc.getFullYear()+'-'+String(dc.getMonth()+1).padStart(2,'0')+'-'+String(dc.getDate()).padStart(2,'0');
     var isSun=dc.getDay()===0;
@@ -2280,11 +2282,11 @@ loadSummary:async function(period){
     var c=new Date(l.date+'T00:00:00');var e2=new Date((l.dateTo||l.date)+'T00:00:00');
     while(c<=e2){var dss=c.getFullYear()+'-'+String(c.getMonth()+1).padStart(2,'0')+'-'+String(c.getDate()).padStart(2,'0');slvLookup[dss]=true;c.setDate(c.getDate()+1)}});
 
-  /* Working days */
-  var d=new Date(start+'T00:00:00'),todayStr=U.today(),workdays=0,leaveDays=0;
+  /* Working days — use dedCutoff to exclude today if before 11 AM */
+  var d=new Date(start+'T00:00:00'),dedCutStr=U.dedCutoff(),workdays=0,leaveDays=0;
   while(d<=now){
     var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    if(d.getDay()!==0&&ds<=todayStr&&!hols[ds]&&!ods[ds]){
+    if(d.getDay()!==0&&ds<=dedCutStr&&!hols[ds]&&!ods[ds]){
       if(slvLookup[ds]) leaveDays++;
       else workdays++;
     }
@@ -2388,7 +2390,8 @@ loadStats:async function(){
     });
 
     var absentDed=0,lateDed=0;
-    var dc=new Date(moStart+'T00:00:00'),de=new Date(todayStr+'T00:00:00');
+    var dedCut=U.dedCutoff();
+    var dc=new Date(moStart+'T00:00:00'),de=new Date(dedCut+'T00:00:00');
     while(dc<=de){
       var ds=dc.getFullYear()+'-'+String(dc.getMonth()+1).padStart(2,'0')+'-'+String(dc.getDate()).padStart(2,'0');
       if(dc.getDay()!==0&&!holidays[ds]&&!offDays[ds]){
