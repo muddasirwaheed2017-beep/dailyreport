@@ -359,11 +359,17 @@ function closeModal(){
 
 function deleteRecord(key){
   if(!confirm('Delete this record permanently?')) return;
+  var url = FB_URL + '/labour_attendance/' + key + '.json';
   var x = new XMLHttpRequest();
-  x.open('DELETE', FB_URL + '/labour_attendance/' + key + '.json');
+  x.open('DELETE', url);
   x.onload = function(){
-    closeModal();
-    loadData();
+    if(x.status >= 200 && x.status < 300){
+      alert('Deleted successfully');
+      closeModal();
+      loadData();
+    } else {
+      alert('Delete failed: ' + x.status + ' ' + x.responseText);
+    }
   };
   x.onerror = function(){ alert('Delete failed — network error'); };
   x.send();
