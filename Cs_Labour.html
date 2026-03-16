@@ -93,8 +93,8 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 .rec-ab:active{background:var(--G9)}
 
 /* Debug */
-.dbg{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.9);color:#0f0;font-size:10px;font-family:monospace;padding:6px 10px 30px;max-height:180px;overflow-y:auto;z-index:999;direction:ltr;text-align:left;display:block}
-.dbg-x{position:fixed;bottom:2px;right:10px;z-index:1000;background:#333;color:#fff;border:none;padding:4px 12px;border-radius:4px;font-size:10px;cursor:pointer;display:block}
+.dbg{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.95);color:#0f0;font-size:11px;font-family:monospace;padding:8px 10px 34px;min-height:60px;max-height:200px;overflow-y:auto;z-index:999;direction:ltr;text-align:left;display:block;border-top:3px solid #ff0}
+.dbg-x{position:fixed;bottom:4px;right:10px;z-index:1000;background:#ff0;color:#000;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:800;cursor:pointer;display:block}
 
 /* Toast */
 #toasts{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:4px;max-width:90%}
@@ -105,7 +105,7 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 </head>
 <body>
 <div id="toasts"></div>
-<div class="dbg" id="dbg"></div>
+<div class="dbg" id="dbg"><span style="color:#ff0">═══ CS Labour V5 Debug ═══</span><br></div>
 <button class="dbg-x" id="dbg-x" onclick="var d=document.getElementById('dbg');d.style.display=d.style.display==='none'?'block':'none'">🔧 Debug</button>
 
 <div class="top">
