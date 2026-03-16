@@ -112,6 +112,7 @@ button,input,select{font-family:inherit;border:none;outline:none;font-size:14px}
       <option value="checked-out">Checked Out</option>
     </select>
     <button class="fbtn" onclick="loadData()">🔄 Load</button>
+    <button class="fbtn" style="background:var(--R)" onclick="loadAll()">📋 All Records</button>
   </div>
 
   <div class="stats" id="stats"></div>
@@ -212,6 +213,35 @@ function loadData(){
   x.send();
 }
 
+/* ═══ LOAD ALL (no date filter) ═══ */
+function loadAll(){
+  $('cards').innerHTML = '<div class="loading"><div class="spin"></div><br>Loading all...</div>';
+  $('stats').innerHTML = '';
+  var x = new XMLHttpRequest();
+  x.open('GET', FB_URL + '/labour_attendance.json');
+  x.onload = function(){
+    try {
+      var raw = JSON.parse(x.responseText);
+      _data = [];
+      if(raw){
+        Object.keys(raw).forEach(function(k){
+          var r = raw[k];
+          r._key = k;
+          _data.push(r);
+        });
+      }
+      renderStats();
+      renderCards();
+    } catch(e){
+      $('cards').innerHTML = '<div class="empty"><div class="empty-i">⚠️</div><div class="empty-h">Error: '+e.message+'</div></div>';
+    }
+  };
+  x.onerror = function(){
+    $('cards').innerHTML = '<div class="empty"><div class="empty-i">🔌</div><div class="empty-h">Network error</div></div>';
+  };
+  x.send();
+}
+
 /* ═══ RENDER STATS ═══ */
 function renderStats(){
   var total = _data.length;
@@ -268,6 +298,7 @@ function renderCards(){
         '<span class="card-ic has">💰 Rs '+(r.taAmount||0)+'</span>' +
         (hasVoice ? '<span class="card-ic has">🎙️ Voice</span>' : '') +
         (r.checkInSelfie ? '<span class="card-ic has">📸</span>' : '') +
+        '<span class="card-ic" style="font-size:9px;opacity:.5">'+r._key.substr(-8)+'</span>' +
       '</div>' +
     '</div>';
   });
@@ -287,7 +318,10 @@ function openDetail(i){
 
   // Selfie
   if(r.checkInSelfie){
-    h += '<img class="m-selfie" src="'+r.checkInSelfie+'">';
+    h += '<a href="'+r.checkInSelfie+'" target="_blank"><img class="m-selfie" src="'+r.checkInSelfie+'"></a>';
+    h += '<div style="text-align:center;margin-bottom:12px"><a href="'+r.checkInSelfie+'" target="_blank" style="color:var(--B);font-size:12px">🔗 Open Photo Full Size</a></div>';
+  } else {
+    h += '<div style="text-align:center;padding:20px;color:var(--tx3);font-size:13px">📷 No selfie uploaded</div>';
   }
 
   // Info rows
@@ -307,9 +341,11 @@ function openDetail(i){
   h += mRow('📡 GPS', (r.checkInLat ? Number(r.checkInLat).toFixed(5)+', '+Number(r.checkInLng).toFixed(5) : '—'));
 
   // Voice
+  h += '<div class="m-section">Voice Note</div>';
   if(hasVoice){
-    h += '<div class="m-section">Voice Note</div>';
     h += '<audio class="m-audio" controls src="'+r.voiceNote+'"></audio>';
+  } else {
+    h += '<div style="padding:12px;text-align:center;color:var(--tx3);font-size:13px">🎙️ No voice note recorded</div>';
   }
 
   // Map
@@ -320,7 +356,9 @@ function openDetail(i){
 
   // Delete button
   h += '<div class="m-section">Admin Actions</div>';
-  h += '<button style="width:100%;padding:12px;background:var(--R);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:14px;border:none" onclick="deleteRecord(\''+r._key+'\')">🗑 Delete This Record</button>';
+  h += '<button style="width:100%;padding:12px;background:var(--B);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:13px;border:none;margin-bottom:8px" onclick="document.getElementById(\'m-raw\').style.display=document.getElementById(\'m-raw\').style.display===\'none\'?\'block\':\'none\'">📋 Show Raw Data</button>';
+  h += '<pre id="m-raw" style="display:none;background:var(--bg);padding:12px;border-radius:var(--r);font-size:10px;overflow-x:auto;max-height:300px;color:var(--G);white-space:pre-wrap;word-break:break-all">'+JSON.stringify(r,null,2)+'</pre>';
+  h += '<button style="width:100%;padding:12px;background:var(--R);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:14px;border:none;margin-top:8px" onclick="deleteRecord(\''+r._key+'\')">🗑 Delete This Record</button>';
 
   $('m-body').innerHTML = h;
   $('modal').classList.add('on');
@@ -358,15 +396,17 @@ function closeModal(){
 }
 
 function deleteRecord(key){
-  if(!confirm('Delete this record permanently?')) return;
+  if(!confirm('Delete record: ' + key + '?')) return;
   var url = FB_URL + '/labour_attendance/' + key + '.json';
+  console.log('DELETE:', url);
   var x = new XMLHttpRequest();
   x.open('DELETE', url);
   x.onload = function(){
+    console.log('DELETE response:', x.status, x.responseText);
     if(x.status >= 200 && x.status < 300){
-      alert('Deleted successfully');
+      alert('Deleted: ' + key);
       closeModal();
-      loadData();
+      setTimeout(loadAll, 500);
     } else {
       alert('Delete failed: ' + x.status + ' ' + x.responseText);
     }
