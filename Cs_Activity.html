@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V14 — 16 Mar 2026 11:00 PKT</title>
+<title>CS Activity Reporter V15 — 16 Mar 2026 12:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V14</span>
-    <span class="tb-date">16Mar2026 · 11:00</span>
+    <span class="tb-ver">V15</span>
+    <span class="tb-date">16Mar2026 · 12:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -620,7 +620,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <!-- ═══ BOTTOM NAV ═══ -->
 <div class="bnav">
   <div class="bn on" onclick="App.nav('home',this)"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div>
-  <div class="bn" onclick="App.nav('attend',this)"><div class="bn-i">✅</div><div class="bn-l">Attend</div></div>
+  <div class="bn" onclick="App.nav('attend',this)"><div class="bn-i">✅</div><div class="bn-l">Attendance</div></div>
   <div class="bn" onclick="App.nav('activity',this)"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div>
   <div class="bn" onclick="App.nav('visits',this)"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div>
   <div class="bn" onclick="App.nav('plan',this)"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div>
@@ -635,7 +635,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V14',date:'16-Mar-2026',time:'11:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V15',date:'16-Mar-2026',time:'12:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -733,7 +733,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V35.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V36.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -1587,13 +1587,13 @@ loadMyAtt:async function(period){
   else{start=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01'}
   var todayStr=U.today();
 
-  /* Load payroll config + holidays + leaves */
+  /* Load ALL config fresh every time */
   try{
-    if(!this._payrollCfg) this._payrollCfg=await F.g('adminConfig/payroll')||{deductionMode:'salary',monthlyLeaves:2,flatLate:200,flatAbsent:500};
+    this._payrollCfg=await F.g('adminConfig/payroll')||{deductionMode:'salary',monthlyLeaves:2,flatLate:200,flatAbsent:500};
     this._holidays=await F.g('adminConfig/holidays')||{};
     this._leaves=F.arr(await F.g('leaves'));
     this._offDays=await F.g('adminConfig/offDays')||{};
-  }catch(e){}
+  }catch(e){console.error('Config load:',e)}
 
   var cfg=this._payrollCfg;
   /* Get user salary */
