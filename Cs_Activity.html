@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V11 — 16 Mar 2026 04:30 PKT</title>
+<title>CS Activity Reporter V12 — 16 Mar 2026 06:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V11</span>
-    <span class="tb-date">16Mar2026 · 04:30</span>
+    <span class="tb-ver">V12</span>
+    <span class="tb-date">16Mar2026 · 06:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -462,7 +462,27 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 </div><!-- /pg-home -->
 
 <!-- ═══ PLACEHOLDER PAGES ═══ -->
-<div id="pg-plan" class="page"><div class="jcard"><div class="jcard-icon">📋</div><div class="jcard-title">Visit Planner</div><div class="jcard-sub">Coming in Part 2</div></div></div>
+<div id="pg-attend" class="page">
+  <div style="font-size:15px;font-weight:800;margin-bottom:10px">✅ My Attendance</div>
+  <div style="display:flex;gap:4px;margin-bottom:10px">
+    <button class="purp-chip on" id="att-f-week" onclick="App.loadMyAtt('week')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Week</button>
+    <button class="purp-chip" id="att-f-month" onclick="App.loadMyAtt('month')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Month</button>
+  </div>
+  <div class="live-stats" id="my-att-stats"></div>
+  <div id="my-att-list"></div>
+</div>
+
+<div id="pg-visits" class="page">
+  <div style="font-size:15px;font-weight:800;margin-bottom:10px">📍 My Visits</div>
+  <div style="display:flex;gap:4px;margin-bottom:10px">
+    <button class="purp-chip on" id="vis-f-week" onclick="App.loadMyVisits('week')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Week</button>
+    <button class="purp-chip" id="vis-f-month" onclick="App.loadMyVisits('month')" style="flex:1;text-align:center;padding:8px;font-size:12px">This Month</button>
+  </div>
+  <div class="live-stats" id="my-vis-stats"></div>
+  <div id="my-vis-list"></div>
+</div>
+
+<div id="pg-plan" class="page"><div class="jcard"><div class="jcard-icon">📋</div><div class="jcard-title">Visit Planner</div><div class="jcard-sub">Coming soon</div></div></div>
 <div id="pg-activity" class="page">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
     <div>
@@ -471,29 +491,43 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
     </div>
     <span style="font-size:8px;font-weight:800;padding:3px 6px;border-radius:6px;background:var(--amb-bg);color:var(--amb);display:none" id="a-draft-badge">DRAFT</span>
   </div>
-  <div class="jcard" style="padding:14px">
-    <div style="display:flex;gap:4px;margin-bottom:12px">
-      <button class="purp-chip on" id="a-dm-today" onclick="App.setDateMode('today')" style="flex:1;text-align:center;padding:10px;font-size:13px">📅 Today</button>
-      <button class="purp-chip" id="a-dm-old" onclick="App.setDateMode('old')" style="flex:1;text-align:center;padding:10px;font-size:13px">📋 Old Report</button>
+
+  <!-- Today's submitted reports -->
+  <div id="a-submitted" style="display:none"></div>
+
+  <!-- Max reached banner -->
+  <div id="a-maxed" style="display:none;background:var(--grn-bg);border:2px solid var(--grn);border-radius:12px;padding:14px;text-align:center;margin-bottom:12px">
+    <div style="font-size:28px;margin-bottom:4px">✅</div>
+    <div style="font-size:14px;font-weight:800;color:var(--grn)">آج کی رپورٹس مکمل</div>
+    <div style="font-size:11px;color:var(--G5);margin-top:4px" id="a-maxed-sub">—</div>
+  </div>
+
+  <!-- Form (hidden when maxed) -->
+  <div id="a-form-wrap">
+    <div class="jcard" style="padding:14px">
+      <div style="display:flex;gap:4px;margin-bottom:12px">
+        <button class="purp-chip on" id="a-dm-today" onclick="App.setDateMode('today')" style="flex:1;text-align:center;padding:10px;font-size:13px">📅 Today</button>
+        <button class="purp-chip" id="a-dm-old" onclick="App.setDateMode('old')" style="flex:1;text-align:center;padding:10px;font-size:13px">📋 Old Report</button>
+      </div>
+      <div id="a-date-pick" style="display:none;margin-bottom:10px">
+        <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Report Date * (last 1 working day only)</label>
+        <input type="date" id="a-old-date" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:14px">
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Activity Summary * <span style="color:var(--G5);font-weight:400" id="a-msg-wc">0/2000</span></label>
+        <textarea id="a-msg" placeholder="آج کیا کیا؟ Calls, clients, proposals... #tags" style="width:100%;padding:12px;border:2px solid var(--G8);border-radius:8px;font-size:14px;min-height:120px;font-family:inherit;resize:vertical" oninput="App.wordCheck(this)"></textarea>
+      </div>
+      <div style="margin-bottom:10px">
+        <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Quick Tags</label>
+        <div style="display:flex;flex-wrap:wrap;gap:4px" id="a-tags"></div>
+      </div>
+      <div style="display:flex;gap:4px;margin-bottom:10px">
+        <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.saveDraft()">💾 Save</button>
+        <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.fetchYesterday()">📥 Fetch</button>
+        <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.clearActForm()">🗑 Clear</button>
+      </div>
+      <button class="jbtn jbtn-red" id="a-btn" onclick="App.subAct()">Submit ✓</button>
     </div>
-    <div id="a-date-pick" style="display:none;margin-bottom:10px">
-      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Report Date * (last 1 working day only)</label>
-      <input type="date" id="a-old-date" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:14px">
-    </div>
-    <div style="margin-bottom:10px">
-      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Activity Summary * <span style="color:var(--G5);font-weight:400" id="a-msg-wc">0/2000</span></label>
-      <textarea id="a-msg" placeholder="آج کیا کیا؟ Calls, clients, proposals... #tags" style="width:100%;padding:12px;border:2px solid var(--G8);border-radius:8px;font-size:14px;min-height:120px;font-family:inherit;resize:vertical" oninput="App.wordCheck(this)"></textarea>
-    </div>
-    <div style="margin-bottom:10px">
-      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Quick Tags</label>
-      <div style="display:flex;flex-wrap:wrap;gap:4px" id="a-tags"></div>
-    </div>
-    <div style="display:flex;gap:4px;margin-bottom:10px">
-      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.saveDraft()">💾 Save</button>
-      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.fetchYesterday()">📥 Fetch</button>
-      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.clearActForm()">🗑 Clear</button>
-    </div>
-    <button class="jbtn jbtn-red" id="a-btn" onclick="App.subAct()">Submit ✓</button>
   </div>
 
   <!-- ═══ Last 7 Days ═══ -->
@@ -557,11 +591,13 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <!-- ═══ BOTTOM NAV ═══ -->
 <div class="bnav">
   <div class="bn on" onclick="App.nav('home',this)"><div class="bn-i">🏠</div><div class="bn-l">Home</div></div>
+  <div class="bn" onclick="App.nav('attend',this)"><div class="bn-i">✅</div><div class="bn-l">Attend</div></div>
   <div class="bn" onclick="App.nav('activity',this)"><div class="bn-i">📝</div><div class="bn-l">Activity</div></div>
+  <div class="bn" onclick="App.nav('visits',this)"><div class="bn-i">📍</div><div class="bn-l">Visits</div></div>
   <div class="bn" onclick="App.nav('plan',this)"><div class="bn-i">📋</div><div class="bn-l">Plan</div></div>
   <div class="bn" onclick="App.nav('cal',this)"><div class="bn-i">📅</div><div class="bn-l">Calendar</div></div>
-  <div class="bn" onclick="App.nav('inbox',this)"><div class="bn-i">💬</div><div class="bn-l">Inbox</div></div>
   <div class="bn" onclick="App.nav('summary',this)"><div class="bn-i">📊</div><div class="bn-l">Summary</div></div>
+  <div class="bn" onclick="App.nav('inbox',this)"><div class="bn-i">💬</div><div class="bn-l">Inbox</div></div>
   <div class="bn" onclick="App.nav('reports',this)"><div class="bn-i">📑</div><div class="bn-l">Reports</div></div>
 </div>
 </div><!-- /s-emp -->
@@ -570,7 +606,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V11',date:'16-Mar-2026',time:'04:30 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V12',date:'16-Mar-2026',time:'06:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -668,7 +704,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V29.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V30.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -735,6 +771,8 @@ nav:function(pg,btn){
   if(pg==='activity') this.initActPage();
   if(pg==='reports') this.renderRpts();
   if(pg==='summary') this.loadSummary('week');
+  if(pg==='attend') this.loadMyAtt('week');
+  if(pg==='visits') this.loadMyVisits('week');
 },
 
 /* ── Journey state ── */
@@ -1504,6 +1542,93 @@ renderDoneTotals:function(){
 },
 
 /* ═══════════════════════════════════════
+   MY ATTENDANCE TAB
+   ═══════════════════════════════════════ */
+loadMyAtt:function(period){
+  S.p('click');
+  document.getElementById('att-f-week').classList.toggle('on',period==='week');
+  document.getElementById('att-f-month').classList.toggle('on',period==='month');
+  var now=new Date();var start;
+  if(period==='week'){var day=now.getDay()||7;var mon=new Date(now);mon.setDate(now.getDate()-(day-1));start=mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0')}
+  else{start=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01'}
+  var todayStr=U.today();
+  var myA=(_att||[]).filter(function(a){return a.userId===ME.id&&a.date>=start&&a.date<=todayStr}).sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0});
+  /* Stats */
+  var onTime=0,late=0,sessions=myA.length;
+  myA.forEach(function(a){if((a.time||'')>C.START_TIME)late++;else onTime++});
+  document.getElementById('my-att-stats').innerHTML=
+    '<div class="ls"><div class="ls-n" style="color:var(--grn)">'+onTime+'</div><div class="ls-l">On Time</div></div>'+
+    '<div class="ls"><div class="ls-n" style="color:var(--amb)">'+late+'</div><div class="ls-l">Late</div></div>'+
+    '<div class="ls"><div class="ls-n">'+sessions+'</div><div class="ls-l">Sessions</div></div>'+
+    '<div class="ls"><div class="ls-n">'+(sessions?Math.round(onTime/sessions*100):0)+'%</div><div class="ls-l">Rate</div></div>';
+  /* List */
+  var h='';
+  if(!myA.length){h='<div style="text-align:center;padding:20px;font-size:13px;color:var(--G5)">No attendance records</div>'}
+  myA.forEach(function(a){
+    var isLate=(a.time||'')>C.START_TIME;
+    var statusBadge=isLate?'<span class="badge bg-amb">⏰ Late</span>':'<span class="badge bg-grn">✅ On Time</span>';
+    var inLoc=a.inNear===true?'🏢 '+(a.inOffice||'Office'):a.inNear===false?'📍 Away '+(a.inDist?+(a.inDist/1000).toFixed(1)+'km':''):'—';
+    var outInfo=a.out?'→ '+a.out:'<span style="color:var(--amb)">Active</span>';
+    var hrs='';
+    if(a.time&&a.out){var mins=((parseInt(a.out.split(':')[0])*60+parseInt(a.out.split(':')[1]))-(parseInt(a.time.split(':')[0])*60+parseInt(a.time.split(':')[1])));if(mins>0)hrs=' · '+(mins/60).toFixed(1)+'h'}
+    var dateStr=new Date(a.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    h+='<div style="background:var(--W);border:2px solid var(--G8);border-left:4px solid '+(isLate?'var(--amb)':'var(--grn)')+';border-radius:10px;padding:10px 12px;margin-bottom:4px">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700">'+dateStr+'</span>'+statusBadge+'</div>';
+    h+='<div style="font-size:11px;color:var(--G5);margin-top:4px">'+a.time+' '+outInfo+hrs+'</div>';
+    h+='<div style="font-size:10px;color:var(--G5);margin-top:2px">'+inLoc+'</div>';
+    h+='</div>';
+  });
+  document.getElementById('my-att-list').innerHTML=h;
+},
+
+/* ═══════════════════════════════════════
+   MY VISITS TAB
+   ═══════════════════════════════════════ */
+loadMyVisits:function(period){
+  S.p('click');
+  document.getElementById('vis-f-week').classList.toggle('on',period==='week');
+  document.getElementById('vis-f-month').classList.toggle('on',period==='month');
+  var now=new Date();var start;
+  if(period==='week'){var day=now.getDay()||7;var mon=new Date(now);mon.setDate(now.getDate()-(day-1));start=mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0')}
+  else{start=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01'}
+  /* Visits from attendance stops */
+  var myA=(_att||[]).filter(function(a){return a.userId===ME.id&&a.date>=start&&a.stops});
+  var visits=[];
+  myA.forEach(function(a){
+    if(!a.stops)return;
+    a.stops.forEach(function(s){
+      if(s.type==='client') visits.push({date:a.date,client:s.clientName||'—',type:s.clientType||'',purpose:s.purpose||'',outcome:s.outcome||'',duration:s.duration||0,km:s.km||0,inTime:s.in||'',outTime:s.out||''});
+    });
+  });
+  /* Also from reports type=visit */
+  var myVR=(_rpts||[]).filter(function(r){return r.userId===ME.id&&r.type==='visit'&&r.date>=start});
+  myVR.forEach(function(r){visits.push({date:r.date,client:r.client||'—',type:'visit-report',purpose:'',outcome:r.outcome||'',duration:0,km:parseFloat(r.km)||0,inTime:r.time||''})});
+  visits.sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0});
+
+  /* Stats */
+  var totalKm=0;visits.forEach(function(v){totalKm+=parseFloat(v.km)||0});
+  var uniqueClients={};visits.forEach(function(v){uniqueClients[v.client]=true});
+  document.getElementById('my-vis-stats').innerHTML=
+    '<div class="ls"><div class="ls-n">'+visits.length+'</div><div class="ls-l">Visits</div></div>'+
+    '<div class="ls"><div class="ls-n">'+Object.keys(uniqueClients).length+'</div><div class="ls-l">Clients</div></div>'+
+    '<div class="ls"><div class="ls-n">'+totalKm.toFixed(1)+'</div><div class="ls-l">KM</div></div>'+
+    '<div class="ls"><div class="ls-n">Rs '+Math.round(totalKm*C.KM_RATE)+'</div><div class="ls-l">Claim</div></div>';
+  /* List */
+  var h='';
+  if(!visits.length){h='<div style="text-align:center;padding:20px;font-size:13px;color:var(--G5)">No visits found</div>'}
+  visits.forEach(function(v){
+    var dateStr=new Date(v.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    var outBadge=v.outcome?'<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--grn-bg);color:var(--grn)">'+v.outcome+'</span>':'';
+    h+='<div style="background:var(--W);border:2px solid var(--G8);border-left:4px solid var(--blu);border-radius:10px;padding:10px 12px;margin-bottom:4px">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:800;color:var(--G2)">📍 '+v.client+'</span>'+outBadge+'</div>';
+    h+='<div style="font-size:11px;color:var(--G5);margin-top:4px">'+dateStr+(v.inTime?' · '+v.inTime:'')+(v.outTime?' → '+v.outTime:'')+(v.duration?' · '+v.duration+'m':'')+'</div>';
+    if(v.km) h+='<div style="font-size:10px;color:var(--G5);margin-top:2px">🚗 '+v.km+' km · Rs '+Math.round(parseFloat(v.km)*C.KM_RATE)+'</div>';
+    h+='</div>';
+  });
+  document.getElementById('my-vis-list').innerHTML=h;
+},
+
+/* ═══════════════════════════════════════
    ACTIVITY REPORT
    ═══════════════════════════════════════ */
 setDateMode:function(mode){
@@ -1536,24 +1661,68 @@ _acalY:0,_acalM:0,
 initActPage:function(){
   this.setDateMode('today');
   this.initTags();
-  this.setActTitle();
   this.loadDraft();
   document.getElementById('a-msg-wc').textContent='0/'+C.MAX_WORDS;
+  this.renderTodaySubmissions();
   this.render7Days();
   var now=new Date();this._acalY=now.getFullYear();this._acalM=now.getMonth();
   this.renderActCal();
 },
 
-setActTitle:function(){
-  var existing=(_rpts||[]).filter(function(x){return x.userId===ME.id&&x.type==='activity'&&x.date===U.today()});
+renderTodaySubmissions:function(){
+  var todayStr=U.today();
+  var todayRpts=(_rpts||[]).filter(function(r){return r.userId===ME.id&&r.type==='activity'&&r.date===todayStr})
+    .sort(function(a,b){return(a.ts||'').localeCompare(b.ts||'')});
+  var count=todayRpts.length;
   var d=new Date();
   document.getElementById('a-date').textContent=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-  if(existing.length>0){
-    document.getElementById('a-title').textContent='📝 Update Activity (#'+(existing.length+1)+')';
-  } else {
+
+  if(count===0){
     document.getElementById('a-title').textContent='📝 Daily Activity';
+    document.getElementById('a-submitted').style.display='none';
+    document.getElementById('a-maxed').style.display='none';
+    document.getElementById('a-form-wrap').style.display='block';
+    document.getElementById('a-btn').textContent='Submit ✓';
+  } else if(count<3){
+    var label=count===1?'📝 Submit Update':'📝 Submit Update #'+(count+1);
+    document.getElementById('a-title').textContent=label;
+    document.getElementById('a-submitted').style.display='block';
+    document.getElementById('a-maxed').style.display='none';
+    document.getElementById('a-form-wrap').style.display='block';
+    document.getElementById('a-btn').textContent='Submit Update #'+(count+1)+' ✓';
+    this._renderSubmittedCards(todayRpts);
+  } else {
+    document.getElementById('a-title').textContent='✅ Activity Complete';
+    document.getElementById('a-submitted').style.display='block';
+    document.getElementById('a-maxed').style.display='block';
+    document.getElementById('a-form-wrap').style.display='none';
+    var labels=todayRpts.map(function(r){return r.reportLabel||'Report'}).join(' + ');
+    document.getElementById('a-maxed-sub').textContent=labels;
+    this._renderSubmittedCards(todayRpts);
   }
 },
+
+_renderSubmittedCards:function(reports){
+  var h='';
+  reports.forEach(function(r,i){
+    var timeStr=r.time||'—';
+    var tags=r.tags&&r.tags.length?r.tags.map(function(t){return'<span style="font-size:9px;color:var(--R);font-weight:600">#'+t+'</span>'}).join(' '):'';
+    var lateBadge=r.lateReport?' <span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--amb-bg);color:var(--amb)">⏰ Late</span>':'';
+    var label=r.reportLabel||(i===0?'Activity Report':'Update #'+(i+1));
+    var preview=(r.message||'').substring(0,100);if(preview.length>=100)preview+='...';
+    h+='<div style="background:var(--W);border:2px solid var(--grn);border-left:4px solid var(--grn);border-radius:12px;padding:12px;margin-bottom:8px;cursor:pointer" onclick="this.querySelector(\'.sub-full\').style.display=this.querySelector(\'.sub-full\').style.display===\'none\'?\'block\':\'none\'">';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center">';
+    h+='<span style="font-size:12px;font-weight:800;color:var(--grn)">✅ '+label+'</span>';
+    h+='<span style="font-size:10px;color:var(--G5)">'+timeStr+lateBadge+'</span></div>';
+    h+='<div style="font-size:12px;color:var(--G3);margin-top:4px;line-height:1.4">'+preview+'</div>';
+    if(tags) h+='<div style="margin-top:3px">'+tags+'</div>';
+    h+='<div class="sub-full" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid var(--G8);font-size:12px;color:var(--G2);line-height:1.5;white-space:pre-wrap">'+(r.message||'')+'</div>';
+    h+='<div style="font-size:9px;color:var(--G7);margin-top:4px;text-align:center">tap to expand ↕</div></div>';
+  });
+  document.getElementById('a-submitted').innerHTML=h;
+},
+
+setActTitle:function(){this.renderTodaySubmissions()},
 
 /* ═══ LAST 7 DAYS VIEW ═══ */
 render7Days:function(){
@@ -1792,10 +1961,11 @@ subAct:async function(){
     _rpts=F.arr(await F.g('reports'));
     S.p('ok');U.toast(label+' ✅','ok');
     this.clearActForm();
-    this.setActTitle();
+    this.renderTodaySubmissions();
     this.render7Days();
     this.renderActCal();
     this.loadStats();
+    window.scrollTo(0,0);
   }catch(e){U.toast('Error submitting','err')}
   finally{btn.innerHTML='Submit ✓';btn.disabled=false}
 },
