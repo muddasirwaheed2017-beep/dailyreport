@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V13.1 — 16 Mar 2026 09:00 PKT</title>
+<title>CS Activity Reporter V14 — 16 Mar 2026 11:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V13.1</span>
-    <span class="tb-date">16Mar2026 · 09:00</span>
+    <span class="tb-ver">V14</span>
+    <span class="tb-date">16Mar2026 · 11:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -635,7 +635,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V13.1',date:'16-Mar-2026',time:'09:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V14',date:'16-Mar-2026',time:'11:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -733,7 +733,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V33.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V35.html'},500);
     } else {
       U.toast('Not found','err');
     }
