@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Labour حاضری V4</title>
+<title>CS Labour حاضری V5</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--R:#b91c1c;--G1:#111827;--G2:#1f2937;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;--grn:#16a34a;--grn-bg:#f0fdf4;--amb:#d97706;--amb-bg:#fffbeb;--r:12px;--rl:16px}
@@ -111,8 +111,8 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 <div class="top">
   <div class="top-l">
     <button class="btn-spk" onclick="V.replay()">🔊</button>
-    <span class="top-v">V4</span>
-    <span class="top-d">16Mar2026 · 01:00</span>
+    <span class="top-v">V5</span>
+    <span class="top-d">17Mar2026</span>
   </div>
   <div class="top-t">CS <em>حاضری</em></div>
 </div>
@@ -217,6 +217,65 @@ var _mUrl = null;   // audio URL
 var _rInt = null;   // rec timer interval
 var _rSec = 0;      // rec seconds
 var _curPg = 'select';
+var _fbKey = null;  // Firebase push key for current session
+var _saving = false; // prevent double-tap
+
+/* ═══ FIREBASE (XHR REST) ═══ */
+var FB_URL = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+var FB = {
+  post: function(path, data, cb) {
+    var x = new XMLHttpRequest();
+    x.open('POST', FB_URL + path + '.json');
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.onload = function() {
+      try { var r = JSON.parse(x.responseText); cb(null, r); }
+      catch(e) { cb('Parse error'); }
+    };
+    x.onerror = function() { cb('Network error'); };
+    x.send(JSON.stringify(data));
+  },
+  patch: function(path, data, cb) {
+    var x = new XMLHttpRequest();
+    x.open('PATCH', FB_URL + path + '.json');
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.onload = function() {
+      try { var r = JSON.parse(x.responseText); cb(null, r); }
+      catch(e) { cb('Parse error'); }
+    };
+    x.onerror = function() { cb('Network error'); };
+    x.send(JSON.stringify(data));
+  },
+  get: function(path, cb) {
+    var x = new XMLHttpRequest();
+    x.open('GET', FB_URL + path + '.json');
+    x.onload = function() {
+      try { var r = JSON.parse(x.responseText); cb(null, r); }
+      catch(e) { cb('Parse error'); }
+    };
+    x.onerror = function() { cb('Network error'); };
+    x.send();
+  }
+};
+
+/* ═══ IMGBB UPLOAD ═══ */
+var IMGBB_KEY = '6af5a22ef5a180b52b9c2b259ce0179c';
+function uploadImgbb(base64, cb) {
+  var raw = base64.split(',')[1] || base64;
+  var fd = new FormData();
+  fd.append('key', IMGBB_KEY);
+  fd.append('image', raw);
+  var x = new XMLHttpRequest();
+  x.open('POST', 'https://api.imgbb.com/1/upload');
+  x.onload = function() {
+    try {
+      var r = JSON.parse(x.responseText);
+      if (r && r.data && r.data.url) cb(null, r.data.url);
+      else cb('imgbb: no URL');
+    } catch(e) { cb('imgbb parse error'); }
+  };
+  x.onerror = function() { cb('imgbb network error'); };
+  x.send(fd);
+}
 
 /* ═══ HELPERS ═══ */
 function $(id) { return document.getElementById(id); }
@@ -377,20 +436,25 @@ var App = {
 
   camOpen: function() {
     log('Opening camera...');
-    $('cam-ph').style.display = 'none';
-    $('vid').style.display = 'block';
+    // Force correct button state
     $('b-cam').style.display = 'none';
     $('b-snap').style.display = 'block';
+    $('b-ci').style.display = 'none';
+    $('b-redo').style.display = 'none';
+    $('cam-ph').style.display = 'none';
+    $('vid').style.display = 'block';
+    $('foto').style.display = 'none';
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       toast('کیمرہ سپورٹ نہیں — HTTPS ضروری ہے', 'err');
-      log('getUserMedia NOT available. Protocol: ' + location.protocol);
+      log('getUserMedia NOT available. Protocol: ' + location.protocol + ' Secure: ' + window.isSecureContext);
       $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
       $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
       return;
     }
 
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
+    log('Requesting camera... Protocol=' + location.protocol + ' SecureCtx=' + window.isSecureContext);
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width:{ideal:640}, height:{ideal:640} }, audio: false })
       .then(function(stream) {
         _stream = stream;
         var vid = $('vid');
@@ -398,21 +462,16 @@ var App = {
         vid.setAttribute('playsinline', '');
         vid.setAttribute('muted', '');
         vid.srcObject = stream;
-        // iOS requires explicit play() from user gesture
-        var playPromise = vid.play();
-        if (playPromise !== undefined) {
-          playPromise.then(function() {
-            log('Camera playing OK');
-          }).catch(function(e) {
-            log('Video play failed: ' + e.message);
-          });
-        }
-        log('Camera stream OK. Tracks: ' + stream.getVideoTracks().length);
+        vid.play().then(function() {
+          log('Camera playing OK. Tracks: ' + stream.getVideoTracks().length + ' Size: ' + vid.videoWidth + 'x' + vid.videoHeight);
+        }).catch(function(e) {
+          log('Video play failed: ' + e.message);
+        });
         toast('کیمرہ تیار ✅', 'ok');
       })
       .catch(function(err) {
         log('Camera FAILED: ' + err.name + ' - ' + err.message);
-        toast('کیمرہ ایرر: ' + err.name, 'err');
+        toast('کیمرہ ایرر: ' + err.message, 'err');
         $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
         $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
       });
@@ -456,21 +515,73 @@ var App = {
   doCheckIn: function() {
     if (!_pic) { toast('سیلفی لیں', 'warn'); return; }
     if (!_geo) { toast('GPS ضروری ہے — انتظار کریں', 'warn'); return; }
+    if (_saving) return;
+    _saving = true;
     _inTime = timeNow();
     var late = _inTime > ST;
     var ta = Math.round(_geo.km * KR);
+    var self = this;
+    var btn = $('b-ci');
+    btn.textContent = '⏳ اپ لوڈ ہو رہی ہے...';
+    btn.disabled = true;
     log('Check-in: ' + _inTime + ' late=' + late + ' km=' + _geo.km + ' ta=' + ta);
 
-    this.show('in');
-    $('in-sub').textContent = _who.n + ' · ' + _who.r + ' · ' + _inTime;
-    $('in-info').innerHTML =
-      this._row('📍 لوکیشن', _geo.of) +
-      this._row('🚗 فاصلہ', _geo.km + ' km') +
-      this._row('💰 TA', 'Rs ' + ta, 'c-g') +
-      this._row('⏰ وقت', _inTime) +
-      this._row('📊 حالت', late ? '⏰ لیٹ' : '✅ وقت پر', late ? 'c-a' : 'c-g') +
-      this._row('📸 سیلفی', '✅', 'c-g') +
-      this._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+    // Step 1: Upload selfie to imgbb
+    log('Uploading selfie to imgbb...');
+    uploadImgbb(_pic, function(err, url) {
+      if (err) {
+        log('imgbb FAILED: ' + err);
+        toast('تصویر اپ لوڈ ناکام — دوبارہ کوشش', 'err');
+        btn.textContent = '✅ حاضری لگائیں'; btn.disabled = false; _saving = false;
+        return;
+      }
+      log('imgbb OK: ' + url);
+      var dateStr = new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Karachi'});
+      var dateKey = new Date().toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric',month:'2-digit',day:'2-digit'}).split(',')[0].replace(/-/g,'');
+
+      // Step 2: Save to Firebase
+      var rec = {
+        name: _who.n,
+        code: _who.c,
+        designation: _who.r,
+        date: dateStr,
+        dateKey: dateKey,
+        checkIn: _inTime,
+        checkInLat: _geo.la,
+        checkInLng: _geo.ln,
+        checkInSelfie: url,
+        checkInKmFromOffice: _geo.km,
+        nearestOffice: _geo.of,
+        taAmount: ta,
+        late: late,
+        status: 'checked-in',
+        timestamp: new Date().toLocaleString('en-GB', {timeZone:'Asia/Karachi'})
+      };
+      log('Saving to Firebase...');
+      FB.post('/labour_attendance', rec, function(err2, res) {
+        _saving = false;
+        btn.textContent = '✅ حاضری لگائیں'; btn.disabled = false;
+        if (err2) {
+          log('Firebase FAILED: ' + err2);
+          toast('ڈیٹا سیو ناکام — دوبارہ', 'err');
+          return;
+        }
+        _fbKey = res.name;
+        log('Firebase OK: key=' + _fbKey);
+        toast('✅ حاضری لگ گئی', 'ok');
+
+        self.show('in');
+        $('in-sub').textContent = _who.n + ' · ' + _who.r + ' · ' + _inTime;
+        $('in-info').innerHTML =
+          self._row('📍 لوکیشن', _geo.of) +
+          self._row('🚗 فاصلہ', _geo.km + ' km') +
+          self._row('💰 TA', 'Rs ' + ta, 'c-g') +
+          self._row('⏰ وقت', _inTime) +
+          self._row('📊 حالت', late ? '⏰ لیٹ' : '✅ وقت پر', late ? 'c-a' : 'c-g') +
+          self._row('📸 سیلفی', '✅', 'c-g') +
+          self._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+      });
+    });
   },
 
   _row: function(l, v, cls) {
@@ -639,6 +750,9 @@ var App = {
 
   /* ── 6: Done ── */
   doneOut: function() {
+    if (_saving) return;
+    if (!_fbKey) { toast('حاضری کا ریکارڈ نہیں ملا', 'err'); return; }
+    _saving = true;
     if (_wkInt) { clearInterval(_wkInt); _wkInt = null; }
     var out = timeNow();
     var cp = _inTime.split(':'), op = out.split(':');
@@ -650,41 +764,89 @@ var App = {
     var oM = parseInt(op[0])*60 + parseInt(op[1]);
     var ot = oM > otS ? oM - otS : 0;
     var ta = Math.round(_geo.km * KR);
+    var self = this;
 
-    if (ot > 0) {
-      $('dn-sts').className = 'sts sts-a';
-      $('dn-i').textContent = '🕐';
-      $('dn-h').textContent = 'اوور ٹائم کے ساتھ رخصت';
-      $('dn-h').style.color = 'var(--amb)';
+    toast('⏳ سیو ہو رہا ہے...', 'info');
+    log('Checkout: ' + out + ' OT=' + ot + 'm TA=Rs' + ta);
+
+    var finishSave = function(voiceB64) {
+      var patch = {
+        checkOut: out,
+        checkOutLat: _geo.la,
+        checkOutLng: _geo.ln,
+        totalHours: h + 'h ' + m + 'm',
+        totalMinutes: tm,
+        otMinutes: ot,
+        otHours: ot > 0 ? Math.floor(ot/60) + 'h ' + (ot%60) + 'm' : '0',
+        taAmount: ta,
+        status: 'checked-out',
+        voiceNote: voiceB64 || '',
+        checkOutTimestamp: new Date().toLocaleString('en-GB', {timeZone:'Asia/Karachi'})
+      };
+      log('PATCH Firebase /labour_attendance/' + _fbKey);
+      FB.patch('/labour_attendance/' + _fbKey, patch, function(err) {
+        _saving = false;
+        if (err) {
+          log('Firebase checkout FAILED: ' + err);
+          toast('سیو ناکام — دوبارہ کوشش', 'err');
+          return;
+        }
+        log('Firebase checkout OK');
+        toast('✅ رخصت سیو ہو گئی', 'ok');
+
+        if (ot > 0) {
+          $('dn-sts').className = 'sts sts-a';
+          $('dn-i').textContent = '🕐';
+          $('dn-h').textContent = 'اوور ٹائم کے ساتھ رخصت';
+          $('dn-h').style.color = 'var(--amb)';
+        } else {
+          $('dn-sts').className = 'sts sts-g';
+          $('dn-i').textContent = '🏠';
+          $('dn-h').textContent = 'رخصت ہو گئی';
+          $('dn-h').style.color = 'var(--grn)';
+        }
+
+        $('dn-info').innerHTML =
+          self._row('👤 نام', _who.n) +
+          self._row('🔧 عہدہ', _who.r) +
+          self._row('📅 تاریخ', new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})) +
+          self._row('⏰ حاضری', late ? '<span class="c-a">' + _inTime + ' ⏰</span>' : _inTime) +
+          self._row('🕐 رخصت', out) +
+          self._row('📊 وقت', h + 'h ' + m + 'm') +
+          self._row('🕐 OT', ot > 0 ? '<span class="ot ot-y">' + Math.floor(ot/60) + 'h ' + (ot%60) + 'm</span>' : '<span class="ot ot-n">0</span>') +
+          self._row('🚗 فاصلہ', _geo.km + ' km') +
+          self._row('💰 TA', 'Rs ' + ta, 'c-g') +
+          self._row('📸 سیلفی', '✅', 'c-g') +
+          self._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+
+        $('dn-v').textContent = voiceB64 ? 'وائس ✅ (' + _rSec + 's)' : '—';
+        self.show('done');
+      });
+    };
+
+    // Convert voice blob to base64 if exists
+    if (_mBlob && _mBlob.size > 0) {
+      log('Converting voice to base64... size=' + _mBlob.size);
+      var reader = new FileReader();
+      reader.onload = function() {
+        var b64 = reader.result; // data:audio/webm;base64,...
+        log('Voice base64 length: ' + b64.length);
+        finishSave(b64);
+      };
+      reader.onerror = function() {
+        log('Voice read error');
+        finishSave('');
+      };
+      reader.readAsDataURL(_mBlob);
     } else {
-      $('dn-sts').className = 'sts sts-g';
-      $('dn-i').textContent = '🏠';
-      $('dn-h').textContent = 'رخصت ہو گئی';
-      $('dn-h').style.color = 'var(--grn)';
+      finishSave('');
     }
-
-    $('dn-info').innerHTML =
-      this._row('👤 نام', _who.n) +
-      this._row('🔧 عہدہ', _who.r) +
-      this._row('📅 تاریخ', new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})) +
-      this._row('⏰ حاضری', late ? '<span class="c-a">' + _inTime + ' ⏰</span>' : _inTime) +
-      this._row('🕐 رخصت', out) +
-      this._row('📊 وقت', h + 'h ' + m + 'm') +
-      this._row('🕐 OT', ot > 0 ? '<span class="ot ot-y">' + Math.floor(ot/60) + 'h ' + (ot%60) + 'm</span>' : '<span class="ot ot-n">0</span>') +
-      this._row('🚗 فاصلہ', _geo.km + ' km') +
-      this._row('💰 TA', 'Rs ' + ta, 'c-g') +
-      this._row('📸 سیلفی', '✅', 'c-g') +
-      this._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
-
-    $('dn-v').textContent = _mBlob ? 'وائس ✅ (' + _rSec + 's)' : '—';
-    this.show('done');
-    log('Day done. OT=' + ot + 'm, TA=Rs' + ta);
   }
 };
 
 /* ═══ INIT ═══ */
 App.init();
-log('App loaded. HTTPS=' + (location.protocol === 'https:') + ' Camera=' + (!!navigator.mediaDevices) + ' GPS=' + (!!navigator.geolocation) + ' Speech=' + (!!window.speechSynthesis));
+log('V5 loaded. HTTPS=' + (location.protocol === 'https:') + ' SecureCtx=' + window.isSecureContext + ' Camera=' + (!!navigator.mediaDevices) + ' getUserMedia=' + (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) + ' GPS=' + (!!navigator.geolocation) + ' Speech=' + (!!window.speechSynthesis) + ' MediaRecorder=' + (typeof MediaRecorder !== 'undefined') + ' URL=' + location.href);
 </script>
 </body>
 </html>
