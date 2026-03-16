@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CS Labour Admin V1</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--s1:#1a1d27;--s2:#242836;--s3:#2e3345;--bdr:#363b4e;--tx:#e2e4ea;--tx2:#8b90a0;--tx3:#5c6178;--R:#dc2626;--Rb:#7f1d1d;--G:#22c55e;--Gb:#14532d;--A:#f59e0b;--Ab:#78350f;--B:#3b82f6;--W:#fff;--r:10px;--rl:14px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px}
+button,input,select{font-family:inherit;border:none;outline:none;font-size:14px}
+
+/* Login */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:32px;width:100%;max-width:360px;text-align:center}
+.login-box h1{font-size:22px;margin-bottom:4px;font-weight:800}.login-box h1 em{color:var(--R);font-style:normal}
+.login-box p{color:var(--tx2);font-size:12px;margin-bottom:24px}
+.lin{width:100%;padding:14px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);margin-bottom:10px;font-size:15px}
+.lin:focus{border-color:var(--B)}
+.lbtn{width:100%;padding:14px;background:var(--R);color:var(--W);border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;margin-top:6px}
+.lbtn:active{opacity:.8}
+.lerr{color:var(--R);font-size:12px;margin-top:8px;display:none}
+
+/* Top */
+.top{background:var(--s1);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--R);position:sticky;top:0;z-index:100}
+.top-t{font-size:16px;font-weight:800}.top-t em{color:var(--R);font-style:normal}
+.top-r{display:flex;align-items:center;gap:8px}
+.top-v{font-size:9px;font-weight:800;padding:2px 8px;border-radius:6px;background:var(--R);color:var(--W)}
+.top-out{background:var(--s2);color:var(--tx2);padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--bdr)}
+.top-out:hover{color:var(--R)}
+
+/* Filter bar */
+.fbar{background:var(--s1);padding:12px 16px;border-bottom:1px solid var(--bdr);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.fbar label{font-size:11px;color:var(--tx2);font-weight:700}
+.fbar input,.fbar select{padding:8px 12px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px}
+.fbtn{padding:8px 16px;background:var(--B);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:13px}
+.fbtn:active{opacity:.8}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;padding:16px}
+.stat{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:14px;text-align:center}
+.stat-n{font-size:28px;font-weight:800;line-height:1}.stat-l{font-size:11px;color:var(--tx2);margin-top:4px;font-weight:600}
+.sg{color:var(--G)}.sr{color:var(--R)}.sa{color:var(--A)}.sb{color:var(--B)}
+
+/* Cards */
+.cards{padding:0 16px 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.card:hover{border-color:var(--B)}
+.card-top{display:flex;align-items:center;gap:12px;padding:14px}
+.card-av{width:50px;height:50px;border-radius:50%;object-fit:cover;border:2px solid var(--bdr);background:var(--s3)}
+.card-av-ph{width:50px;height:50px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--tx3);border:2px solid var(--bdr)}
+.card-nm{font-weight:700;font-size:15px}.card-sub{font-size:11px;color:var(--tx2);margin-top:2px}
+.card-badge{margin-left:auto;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:800}
+.b-in{background:rgba(34,197,94,.15);color:var(--G);border:1px solid rgba(34,197,94,.3)}
+.b-out{background:rgba(59,130,246,.15);color:var(--B);border:1px solid rgba(59,130,246,.3)}
+.b-late{background:rgba(245,158,11,.15);color:var(--A);border:1px solid rgba(245,158,11,.3)}
+.card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--bdr)}
+.card-cell{padding:10px 8px;text-align:center;border-right:1px solid var(--bdr)}
+.card-cell:last-child{border-right:none}
+.card-cv{font-size:15px;font-weight:800}.card-cl{font-size:9px;color:var(--tx3);margin-top:2px;text-transform:uppercase;font-weight:600}
+.card-icons{display:flex;gap:6px;padding:10px 14px;border-top:1px solid var(--bdr)}
+.card-ic{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;background:var(--s2);color:var(--tx2);border:1px solid var(--bdr)}
+.card-ic.has{color:var(--G);border-color:rgba(34,197,94,.3)}
+
+/* Empty */
+.empty{text-align:center;padding:60px 20px;color:var(--tx3)}
+.empty-i{font-size:48px;margin-bottom:10px}.empty-h{font-size:18px;font-weight:700;color:var(--tx2)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);width:100%;max-width:500px;max-height:90vh;overflow-y:auto}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--bdr)}
+.modal-head h2{font-size:17px;font-weight:800}.modal-x{background:var(--s3);color:var(--tx);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+.modal-body{padding:16px}
+.m-selfie{width:100%;max-width:200px;border-radius:50%;aspect-ratio:1;object-fit:cover;display:block;margin:0 auto 16px;border:3px solid var(--bdr)}
+.m-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--s3)}.m-row:last-child{border:none}
+.m-rl{color:var(--tx2);font-size:13px}.m-rv{font-weight:700;font-size:14px}
+.m-map{width:100%;height:200px;border-radius:var(--r);margin-top:14px;border:1px solid var(--bdr)}
+.m-audio{width:100%;margin-top:14px}
+.m-section{font-size:12px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--s3)}
+
+/* Loading */
+.loading{text-align:center;padding:40px;color:var(--tx2)}
+.spin{display:inline-block;width:24px;height:24px;border:3px solid var(--s3);border-top-color:var(--B);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="pg-login" class="login-wrap">
+  <div class="login-box">
+    <h1>CS <em>Labour</em> Admin</h1>
+    <p>V1 · 17 Mar 2026</p>
+    <input class="lin" id="l-u" placeholder="Username" autocomplete="off">
+    <input class="lin" id="l-p" type="password" placeholder="Password">
+    <button class="lbtn" onclick="doLogin()">Login</button>
+    <div class="lerr" id="lerr">Invalid credentials</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pg-dash" style="display:none">
+  <div class="top">
+    <div class="top-t">CS <em>Labour</em> Admin</div>
+    <div class="top-r">
+      <span class="top-v">V1</span>
+      <button class="top-out" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="fbar">
+    <label>Date</label>
+    <input type="date" id="f-date">
+    <label>Status</label>
+    <select id="f-status">
+      <option value="">All</option>
+      <option value="checked-in">Checked In</option>
+      <option value="checked-out">Checked Out</option>
+    </select>
+    <button class="fbtn" onclick="loadData()">🔄 Load</button>
+  </div>
+
+  <div class="stats" id="stats"></div>
+  <div class="cards" id="cards"></div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="m-name">—</h2>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ═══ CONFIG ═══ */
+var FB_URL = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+var ADMIN_U = 'admin', ADMIN_P = 'Muddasir';
+var OFC = [{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
+var _data = [];
+var _map = null;
+
+/* ═══ HELPERS ═══ */
+function $(id){return document.getElementById(id)}
+function todayKey(){
+  var d = new Date();
+  var y = d.toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric'}).split(',')[0];
+  var m = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',month:'numeric'})).padStart(2,'0');
+  var day = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',day:'numeric'})).padStart(2,'0');
+  return y+m+day;
+}
+function todayISO(){
+  var d = new Date();
+  var y = d.toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric'}).split(',')[0];
+  var m = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',month:'numeric'})).padStart(2,'0');
+  var day = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',day:'numeric'})).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+
+/* ═══ LOGIN ═══ */
+function doLogin(){
+  var u=$('l-u').value.trim(), p=$('l-p').value;
+  if(u===ADMIN_U && p===ADMIN_P){
+    $('pg-login').style.display='none';
+    $('pg-dash').style.display='block';
+    $('f-date').value = todayISO();
+    loadData();
+  } else {
+    $('lerr').style.display='block';
+  }
+}
+function logout(){
+  $('pg-dash').style.display='none';
+  $('pg-login').style.display='flex';
+  $('l-p').value='';
+}
+$('l-p').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
+
+/* ═══ LOAD DATA ═══ */
+function loadData(){
+  var dateVal = $('f-date').value; // yyyy-mm-dd
+  var dateKey = dateVal ? dateVal.replace(/-/g,'') : todayKey();
+  var statusF = $('f-status').value;
+
+  $('cards').innerHTML = '<div class="loading"><div class="spin"></div><br>Loading...</div>';
+  $('stats').innerHTML = '';
+
+  var url = FB_URL + '/labour_attendance.json?orderBy="dateKey"&equalTo="'+dateKey+'"';
+  var x = new XMLHttpRequest();
+  x.open('GET', url);
+  x.onload = function(){
+    try {
+      var raw = JSON.parse(x.responseText);
+      _data = [];
+      if(raw){
+        Object.keys(raw).forEach(function(k){
+          var r = raw[k];
+          r._key = k;
+          if(!statusF || r.status === statusF) _data.push(r);
+        });
+      }
+      _data.sort(function(a,b){return (a.checkIn||'').localeCompare(b.checkIn||'')});
+      renderStats();
+      renderCards();
+    } catch(e){
+      $('cards').innerHTML = '<div class="empty"><div class="empty-i">⚠️</div><div class="empty-h">Error loading data</div></div>';
+    }
+  };
+  x.onerror = function(){
+    $('cards').innerHTML = '<div class="empty"><div class="empty-i">🔌</div><div class="empty-h">Network error</div></div>';
+  };
+  x.send();
+}
+
+/* ═══ RENDER STATS ═══ */
+function renderStats(){
+  var total = _data.length;
+  var checkedOut = _data.filter(function(r){return r.status==='checked-out'}).length;
+  var working = _data.filter(function(r){return r.status==='checked-in'}).length;
+  var lateCount = _data.filter(function(r){return r.late}).length;
+  var totalOT = 0, totalTA = 0;
+  _data.forEach(function(r){
+    totalOT += (r.otMinutes||0);
+    totalTA += (r.taAmount||0);
+  });
+
+  $('stats').innerHTML =
+    '<div class="stat"><div class="stat-n sb">'+total+'</div><div class="stat-l">Total</div></div>'+
+    '<div class="stat"><div class="stat-n sg">'+working+'</div><div class="stat-l">Working</div></div>'+
+    '<div class="stat"><div class="stat-n sb">'+checkedOut+'</div><div class="stat-l">Done</div></div>'+
+    '<div class="stat"><div class="stat-n sa">'+lateCount+'</div><div class="stat-l">Late</div></div>'+
+    '<div class="stat"><div class="stat-n sr">'+totalOT+'m</div><div class="stat-l">OT Total</div></div>'+
+    '<div class="stat"><div class="stat-n sg">Rs '+totalTA+'</div><div class="stat-l">TA Total</div></div>';
+}
+
+/* ═══ RENDER CARDS ═══ */
+function renderCards(){
+  if(_data.length === 0){
+    $('cards').innerHTML = '<div class="empty"><div class="empty-i">📋</div><div class="empty-h">No records found</div><p style="color:var(--tx3);margin-top:6px">Change date or filter and try again</p></div>';
+    return;
+  }
+  var h = '';
+  _data.forEach(function(r, i){
+    var isOut = r.status === 'checked-out';
+    var badgeCls = r.late ? 'b-late' : (isOut ? 'b-out' : 'b-in');
+    var badgeTxt = r.late ? 'LATE' : (isOut ? 'DONE' : 'WORKING');
+    var selfieHtml = r.checkInSelfie
+      ? '<img class="card-av" src="'+r.checkInSelfie+'" alt="selfie">'
+      : '<div class="card-av-ph">👤</div>';
+    var hasVoice = r.voiceNote && r.voiceNote.length > 50;
+
+    h += '<div class="card" onclick="openDetail('+i+')">' +
+      '<div class="card-top">' + selfieHtml +
+        '<div><div class="card-nm">'+r.name+'</div><div class="card-sub">'+r.designation+' · '+r.code+'</div></div>' +
+        '<span class="card-badge '+badgeCls+'">'+badgeTxt+'</span>' +
+      '</div>' +
+      '<div class="card-grid">' +
+        '<div class="card-cell"><div class="card-cv">'+(r.checkIn||'—')+'</div><div class="card-cl">In</div></div>' +
+        '<div class="card-cell"><div class="card-cv">'+(r.checkOut||'—')+'</div><div class="card-cl">Out</div></div>' +
+        '<div class="card-cell"><div class="card-cv">'+(r.totalHours||'—')+'</div><div class="card-cl">Hours</div></div>' +
+        '<div class="card-cell"><div class="card-cv">'+(r.otMinutes>0 ? r.otHours : '0')+'</div><div class="card-cl">OT</div></div>' +
+      '</div>' +
+      '<div class="card-icons">' +
+        '<span class="card-ic has">📍 '+(r.checkInKmFromOffice||0)+' km</span>' +
+        '<span class="card-ic has">💰 Rs '+(r.taAmount||0)+'</span>' +
+        (hasVoice ? '<span class="card-ic has">🎙️ Voice</span>' : '') +
+        (r.checkInSelfie ? '<span class="card-ic has">📸</span>' : '') +
+      '</div>' +
+    '</div>';
+  });
+  $('cards').innerHTML = h;
+}
+
+/* ═══ DETAIL MODAL ═══ */
+function openDetail(i){
+  var r = _data[i];
+  if(!r) return;
+  $('m-name').textContent = r.name + ' · ' + r.designation;
+
+  var hasVoice = r.voiceNote && r.voiceNote.length > 50;
+  var h = '';
+
+  // Selfie
+  if(r.checkInSelfie){
+    h += '<img class="m-selfie" src="'+r.checkInSelfie+'">';
+  }
+
+  // Info rows
+  h += '<div class="m-section">Attendance</div>';
+  h += mRow('📅 Date', r.date || '—');
+  h += mRow('⏰ Check In', r.checkIn || '—');
+  h += mRow('🕐 Check Out', r.checkOut || '—');
+  h += mRow('📊 Total', r.totalHours || '—');
+  h += mRow('🕐 OT', r.otMinutes > 0 ? r.otHours : 'None');
+  h += mRow('⏰ Late', r.late ? '<span style="color:var(--A)">Yes</span>' : '<span style="color:var(--G)">No</span>');
+  h += mRow('📊 Status', r.status || '—');
+
+  h += '<div class="m-section">Location & Travel</div>';
+  h += mRow('📍 Office', r.nearestOffice || '—');
+  h += mRow('🚗 Distance', (r.checkInKmFromOffice||0) + ' km');
+  h += mRow('💰 TA', 'Rs ' + (r.taAmount||0));
+  h += mRow('📡 GPS', (r.checkInLat ? r.checkInLat.toFixed(5)+', '+r.checkInLng.toFixed(5) : '—'));
+
+  // Voice
+  if(hasVoice){
+    h += '<div class="m-section">Voice Note</div>';
+    h += '<audio class="m-audio" controls src="'+r.voiceNote+'"></audio>';
+  }
+
+  // Map
+  if(r.checkInLat){
+    h += '<div class="m-section">Location Map</div>';
+    h += '<div class="m-map" id="m-map"></div>';
+  }
+
+  $('m-body').innerHTML = h;
+  $('modal').classList.add('on');
+
+  // Init map after DOM update
+  if(r.checkInLat){
+    setTimeout(function(){
+      if(_map){ _map.remove(); _map=null; }
+      _map = L.map('m-map').setView([r.checkInLat, r.checkInLng], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution:'OSM', maxZoom:19
+      }).addTo(_map);
+      // Worker marker
+      L.marker([r.checkInLat, r.checkInLng])
+        .addTo(_map)
+        .bindPopup('<b>'+r.name+'</b><br>'+r.checkIn).openPopup();
+      // Office markers
+      OFC.forEach(function(o){
+        L.circleMarker([o.la, o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8})
+          .addTo(_map).bindPopup('🏢 '+o.n);
+      });
+      setTimeout(function(){_map.invalidateSize()},200);
+    }, 100);
+  }
+}
+
+function mRow(l,v){
+  return '<div class="m-row"><span class="m-rl">'+l+'</span><span class="m-rv">'+v+'</span></div>';
+}
+
+function closeModal(){
+  $('modal').classList.remove('on');
+  if(_map){_map.remove();_map=null;}
+}
+</script>
+</body>
+</html>
