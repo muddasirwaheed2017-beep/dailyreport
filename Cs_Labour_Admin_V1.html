@@ -89,20 +89,11 @@ button,input,select{font-family:inherit;border:none;outline:none;font-size:14px}
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="pg-login" class="login-wrap">
-  <div class="login-box">
-    <h1>CS <em>Labour</em> Admin</h1>
-    <p>V1 · 17 Mar 2026</p>
-    <input class="lin" id="l-u" placeholder="Username" autocomplete="off">
-    <input class="lin" id="l-p" type="password" placeholder="Password">
-    <button class="lbtn" onclick="doLogin()">Login</button>
-    <div class="lerr" id="lerr">Invalid credentials</div>
-  </div>
-</div>
+<!-- LOGIN (hidden - auto login) -->
+<div id="pg-login" class="login-wrap" style="display:none"></div>
 
 <!-- DASHBOARD -->
-<div id="pg-dash" style="display:none">
+<div id="pg-dash" style="display:block">
   <div class="top">
     <div class="top-t">CS <em>Labour</em> Admin</div>
     <div class="top-r">
@@ -182,7 +173,8 @@ function logout(){
   $('pg-login').style.display='flex';
   $('l-p').value='';
 }
-$('l-p').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin()});
+$('f-date').value = todayISO();
+loadData();
 
 /* ═══ LOAD DATA ═══ */
 function loadData(){
