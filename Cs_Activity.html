@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V15 — 16 Mar 2026 12:00 PKT</title>
+<title>CS Activity Reporter V15.1 — 16 Mar 2026 02:00 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V15</span>
-    <span class="tb-date">16Mar2026 · 12:00</span>
+    <span class="tb-ver">V15.1</span>
+    <span class="tb-date">16Mar2026 · 02:00</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -635,7 +635,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V15',date:'16-Mar-2026',time:'12:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V15.1',date:'16-Mar-2026',time:'02:00 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -2195,7 +2195,7 @@ moreRpts:function(){
 /* ═══════════════════════════════════════
    SUMMARY TAB — performance overview
    ═══════════════════════════════════════ */
-loadSummary:function(period){
+loadSummary:async function(period){
   S.p('click');
   document.getElementById('sum-week').classList.toggle('on',period==='week');
   document.getElementById('sum-month').classList.toggle('on',period==='month');
@@ -2220,11 +2220,24 @@ loadSummary:function(period){
   var onTime=0,late=0;
   myA.forEach(function(a){if((a.time||'')>C.START_TIME)late++;else onTime++});
 
+  /* Load config if not loaded */
+  var hols=App._holidays||{};var ods=App._offDays||{};
+  try{if(!Object.keys(hols).length)hols=await F.g('adminConfig/holidays')||{}}catch(e){}
+  try{if(!Object.keys(ods).length)ods=await F.g('adminConfig/offDays')||{}}catch(e){}
+  /* Build leave lookup */
+  var lvs=App._leaves||[];var slvLookup={};
+  lvs.forEach(function(l){if(l.status!=='approved'||l.userId!==ME.id)return;
+    var c=new Date(l.date+'T00:00:00');var e2=new Date((l.dateTo||l.date)+'T00:00:00');
+    while(c<=e2){var dss=c.getFullYear()+'-'+String(c.getMonth()+1).padStart(2,'0')+'-'+String(c.getDate()).padStart(2,'0');slvLookup[dss]=true;c.setDate(c.getDate()+1)}});
+
   /* Working days */
-  var d=new Date(start+'T00:00:00'),todayStr=U.today(),workdays=0;
+  var d=new Date(start+'T00:00:00'),todayStr=U.today(),workdays=0,leaveDays=0;
   while(d<=now){
     var ds=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    if(d.getDay()!==0&&ds<=todayStr) workdays++;
+    if(d.getDay()!==0&&ds<=todayStr&&!hols[ds]&&!ods[ds]){
+      if(slvLookup[ds]) leaveDays++;
+      else workdays++;
+    }
     d.setDate(d.getDate()+1);
   }
   var absent=workdays-onTime-late;if(absent<0)absent=0;
@@ -2255,14 +2268,21 @@ loadSummary:function(period){
   var lateRpts=myR.filter(function(r){return r.lateReport}).length;
   h+='<div class="ls"><div class="ls-n" style="color:var(--amb)">'+lateRpts+'</div><div class="ls-l">Late Rpt</div></div></div></div>';
 
-  /* Financials */
-  var dedLate=late*C.DED_LATE,dedAbsent=absent*C.DED_ABSENT,dedTotal=dedLate+dedAbsent;
+  /* Financials — salary-based */
+  var salary=0;
+  try{var ud=await F.g('users/'+ME.id);if(ud&&ud.salary)salary=ud.salary}catch(e){}
+  var dailyR=salary?Math.round(salary/30):0;
+  var hourlyR=dailyR?Math.round(dailyR/8):0;
+  var cfg2=App._payrollCfg||{deductionMode:'salary',flatLate:200,flatAbsent:500};
+  var dedLate=cfg2.deductionMode==='salary'?late*hourlyR:late*(cfg2.flatLate||200);
+  var dedAbsent=cfg2.deductionMode==='salary'?absent*dailyR:absent*(cfg2.flatAbsent||500);
+  var dedTotal=dedLate+dedAbsent;
   var kmClaim=Math.round(totalKm*C.KM_RATE);
   h+='<div class="jcard" style="padding:14px;margin-bottom:8px"><div style="font-size:12px;font-weight:800;color:var(--G5);margin-bottom:8px">💰 FINANCIALS</div>';
   h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">KM Travelled</span><span style="font-size:13px;font-weight:800">'+totalKm.toFixed(1)+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">KM Claim</span><span style="font-size:13px;font-weight:800;color:var(--grn)">Rs '+kmClaim+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Late Deduction ('+late+'d × Rs '+C.DED_LATE+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedLate+'</span></div>';
-  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Absent Deduction ('+absent+'d × Rs '+C.DED_ABSENT+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedAbsent+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Late Deduction ('+late+'d × Rs '+hourlyR+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedLate.toLocaleString()+'</span></div>';
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--G9)"><span style="font-size:12px;color:var(--G5)">Absent Deduction ('+absent+'d × Rs '+dailyR+')</span><span style="font-size:13px;font-weight:800;color:var(--R)">Rs '+dedAbsent.toLocaleString()+'</span></div>';
   h+='<div style="display:flex;justify-content:space-between;padding:6px 0;border-top:2px solid var(--G8)"><span style="font-size:13px;font-weight:800">Total Deduction</span><span style="font-size:15px;font-weight:800;color:var(--R)">Rs '+dedTotal+'</span></div>';
   h+='</div>';
 
@@ -2282,21 +2302,58 @@ loadSummary:function(period){
 /* ═══════════════════════════════════════
    LOAD STATS
    ═══════════════════════════════════════ */
-loadStats:function(){
+loadStats:async function(){
   try{
     var now=new Date();var moStart=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01';
+    var todayStr=U.today();
     var myRpts=_rpts.filter(function(r){return r.userId===ME.id&&r.date>=moStart});
     var myVis=myRpts.filter(function(r){return r.type==='visit'});
     var myAtt=_att.filter(function(a){return a.userId===ME.id&&a.date>=moStart});
-    var onTime=0,late=0;
-    myAtt.forEach(function(a){if((a.time||'')>C.START_TIME)late++;else onTime++});
     var totalKm=0;myAtt.forEach(function(a){if(a.totalKm)totalKm+=parseFloat(a.totalKm)});
     document.getElementById('ms-rpt').textContent=myRpts.length;
     document.getElementById('ms-vis').textContent=myVis.length;
     document.getElementById('ms-km').textContent=totalKm.toFixed(0);
     if(totalKm>0) document.getElementById('ms-km-rs').textContent='Rs '+Math.round(totalKm*C.KM_RATE);
-    document.getElementById('ms-ded').textContent='Rs '+(late*C.DED_LATE);
-  }catch(e){}
+
+    /* Salary-based deduction calc */
+    var cfg=App._payrollCfg;
+    if(!cfg){try{cfg=await F.g('adminConfig/payroll')||{}}catch(e){cfg={}}}
+    var holidays=App._holidays;
+    if(!holidays||!Object.keys(holidays).length){try{holidays=await F.g('adminConfig/holidays')||{}}catch(e){holidays={}}}
+    var offDays=App._offDays;
+    if(!offDays||!Object.keys(offDays).length){try{offDays=await F.g('adminConfig/offDays')||{}}catch(e){offDays={}}}
+    var salary=0;
+    try{var ud=await F.g('users/'+ME.id);if(ud&&ud.salary)salary=ud.salary}catch(e){}
+    var daily=salary?Math.round(salary/30):0;
+    var hourly=daily?Math.round(daily/8):0;
+    var mode=cfg.deductionMode||'salary';
+
+    /* Build attendance + leave lookups */
+    var attByDate={};myAtt.forEach(function(a){attByDate[a.date]=a});
+    var lvs=App._leaves||[];
+    var lvLookup={};lvs.forEach(function(l){
+      if(l.status!=='approved'||l.userId!==ME.id)return;
+      var c=new Date(l.date+'T00:00:00');var e2=new Date((l.dateTo||l.date)+'T00:00:00');
+      while(c<=e2){var ds=c.getFullYear()+'-'+String(c.getMonth()+1).padStart(2,'0')+'-'+String(c.getDate()).padStart(2,'0');lvLookup[ds]=true;c.setDate(c.getDate()+1)}
+    });
+
+    var absentDed=0,lateDed=0;
+    var dc=new Date(moStart+'T00:00:00'),de=new Date(todayStr+'T00:00:00');
+    while(dc<=de){
+      var ds=dc.getFullYear()+'-'+String(dc.getMonth()+1).padStart(2,'0')+'-'+String(dc.getDate()).padStart(2,'0');
+      if(dc.getDay()!==0&&!holidays[ds]&&!offDays[ds]){
+        if(!lvLookup[ds]){
+          if(attByDate[ds]){
+            if((attByDate[ds].time||'')>C.START_TIME){lateDed+=mode==='salary'?hourly:(cfg.flatLate||200)}
+          } else {
+            absentDed+=mode==='salary'?daily:(cfg.flatAbsent||500);
+          }
+        }
+      }
+      dc.setDate(dc.getDate()+1);
+    }
+    document.getElementById('ms-ded').textContent='Rs '+(absentDed+lateDed).toLocaleString();
+  }catch(e){console.error('loadStats:',e)}
 }
 
 };/* end App */

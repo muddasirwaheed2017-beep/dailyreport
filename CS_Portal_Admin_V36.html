@@ -1476,8 +1476,15 @@ var ac=all.filter(function(e){return e.approved===true&&e.blocked!==true});
 var bl=all.filter(function(e){return e.blocked===true});
 var pe=all.filter(function(e){return e.approved!==true&&e.blocked!==true});
 
-/* Auto-seed salaries for known employees */
-App._seedSalaries(ac)
+/* Auto-seed salaries for known employees, then re-fetch */
+var seeded=await App._seedSalaries(ac);
+if(seeded>0){
+  /* Re-fetch users to get updated salary data */
+  all=F.arr(await F.g('users'));
+  ac=all.filter(function(e){return e.approved===true&&e.blocked!==true});
+  bl=all.filter(function(e){return e.blocked===true});
+  pe=all.filter(function(e){return e.approved!==true&&e.blocked!==true});
+}
 
 /* Active employees */
 document.getElementById('a-el').innerHTML=ac.length?ac.map(function(e){
@@ -1906,14 +1913,18 @@ App._seedSalaries=async function(users){
     'm.usman':{s:49500,d:'C-Solar'},'bilal arif':{s:60000,d:'CNC Social Media'},
     'hanan4145':{s:25000,d:'CNC Social Media'},'mohsin':{s:38500,d:'C-Solar'}
   };
+  var count=0;
   try{
     for(var i=0;i<users.length;i++){
       var u=users[i];var un=(u.username||'').toLowerCase();
       if(map[un]&&!u.salary){
-        await F.up('users/'+u.id,{salary:map[un].s,department:map[un].d});
+        await F.up('users/'+u.id,{salary:map[un].s,department:map[un].d});count++;
+        console.log('[Seed] '+u.name+': Rs '+map[un].s+' ('+map[un].d+')');
       }
     }
-  }catch(e){}
+    if(count) console.log('[Seed] Updated '+count+' employees');
+  }catch(e){console.error('[Seed] Error:',e)}
+  return count;
 };
 
 /* ═══ MANUAL LEAVE ═══ */
