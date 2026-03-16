@@ -436,25 +436,22 @@ var App = {
 
   camOpen: function() {
     log('Opening camera...');
-    // Force correct button state
+    $('cam-ph').style.display = 'none';
+    $('vid').style.display = 'block';
     $('b-cam').style.display = 'none';
     $('b-snap').style.display = 'block';
     $('b-ci').style.display = 'none';
     $('b-redo').style.display = 'none';
-    $('cam-ph').style.display = 'none';
-    $('vid').style.display = 'block';
-    $('foto').style.display = 'none';
 
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       toast('کیمرہ سپورٹ نہیں — HTTPS ضروری ہے', 'err');
-      log('getUserMedia NOT available. Protocol: ' + location.protocol + ' Secure: ' + window.isSecureContext);
+      log('getUserMedia NOT available. Protocol: ' + location.protocol);
       $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
       $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
       return;
     }
 
-    log('Requesting camera... Protocol=' + location.protocol + ' SecureCtx=' + window.isSecureContext);
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width:{ideal:640}, height:{ideal:640} }, audio: false })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false })
       .then(function(stream) {
         _stream = stream;
         var vid = $('vid');
@@ -462,16 +459,21 @@ var App = {
         vid.setAttribute('playsinline', '');
         vid.setAttribute('muted', '');
         vid.srcObject = stream;
-        vid.play().then(function() {
-          log('Camera playing OK. Tracks: ' + stream.getVideoTracks().length + ' Size: ' + vid.videoWidth + 'x' + vid.videoHeight);
-        }).catch(function(e) {
-          log('Video play failed: ' + e.message);
-        });
+        // iOS requires explicit play() from user gesture
+        var playPromise = vid.play();
+        if (playPromise !== undefined) {
+          playPromise.then(function() {
+            log('Camera playing OK');
+          }).catch(function(e) {
+            log('Video play failed: ' + e.message);
+          });
+        }
+        log('Camera stream OK. Tracks: ' + stream.getVideoTracks().length);
         toast('کیمرہ تیار ✅', 'ok');
       })
       .catch(function(err) {
         log('Camera FAILED: ' + err.name + ' - ' + err.message);
-        toast('کیمرہ ایرر: ' + err.message, 'err');
+        toast('کیمرہ ایرر: ' + err.name, 'err');
         $('cam-ph').style.display = 'flex'; $('vid').style.display = 'none';
         $('b-cam').style.display = 'block'; $('b-snap').style.display = 'none';
       });
