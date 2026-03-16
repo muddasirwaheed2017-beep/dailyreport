@@ -571,6 +571,7 @@ signIn:async function(){
     var user=users.find(function(x){return(x.username||'').toLowerCase()===u});
     if(user){
       /* Found in Firebase — log in as employee */
+      if(user.blocked===true){U.toast('آپ کا اکاؤنٹ بلاک ہے — ایڈمن سے رابطہ کریں','err');return}
       if(user.approved!==true){U.toast('Pending approval','warn');return}
       ME={id:user.id,name:user.name,username:user.username,role:'employee'};
       this.save();S.p('ok');this.showEmp();
@@ -578,7 +579,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V26.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V27.html'},500);
     } else {
       U.toast('Not found','err');
     }
