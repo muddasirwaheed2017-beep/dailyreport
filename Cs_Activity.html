@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V15.1 — 16 Mar 2026 02:00 PKT</title>
+<title>CS Activity Reporter V16 — 16 Mar 2026 02:30 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V15.1</span>
-    <span class="tb-date">16Mar2026 · 02:00</span>
+    <span class="tb-ver">V16</span>
+    <span class="tb-date">16Mar2026 · 02:30</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -206,6 +206,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   <div class="ms"><div class="ms-n" id="ms-km">—</div><div class="ms-l">KM</div><div class="ms-sub" id="ms-km-rs"></div></div>
   <div class="ms" style="border-top:3px solid var(--R)"><div class="ms-n" style="color:var(--R)" id="ms-ded">—</div><div class="ms-l">Deductions</div></div>
 </div>
+<div style="text-align:center;font-size:9px;color:var(--G5);margin-bottom:6px" id="home-ver"></div>
 
 <!-- Stale session banner -->
 <div class="stale-banner" id="stale-banner"></div>
@@ -214,10 +215,19 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div id="s-idle" class="jstate on">
   <div class="jcard"><div class="jcard-icon">📍</div><div class="jcard-title">Mark Attendance</div><div class="jcard-sub">Tap to start your day. GPS verifies location.</div></div>
   <button class="jbtn jbtn-red" id="att-btn" onclick="App.markAttendance()">📍 Mark Attendance</button>
-  <div class="sec" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▸ Request Leave</div>
-  <div style="display:none;padding:6px 0;font-size:11px;color:var(--G5)">Leave request — coming in Part 2</div>
-  <div class="sec" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▸ See Recent</div>
-  <div style="display:none;padding:6px 0;font-size:11px;color:var(--G5)">Recent reports — coming in Part 2</div>
+  <!-- Quick Leave Request -->
+  <div class="sec" onclick="var e=document.getElementById('home-lv-form');e.style.display=e.style.display==='none'?'block':'none';this.textContent=e.style.display==='none'?'▸ Request Leave':'▾ Request Leave'">▸ Request Leave</div>
+  <div id="home-lv-form" style="display:none;padding:8px 0">
+    <div style="display:flex;gap:6px;margin-bottom:8px">
+      <div style="flex:1"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">From</label><input type="date" id="hlv-from" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
+      <div style="flex:1"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">To</label><input type="date" id="hlv-to" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
+    </div>
+    <div style="margin-bottom:8px"><input id="hlv-reason" placeholder="Reason..." style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
+    <button class="jbtn jbtn-red" style="font-size:12px;padding:10px" onclick="App.quickLeave()">📋 Submit Leave</button>
+  </div>
+  <!-- See Recent -->
+  <div class="sec" onclick="var e=document.getElementById('home-recent');e.style.display=e.style.display==='none'?'block':'none';if(e.style.display==='block')App.loadHomeRecent();this.textContent=e.style.display==='none'?'▸ See Recent':'▾ See Recent'">▸ See Recent</div>
+  <div id="home-recent" style="display:none;padding:8px 0"></div>
 </div>
 
 <!-- ═══ STATE 2A: AT OFFICE ═══ -->
@@ -635,7 +645,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V15.1',date:'16-Mar-2026',time:'02:00 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V16',date:'16-Mar-2026',time:'02:30 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -733,7 +743,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V36.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V37.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -778,10 +788,12 @@ scr:function(id){document.querySelectorAll('.scr').forEach(function(s){s.classLi
 showEmp:async function(){
   this.scr('s-emp');
   document.getElementById('emp-name').textContent=ME.name.split(' ')[0];
+  document.getElementById('home-ver').textContent=APP_VERSION.ver+' · '+APP_VERSION.date+' · '+APP_VERSION.time;
   showLoad('Loading','Fetching your data...');
   try{
     _att=F.arr(await F.g('attendance'));
     _rpts=F.arr(await F.g('reports'));
+    this._leaves=F.arr(await F.g('leaves'));
     this.checkSession();
     this.loadStats();
   }catch(e){U.toast('Error loading data','err')}
@@ -1795,6 +1807,44 @@ loadMyVisits:function(period){
     h+='</div>';
   });
   document.getElementById('my-vis-list').innerHTML=h;
+},
+
+/* ═══ HOME — QUICK LEAVE + RECENT ═══ */
+quickLeave:async function(){
+  var from=document.getElementById('hlv-from').value;
+  var to=document.getElementById('hlv-to').value||from;
+  var reason=document.getElementById('hlv-reason').value.trim();
+  if(!from){U.toast('Select date','warn');return}
+  if(!reason){U.toast('Enter reason','warn');return}
+  var d1=new Date(from+'T00:00:00'),d2=new Date(to+'T00:00:00');
+  var days=Math.round((d2-d1)/(1000*60*60*24))+1;if(days<1)days=1;
+  try{
+    await F.push('leaves',{userId:ME.id,userName:ME.name,date:from,dateTo:to,days:days,reason:reason,status:'pending',adminApproved:false,ts:new Date().toISOString()});
+    U.toast('Leave submitted — pending approval ✅','ok');S.p('ok');
+    document.getElementById('hlv-from').value='';document.getElementById('hlv-to').value='';document.getElementById('hlv-reason').value='';
+    this._leaves=F.arr(await F.g('leaves'));
+  }catch(e){U.toast('Error','err')}
+},
+
+loadHomeRecent:function(){
+  var recent=(_rpts||[]).filter(function(r){return r.userId===ME.id}).sort(function(a,b){return(b.ts||'').localeCompare(a.ts||'')}).slice(0,5);
+  var recentAtt=(_att||[]).filter(function(a){return a.userId===ME.id}).sort(function(a,b){return(b.date||'').localeCompare(a.date||'')}).slice(0,3);
+  if(!recent.length&&!recentAtt.length){document.getElementById('home-recent').innerHTML='<div style="font-size:12px;color:var(--G5);text-align:center;padding:10px">No recent activity</div>';return}
+  var h='';
+  recentAtt.forEach(function(a){
+    var isLate=(a.time||'')>'09:30';
+    var dateStr=new Date(a.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    h+='<div style="background:var(--W);border:1px solid var(--G8);border-left:3px solid '+(isLate?'var(--amb)':'var(--grn)')+';border-radius:8px;padding:8px 10px;margin-bottom:4px;font-size:11px">';
+    h+='<span style="font-weight:700">'+(isLate?'⏰':'✅')+' '+dateStr+'</span> · '+a.time+(a.out?' → '+a.out:'')+'</div>';
+  });
+  recent.forEach(function(r){
+    var isAct=r.type==='activity';
+    var dateStr=new Date(r.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    var preview=(r.message||r.client||'').substring(0,60);
+    h+='<div style="background:var(--W);border:1px solid var(--G8);border-left:3px solid '+(isAct?'var(--grn)':'var(--blu)')+';border-radius:8px;padding:8px 10px;margin-bottom:4px;font-size:11px">';
+    h+='<span style="font-weight:700">'+(isAct?'📝':'📍')+' '+dateStr+'</span> · '+preview+'</div>';
+  });
+  document.getElementById('home-recent').innerHTML=h;
 },
 
 /* ═══════════════════════════════════════
