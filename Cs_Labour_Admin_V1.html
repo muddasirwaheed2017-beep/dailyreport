@@ -149,19 +149,20 @@ var _map = null;
 
 /* ═══ HELPERS ═══ */
 function $(id){return document.getElementById(id)}
+function pktDate(){
+  // Returns {y,m,d} in PKT
+  var s = new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi',day:'2-digit',month:'2-digit',year:'numeric'});
+  // s = "17/03/2026"
+  var p = s.split('/');
+  return {d:p[0], m:p[1], y:p[2]};
+}
 function todayKey(){
-  var d = new Date();
-  var y = d.toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric'}).split(',')[0];
-  var m = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',month:'numeric'})).padStart(2,'0');
-  var day = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',day:'numeric'})).padStart(2,'0');
-  return y+m+day;
+  var p = pktDate();
+  return p.y + p.m + p.d;
 }
 function todayISO(){
-  var d = new Date();
-  var y = d.toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric'}).split(',')[0];
-  var m = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',month:'numeric'})).padStart(2,'0');
-  var day = String(d.toLocaleString('en',{timeZone:'Asia/Karachi',day:'numeric'})).padStart(2,'0');
-  return y+'-'+m+'-'+day;
+  var p = pktDate();
+  return p.y + '-' + p.m + '-' + p.d;
 }
 
 /* ═══ LOGIN ═══ */
@@ -251,6 +252,9 @@ function renderCards(){
     var isOut = r.status === 'checked-out';
     var badgeCls = r.late ? 'b-late' : (isOut ? 'b-out' : 'b-in');
     var badgeTxt = r.late ? 'LATE' : (isOut ? 'DONE' : 'WORKING');
+    var nm = r.name || 'Unknown';
+    var desg = r.designation || '—';
+    var cd = r.code || '—';
     var selfieHtml = r.checkInSelfie
       ? '<img class="card-av" src="'+r.checkInSelfie+'" alt="selfie">'
       : '<div class="card-av-ph">👤</div>';
@@ -258,7 +262,7 @@ function renderCards(){
 
     h += '<div class="card" onclick="openDetail('+i+')">' +
       '<div class="card-top">' + selfieHtml +
-        '<div><div class="card-nm">'+r.name+'</div><div class="card-sub">'+r.designation+' · '+r.code+'</div></div>' +
+        '<div><div class="card-nm">'+nm+'</div><div class="card-sub">'+desg+' · '+cd+'</div></div>' +
         '<span class="card-badge '+badgeCls+'">'+badgeTxt+'</span>' +
       '</div>' +
       '<div class="card-grid">' +
@@ -282,7 +286,9 @@ function renderCards(){
 function openDetail(i){
   var r = _data[i];
   if(!r) return;
-  $('m-name').textContent = r.name + ' · ' + r.designation;
+  var nm = r.name || 'Unknown';
+  var desg = r.designation || '—';
+  $('m-name').textContent = nm + ' · ' + desg;
 
   var hasVoice = r.voiceNote && r.voiceNote.length > 50;
   var h = '';
@@ -306,7 +312,7 @@ function openDetail(i){
   h += mRow('📍 Office', r.nearestOffice || '—');
   h += mRow('🚗 Distance', (r.checkInKmFromOffice||0) + ' km');
   h += mRow('💰 TA', 'Rs ' + (r.taAmount||0));
-  h += mRow('📡 GPS', (r.checkInLat ? r.checkInLat.toFixed(5)+', '+r.checkInLng.toFixed(5) : '—'));
+  h += mRow('📡 GPS', (r.checkInLat ? Number(r.checkInLat).toFixed(5)+', '+Number(r.checkInLng).toFixed(5) : '—'));
 
   // Voice
   if(hasVoice){
@@ -320,6 +326,10 @@ function openDetail(i){
     h += '<div class="m-map" id="m-map"></div>';
   }
 
+  // Delete button
+  h += '<div class="m-section">Admin Actions</div>';
+  h += '<button style="width:100%;padding:12px;background:var(--R);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:14px;border:none" onclick="deleteRecord(\''+r._key+'\')">🗑 Delete This Record</button>';
+
   $('m-body').innerHTML = h;
   $('modal').classList.add('on');
 
@@ -327,14 +337,15 @@ function openDetail(i){
   if(r.checkInLat){
     setTimeout(function(){
       if(_map){ _map.remove(); _map=null; }
-      _map = L.map('m-map').setView([r.checkInLat, r.checkInLng], 15);
+      var lat = Number(r.checkInLat), lng = Number(r.checkInLng);
+      _map = L.map('m-map').setView([lat, lng], 15);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
         attribution:'OSM', maxZoom:19
       }).addTo(_map);
       // Worker marker
-      L.marker([r.checkInLat, r.checkInLng])
+      L.marker([lat, lng])
         .addTo(_map)
-        .bindPopup('<b>'+r.name+'</b><br>'+r.checkIn).openPopup();
+        .bindPopup('<b>'+(r.name||'Worker')+'</b><br>'+(r.checkIn||'')).openPopup();
       // Office markers
       OFC.forEach(function(o){
         L.circleMarker([o.la, o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8})
@@ -352,6 +363,18 @@ function mRow(l,v){
 function closeModal(){
   $('modal').classList.remove('on');
   if(_map){_map.remove();_map=null;}
+}
+
+function deleteRecord(key){
+  if(!confirm('Delete this record permanently?')) return;
+  var x = new XMLHttpRequest();
+  x.open('DELETE', FB_URL + '/labour_attendance/' + key + '.json');
+  x.onload = function(){
+    closeModal();
+    loadData();
+  };
+  x.onerror = function(){ alert('Delete failed — network error'); };
+  x.send();
 }
 </script>
 </body>
