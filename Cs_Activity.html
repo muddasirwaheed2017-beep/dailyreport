@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Activity Reporter V10.1 — 16 Mar 2026 02:15 PKT</title>
+<title>CS Activity Reporter V10.2 — 16 Mar 2026 03:30 PKT</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -187,8 +187,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div class="topbar">
   <div class="tb-l">
     <div class="tb-b">CS <em>Activity</em></div>
-    <span class="tb-ver">V10.1</span>
-    <span class="tb-date">16Mar2026 · 02:15</span>
+    <span class="tb-ver">V10.2</span>
+    <span class="tb-date">16Mar2026 · 03:30</span>
   </div>
   <div class="tb-r">
     <span style="font-size:10px;color:var(--G5)" id="emp-name"></span>
@@ -463,7 +463,47 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 
 <!-- ═══ PLACEHOLDER PAGES ═══ -->
 <div id="pg-plan" class="page"><div class="jcard"><div class="jcard-icon">📋</div><div class="jcard-title">Visit Planner</div><div class="jcard-sub">Coming in Part 2</div></div></div>
-<div id="pg-activity" class="page"><div class="jcard"><div class="jcard-icon">📝</div><div class="jcard-title">Activity Report</div><div class="jcard-sub">Coming in Part 2</div></div></div>
+<div id="pg-activity" class="page">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <div>
+      <div style="font-size:15px;font-weight:800;color:var(--G2)" id="a-title">📝 Daily Activity</div>
+      <div style="font-size:11px;color:var(--G5);font-weight:600" id="a-date"></div>
+    </div>
+    <div style="display:flex;gap:4px">
+      <span style="font-size:8px;font-weight:800;padding:3px 6px;border-radius:6px;background:var(--amb-bg);color:var(--amb);display:none" id="a-draft-badge">DRAFT</span>
+    </div>
+  </div>
+  <div class="jcard" style="padding:14px">
+    <!-- Today / Old toggle -->
+    <div style="display:flex;gap:4px;margin-bottom:12px">
+      <button class="purp-chip on" id="a-dm-today" onclick="App.setDateMode('today')" style="flex:1;text-align:center;padding:10px;font-size:13px">📅 Today</button>
+      <button class="purp-chip" id="a-dm-old" onclick="App.setDateMode('old')" style="flex:1;text-align:center;padding:10px;font-size:13px">📋 Old Report</button>
+    </div>
+    <!-- Date picker for old -->
+    <div id="a-date-pick" style="display:none;margin-bottom:10px">
+      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Report Date *</label>
+      <input type="date" id="a-old-date" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:14px">
+    </div>
+    <!-- Message -->
+    <div style="margin-bottom:10px">
+      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Activity Summary * <span style="color:var(--G5);font-weight:400" id="a-msg-wc">0/2000</span></label>
+      <textarea id="a-msg" placeholder="آج کیا کیا؟ Calls, clients, proposals... #tags" style="width:100%;padding:12px;border:2px solid var(--G8);border-radius:8px;font-size:14px;min-height:140px;font-family:inherit;resize:vertical" oninput="App.wordCheck(this)"></textarea>
+    </div>
+    <!-- Quick Tags -->
+    <div style="margin-bottom:10px">
+      <label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Quick Tags</label>
+      <div style="display:flex;flex-wrap:wrap;gap:4px" id="a-tags"></div>
+    </div>
+    <!-- Action buttons -->
+    <div style="display:flex;gap:4px;margin-bottom:10px">
+      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.saveDraft()">💾 Save</button>
+      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.fetchYesterday()">📥 Fetch</button>
+      <button class="jbtn jbtn-ghost" style="flex:1;font-size:11px;padding:8px;margin:0" onclick="App.clearActForm()">🗑 Clear</button>
+    </div>
+    <!-- Submit -->
+    <button class="jbtn jbtn-red" id="a-btn" onclick="App.subAct()">Submit ✓</button>
+  </div>
+</div>
 <div id="pg-cal" class="page"><div class="jcard"><div class="jcard-icon">📅</div><div class="jcard-title">Calendar</div><div class="jcard-sub">Coming in Part 2</div></div></div>
 <div id="pg-inbox" class="page"><div class="jcard"><div class="jcard-icon">💬</div><div class="jcard-title">Inbox</div><div class="jcard-sub">Coming in Part 2</div></div></div>
 <div id="pg-summary" class="page"><div class="jcard"><div class="jcard-icon">📊</div><div class="jcard-title">Summary</div><div class="jcard-sub">Coming in Part 2</div></div></div>
@@ -485,7 +525,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 /* ═══════════════════════════════════════
    CONFIG
    ═══════════════════════════════════════ */
-var APP_VERSION={ver:'V10.1',date:'16-Mar-2026',time:'02:15 PKT',build:'Cs_Activity.html'};
+var APP_VERSION={ver:'V10.2',date:'16-Mar-2026',time:'03:30 PKT',build:'Cs_Activity.html'};
 
 var C={
   DB:'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app',
@@ -498,7 +538,9 @@ var C={
   ],
   GEO_RADIUS:50,
   START_TIME:'09:30',END_TIME:'16:00',OT_START:'18:00',AUTO_CLOSE:'23:00',
-  MAX_OVERNIGHT:3
+  MAX_OVERNIGHT:3,
+  TAGS:['recovery','followup','newclient','payment','demo','complaint','order','quote','meeting','proposal','delivery','return','cold','urgent','cncsale','ficosale'],
+  MAX_WORDS:2000
 };
 
 /* ═══════════════════════════════════════
@@ -552,6 +594,8 @@ var _myAttId=null; /* current session Firebase key */
 var _journeyState='idle'; /* current journey state */
 var _loginTime=null;
 var _officeTimer=null;
+var _rpts=[];       /* all reports */
+var _dateMode='today'; /* today or old */
 
 /* ═══════════════════════════════════════
    APP
@@ -579,7 +623,7 @@ signIn:async function(){
       /* Not an employee — check if it's admin */
       localStorage.removeItem('csvt8');localStorage.removeItem('cs_s');
       U.toast('Admin → Redirecting to Admin Portal','info');
-      setTimeout(function(){window.location.href='CS_Portal_Admin_V27.html'},500);
+      setTimeout(function(){window.location.href='CS_Portal_Admin_V28.html'},500);
     } else {
       U.toast('Not found','err');
     }
@@ -627,6 +671,7 @@ showEmp:async function(){
   showLoad('Loading','Fetching your data...');
   try{
     _att=F.arr(await F.g('attendance'));
+    _rpts=F.arr(await F.g('reports'));
     this.checkSession();
     this.loadStats();
   }catch(e){U.toast('Error loading data','err')}
@@ -641,6 +686,8 @@ nav:function(pg,btn){
   document.querySelectorAll('.bnav .bn').forEach(function(b){b.classList.remove('on')});
   if(btn)btn.classList.add('on');
   window.scrollTo(0,0);
+  /* Page-specific init */
+  if(pg==='activity') this.initActPage();
 },
 
 /* ── Journey state ── */
@@ -1410,19 +1457,186 @@ renderDoneTotals:function(){
 },
 
 /* ═══════════════════════════════════════
+   ACTIVITY REPORT
+   ═══════════════════════════════════════ */
+setDateMode:function(mode){
+  _dateMode=mode;
+  document.getElementById('a-dm-today').classList.toggle('on',mode==='today');
+  document.getElementById('a-dm-old').classList.toggle('on',mode==='old');
+  document.getElementById('a-date-pick').style.display=mode==='old'?'block':'none';
+  if(mode==='today'){
+    document.getElementById('a-date').textContent=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  }
+},
+
+_getFormDate:function(){
+  if(_dateMode==='old'){
+    var d=document.getElementById('a-old-date').value;
+    if(!d){U.toast('Select date','warn');return null}
+    if(d>=U.today()){U.toast('Must be past date','warn');return null}
+    /* Max 3 days back */
+    var dObj=new Date(d+'T00:00:00');var now=new Date();var diff=Math.floor((now-dObj)/(1000*60*60*24));
+    if(diff>3){U.toast('Max 3 days back','warn');return null}
+    return d;
+  }
+  return U.today();
+},
+
+initActPage:function(){
+  this.setDateMode('today');
+  this.initTags();
+  this.setActTitle();
+  this.loadDraft();
+  document.getElementById('a-msg-wc').textContent='0/'+C.MAX_WORDS;
+},
+
+setActTitle:function(){
+  var existing=(_rpts||[]).filter(function(x){return x.userId===ME.id&&x.type==='activity'&&x.date===U.today()});
+  var d=new Date();
+  document.getElementById('a-date').textContent=d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+  if(existing.length>0){
+    document.getElementById('a-title').textContent='📝 Update Activity (#'+(existing.length+1)+')';
+  } else {
+    document.getElementById('a-title').textContent='📝 Daily Activity';
+  }
+},
+
+initTags:function(){
+  document.getElementById('a-tags').innerHTML=C.TAGS.map(function(t){
+    return'<div class="purp-chip" style="font-size:10px;padding:4px 8px" onclick="App.togTag(this,\''+t+'\')">#'+t+'</div>';
+  }).join('');
+},
+
+togTag:function(el,tag){
+  el.classList.toggle('on');
+  var ta=document.getElementById('a-msg');
+  var ht='#'+tag;
+  if(el.classList.contains('on')){
+    if(ta.value.indexOf(ht)===-1) ta.value=ta.value.trim()+(ta.value.trim()?' ':'')+ht;
+  } else {
+    ta.value=ta.value.replace(new RegExp('\\s*'+ht,'g'),'').trim();
+  }
+  this.wordCheck(ta);
+},
+
+wordCheck:function(el){
+  var words=el.value.trim()?el.value.trim().split(/\s+/).length:0;
+  var wc=document.getElementById('a-msg-wc');
+  wc.textContent=words+'/'+C.MAX_WORDS;
+  if(words>C.MAX_WORDS){
+    wc.style.color='var(--R)';
+    el.value=el.value.trim().split(/\s+/).slice(0,C.MAX_WORDS).join(' ');
+    wc.textContent=C.MAX_WORDS+'/'+C.MAX_WORDS;
+  } else {
+    wc.style.color='var(--G5)';
+  }
+},
+
+saveDraft:async function(){
+  try{
+    var data={msg:document.getElementById('a-msg').value,dateMode:_dateMode,oldDate:document.getElementById('a-old-date').value};
+    await F.set('drafts/'+ME.id+'/a',data);
+    document.getElementById('a-draft-badge').style.display='inline-block';
+    U.toast('💾 Draft saved','ok');S.p('click');
+  }catch(e){U.toast('Error saving draft','err')}
+},
+
+loadDraft:async function(){
+  try{
+    var d=await F.g('drafts/'+ME.id+'/a');
+    if(!d||!d.msg)return;
+    document.getElementById('a-msg').value=d.msg||'';
+    if(d.dateMode==='old'){this.setDateMode('old');document.getElementById('a-old-date').value=d.oldDate||''}
+    document.getElementById('a-draft-badge').style.display='inline-block';
+    /* Sync tag highlights */
+    var msg=d.msg||'';
+    document.querySelectorAll('#a-tags .purp-chip').forEach(function(c){
+      var tag=c.textContent;
+      c.classList.toggle('on',msg.indexOf(tag)>=0);
+    });
+  }catch(e){}
+},
+
+clearActForm:function(){
+  document.getElementById('a-msg').value='';
+  this.initTags();
+  this.setDateMode('today');
+  document.getElementById('a-msg-wc').textContent='0/'+C.MAX_WORDS;
+  document.getElementById('a-draft-badge').style.display='none';
+  S.p('click');
+},
+
+fetchYesterday:async function(){
+  try{
+    showLoad('Fetching','Loading last report...');
+    var rpts=(_rpts.length?_rpts:F.arr(await F.g('reports'))).filter(function(x){
+      return x.userId===ME.id&&x.type==='activity'
+    }).sort(function(a,b){return(b.ts||'').localeCompare(a.ts||'')});
+    hideLoad();
+    if(!rpts.length){U.toast('No previous report found','warn');return}
+    var last=rpts[0];
+    document.getElementById('a-msg').value=last.message||'';
+    U.toast('📥 Fetched from '+last.date,'ok');S.p('click');
+    this.wordCheck(document.getElementById('a-msg'));
+  }catch(e){hideLoad();U.toast('Error','err')}
+},
+
+extractTags:function(text){
+  var m=text.match(/#(\w+)/g);
+  return m?m.filter(function(v,i,a){return a.indexOf(v)===i}).map(function(t){return t.slice(1).toLowerCase()}):[];
+},
+
+subAct:async function(){
+  var msg=document.getElementById('a-msg').value.trim();
+  if(!msg){U.toast('Write report','warn');return}
+  var rptDate=this._getFormDate();if(!rptDate)return;
+  var tags=this.extractTags(msg);
+  var isOld=rptDate<U.today();
+  var existing=(_rpts||[]).filter(function(x){return x.userId===ME.id&&x.type==='activity'&&x.date===rptDate});
+  if(isOld&&existing.length>=1){U.toast('❌ Only 1 back-dated report per day','err');S.p('err');return}
+  if(!isOld&&existing.length>=3){U.toast('❌ Max 3 reports per day','err');S.p('err');return}
+  var seqNum=existing.length+1;
+  var label;
+  if(isOld){label='Old Report of '+new Date(rptDate+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+  else if(seqNum===1){label=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+' Report'}
+  else{label=new Date().toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})+' Update #'+seqNum}
+
+  var rid=(isOld?'OLD-':'')+rptDate+'-'+(seqNum>1?'U'+seqNum:'R1');
+  var btn=document.getElementById('a-btn');btn.innerHTML='<div class="spinner"></div>';btn.disabled=true;
+  try{
+    await F.push('reports',{
+      type:'activity',userId:ME.id,userName:ME.name,
+      message:msg,tags:tags,reportId:rid,reportLabel:label,
+      date:rptDate,time:U.time(),
+      ts:new Date().toISOString(),
+      lateReport:isOld,seqNum:seqNum
+    });
+    try{await F.del('drafts/'+ME.id+'/a')}catch(e){}
+    _rpts=F.arr(await F.g('reports'));
+    S.p('ok');U.toast(label+' ✅','ok');
+    this.clearActForm();
+    this.nav('home',document.querySelector('.bnav .bn'));
+    this.loadStats();
+  }catch(e){U.toast('Error submitting','err')}
+  finally{btn.innerHTML='Submit ✓';btn.disabled=false}
+},
+
+/* ═══════════════════════════════════════
    LOAD STATS
    ═══════════════════════════════════════ */
 loadStats:function(){
   try{
     var now=new Date();var moStart=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-01';
-    var myRpts=[];/* Will load reports in Part 2 */
+    var myRpts=_rpts.filter(function(r){return r.userId===ME.id&&r.date>=moStart});
+    var myVis=myRpts.filter(function(r){return r.type==='visit'});
     var myAtt=_att.filter(function(a){return a.userId===ME.id&&a.date>=moStart});
     var onTime=0,late=0;
     myAtt.forEach(function(a){if((a.time||'')>C.START_TIME)late++;else onTime++});
-    /* TODO: load reports for visit/km counts */
-    document.getElementById('ms-rpt').textContent='—';
-    document.getElementById('ms-vis').textContent='—';
-    document.getElementById('ms-km').textContent='—';
+    var totalKm=0;myAtt.forEach(function(a){if(a.totalKm)totalKm+=parseFloat(a.totalKm)});
+    document.getElementById('ms-rpt').textContent=myRpts.length;
+    document.getElementById('ms-vis').textContent=myVis.length;
+    document.getElementById('ms-km').textContent=totalKm.toFixed(0);
+    if(totalKm>0) document.getElementById('ms-km-rs').textContent='Rs '+Math.round(totalKm*C.KM_RATE);
     document.getElementById('ms-ded').textContent='Rs '+(late*C.DED_LATE);
   }catch(e){}
 }
