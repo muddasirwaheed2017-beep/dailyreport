@@ -97,6 +97,7 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 
 /* Toast */
 #toasts{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:4px;max-width:90%}
+
 .toast{padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;color:var(--W);animation:ti .3s,to .3s 2.5s forwards}
 .t-ok{background:var(--grn)}.t-err{background:var(--R)}.t-warn{background:var(--amb)}.t-info{background:var(--G2)}
 @keyframes ti{from{opacity:0;transform:translateY(-8px)}to{opacity:1}}@keyframes to{to{opacity:0}}
@@ -194,11 +195,15 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 var OFC=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
 var KR=6.5, ST='09:00', OTS='18:00';
 var PPL=[
-  {n:'اکبر خان',c:'1001',r:'الیکٹریشن'},{n:'محمد اسلم',c:'1002',r:'ٹیکنیشن'},
-  {n:'عبدالرحمان',c:'1003',r:'مزدور'},{n:'نذیر احمد',c:'1004',r:'ہیلپر'},
-  {n:'فیاض حسین',c:'1005',r:'ٹیکنیشن'},{n:'ساجد محمود',c:'1006',r:'الیکٹریشن'},
-  {n:'وسیم اکرم',c:'1007',r:'مزدور'},{n:'طارق مسعود',c:'1008',r:'ہیلپر'},
-  {n:'عامر شہزاد',c:'1009',r:'ٹیکنیشن'},{n:'بلال احمد',c:'1010',r:'مزدور'}
+  {n:'اسحاق',c:'L001',r:'الیکٹریکل انجینئر',ph:'03242778907'},
+  {n:'خبیب',c:'L002',r:'سپروائزر',ph:'03466741791'},
+  {n:'وقاص',c:'L003',r:'سینئر الیکٹریشن',ph:'03484161094'},
+  {n:'بلال',c:'L004',r:'سینئر الیکٹریشن',ph:'03019735572'},
+  {n:'حریرہ',c:'L005',r:'الیکٹریشن',ph:'03090374430'},
+  {n:'سلمان جٹ',c:'L006',r:'الیکٹریشن',ph:'03187313165'},
+  {n:'جنید',c:'L007',r:'ہیلپر',ph:'03245151249'},
+  {n:'انس',c:'L008',r:'ہیلپر',ph:'03195835487'},
+  {n:'حمزہ',c:'L009',r:'ہیلپر',ph:'03264229382'}
 ];
 
 /* ═══ GLOBALS ═══ */
@@ -209,6 +214,7 @@ var _inTime = null; // check-in time
 var _stream = null; // camera stream
 var _wkInt = null;  // work timer interval
 var _mRec = null;   // MediaRecorder
+var _micStream = null; // mic stream ref for cleanup
 var _mChunks = [];  // audio chunks
 var _mBlob = null;  // recorded blob
 var _mUrl = null;   // audio URL
@@ -300,12 +306,22 @@ function killStream() {
   if (_stream) {
     _stream.getTracks().forEach(function(t) { t.stop(); });
     _stream = null;
-    log('Stream killed');
+    log('Camera stream killed');
   }
   var vid = $('vid');
   if (vid && vid.srcObject) {
     vid.srcObject.getTracks().forEach(function(t) { t.stop(); });
     vid.srcObject = null;
+  }
+  // Kill mic too
+  if (_micStream) {
+    _micStream.getTracks().forEach(function(t) { t.stop(); });
+    _micStream = null;
+    log('Mic stream killed');
+  }
+  if (_mRec && _mRec.state === 'recording') {
+    try { _mRec.stop(); } catch(e) {}
+    _mRec = null;
   }
 }
 
@@ -368,11 +384,25 @@ var App = {
     if (V.lines[pg]) V.say(V.lines[pg]);
   },
 
-  /* ── 1: Name list ── */
+  /* ── 1: Name list + Device Auto-Login ── */
   init: function() {
+    // Check if device already registered
+    var devId = localStorage.getItem('cs_labour_dev');
+    var devCode = localStorage.getItem('cs_labour_code');
+    if (devId && devCode) {
+      var match = PPL.find(function(p) { return p.c === devCode; });
+      if (match) {
+        _who = match;
+        log('Auto-login: ' + match.n + ' (' + match.c + ') dev=' + devId);
+        toast('👋 ' + match.n, 'ok');
+        this.toSelfie();
+        return;
+      }
+    }
+    // First time — show name list
     var h = '';
     PPL.forEach(function(p, i) {
-      h += '<div class="nm-b" onclick="App.pick(' + i + ')" id="nm' + i + '"><span>' + p.n + '</span><span class="nm-s">' + p.r + ' · ' + p.c + '</span></div>';
+      h += '<div class="nm-b" onclick="App.pick(' + i + ')" id="nm' + i + '"><span>' + p.n + '</span><span class="nm-s">' + p.r + ' · ' + p.ph + '</span></div>';
     });
     $('nms').innerHTML = h;
   },
@@ -382,7 +412,14 @@ var App = {
     document.querySelectorAll('.nm-b').forEach(function(b) { b.classList.remove('on'); });
     $('nm' + i).classList.add('on');
     $('btn-go').style.display = 'block';
-    log('Selected: ' + _who.n);
+    // Bind device
+    var devId = localStorage.getItem('cs_labour_dev');
+    if (!devId) {
+      devId = 'LD' + Date.now() + Math.random().toString(36).substr(2, 4);
+      localStorage.setItem('cs_labour_dev', devId);
+    }
+    localStorage.setItem('cs_labour_code', _who.c);
+    log('Device bound: ' + _who.n + ' → ' + devId);
   },
 
   filt: function(q) {
@@ -577,6 +614,8 @@ var App = {
         name: _who.n,
         code: _who.c,
         designation: _who.r,
+        phone: _who.ph || '',
+        deviceId: localStorage.getItem('cs_labour_dev') || '',
         date: dateStr,
         dateKey: dateKey,
         checkIn: _inTime,
@@ -622,6 +661,7 @@ var App = {
           self._row('📊 حالت', late ? '⏰ لیٹ' : '✅ وقت پر', late ? 'c-a' : 'c-g') +
           self._row('📸 سیلفی', '✅', 'c-g') +
           self._row('📡 GPS', _geo.la.toFixed(4) + ', ' + _geo.ln.toFixed(4));
+
       });
     });
   },
@@ -698,6 +738,7 @@ var App = {
 
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then(function(stream) {
+        _micStream = stream; // store globally for cleanup
         log('Mic stream OK. Tracks: ' + stream.getTracks().length);
 
         // Check MediaRecorder support
@@ -772,6 +813,12 @@ var App = {
       _mRec.stop();
       log('Recording stopped');
     }
+    // Force kill mic stream (iOS fix)
+    if (_micStream) {
+      _micStream.getTracks().forEach(function(t) { t.stop(); });
+      _micStream = null;
+      log('Mic stream force-killed');
+    }
   },
 
   recPlay: function() {
@@ -795,6 +842,9 @@ var App = {
     if (_saving) return;
     if (!_fbKey) { toast('حاضری کا ریکارڈ نہیں ملا', 'err'); return; }
     _saving = true;
+    // Kill mic immediately
+    if (_micStream) { _micStream.getTracks().forEach(function(t) { t.stop(); }); _micStream = null; log('Mic killed on checkout'); }
+    if (_mRec && _mRec.state === 'recording') { try { _mRec.stop(); } catch(e) {} }
     if (_wkInt) { clearInterval(_wkInt); _wkInt = null; }
     var out = timeNow();
     var cp = _inTime.split(':'), op = out.split(':');
