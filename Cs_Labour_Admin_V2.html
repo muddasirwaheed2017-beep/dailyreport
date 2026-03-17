@@ -101,7 +101,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 
 <div class="top">
   <div class="top-t">CS <em>Labour</em> Admin</div>
-  <div class="top-r"><span class="top-v">V2</span></div>
+  <div class="top-r"><span class="top-v">V2</span><button onclick="openSettings()" style="background:var(--s2);color:var(--tx2);border:1px solid var(--bdr);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">⚙️</button></div>
 </div>
 
 <div class="tabs" id="tabs">
@@ -163,13 +163,64 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   </div>
 </div>
 
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>⚙️ Settings</h2>
+      <button class="modal-x" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-section">Claude API Key</div>
+      <p style="font-size:12px;color:var(--tx2);margin-bottom:10px">Required for AI Analysis. Stored locally in your browser only.</p>
+      <input type="password" id="set-key" style="width:100%;padding:10px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:monospace" placeholder="sk-ant-...">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="m-btn" style="background:var(--B);flex:1" onclick="saveKey()">💾 Save Key</button>
+        <button class="m-btn" style="background:var(--s3);flex:1" onclick="toggleKey()">👁 Show/Hide</button>
+      </div>
+      <div id="set-status" style="font-size:12px;margin-top:8px;text-align:center"></div>
+      <div class="m-section">Key Status</div>
+      <div id="set-info" style="font-size:12px;color:var(--tx2);padding:8px;background:var(--s2);border-radius:var(--r)">—</div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 /* ═══ CONFIG ═══ */
 var FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
 var OFC=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
-var CLAUDE_KEY=localStorage.getItem('csvt8_claude')||'';
+var CLAUDE_KEY=localStorage.getItem('csvt8')||'';
 var _all=[], _data=[], _map=null;
+
+/* ═══ SETTINGS ═══ */
+function openSettings(){
+  var el=$('set-key');
+  el.value=CLAUDE_KEY;
+  el.type='password';
+  updateKeyInfo();
+  $('settings-modal').classList.add('on');
+}
+function closeSettings(){$('settings-modal').classList.remove('on')}
+function saveKey(){
+  var k=$('set-key').value.trim();
+  if(!k){$('set-status').innerHTML='<span style="color:var(--R)">Key cannot be empty</span>';return}
+  localStorage.setItem('csvt8',k);
+  CLAUDE_KEY=k;
+  $('set-status').innerHTML='<span style="color:var(--G)">✅ Key saved successfully</span>';
+  updateKeyInfo();
+  setTimeout(function(){$('set-status').innerHTML=''},2000);
+}
+function toggleKey(){
+  var el=$('set-key');
+  el.type=el.type==='password'?'text':'password';
+}
+function updateKeyInfo(){
+  var k=CLAUDE_KEY;
+  if(!k){$('set-info').innerHTML='<span style="color:var(--R)">❌ No API key set — AI Analysis will not work</span>';return}
+  var masked=k.substring(0,10)+'...' +k.substring(k.length-4);
+  $('set-info').innerHTML='<span style="color:var(--G)">✅ Key configured</span><br><span style="font-family:monospace;font-size:11px;color:var(--tx3)">'+masked+'</span>';
+}
 
 function $(id){return document.getElementById(id)}
 function pktNow(){
@@ -474,12 +525,11 @@ function runAI(){
     if(r.road){if(!summary.roads[r.road])summary.roads[r.road]=0;summary.roads[r.road]++}
   });
 
-  var apiKey=CLAUDE_KEY||localStorage.getItem('csvt8')||'';
+  var apiKey=CLAUDE_KEY;
   if(!apiKey){
-    apiKey=window.prompt('Enter Claude API Key (saved in localStorage):');
-    if(!apiKey)return;
-    localStorage.setItem('csvt8',apiKey);
-    CLAUDE_KEY=apiKey;
+    openSettings();
+    $('set-status').innerHTML='<span style="color:var(--A)">⚠️ Set your API key first, then run AI again</span>';
+    return;
   }
 
   $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px"><div class="loading"><div class="spin"></div><br>🤖 Analyzing '+recs.length+' records...</div></div>';
