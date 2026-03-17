@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>CS Labour حاضری V5</title>
+<title>CS Labour حاضری V6</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--R:#b91c1c;--G1:#111827;--G2:#1f2937;--G5:#6b7280;--G7:#d1d5db;--G8:#e5e7eb;--G9:#f3f4f6;--W:#fff;--grn:#16a34a;--grn-bg:#f0fdf4;--amb:#d97706;--amb-bg:#fffbeb;--r:12px;--rl:16px}
@@ -109,8 +109,8 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 <div class="top">
   <div class="top-l">
     <button class="btn-spk" onclick="V.replay()">🔊</button>
-    <span class="top-v">V5</span>
-    <span class="top-d">17Mar2026</span>
+    <span class="top-v">V6</span>
+    <span class="top-d">18Mar2026</span>
   </div>
   <div class="top-t">CS <em>حاضری</em></div>
 </div>
@@ -157,6 +157,11 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
   <div style="background:var(--grn-bg);border:2px solid var(--grn);border-radius:var(--rl);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:10px">
     <div style="font-size:28px">🟢</div>
     <div><div style="font-size:15px;font-weight:800;color:var(--grn)">کام جاری ہے</div><div style="font-size:12px;color:var(--G5)" id="wk-s">—</div></div>
+  </div>
+  <div style="background:var(--W);border:2px solid var(--G8);border-radius:var(--r);padding:8px 12px;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+    <div style="width:10px;height:10px;border-radius:50%;background:var(--grn);animation:rp 2s infinite"></div>
+    <div style="font-size:11px;color:var(--G5);font-weight:700">📡 GPS ٹریکنگ آن — ہر 10 منٹ</div>
+    <div style="margin-right:auto;font-size:11px;font-weight:800;color:var(--grn)" id="wk-gps">0 پوائنٹس</div>
   </div>
   <div class="timer-l">کام کا وقت</div>
   <div class="timer" id="wk-t">00:00:00</div>
@@ -224,6 +229,9 @@ var _rSec = 0;      // rec seconds
 var _curPg = 'select';
 var _fbKey = null;  // Firebase push key for current session
 var _saving = false; // prevent double-tap
+var _gpsTracker = null; // 10-min GPS interval
+var _gpsTrail = []; // [{lat,lng,time}]
+var _gpsCount = 0;
 
 /* ═══ FIREBASE (XHR REST) ═══ */
 var FB_URL = 'https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
@@ -259,6 +267,17 @@ var FB = {
     };
     x.onerror = function() { cb('Network error'); };
     x.send();
+  },
+  set: function(path, data, cb) {
+    var x = new XMLHttpRequest();
+    x.open('PUT', FB_URL + path + '.json');
+    x.setRequestHeader('Content-Type', 'application/json');
+    x.onload = function() {
+      try { var r = JSON.parse(x.responseText); cb(null, r); }
+      catch(e) { cb('Parse error'); }
+    };
+    x.onerror = function() { cb('Network error'); };
+    x.send(JSON.stringify(data));
   }
 };
 
@@ -689,6 +708,70 @@ var App = {
       var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
       $('wk-t').textContent = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
     }, 1000);
+    // Start GPS tracking
+    this.startTracking();
+  },
+
+  startTracking: function() {
+    if (_gpsTracker) clearInterval(_gpsTracker);
+    _gpsTrail = [];
+    _gpsCount = 0;
+    log('GPS tracking started (10 min intervals)');
+    // Immediate first point
+    this.trackPoint();
+    // Then every 10 minutes
+    _gpsTracker = setInterval(function() { App.trackPoint(); }, 10 * 60 * 1000);
+  },
+
+  trackPoint: function() {
+    if (!navigator.geolocation) { log('No GPS for tracking'); return; }
+    navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        var pt = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          acc: Math.round(pos.coords.accuracy),
+          time: timeNow(),
+          ts: new Date().toLocaleString('en-GB', {timeZone:'Asia/Karachi'})
+        };
+        _gpsTrail.push(pt);
+        _gpsCount++;
+        log('GPS #' + _gpsCount + ': ' + pt.lat.toFixed(5) + ',' + pt.lng.toFixed(5) + ' acc=' + pt.acc + 'm');
+        var el = $('wk-gps');
+        if (el) el.textContent = _gpsCount + ' پوائنٹس';
+        // Save to Firebase
+        if (_fbKey && _who) {
+          var dateKey = new Date().toLocaleString('en-CA',{timeZone:'Asia/Karachi',year:'numeric',month:'2-digit',day:'2-digit'}).split(',')[0].replace(/-/g,'');
+          var tPath = '/labour_tracking/' + _who.c + '/' + dateKey + '/' + (_gpsCount - 1);
+          FB.set(tPath, pt, function(err) {
+            if (err) log('Track save failed: ' + err);
+          });
+        }
+      },
+      function(err) {
+        log('Track GPS error: ' + err.message);
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
+    );
+  },
+
+  stopTracking: function() {
+    if (_gpsTracker) { clearInterval(_gpsTracker); _gpsTracker = null; }
+    log('GPS tracking stopped. Total points: ' + _gpsCount);
+    // Save trail summary to attendance record
+    if (_fbKey && _gpsTrail.length > 0) {
+      var totalKm = 0;
+      for (var i = 1; i < _gpsTrail.length; i++) {
+        totalKm += gDist(_gpsTrail[i-1].lat, _gpsTrail[i-1].lng, _gpsTrail[i].lat, _gpsTrail[i].lng) / 1000;
+      }
+      FB.patch('/labour_attendance/' + _fbKey, {
+        trackingPoints: _gpsCount,
+        trackingKm: +totalKm.toFixed(2)
+      }, function(err) {
+        if (err) log('Trail summary save failed');
+        else log('Trail summary saved: ' + _gpsCount + ' pts, ' + totalKm.toFixed(2) + ' km');
+      });
+    }
   },
 
   /* ── 5: Checkout ── */
@@ -846,6 +929,8 @@ var App = {
     // Kill mic immediately
     if (_micStream) { _micStream.getTracks().forEach(function(t) { t.stop(); }); _micStream = null; log('Mic killed on checkout'); }
     if (_mRec && _mRec.state === 'recording') { try { _mRec.stop(); } catch(e) {} }
+    // Stop GPS tracking
+    this.stopTracking();
     if (_wkInt) { clearInterval(_wkInt); _wkInt = null; }
     var out = timeNow();
     var cp = _inTime.split(':'), op = out.split(':');

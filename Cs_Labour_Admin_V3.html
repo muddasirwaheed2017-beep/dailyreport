@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CS Labour Admin V3</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--s1:#1a1d27;--s2:#242836;--s3:#2e3345;--bdr:#363b4e;--tx:#e2e4ea;--tx2:#8b90a0;--tx3:#5c6178;--R:#dc2626;--Rb:#991b1b;--G:#22c55e;--Gb:#14532d;--A:#f59e0b;--Ab:#78350f;--B:#3b82f6;--Bb:#1e40af;--P:#a855f7;--W:#fff;--r:10px;--rl:14px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px}
+button,input,select,textarea{font-family:inherit;border:none;outline:none;font-size:14px}
+
+/* Top */
+.top{background:var(--s1);padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--R);position:sticky;top:0;z-index:100}
+.top-t{font-size:16px;font-weight:800}.top-t em{color:var(--R);font-style:normal}
+.top-r{display:flex;align-items:center;gap:8px}
+.top-v{font-size:9px;font-weight:800;padding:2px 8px;border-radius:6px;background:var(--R);color:var(--W)}
+
+/* Tabs */
+.tabs{display:flex;background:var(--s1);border-bottom:1px solid var(--bdr);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:12px 18px;font-size:13px;font-weight:700;color:var(--tx3);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:.2s}
+.tab:hover{color:var(--tx2)}.tab.on{color:var(--B);border-bottom-color:var(--B)}
+
+/* Panels */
+.panel{display:none;padding:16px}.panel.on{display:block}
+
+/* Filter bar */
+.fbar{background:var(--s2);padding:12px;border-radius:var(--rl);margin-bottom:14px;display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.fg{display:flex;flex-direction:column;gap:4px}
+.fg label{font-size:10px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.fi{padding:8px 12px;background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px;min-width:120px}
+.fi:focus{border-color:var(--B)}
+.fbtn{padding:8px 16px;background:var(--B);color:var(--W);border-radius:var(--r);font-weight:700;cursor:pointer;font-size:13px;height:35px}
+.fbtn:active{opacity:.8}
+.fbtn-r{background:var(--R)}.fbtn-g{background:var(--G)}.fbtn-p{background:var(--P)}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:12px;text-align:center}
+.stat-n{font-size:24px;font-weight:800;line-height:1}.stat-l{font-size:10px;color:var(--tx2);margin-top:4px;font-weight:600}
+.sg{color:var(--G)}.sr{color:var(--R)}.sa{color:var(--A)}.sb{color:var(--B)}.sp{color:var(--P)}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:border-color .2s}
+.card:hover{border-color:var(--B)}
+.card-top{display:flex;align-items:center;gap:12px;padding:14px}
+.card-av{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--bdr);background:var(--s3)}
+.card-av-ph{width:46px;height:46px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--tx3);border:2px solid var(--bdr)}
+.card-nm{font-weight:700;font-size:14px}.card-sub{font-size:11px;color:var(--tx2);margin-top:2px}
+.card-badge{margin-left:auto;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:800;flex-shrink:0}
+.b-in{background:rgba(34,197,94,.15);color:var(--G);border:1px solid rgba(34,197,94,.3)}
+.b-out{background:rgba(59,130,246,.15);color:var(--B);border:1px solid rgba(59,130,246,.3)}
+.b-late{background:rgba(245,158,11,.15);color:var(--A);border:1px solid rgba(245,158,11,.3)}
+.card-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--bdr)}
+.card-cell{padding:8px 6px;text-align:center;border-right:1px solid var(--bdr)}.card-cell:last-child{border-right:none}
+.card-cv{font-size:14px;font-weight:800}.card-cl{font-size:9px;color:var(--tx3);margin-top:2px;text-transform:uppercase;font-weight:600}
+.card-ft{display:flex;gap:5px;padding:8px 12px;border-top:1px solid var(--bdr);flex-wrap:wrap}
+.card-ic{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:700;background:var(--s2);color:var(--tx2);border:1px solid var(--bdr)}
+.card-ic.has{color:var(--G);border-color:rgba(34,197,94,.3)}
+
+/* Empty */
+.empty{text-align:center;padding:60px 20px;color:var(--tx3)}
+.empty-i{font-size:48px;margin-bottom:10px}.empty-h{font-size:18px;font-weight:700;color:var(--tx2)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--bdr)}
+.modal-head h2{font-size:16px;font-weight:800}.modal-x{background:var(--s3);color:var(--tx);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px}
+.modal-body{padding:16px}
+.m-selfie{width:140px;height:140px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 14px;border:3px solid var(--bdr)}
+.m-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--s3)}.m-row:last-child{border:none}
+.m-rl{color:var(--tx2);font-size:12px}.m-rv{font-weight:700;font-size:13px;text-align:right;max-width:60%;word-break:break-word}
+.m-map{width:100%;height:200px;border-radius:var(--r);margin-top:12px;border:1px solid var(--bdr)}
+.m-audio{width:100%;margin-top:10px}
+.m-section{font-size:11px;font-weight:800;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;padding-top:10px;border-top:1px solid var(--s3)}
+.m-btn{width:100%;padding:10px;border-radius:var(--r);font-weight:700;cursor:pointer;font-size:13px;border:none;margin-top:6px;color:var(--W)}
+
+/* Report table */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px;background:var(--s1);border-radius:var(--rl);overflow:hidden}
+.rtbl th{background:var(--s2);padding:10px 8px;text-align:left;font-size:11px;color:var(--tx2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);position:sticky;top:0}
+.rtbl td{padding:8px;border-bottom:1px solid var(--s3);vertical-align:top}
+.rtbl tr:hover td{background:var(--s2)}
+.rtbl-wrap{max-height:500px;overflow:auto;border:1px solid var(--bdr);border-radius:var(--rl)}
+
+/* AI Section */
+.ai-box{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:16px;margin-top:14px}
+.ai-out{background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin-top:12px;font-size:13px;line-height:1.7;white-space:pre-wrap;max-height:500px;overflow-y:auto}
+.ai-out h3{color:var(--B);font-size:14px;margin:10px 0 4px}
+
+/* Loading */
+.spin{display:inline-block;width:20px;height:20px;border:3px solid var(--s3);border-top-color:var(--B);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:30px;color:var(--tx2)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-t">CS <em>Labour</em> Admin</div>
+  <div class="top-r"><span class="top-v">V3</span><button onclick="openSettings()" style="background:var(--s2);color:var(--tx2);border:1px solid var(--bdr);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">⚙️</button></div>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab on" onclick="showTab('dash')">📊 Dashboard</div>
+  <div class="tab" onclick="showTab('map')">🗺️ Live Map</div>
+  <div class="tab" onclick="showTab('trail')">📍 Trail</div>
+  <div class="tab" onclick="showTab('report')">📋 Report</div>
+  <div class="tab" onclick="showTab('ai')">🤖 AI</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="pn-dash" class="panel on">
+  <div class="fbar">
+    <div class="fg"><label>From</label><input type="date" class="fi" id="f-from"></div>
+    <div class="fg"><label>To</label><input type="date" class="fi" id="f-to"></div>
+    <div class="fg"><label>Worker</label><select class="fi" id="f-name"><option value="">All</option></select></div>
+    <div class="fg"><label>Status</label>
+      <select class="fi" id="f-status"><option value="">All</option><option value="checked-in">Working</option><option value="checked-out">Done</option></select>
+    </div>
+    <div class="fg"><label>Designation</label>
+      <select class="fi" id="f-desg"><option value="">All</option><option value="الیکٹریشن">الیکٹریشن</option><option value="ٹیکنیشن">ٹیکنیشن</option><option value="مزدور">مزدور</option><option value="ہیلپر">ہیلپر</option></select>
+    </div>
+    <button class="fbtn" onclick="applyFilter()">🔄 Load</button>
+    <button class="fbtn fbtn-r" onclick="loadAll()">📋 All</button>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="cards" id="cards"></div>
+</div>
+
+<!-- LIVE MAP -->
+<div id="pn-map" class="panel">
+  <div class="fbar">
+    <button class="fbtn" onclick="loadLiveMap()">🔄 Refresh</button>
+    <span style="font-size:11px;color:var(--tx2)">Shows today's check-ins on map. Tap pin for details.</span>
+  </div>
+  <div id="live-map" style="width:100%;height:500px;border-radius:var(--r);border:1px solid var(--bdr)"></div>
+</div>
+
+<!-- TRAIL REPORT -->
+<div id="pn-trail" class="panel">
+  <div class="fbar">
+    <div class="fg"><label>Employee</label><select class="fi" id="tr-emp" onchange="loadTrail()"></select></div>
+    <div class="fg"><label>Date</label><input type="date" class="fi" id="tr-date"></div>
+    <button class="fbtn" onclick="loadTrail()">📍 Load Trail</button>
+  </div>
+  <div id="trail-stats" style="margin-bottom:10px"></div>
+  <div id="trail-map" style="width:100%;height:400px;border-radius:var(--r);border:1px solid var(--bdr);margin-bottom:14px"></div>
+  <div id="trail-list"></div>
+</div>
+
+<!-- REPORT -->
+<div id="pn-report" class="panel">
+  <div class="fbar">
+    <div class="fg"><label>Month</label><input type="month" class="fi" id="r-month"></div>
+    <button class="fbtn" onclick="genReport()">📊 Generate Report</button>
+  </div>
+  <div id="report-out"></div>
+</div>
+
+<!-- AI -->
+<div id="pn-ai" class="panel">
+  <div class="ai-box">
+    <div style="font-size:15px;font-weight:800;margin-bottom:8px">🤖 AI Analysis</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:12px">Analyzes attendance patterns, location trends, OT distribution, late arrivals, and generates actionable insights.</p>
+    <div class="fbar" style="margin-bottom:0">
+      <div class="fg"><label>Date Range</label><input type="date" class="fi" id="ai-from"></div>
+      <div class="fg"><label>To</label><input type="date" class="fi" id="ai-to"></div>
+      <button class="fbtn fbtn-p" onclick="runAI()">🤖 Run Analysis</button>
+    </div>
+  </div>
+  <div id="ai-out"></div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="m-name">—</h2>
+      <button class="modal-x" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-bg" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>⚙️ Settings</h2>
+      <button class="modal-x" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-section">Claude API Key</div>
+      <p style="font-size:12px;color:var(--tx2);margin-bottom:10px">Required for AI Analysis. Stored locally in your browser only.</p>
+      <input type="password" id="set-key" style="width:100%;padding:10px;background:var(--s2);border:1px solid var(--bdr);border-radius:var(--r);color:var(--tx);font-size:13px;font-family:monospace" placeholder="sk-ant-...">
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="m-btn" style="background:var(--B);flex:1" onclick="saveKey()">💾 Save Key</button>
+        <button class="m-btn" style="background:var(--s3);flex:1" onclick="toggleKey()">👁 Show/Hide</button>
+      </div>
+      <div id="set-status" style="font-size:12px;margin-top:8px;text-align:center"></div>
+      <div class="m-section">Key Status</div>
+      <div id="set-info" style="font-size:12px;color:var(--tx2);padding:8px;background:var(--s2);border-radius:var(--r)">—</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ═══ CONFIG ═══ */
+var FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+var OFC=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
+var CLAUDE_KEY=localStorage.getItem('csvt8')||'';
+var _all=[], _data=[], _map=null;
+
+/* ═══ SETTINGS ═══ */
+function openSettings(){
+  var el=$('set-key');
+  el.value=CLAUDE_KEY;
+  el.type='password';
+  updateKeyInfo();
+  $('settings-modal').classList.add('on');
+}
+function closeSettings(){$('settings-modal').classList.remove('on')}
+function saveKey(){
+  var k=$('set-key').value.trim();
+  if(!k){$('set-status').innerHTML='<span style="color:var(--R)">Key cannot be empty</span>';return}
+  localStorage.setItem('csvt8',k);
+  CLAUDE_KEY=k;
+  $('set-status').innerHTML='<span style="color:var(--G)">✅ Key saved successfully</span>';
+  updateKeyInfo();
+  setTimeout(function(){$('set-status').innerHTML=''},2000);
+}
+function toggleKey(){
+  var el=$('set-key');
+  el.type=el.type==='password'?'text':'password';
+}
+function updateKeyInfo(){
+  var k=CLAUDE_KEY;
+  if(!k){$('set-info').innerHTML='<span style="color:var(--R)">❌ No API key set — AI Analysis will not work</span>';return}
+  var masked=k.substring(0,10)+'...' +k.substring(k.length-4);
+  $('set-info').innerHTML='<span style="color:var(--G)">✅ Key configured</span><br><span style="font-family:monospace;font-size:11px;color:var(--tx3)">'+masked+'</span>';
+}
+
+function $(id){return document.getElementById(id)}
+function pktNow(){
+  var s=new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi',day:'2-digit',month:'2-digit',year:'numeric'});
+  var p=s.split('/');return{d:p[0],m:p[1],y:p[2]};
+}
+function todayISO(){var p=pktNow();return p.y+'-'+p.m+'-'+p.d}
+function mRow(l,v){return'<div class="m-row"><span class="m-rl">'+l+'</span><span class="m-rv">'+v+'</span></div>'}
+
+/* ═══ TABS ═══ */
+function showTab(t){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on')});
+  document.querySelectorAll('.tab').forEach(function(p){p.classList.remove('on')});
+  $('pn-'+t).classList.add('on');
+  var tabs=document.querySelectorAll('.tab');
+  var map={dash:0,map:1,trail:2,report:3,ai:4};
+  if(map[t]!==undefined)tabs[map[t]].classList.add('on');
+  if(t==='map')setTimeout(function(){if(_liveMap)_liveMap.invalidateSize()},200);
+  if(t==='trail')setTimeout(function(){if(_trailMap)_trailMap.invalidateSize()},200);
+}
+
+/* ═══ INIT ═══ */
+var today=todayISO();
+$('f-from').value=today;$('f-to').value=today;
+$('r-month').value=today.substring(0,7);
+$('ai-from').value=today;$('ai-to').value=today;
+
+/* Prompt for Claude key if not set */
+if(!CLAUDE_KEY){
+  var k=localStorage.getItem('csvt8');
+  if(k)CLAUDE_KEY=k;
+}
+
+/* ═══ FIREBASE ═══ */
+function fbGet(path,cb){
+  var x=new XMLHttpRequest();
+  x.open('GET',FB_URL+path+'.json');
+  x.onload=function(){try{cb(null,JSON.parse(x.responseText))}catch(e){cb(e)}};
+  x.onerror=function(){cb('Network error')};x.send();
+}
+function fbDel(path,cb){
+  var x=new XMLHttpRequest();
+  x.open('DELETE',FB_URL+path+'.json');
+  x.onload=function(){cb(x.status>=200&&x.status<300?null:'HTTP '+x.status)};
+  x.onerror=function(){cb('Network error')};x.send();
+}
+
+/* ═══ LOAD DATA ═══ */
+function loadAll(){
+  showLoading();
+  fbGet('/labour_attendance',function(err,raw){
+    if(err||!raw){_all=[];_data=[];renderAll();return}
+    _all=[];
+    Object.keys(raw).forEach(function(k){var r=raw[k];r._key=k;_all.push(r)});
+    _all.sort(function(a,b){return(b.timestamp||'').localeCompare(a.timestamp||'')});
+    populateNameFilter();
+    populateTrailEmp();
+    _data=_all.slice();
+    renderAll();
+  });
+}
+function applyFilter(){
+  var from=$('f-from').value.replace(/-/g,'');
+  var to=$('f-to').value.replace(/-/g,'');
+  var nm=$('f-name').value;
+  var st=$('f-status').value;
+  var dg=$('f-desg').value;
+  if(!_all.length){loadAll();return}
+  _data=_all.filter(function(r){
+    if(from&&r.dateKey&&r.dateKey<from)return false;
+    if(to&&r.dateKey&&r.dateKey>to)return false;
+    if(nm&&r.name!==nm)return false;
+    if(st&&r.status!==st)return false;
+    if(dg&&r.designation!==dg)return false;
+    return true;
+  });
+  renderAll();
+}
+function populateNameFilter(){
+  var names={};
+  _all.forEach(function(r){if(r.name)names[r.name]=1});
+  var h='<option value="">All</option>';
+  Object.keys(names).sort().forEach(function(n){h+='<option value="'+n+'">'+n+'</option>'});
+  $('f-name').innerHTML=h;
+}
+function showLoading(){$('cards').innerHTML='<div class="loading"><div class="spin"></div><br>Loading...</div>';$('stats').innerHTML=''}
+
+/* ═══ RENDER ═══ */
+function renderAll(){renderStats();renderCards()}
+
+function renderStats(){
+  var t=_data.length;
+  var working=0,done=0,late=0,totMin=0,totOT=0,totTA=0;
+  _data.forEach(function(r){
+    if(r.status==='checked-in')working++;
+    if(r.status==='checked-out')done++;
+    if(r.late)late++;
+    totMin+=(r.totalMinutes||0);
+    totOT+=(r.otMinutes||0);
+    totTA+=(r.taAmount||0);
+  });
+  var avgH=t>0?Math.round(totMin/t/60*10)/10:0;
+  $('stats').innerHTML=
+    '<div class="stat"><div class="stat-n sb">'+t+'</div><div class="stat-l">Records</div></div>'+
+    '<div class="stat"><div class="stat-n sg">'+working+'</div><div class="stat-l">Working</div></div>'+
+    '<div class="stat"><div class="stat-n sb">'+done+'</div><div class="stat-l">Done</div></div>'+
+    '<div class="stat"><div class="stat-n sa">'+late+'</div><div class="stat-l">Late</div></div>'+
+    '<div class="stat"><div class="stat-n sp">'+avgH+'h</div><div class="stat-l">Avg Hours</div></div>'+
+    '<div class="stat"><div class="stat-n sr">'+Math.round(totOT/60*10)/10+'h</div><div class="stat-l">OT Total</div></div>'+
+    '<div class="stat"><div class="stat-n sg">Rs '+totTA+'</div><div class="stat-l">TA Total</div></div>';
+}
+
+function renderCards(){
+  if(!_data.length){$('cards').innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-h">No records</div></div>';return}
+  var h='';
+  _data.forEach(function(r,i){
+    var isOut=r.status==='checked-out';
+    var bc=r.late?'b-late':(isOut?'b-out':'b-in');
+    var bt=r.late?'LATE':(isOut?'DONE':'WORKING');
+    var nm=r.name||'Unknown',dg=r.designation||'—',cd=r.code||'—';
+    var sf=r.checkInSelfie?'<img class="card-av" src="'+r.checkInSelfie+'">':'<div class="card-av-ph">👤</div>';
+    var hv=r.voiceNote&&r.voiceNote.length>50;
+    h+='<div class="card" data-idx="'+i+'" onclick="openDetail('+i+')">'+
+      '<div class="card-top">'+sf+'<div><div class="card-nm">'+nm+'</div><div class="card-sub">'+dg+' · '+(r.date||cd)+'</div></div><span class="card-badge '+bc+'">'+bt+'</span></div>'+
+      '<div class="card-grid">'+
+        '<div class="card-cell"><div class="card-cv">'+(r.checkIn||'—')+'</div><div class="card-cl">In</div></div>'+
+        '<div class="card-cell"><div class="card-cv">'+(r.checkOut||'—')+'</div><div class="card-cl">Out</div></div>'+
+        '<div class="card-cell"><div class="card-cv">'+(r.totalHours||'—')+'</div><div class="card-cl">Hours</div></div>'+
+        '<div class="card-cell"><div class="card-cv">'+(r.otMinutes>0?r.otHours:'0')+'</div><div class="card-cl">OT</div></div>'+
+      '</div>'+
+      '<div class="card-ft">'+
+        '<span class="card-ic has">📍 '+(r.checkInKmFromOffice||0)+'km</span>'+
+        '<span class="card-ic has">💰 Rs'+(r.taAmount||0)+'</span>'+
+        (r.road?'<span class="card-ic has">🛣️ '+r.road+'</span>':'')+
+        (hv?'<span class="card-ic has">🎙️</span>':'')+
+        (r.checkInSelfie?'<span class="card-ic has">📸</span>':'')+
+      '</div></div>';
+  });
+  $('cards').innerHTML=h;
+}
+
+/* ═══ DETAIL MODAL ═══ */
+function openDetail(i){
+  var r=_data[i];if(!r)return;
+  var nm=r.name||'Unknown',dg=r.designation||'—';
+  $('m-name').textContent=nm+' · '+dg;
+  var hv=r.voiceNote&&r.voiceNote.length>50;
+  var h='';
+
+  if(r.checkInSelfie){
+    h+='<a href="'+r.checkInSelfie+'" target="_blank"><img class="m-selfie" src="'+r.checkInSelfie+'"></a>';
+  }
+
+  h+='<div class="m-section">Attendance</div>';
+  h+=mRow('📅 Date',r.date||'—');
+  h+=mRow('⏰ Check In',r.checkIn||'—');
+  h+=mRow('🕐 Check Out',r.checkOut||'—');
+  h+=mRow('📊 Total',r.totalHours||'—');
+  h+=mRow('🕐 OT',r.otMinutes>0?r.otHours:'None');
+  h+=mRow('⏰ Late',r.late?'<span style="color:var(--A)">Yes</span>':'<span style="color:var(--G)">No</span>');
+  h+=mRow('📊 Status',r.status||'—');
+
+  h+='<div class="m-section">Location</div>';
+  h+=mRow('📍 Office',r.nearestOffice||'—');
+  if(r.landmark)h+=mRow('🏢 Landmark',r.landmark);
+  if(r.road)h+=mRow('🛣️ Road',r.road);
+  if(r.area)h+=mRow('🏘️ Area',r.area);
+  if(r.city)h+=mRow('🌆 City',r.city);
+  if(r.address)h+=mRow('📬 Address','<span style="font-size:11px">'+r.address+'</span>');
+  h+=mRow('🚗 Distance',(r.checkInKmFromOffice||0)+' km');
+  h+=mRow('💰 TA','Rs '+(r.taAmount||0));
+  h+=mRow('📡 GPS',(r.checkInLat?Number(r.checkInLat).toFixed(5)+', '+Number(r.checkInLng).toFixed(5):'—'));
+
+  h+='<div class="m-section">Voice Note</div>';
+  if(hv){h+='<audio class="m-audio" controls src="'+r.voiceNote+'"></audio>';}
+  else{h+='<div style="padding:10px;text-align:center;color:var(--tx3);font-size:12px">No voice note</div>';}
+
+  if(r.checkInLat){
+    h+='<div class="m-section">Map</div>';
+    h+='<div class="m-map" id="m-map"></div>';
+  }
+
+  h+='<div class="m-section">Actions</div>';
+  h+='<button class="m-btn" style="background:var(--R)" onclick="doDelete('+i+')">🗑 Delete Record</button>';
+
+  $('m-body').innerHTML=h;
+  $('modal').classList.add('on');
+
+  if(r.checkInLat){
+    setTimeout(function(){
+      if(_map){_map.remove();_map=null}
+      var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
+      _map=L.map('m-map').setView([lat,lng],15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_map);
+      L.marker([lat,lng]).addTo(_map).bindPopup('<b>'+nm+'</b><br>'+(r.checkIn||'')).openPopup();
+      OFC.forEach(function(o){
+        L.circleMarker([o.la,o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8}).addTo(_map).bindPopup('🏢 '+o.n);
+      });
+      setTimeout(function(){_map.invalidateSize()},200);
+    },100);
+  }
+}
+
+function closeModal(){$('modal').classList.remove('on');if(_map){_map.remove();_map=null}}
+
+function doDelete(i){
+  var r=_data[i];if(!r||!r._key)return;
+  if(!confirm('Delete record for '+(r.name||'Unknown')+' on '+(r.date||'?')+'?'))return;
+  var key=r._key;
+  fbDel('/labour_attendance/'+key,function(err){
+    if(err){alert('Delete failed: '+err);return}
+    // Remove from arrays
+    var ai=_all.indexOf(r);if(ai>=0)_all.splice(ai,1);
+    _data.splice(i,1);
+    closeModal();
+    renderAll();
+  });
+}
+
+/* ═══ REPORT ═══ */
+function genReport(){
+  var mv=$('r-month').value;if(!mv)return;
+  var ym=mv.replace(/-/g,'');
+  // filter _all by month
+  var recs=_all.filter(function(r){return r.dateKey&&r.dateKey.substring(0,6)===ym});
+  if(!recs.length){$('report-out').innerHTML='<div class="empty" style="padding:30px"><div class="empty-h">No data for '+mv+'</div></div>';return}
+
+  // group by worker
+  var workers={};
+  recs.forEach(function(r){
+    var nm=r.name||'Unknown';
+    if(!workers[nm])workers[nm]={name:nm,desg:r.designation||'—',days:0,totalMin:0,otMin:0,ta:0,lateCount:0,records:[]};
+    workers[nm].days++;
+    workers[nm].totalMin+=(r.totalMinutes||0);
+    workers[nm].otMin+=(r.otMinutes||0);
+    workers[nm].ta+=(r.taAmount||0);
+    if(r.late)workers[nm].lateCount++;
+    workers[nm].records.push(r);
+  });
+
+  var wArr=Object.values(workers).sort(function(a,b){return b.days-a.days});
+  var totalDays=0,totalMin=0,totalOT=0,totalTA=0,totalLate=0;
+  wArr.forEach(function(w){totalDays+=w.days;totalMin+=w.totalMin;totalOT+=w.otMin;totalTA+=w.ta;totalLate+=w.lateCount});
+
+  var h='<div style="margin:14px 0"><div style="font-size:16px;font-weight:800;margin-bottom:4px">Monthly Report: '+mv+'</div>';
+  h+='<div style="font-size:12px;color:var(--tx2)">'+recs.length+' records · '+wArr.length+' workers</div></div>';
+
+  // Summary stats
+  h+='<div class="stats" style="margin-bottom:14px">';
+  h+='<div class="stat"><div class="stat-n sb">'+totalDays+'</div><div class="stat-l">Total Days</div></div>';
+  h+='<div class="stat"><div class="stat-n sg">'+Math.round(totalMin/60)+'h</div><div class="stat-l">Total Hours</div></div>';
+  h+='<div class="stat"><div class="stat-n sr">'+Math.round(totalOT/60)+'h</div><div class="stat-l">OT Hours</div></div>';
+  h+='<div class="stat"><div class="stat-n sa">'+totalLate+'</div><div class="stat-l">Late Days</div></div>';
+  h+='<div class="stat"><div class="stat-n sg">Rs '+totalTA+'</div><div class="stat-l">TA Total</div></div>';
+  h+='</div>';
+
+  // Table
+  h+='<div class="rtbl-wrap"><table class="rtbl"><thead><tr>';
+  h+='<th>#</th><th>Worker</th><th>Designation</th><th>Days</th><th>Hours</th><th>OT</th><th>Late</th><th>TA</th><th>Avg/Day</th>';
+  h+='</tr></thead><tbody>';
+  wArr.forEach(function(w,i){
+    var avgH=w.days>0?Math.round(w.totalMin/w.days/60*10)/10:0;
+    h+='<tr>';
+    h+='<td style="font-weight:700;color:var(--tx3)">'+(i+1)+'</td>';
+    h+='<td style="font-weight:700">'+w.name+'</td>';
+    h+='<td>'+w.desg+'</td>';
+    h+='<td>'+w.days+'</td>';
+    h+='<td>'+Math.round(w.totalMin/60*10)/10+'h</td>';
+    h+='<td style="color:var(--A)">'+(w.otMin>0?Math.round(w.otMin/60*10)/10+'h':'—')+'</td>';
+    h+='<td style="color:'+(w.lateCount>0?'var(--R)':'var(--G)')+'">'+w.lateCount+'</td>';
+    h+='<td style="color:var(--G)">Rs '+w.ta+'</td>';
+    h+='<td>'+avgH+'h</td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+
+  // ═══ LOCATION ANALYTICS ═══
+  var roads={},landmarks={},areas={},offices={};
+  recs.forEach(function(r){
+    if(r.road){roads[r.road]=(roads[r.road]||0)+1}
+    if(r.landmark){landmarks[r.landmark]=(landmarks[r.landmark]||0)+1}
+    if(r.area){areas[r.area]=(areas[r.area]||0)+1}
+    if(r.nearestOffice){offices[r.nearestOffice]=(offices[r.nearestOffice]||0)+1}
+  });
+
+  var topRoads=Object.entries(roads).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topLandmarks=Object.entries(landmarks).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topAreas=Object.entries(areas).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topOffices=Object.entries(offices).sort(function(a,b){return b[1]-a[1]});
+
+  if(topRoads.length||topLandmarks.length||topAreas.length){
+    h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">📍 Location Analytics</div>';
+
+    // Office distribution
+    if(topOffices.length){
+      h+='<div style="margin-bottom:10px;font-size:12px;font-weight:700;color:var(--tx2)">Nearest Office Distribution</div>';
+      h+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">';
+      topOffices.forEach(function(o){
+        h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--B)">'+o[1]+'</div><div style="font-size:10px;color:var(--tx2)">'+o[0]+'</div></div>';
+      });
+      h+='</div>';
+    }
+
+    // Location tables side by side
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px">';
+
+    if(topRoads.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🛣️ Top Roads</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topRoads.forEach(function(r,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+r[0]+'</span><span style="font-weight:800;color:var(--B)">'+r[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+
+    if(topAreas.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🏘️ Top Areas</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topAreas.forEach(function(a,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+a[0]+'</span><span style="font-weight:800;color:var(--B)">'+a[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+
+    if(topLandmarks.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🏢 Top Landmarks</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topLandmarks.forEach(function(l,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+l[0]+'</span><span style="font-weight:800;color:var(--B)">'+l[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+    h+='</div>';
+  }
+
+  // ═══ DAILY DETAIL TABLE ═══
+  h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">📋 Daily Detail</div>';
+  var sortedRecs=recs.slice().sort(function(a,b){return(a.dateKey||'').localeCompare(b.dateKey||'')});
+  h+='<div class="rtbl-wrap"><table class="rtbl"><thead><tr>';
+  h+='<th>#</th><th>Date</th><th>Worker</th><th>In</th><th>Out</th><th>Hours</th><th>OT</th><th>Road/Landmark</th><th>Area</th><th>KM</th><th>TA</th>';
+  h+='</tr></thead><tbody>';
+  sortedRecs.forEach(function(r,i){
+    var loc=r.road||r.landmark||'—';
+    var lateClr=r.late?'color:var(--A)':'';
+    h+='<tr>';
+    h+='<td style="color:var(--tx3)">'+(i+1)+'</td>';
+    h+='<td style="font-size:11px">'+(r.date||'—')+'</td>';
+    h+='<td style="font-weight:700;font-size:12px">'+(r.name||'—')+'</td>';
+    h+='<td style="'+lateClr+'">'+(r.checkIn||'—')+'</td>';
+    h+='<td>'+(r.checkOut||'—')+'</td>';
+    h+='<td>'+(r.totalHours||'—')+'</td>';
+    h+='<td style="color:var(--A)">'+(r.otMinutes>0?r.otHours:'—')+'</td>';
+    h+='<td style="font-size:11px">'+loc+'</td>';
+    h+='<td style="font-size:11px">'+(r.area||'—')+'</td>';
+    h+='<td>'+(r.checkInKmFromOffice||0)+'</td>';
+    h+='<td style="color:var(--G)">Rs '+(r.taAmount||0)+'</td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+
+  // ═══ MAP — All check-in locations ═══
+  var gpsRecs=recs.filter(function(r){return r.checkInLat&&r.checkInLng});
+  if(gpsRecs.length){
+    h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">🗺️ Check-in Locations Map</div>';
+    h+='<div id="rpt-map" style="width:100%;height:300px;border-radius:var(--r);border:1px solid var(--bdr)"></div>';
+  }
+
+  $('report-out').innerHTML=h;
+
+  // Init report map
+  if(gpsRecs.length){
+    setTimeout(function(){
+      var rMap=L.map('rpt-map');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(rMap);
+      var bounds=[];
+      gpsRecs.forEach(function(r){
+        var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
+        bounds.push([lat,lng]);
+        var popup='<b>'+(r.name||'?')+'</b><br>'+(r.date||'')+' · '+(r.checkIn||'')+'<br>'+(r.road?'🛣️ '+r.road+'<br>':'')+(r.landmark?'🏢 '+r.landmark+'<br>':'')+(r.area?'📍 '+r.area:'');
+        L.circleMarker([lat,lng],{radius:7,fillColor:'#3b82f6',color:'#fff',weight:2,fillOpacity:.8}).addTo(rMap).bindPopup(popup);
+      });
+      // Office markers
+      OFC.forEach(function(o){
+        L.circleMarker([o.la,o.ln],{radius:10,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.9}).addTo(rMap).bindPopup('🏢 '+o.n);
+        bounds.push([o.la,o.ln]);
+      });
+      if(bounds.length)rMap.fitBounds(bounds,{padding:[20,20]});
+      setTimeout(function(){rMap.invalidateSize()},200);
+    },100);
+  }
+}
+
+/* ═══ AI ANALYSIS ═══ */
+function runAI(){
+  var from=$('ai-from').value.replace(/-/g,'');
+  var to=$('ai-to').value.replace(/-/g,'');
+  var recs=_all.filter(function(r){
+    if(from&&r.dateKey&&r.dateKey<from)return false;
+    if(to&&r.dateKey&&r.dateKey>to)return false;
+    return true;
+  });
+
+  if(!recs.length){
+    $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px;text-align:center;color:var(--tx3)">No data in range. Load data first (click All on Dashboard).</div>';
+    return;
+  }
+
+  // Prepare summary for Claude
+  var summary={totalRecords:recs.length,workers:{},dates:{},locations:{},roads:{}};
+  recs.forEach(function(r){
+    var nm=r.name||'Unknown';
+    if(!summary.workers[nm])summary.workers[nm]={days:0,totalMin:0,otMin:0,late:0,ta:0,locations:[]};
+    var w=summary.workers[nm];
+    w.days++;w.totalMin+=(r.totalMinutes||0);w.otMin+=(r.otMinutes||0);w.ta+=(r.taAmount||0);
+    if(r.late)w.late++;
+    if(r.road)w.locations.push(r.road);
+    if(r.date){if(!summary.dates[r.date])summary.dates[r.date]=0;summary.dates[r.date]++}
+    if(r.nearestOffice){if(!summary.locations[r.nearestOffice])summary.locations[r.nearestOffice]=0;summary.locations[r.nearestOffice]++}
+    if(r.road){if(!summary.roads[r.road])summary.roads[r.road]=0;summary.roads[r.road]++}
+  });
+
+  var apiKey=CLAUDE_KEY;
+  if(!apiKey){
+    openSettings();
+    $('set-status').innerHTML='<span style="color:var(--A)">⚠️ Set your API key first, then run AI again</span>';
+    return;
+  }
+
+  $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px"><div class="loading"><div class="spin"></div><br>🤖 Analyzing '+recs.length+' records...</div></div>';
+
+  var sysPrompt='You are an HR analytics assistant for a field workforce company (CNC/FICO industrial equipment in Lahore, Pakistan). Analyze the labour attendance data and provide insights in a structured format. Use headings with ### for sections. Be specific with names and numbers. Write concisely. Include: 1) Overall Summary 2) Worker Performance Analysis 3) Punctuality & Late Patterns 4) Overtime Analysis 5) Location & Movement Patterns (which roads/areas are most visited) 6) Travel Allowance Analysis 7) Concerns & Red Flags 8) Recommendations. All amounts in PKR.';
+
+  var userMsg='Analyze this attendance data:\n\n'+JSON.stringify(summary,null,2);
+
+  var body={
+    model:'claude-sonnet-4-20250514',
+    max_tokens:2000,
+    system:sysPrompt,
+    messages:[{role:'user',content:userMsg}]
+  };
+
+  var x=new XMLHttpRequest();
+  x.open('POST','https://api.anthropic.com/v1/messages');
+  x.setRequestHeader('Content-Type','application/json');
+  x.setRequestHeader('x-api-key',apiKey);
+  x.setRequestHeader('anthropic-version','2023-06-01');
+  x.setRequestHeader('anthropic-dangerous-direct-browser-access','true');
+  x.onload=function(){
+    try{
+      var res=JSON.parse(x.responseText);
+      if(res.error){
+        $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px;color:var(--R)">API Error: '+res.error.message+'</div>';
+        return;
+      }
+      var txt=res.content.map(function(c){return c.text||''}).join('\n');
+      // Simple markdown → HTML
+      txt=txt.replace(/### (.*)/g,'<h3>$1</h3>');
+      txt=txt.replace(/## (.*)/g,'<h3 style="font-size:15px">$1</h3>');
+      txt=txt.replace(/\*\*(.*?)\*\*/g,'<b>$1</b>');
+      txt=txt.replace(/\n- /g,'\n• ');
+      $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px"><div style="font-size:13px;font-weight:800;color:var(--P);margin-bottom:8px">🤖 AI Analysis — '+recs.length+' records</div><div class="ai-out">'+txt+'</div></div>';
+    }catch(e){
+      $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px;color:var(--R)">Parse error: '+e.message+'</div>';
+    }
+  };
+  x.onerror=function(){
+    $('ai-out').innerHTML='<div class="ai-box" style="margin-top:14px;color:var(--R)">Network error — check API key</div>';
+  };
+  x.send(JSON.stringify(body));
+}
+
+/* ═══ LIVE MAP ═══ */
+var _liveMap=null;
+function loadLiveMap(){
+  if(!_all.length){loadAll();setTimeout(loadLiveMap,2000);return}
+  var today=todayISO();
+  var todayKey=today.replace(/-/g,'');
+  var todayRecs=_all.filter(function(r){return r.dateKey===todayKey});
+
+  var el=$('live-map');
+  if(_liveMap){_liveMap.remove();_liveMap=null}
+  _liveMap=L.map(el).setView([31.462915,74.320000],12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_liveMap);
+
+  // Office markers
+  OFC.forEach(function(o){
+    L.circleMarker([o.la,o.ln],{radius:10,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.9}).addTo(_liveMap).bindPopup('🏢 '+o.n);
+  });
+
+  var bounds=OFC.map(function(o){return[o.la,o.ln]});
+  var colors=['#3b82f6','#22c55e','#f59e0b','#a855f7','#ec4899','#06b6d4','#f97316','#84cc16','#ef4444','#6366f1'];
+
+  todayRecs.forEach(function(r,i){
+    if(!r.checkInLat)return;
+    var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
+    var isOut=r.status==='checked-out';
+    var clr=colors[i%colors.length];
+
+    // Calculate hours
+    var hrs='—';
+    if(r.checkIn&&r.checkOut){
+      var ci=r.checkIn.split(':'),co=r.checkOut.split(':');
+      var m=(parseInt(co[0])*60+parseInt(co[1]))-(parseInt(ci[0])*60+parseInt(ci[1]));
+      hrs=(m/60).toFixed(1)+'h';
+    } else if(r.checkIn){
+      var now=new Date();var ci2=r.checkIn.split(':');
+      var m2=(now.getHours()*60+now.getMinutes())-(parseInt(ci2[0])*60+parseInt(ci2[1]));
+      if(m2>0)hrs=(m2/60).toFixed(1)+'h (جاری)';
+    }
+
+    var popup='<div style="font-family:system-ui;min-width:180px;padding:4px">'+
+      '<div style="background:#fbbf24;color:#000;padding:8px 10px;border-radius:8px;margin-bottom:6px">'+
+      '<div style="font-size:14px;font-weight:800">'+( r.name||'?')+'</div>'+
+      '<div style="font-size:11px;opacity:.8">'+(r.designation||'')+(r.code?' · '+r.code:'')+'</div></div>'+
+      '<div style="font-size:12px;line-height:1.8">'+
+      '⏰ <b>In:</b> '+(r.checkIn||'—')+'<br>'+
+      '🕐 <b>Out:</b> '+(r.checkOut||'<span style="color:#22c55e">جاری</span>')+'<br>'+
+      '📊 <b>Hours:</b> '+hrs+'<br>'+
+      (r.otMinutes>0?'🕐 <b>OT:</b> '+(r.otHours||'')+'<br>':'')+
+      (r.road?'🛣️ '+r.road+'<br>':'')+
+      (r.area?'📍 '+r.area+'<br>':'')+
+      '🚗 '+(r.checkInKmFromOffice||0)+' km · 💰 Rs '+(r.taAmount||0)+
+      (r.trackingPoints?'<br>📡 '+r.trackingPoints+' GPS points · '+(r.trackingKm||0)+' km tracked':'')+
+      '</div></div>';
+
+    L.circleMarker([lat,lng],{radius:isOut?8:12,fillColor:clr,color:'#fff',weight:2,fillOpacity:isOut?.7:1})
+      .addTo(_liveMap).bindPopup(popup);
+    if(!isOut){
+      // Pulsing ring for active workers
+      L.circleMarker([lat,lng],{radius:18,fillColor:clr,color:clr,weight:1,fillOpacity:.15}).addTo(_liveMap);
+    }
+    bounds.push([lat,lng]);
+  });
+
+  if(bounds.length>1)_liveMap.fitBounds(bounds,{padding:[30,30]});
+  setTimeout(function(){_liveMap.invalidateSize()},300);
+}
+
+/* ═══ TRAIL REPORT ═══ */
+var _trailMap=null;
+function populateTrailEmp(){
+  var names={};
+  _all.forEach(function(r){if(r.name&&r.code)names[r.code]=r.name});
+  var h='<option value="">Select</option>';
+  Object.keys(names).forEach(function(c){h+='<option value="'+c+'">'+names[c]+' ('+c+')</option>'});
+  $('tr-emp').innerHTML=h;
+  $('tr-date').value=todayISO();
+}
+
+function loadTrail(){
+  var code=$('tr-emp').value;
+  var date=$('tr-date').value;
+  if(!code||!date){return}
+  var dateKey=date.replace(/-/g,'');
+
+  $('trail-stats').innerHTML='<div class="loading"><div class="spin"></div></div>';
+  $('trail-list').innerHTML='';
+
+  // Load tracking data
+  fbGet('/labour_tracking/'+code+'/'+dateKey,function(err,trail){
+    // Also load attendance for that day
+    var dayRec=_all.find(function(r){return r.code===code&&r.dateKey===dateKey});
+
+    var points=[];
+    if(trail){
+      if(Array.isArray(trail)){points=trail.filter(function(p){return p&&p.lat})}
+      else{Object.keys(trail).forEach(function(k){if(trail[k]&&trail[k].lat)points.push(trail[k])})}
+    }
+
+    // Add check-in point
+    if(dayRec&&dayRec.checkInLat){
+      points.unshift({lat:Number(dayRec.checkInLat),lng:Number(dayRec.checkInLng),time:dayRec.checkIn||'—',ts:'Check In'});
+    }
+    // Add check-out point
+    if(dayRec&&dayRec.checkOutLat){
+      points.push({lat:Number(dayRec.checkOutLat),lng:Number(dayRec.checkOutLng),time:dayRec.checkOut||'—',ts:'Check Out'});
+    }
+
+    // Calculate actual KM
+    var totalKm=0;
+    for(var i=1;i<points.length;i++){
+      totalKm+=gDist(points[i-1].lat,points[i-1].lng,points[i].lat,points[i].lng)/1000;
+    }
+
+    // Stats
+    var nm=dayRec?dayRec.name:code;
+    var sh='<div class="stats" style="margin-bottom:0">';
+    sh+='<div class="stat"><div class="stat-n sb">'+points.length+'</div><div class="stat-l">GPS Points</div></div>';
+    sh+='<div class="stat"><div class="stat-n sg">'+totalKm.toFixed(2)+'</div><div class="stat-l">Actual KM</div></div>';
+    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkIn||'—':'—')+'</div><div class="stat-l">Check In</div></div>';
+    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkOut||'جاری':'—')+'</div><div class="stat-l">Check Out</div></div>';
+    sh+='<div class="stat"><div class="stat-n sa">'+(dayRec?dayRec.totalHours||'—':'—')+'</div><div class="stat-l">Hours</div></div>';
+    sh+='<div class="stat"><div class="stat-n sr">'+(dayRec&&dayRec.otMinutes>0?dayRec.otHours:'0')+'</div><div class="stat-l">OT</div></div>';
+    sh+='</div>';
+    $('trail-stats').innerHTML=sh;
+
+    // Draw map
+    if(_trailMap){_trailMap.remove();_trailMap=null}
+    _trailMap=L.map('trail-map').setView([31.462915,74.320000],14);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_trailMap);
+
+    // Offices
+    OFC.forEach(function(o){
+      L.circleMarker([o.la,o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8}).addTo(_trailMap).bindPopup('🏢 '+o.n);
+    });
+
+    if(points.length){
+      var latlngs=points.map(function(p){return[p.lat,p.lng]});
+
+      // Draw trail polyline
+      L.polyline(latlngs,{color:'#3b82f6',weight:3,opacity:.7,dashArray:'8,6'}).addTo(_trailMap);
+
+      // Draw points
+      points.forEach(function(p,idx){
+        var isFirst=idx===0,isLast=idx===points.length-1;
+        var clr=isFirst?'#22c55e':isLast?'#dc2626':'#3b82f6';
+        var rad=isFirst||isLast?10:6;
+        var label=isFirst?'🟢 Start':isLast?'🔴 End':'#'+(idx+1);
+
+        L.circleMarker([p.lat,p.lng],{radius:rad,fillColor:clr,color:'#fff',weight:2,fillOpacity:.9})
+          .addTo(_trailMap)
+          .bindPopup('<b>'+label+'</b><br>⏰ '+(p.time||'—')+'<br>📡 '+Number(p.lat).toFixed(5)+', '+Number(p.lng).toFixed(5)+(p.acc?'<br>Accuracy: '+p.acc+'m':''));
+      });
+
+      _trailMap.fitBounds(latlngs,{padding:[30,30]});
+    }
+    setTimeout(function(){_trailMap.invalidateSize()},300);
+
+    // Point list
+    var lh='<div style="margin-top:14px;font-size:13px;font-weight:800;color:var(--tx2)">📡 GPS Trail Points</div>';
+    lh+='<div class="rtbl-wrap" style="margin-top:8px"><table class="rtbl"><thead><tr><th>#</th><th>Time</th><th>Lat</th><th>Lng</th><th>Accuracy</th><th>Dist from Prev</th></tr></thead><tbody>';
+    points.forEach(function(p,idx){
+      var dist='—';
+      if(idx>0){var d=gDist(points[idx-1].lat,points[idx-1].lng,p.lat,p.lng);dist=d<100?Math.round(d)+'m':(d/1000).toFixed(2)+'km'}
+      lh+='<tr><td>'+(idx+1)+'</td><td>'+(p.time||p.ts||'—')+'</td><td>'+Number(p.lat).toFixed(5)+'</td><td>'+Number(p.lng).toFixed(5)+'</td><td>'+(p.acc||'—')+'m</td><td>'+dist+'</td></tr>';
+    });
+    lh+='</tbody></table></div>';
+    $('trail-list').innerHTML=lh;
+  });
+}
+
+function gDist(a,b,c,d){
+  var R=6371000,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180;
+  var x=Math.sin(dL/2)*Math.sin(dL/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)*Math.sin(dN/2);
+  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+/* ═══ INIT LOAD ═══ */
+loadAll();
+</script>
+</body>
+</html>
