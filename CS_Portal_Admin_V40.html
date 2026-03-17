@@ -425,7 +425,7 @@ input,select,textarea,button{font-family:var(--font)}
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px">
 <div class="stat" style="border-top:3px solid var(--grn)"><div class="stat-n" style="color:var(--grn)" id="dk-pres">—</div><div class="stat-l">Present</div></div>
 <div class="stat" style="border-top:3px solid var(--amb)"><div class="stat-n" style="color:var(--amb)" id="dk-late">—</div><div class="stat-l">Late</div></div>
-<div class="stat" style="border-top:3px solid var(--R)"><div class="stat-n" style="color:var(--R)" id="dk-absent">—</div><div class="stat-l">Absent</div></div>
+<div class="stat" style="border-top:3px solid var(--R)"><div class="stat-n" style="color:var(--R)" id="dk-absent">—</div><div class="stat-l" id="dk-absent-lbl">Not Arrived</div></div>
 <div class="stat"><div class="stat-n" id="dk-rpt">—</div><div class="stat-l">Reports</div></div>
 <div class="stat"><div class="stat-n" id="dk-vis">—</div><div class="stat-l">Visits</div></div>
 <div class="stat" style="border-top:3px solid #c4b5fd"><div class="stat-n" style="color:#7c3aed" id="dk-miss">—</div><div class="stat-l">Plans Missed</div></div>
@@ -489,11 +489,11 @@ input,select,textarea,button{font-family:var(--font)}
 <div class="stat" style="border-top:3px solid #3b82f6"><div class="stat-n" style="color:#3b82f6" id="aa-leave">-</div><div class="stat-l">On Leave</div></div>
 <div class="stat" style="border-top:3px solid #7c3aed"><div class="stat-n" style="color:#7c3aed" id="aa-nolog">-</div><div class="stat-l">No Dep.</div></div>
 </div>
-<div class="adm-chips" style="margin-bottom:8px" id="aa-status-chips"><button class="adm-chip on" onclick="App.aaFilter('all',this)">All</button><button class="adm-chip" onclick="App.aaFilter('ontime',this)">✅</button><button class="adm-chip" onclick="App.aaFilter('late',this)">⏰</button><button class="adm-chip" onclick="App.aaFilter('absent',this)">❌</button><button class="adm-chip" onclick="App.aaFilter('onleave',this)">📋</button><button class="adm-chip" onclick="App.aaFilter('nologout',this)">⚠️</button></div>
+<div class="adm-chips" style="margin-bottom:6px" id="aa-status-chips"><button class="adm-chip on" onclick="App.aaFilter('all',this)">All</button><button class="adm-chip" onclick="App.aaFilter('ontime',this)">✅ Present</button><button class="adm-chip" onclick="App.aaFilter('late',this)">⏰ Late</button><button class="adm-chip" onclick="App.aaFilter('notarrived',this)">🔴 Not Arrived</button><button class="adm-chip" onclick="App.aaFilter('absent',this)">❌ Absent</button><button class="adm-chip" onclick="App.aaFilter('onleave',this)">📋 Leave</button><button class="adm-chip" onclick="App.aaFilter('nologout',this)">⚠️ No Dep.</button></div>
+<div class="adm-chips" style="margin-bottom:8px" id="aa-dept-chips"><button class="adm-chip on" onclick="App.aaDept('all',this)">All Depts</button><button class="adm-chip" onclick="App.aaDept('Sales',this)">Sales</button><button class="adm-chip" onclick="App.aaDept('C-Solar',this)">C-Solar</button><button class="adm-chip" onclick="App.aaDept('CNC Social Media',this)">CNC SM</button><button class="adm-chip" onclick="App.aaDept('Finance',this)">Finance</button><button class="adm-chip" onclick="App.aaDept('Shop',this)">Shop</button><button class="adm-chip" onclick="App.aaDept('Store',this)">Store</button><button class="adm-chip" onclick="App.aaDept('Karachi',this)">Karachi</button></div>
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="display:flex;gap:4px"><button class="adm-chip" id="aa-view-cards" onclick="App.aaView('cards',this)">📋 Cards</button><button class="adm-chip on" id="aa-view-table" onclick="App.aaView('table',this)">📊 Table</button></div><div class="adm-hd-r"><button class="adm-btn-pdf" onclick="App.dlAdmAttPdf()">⬇ PDF</button><span class="adm-badge" id="aa-cnt">0</span></div></div>
-<div id="aa-emp-strip" style="display:flex;gap:6px;overflow-x:auto;margin-bottom:10px;padding-bottom:4px"></div>
 <div id="aa-cards"></div>
-<div id="aa-tbl-wrap" style="display:none"><div id="aa-empty" class="adm-empty" style="display:none">No records found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>Date</th><th>Employee</th><th>Status</th><th>Arrived</th><th>Location</th><th>Departed</th><th>Location</th><th>Deduction</th></tr></thead><tbody id="aa-body"></tbody></table></div></div>
+<div id="aa-tbl-wrap" style="display:none"><div id="aa-empty" class="adm-empty" style="display:none">No records found.</div><div class="adm-tbl-wrap"><table class="adm-tbl"><thead><tr><th>#</th><th>Date</th><th>Employee</th><th>Dept</th><th>Status</th><th>Arrived</th><th>Location</th><th>Departed</th><th>Location</th><th>Deduction</th></tr></thead><tbody id="aa-body"></tbody></table></div></div>
 </div>
 
 <!-- ═══ DEDUCTIONS SUB-TAB ═══ -->
@@ -766,8 +766,10 @@ function attClass(time, isHistorical) {
   if (!time) {
     // No attendance record
     if (isHistorical) return {status:'absent',deduction:C.DED_ABSENT,label:'Absent',icon:'❌',color:'var(--R)'};
-    // Real-time: check current time
-    var now = new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi',hour:'2-digit',minute:'2-digit',hour12:false});
+    // Real-time: check current PKT time
+    var d=new Date();var hh=String(d.toLocaleString('en',{timeZone:'Asia/Karachi',hour:'2-digit',hour12:false})).padStart(2,'0');
+    var mm=String(d.toLocaleString('en',{timeZone:'Asia/Karachi',minute:'2-digit'})).padStart(2,'0');
+    var now=hh+':'+mm;
     if (now >= C.ABSENT_TIME) return {status:'absent',deduction:C.DED_ABSENT,label:'Absent',icon:'❌',color:'var(--R)'};
     if (now >= C.GRACE_END) return {status:'notarrived',deduction:0,label:'Not Arrived',icon:'🔴',color:'var(--R)'};
     return {status:'notarrived',deduction:0,label:'Not Yet',icon:'⏳',color:'var(--G5)'};
@@ -1467,9 +1469,12 @@ if(this._dashClock)clearInterval(this._dashClock);
 this._dashClock=setInterval(function(){var el=document.getElementById('dash-clock');if(el)el.textContent=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})},1000);
 /* Today stats */
 var todayA=a.filter(function(x){return x.date===t});var todayR=r.filter(function(x){return x.date===t});
-var present=0,lateCnt=0,graceCnt=0;todayA.forEach(function(att){var ac=attClassHist(att.time||'');if(ac.status==='ontime')present++;else if(ac.status==='grace'){graceCnt++;present++}else if(ac.status==='late')lateCnt++});
-var absentCnt=Math.max(0,u.length-present-lateCnt);
-document.getElementById('dk-pres').textContent=present;document.getElementById('dk-late').textContent=lateCnt;document.getElementById('dk-absent').textContent=absentCnt;
+var present=0,lateCnt=0,graceCnt=0;todayA.forEach(function(att){var ac=attClassHist(att.time||'');if(ac.status==='ontime'||ac.status==='grace')present++;else if(ac.status==='late')lateCnt++});
+var notIn=Math.max(0,u.length-present-lateCnt);
+var abLbl=document.getElementById('dk-absent-lbl');
+var nowAc=attClass(null);/* real-time check */
+if(nowAc.status==='absent'){abLbl.textContent='Absent'}else{abLbl.textContent='Not Arrived'}
+document.getElementById('dk-pres').textContent=present;document.getElementById('dk-late').textContent=lateCnt;document.getElementById('dk-absent').textContent=notIn;
 document.getElementById('dk-rpt').textContent=todayR.length;document.getElementById('dk-vis').textContent=todayR.filter(function(x){return x.type==='visit'}).length;
 document.getElementById('dk-miss').textContent=missedCount||'0';
 /* Missed alert */
@@ -2173,7 +2178,7 @@ App.loadAdmAtt=async function(){
     var attLookup={};
     if(data){for(var k in data){var rec=data[k];if(!rec||!rec.date)continue;var d=rec.date;
       if(d<from||d>to)continue;if(emp!=='all'&&rec.userId!==emp)continue;
-      var status='Present';if(rec.time&&rec.time>ADM_START)status='Late';
+      var status='Present';var ac=attClassHist(rec.time||'');if(ac.status==='late')status='Late';
       /* Build readable location strings */
       var inLocStr='—';
       if(rec.inNear===true){inLocStr='At Office'+(rec.inOffice?' ('+rec.inOffice+')':'')}
@@ -2186,7 +2191,7 @@ App.loadAdmAtt=async function(){
       var ded=0;var si=salLookup[rec.userId]||{salary:0};
       var daily=si.salary?Math.round(si.salary/30):0;var hourly=daily?Math.round(daily/8):0;
       if(status==='Late'){ded=cfg.deductionMode==='salary'?hourly:(cfg.flatLate||200)}
-      var row={date:d,uid:rec.userId||'',name:rec.userName||'',status:status,checkin:rec.time||'-',checkout:rec.out||'-',
+      var row={date:d,uid:rec.userId||'',name:rec.userName||'',dept:si.dept||'',status:status,checkin:rec.time||'-',checkout:rec.out||'-',
         inStatus:inLocStr,inLat:rec.inLat,inLng:rec.inLng,inDist:rec.inDist,inOffice:rec.inOffice||'',
         outStatus:outLocStr,outLat:rec.outLat,outLng:rec.outLng,outDist:rec.outDist,outOffice:rec.outOffice||'',
         deduction:ded};
@@ -2201,7 +2206,10 @@ App.loadAdmAtt=async function(){
         lvLookup[lds+'_'+lv.userId]=true;cur.setDate(cur.getDate()+1)}}}
     
     /* Add ABSENT rows for employees with no attendance and no approved leave */
-    var dedCut=U.dedCutoff();/* Don't mark absent for today if before 11 AM */
+    var dedCut=U.dedCutoff();/* Don't mark absent for today if before 5 PM */
+    var todayDs=U.today();
+    var nowHr=new Date().toLocaleString('en',{timeZone:'Asia/Karachi',hour:'2-digit',hour12:false});
+    var isPast915=parseInt(nowHr)>9||(parseInt(nowHr)===9&&parseInt(new Date().toLocaleString('en',{timeZone:'Asia/Karachi',minute:'2-digit'}))>=15);
     /* Load off days + holidays for exclusion */
     var offDays=App._offDays||{};var holidays=App._holidays||{};
     var usersToCheck=emp==='all'?allUsers:allUsers.filter(function(u){return u.id===emp});
@@ -2211,19 +2219,25 @@ App.loadAdmAtt=async function(){
       var isSun=dCur.getDay()===0;
       var isHoliday=holidays[ds];
       var isOffDay=offDays[ds];
-      if(!isSun&&!isHoliday&&!isOffDay&&ds<=dedCut){/* Skip Sundays, holidays, off days, today if before 11AM */
+      var isToday=(ds===todayDs);
+      if(!isSun&&!isHoliday&&!isOffDay&&(ds<=dedCut||(isToday&&isPast915))){
         usersToCheck.forEach(function(u){
           var key=ds+'_'+u.id;
           if(!attLookup[key]){
             var si2=salLookup[u.id]||{salary:0};
             var daily2=si2.salary?Math.round(si2.salary/30):0;
             if(lvLookup[key]){
-              rows.push({date:ds,uid:u.id,name:u.name||u.username||u.id,status:'On Leave',checkin:'-',checkout:'-',
+              rows.push({date:ds,uid:u.id,name:u.name||u.username||u.id,dept:(si2.dept||u.department||''),status:'On Leave',checkin:'-',checkout:'-',
                 inStatus:'📋 Approved Leave',inLat:null,inLng:null,inDist:null,inOffice:'',outStatus:'—',outLat:null,outLng:null,outDist:null,outOffice:'',
+                deduction:0})
+            } else if(isToday){
+              /* Today before 5 PM: show Not Arrived (no deduction yet) */
+              rows.push({date:ds,uid:u.id,name:u.name||u.username||u.id,dept:(si2.dept||u.department||''),status:'Not Arrived',checkin:'-',checkout:'-',
+                inStatus:'🔴 Not Arrived',inLat:null,inLng:null,inDist:null,inOffice:'',outStatus:'—',outLat:null,outLng:null,outDist:null,outOffice:'',
                 deduction:0})
             } else {
               var absDed=cfg.deductionMode==='salary'?daily2:(cfg.flatAbsent||500);
-              rows.push({date:ds,uid:u.id,name:u.name||u.username||u.id,status:'Absent',checkin:'-',checkout:'-',
+              rows.push({date:ds,uid:u.id,name:u.name||u.username||u.id,dept:(si2.dept||u.department||''),status:'Absent',checkin:'-',checkout:'-',
                 inStatus:'—',inLat:null,inLng:null,inDist:null,inOffice:'',outStatus:'—',outLat:null,outLng:null,outDist:null,outOffice:'',
                 deduction:absDed})
             }
@@ -2234,8 +2248,8 @@ App.loadAdmAtt=async function(){
     _admAttRows=rows;rows.sort(function(a,b){return a.date>b.date?-1:a.date<b.date?1:a.name.localeCompare(b.name)});
     
     /* Stats */
-    var p=0,la=0,absent=0,nologout=0,onLeave=0;
-    rows.forEach(function(r){if(r.status==='Present')p++;else if(r.status==='Late')la++;else if(r.status==='On Leave')onLeave++;else if(r.status==='Absent')absent++;if(r.checkout==='-'&&r.status!=='Absent'&&r.status!=='On Leave')nologout++});
+    var p=0,la=0,absent=0,nologout=0,onLeave=0,notArr=0;
+    rows.forEach(function(r){if(r.status==='Present')p++;else if(r.status==='Late')la++;else if(r.status==='On Leave')onLeave++;else if(r.status==='Absent')absent++;else if(r.status==='Not Arrived')notArr++;if(r.checkout==='-'&&r.status!=='Absent'&&r.status!=='On Leave'&&r.status!=='Not Arrived')nologout++});
     /* Count approved leave days */
     if(lvData){for(var lk2 in lvData){var lv2=lvData[lk2];if(!lv2||lv2.status!=='approved')continue;
       if(emp!=='all'&&lv2.userId!==emp)continue;
@@ -2243,7 +2257,7 @@ App.loadAdmAtt=async function(){
       while(c2<=e2){var d2=c2.getFullYear()+'-'+String(c2.getMonth()+1).padStart(2,'0')+'-'+String(c2.getDate()).padStart(2,'0');if(d2>=from&&d2<=to&&c2.getDay()!==0)onLeave++;c2.setDate(c2.getDate()+1)}}}
     document.getElementById('aa-pres').textContent=p;
     document.getElementById('aa-late').textContent=la;
-    document.getElementById('aa-abs').textContent=absent;
+    document.getElementById('aa-abs').textContent=absent+(notArr>0?' + '+notArr+'🔴':'');
     document.getElementById('aa-leave').textContent=onLeave;
     document.getElementById('aa-nolog').textContent=nologout;
     if(!rows.length){document.getElementById('aa-empty').style.display='block';document.getElementById('aa-cnt').textContent='0';hideLoad();return}
@@ -2966,8 +2980,15 @@ App.dlAdmRptPdf=function(){if(!_admRptRows.length){alert('No data');return}
 
 /* ── Attendance Status Filter ── */
 var _aaStatusFilter='all';
+var _aaDeptFilter='all';
 App.aaFilter=function(f,btn){
   _aaStatusFilter=f;
+  btn.parentElement.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('on')});
+  btn.classList.add('on');
+  App.renderAdmAtt();
+};
+App.aaDept=function(f,btn){
+  _aaDeptFilter=f;
   btn.parentElement.querySelectorAll('.adm-chip').forEach(function(c){c.classList.remove('on')});
   btn.classList.add('on');
   App.renderAdmAtt();
@@ -2979,30 +3000,26 @@ App.renderAdmAtt=function(){
       if(_aaStatusFilter==='ontime') return r.status==='Present';
       if(_aaStatusFilter==='late') return r.status==='Late';
       if(_aaStatusFilter==='absent') return r.status==='Absent';
+      if(_aaStatusFilter==='notarrived') return r.status==='Not Arrived';
       if(_aaStatusFilter==='onleave') return r.status==='On Leave';
-      if(_aaStatusFilter==='nologout') return r.checkout==='-'&&r.status!=='Absent'&&r.status!=='On Leave';
+      if(_aaStatusFilter==='nologout') return r.checkout==='-'&&r.status!=='Absent'&&r.status!=='On Leave'&&r.status!=='Not Arrived';
       return true;
     });
+  }
+  if(_aaDeptFilter!=='all'){
+    rows=rows.filter(function(r){return(r.dept||'')=== _aaDeptFilter});
   }
   document.getElementById('aa-cnt').textContent=rows.length;
   if(!rows.length){document.getElementById('aa-empty').style.display='block';document.getElementById('aa-cards').innerHTML='<div class="adm-empty">No records match filter</div>';document.getElementById('aa-body').innerHTML='';return}
   document.getElementById('aa-empty').style.display='none';
-
-  /* Employee summary strip */
-  var empMap={};_admAttRows.forEach(function(r){if(!empMap[r.uid||r.name])empMap[r.uid||r.name]={name:r.name,ontime:0,late:0,absent:0,nologout:0,onleave:0};
-    if(r.status==='Present')empMap[r.uid||r.name].ontime++;else if(r.status==='Late')empMap[r.uid||r.name].late++;else if(r.status==='Absent')empMap[r.uid||r.name].absent++;else if(r.status==='On Leave')empMap[r.uid||r.name].onleave++;
-    if(r.checkout==='-'&&r.status!=='Absent'&&r.status!=='On Leave')empMap[r.uid||r.name].nologout++});
-  var stripH='';for(var uid in empMap){var e=empMap[uid];var dotClr=e.absent>0?'var(--R)':e.late>e.ontime?'var(--amb)':'var(--grn)';
-    stripH+='<div class="emp-pill"><div class="ep-dot" style="background:'+dotClr+'"></div>'+e.name.split(' ')[0]+' <span style="color:var(--grn)">'+e.ontime+'</span>/<span style="color:var(--amb)">'+e.late+'</span>'+(e.absent?'/<span style="color:var(--R)">'+e.absent+'✕</span>':'')+(e.onleave?'/<span style="color:var(--blu)">'+e.onleave+'📋</span>':'')+(e.nologout?'/<span style="color:#7c3aed">'+e.nologout+'⚠</span>':'')+'</div>'}
-  document.getElementById('aa-emp-strip').innerHTML=stripH;
 
   /* Card view */
   if(view==='cards'){
     document.getElementById('aa-cards').style.display='block';document.getElementById('aa-tbl-wrap').style.display='none';
     var ch='';rows.forEach(function(r,i){
       /* Fix: Late always orange, Present always green, Absent always red. No Departure shown as separate badge */
-      var statusCls=r.status==='Late'?'att-s-late':r.status==='Present'?'att-s-ok':r.status==='On Leave'?'att-s-leave':'att-s-abs';
-      var statusTxt=r.status==='Late'?'⏰ Late '+r.checkin:r.status==='Present'?'✅ '+r.checkin:r.status==='On Leave'?'📋 On Leave':'❌ Absent';
+      var statusCls=r.status==='Late'?'att-s-late':r.status==='Present'?'att-s-ok':r.status==='On Leave'?'att-s-leave':r.status==='Not Arrived'?'att-s-abs':'att-s-abs';
+      var statusTxt=r.status==='Late'?'⏰ Late '+r.checkin:r.status==='Present'?'✅ '+r.checkin:r.status==='On Leave'?'📋 On Leave':r.status==='Not Arrived'?'🔴 Not Arrived':'❌ Absent';
       var nologBadge='';
       if(r.checkout==='-'&&r.status!=='Absent'){nologBadge='<span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:8px;background:#f5f3ff;color:#7c3aed;border:1px solid #ddd6fe;margin-left:4px">⚠ No Departure</span>'}
       var hrs='—';if(r.checkin!=='-'&&r.checkout!=='-'){hrs=(((parseInt(r.checkout.split(':')[0])*60+parseInt(r.checkout.split(':')[1]))-(parseInt(r.checkin.split(':')[0])*60+parseInt(r.checkin.split(':')[1])))/60).toFixed(1)+'h'}
@@ -3015,7 +3032,7 @@ App.renderAdmAtt=function(){
         '<div class="av" style="background:'+U.clr(r.name)+'">'+U.ini(r.name)+'</div>'+
         '<div class="att-card-info"><div class="att-card-nm">'+r.name+'</div><div class="att-card-meta">'+metaText+'</div></div>'+
         '<span class="att-card-status '+statusCls+'">'+statusTxt+'</span>'+dedBadge+nologBadge+'</div>';
-      if(r.status!=='Absent'&&r.status!=='On Leave'){
+      if(r.status!=='Absent'&&r.status!=='On Leave'&&r.status!=='Not Arrived'){
         ch+='<div class="att-card-detail">'+
         '<div class="att-row"><span class="att-lbl">Date</span><span class="att-val">'+r.date+'</span></div>'+
         '<div class="att-row"><span class="att-lbl">Arrived</span><span class="att-val">'+r.checkin+'</span></div>'+
@@ -3027,6 +3044,8 @@ App.renderAdmAtt=function(){
         '</div>'
       } else if(r.status==='On Leave') {
         ch+='<div class="att-card-detail"><div style="padding:10px;text-align:center;color:var(--blu);font-size:12px;font-weight:600">📋 Approved Leave<br><span style="font-size:10px;color:var(--G5);font-weight:400">No deduction</span></div></div>';
+      } else if(r.status==='Not Arrived') {
+        ch+='<div class="att-card-detail"><div style="padding:10px;text-align:center;color:var(--R);font-size:12px;font-weight:600">🔴 Not arrived yet<br><span style="font-size:10px;color:var(--amb);font-weight:400">Will be marked Absent at 5 PM (Rs '+C.DED_ABSENT+' deduction)</span></div></div>';
       } else {
         ch+='<div class="att-card-detail"><div style="padding:10px;text-align:center;color:var(--R);font-size:12px;font-weight:600">❌ No attendance marked<br><span style="font-size:11px;color:var(--R);font-weight:800">Deduction: Rs '+(r.deduction||0).toLocaleString()+'</span></div></div>';
       }
@@ -3035,8 +3054,8 @@ App.renderAdmAtt=function(){
   } else {
     /* Table view */
     document.getElementById('aa-cards').style.display='none';document.getElementById('aa-tbl-wrap').style.display='block';
-    var h='';rows.forEach(function(r){
-      var cls=r.status==='Late'?'ab-late':r.status==='Present'?'ab-present':r.status==='On Leave'?'ab-leave':'ab-absent';
+    var h='';rows.forEach(function(r,idx){
+      var cls=r.status==='Late'?'ab-late':r.status==='Present'?'ab-present':r.status==='On Leave'?'ab-leave':r.status==='Not Arrived'?'ab-absent':'ab-absent';
       var inLoc='—';if(r.inLat&&r.inLng){var ic=r.inStatus&&r.inStatus.indexOf('At Office')===0?'ab-present':'ab-absent';
         inLoc='<a href="https://maps.google.com/?q='+r.inLat+','+r.inLng+'" target="_blank" style="text-decoration:none"><span class="'+ic+'">'+(r.inStatus||'—')+' 📍</span></a>'}
       else if(r.status==='On Leave'){inLoc='<span class="ab-leave">📋 Approved Leave</span>'}
@@ -3045,7 +3064,7 @@ App.renderAdmAtt=function(){
       else if(r.checkout!=='-'){outLoc='<span class="ab-late">No GPS</span>'}
       else if(r.status!=='Absent'&&r.status!=='On Leave'){outLoc='<span class="ab-absent">⚠️ No Departure</span>'}
       var dedCell=r.deduction>0?'<span style="color:var(--R);font-weight:700">Rs '+r.deduction.toLocaleString()+'</span>':'—';
-      h+='<tr><td>'+U.dateFull(r.date)+'</td><td>'+r.name+'</td><td><span class="'+cls+'">'+r.status+'</span></td><td>'+(r.checkin||'—')+'</td><td>'+inLoc+'</td><td>'+(r.checkout||'—')+'</td><td>'+outLoc+'</td><td>'+dedCell+'</td></tr>'});
+      h+='<tr><td style="font-weight:700;color:var(--G5)">'+(idx+1)+'</td><td>'+U.dateFull(r.date)+'</td><td>'+r.name+'</td><td style="font-size:10px;color:var(--G5)">'+(r.dept||'—')+'</td><td><span class="'+cls+'">'+r.status+'</span></td><td>'+(r.checkin||'—')+'</td><td>'+inLoc+'</td><td>'+(r.checkout||'—')+'</td><td>'+outLoc+'</td><td>'+dedCell+'</td></tr>'});
     document.getElementById('aa-body').innerHTML=h;
   }
 };
