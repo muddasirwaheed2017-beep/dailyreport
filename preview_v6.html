@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+<title>PKBids — Pakistan's Solar & Electrical Trading Marketplace</title>
+<meta name="description" content="Pakistan's first solar marketplace with bidding, offers, and escrow protection. Buy and sell solar panels, inverters, batteries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   PKBids v5 — Bulletproof Build
+   Content ALWAYS visible. Animations = enhancement.
+   Mobile-first. No CDN dependency for layout.
+   ═══════════════════════════════════════ */
+:root{
+  --white:#fff;--g50:#F7F7F7;--g100:#F0F0F0;--g200:#E4E4E4;--g300:#D1D1D1;
+  --g400:#A3A3A3;--g500:#737373;--g600:#525252;--g700:#404040;--g800:#262626;
+  --g900:#171717;--black:#0A0A0A;
+  --red:#DC2626;--red-d:#B91C1C;--red-l:#FEF2F2;--red-100:#FEE2E2;
+  --green:#16A34A;--amber:#D97706;--bid:#059669;--blue:#2563EB;
+  --ff:'DM Serif Display',Georgia,serif;
+  --fb:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --r:16px;
+}
+
+/* Reset */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:var(--fb);color:var(--g900);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+ul{list-style:none}
+input,select{font-family:inherit}
+
+/* Layout — mobile first */
+.ctn{width:100%;max-width:1240px;margin:0 auto;padding:0 1rem}
+.sec{padding:3rem 0}
+
+@media(min-width:640px){.ctn{padding:0 1.5rem}}
+@media(min-width:768px){.sec{padding:5rem 0}.ctn{padding:0 2rem}}
+
+/* Typography */
+h1,h2,h3{font-family:var(--ff);line-height:1.15;letter-spacing:-.02em;color:var(--black)}
+h1{font-size:2rem}
+h2{font-size:1.75rem}
+h3{font-size:1.25rem}
+@media(min-width:640px){h1{font-size:2.75rem}h2{font-size:2.25rem}}
+@media(min-width:768px){h1{font-size:3.5rem}h2{font-size:2.5rem}}
+@media(min-width:1024px){h1{font-size:4rem}}
+
+/* Icons — red outlined */
+.ic{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.ic svg{stroke:var(--red);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;width:24px;height:24px}
+.ic-lg svg{width:36px;height:36px}
+@media(min-width:768px){.ic-lg svg{width:40px;height:40px}}
+
+/* ═══ SCROLL REVEAL — CSS only, JS enhances ═══ 
+   Content is VISIBLE by default.
+   JS adds .rv-init class to body, which enables animations.
+   If JS fails, everything stays visible. */
+.rv{transition:opacity .6s var(--ease),transform .6s var(--ease)}
+body.rv-init .rv{opacity:0;transform:translateY(24px)}
+body.rv-init .rv.vis{opacity:1;transform:translateY(0)}
+
+/* Logo animation */
+@keyframes lR{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.ll{display:inline-block;animation:lR .4s var(--ease) both}
+.ll:nth-child(1){animation-delay:.05s}.ll:nth-child(2){animation-delay:.1s}
+.ll:nth-child(3){animation-delay:.15s}.ll:nth-child(4){animation-delay:.2s}
+.ll:nth-child(5){animation-delay:.25s}.ll:nth-child(6){animation-delay:.3s}
+.ll:nth-child(7){animation-delay:.35s}
+
+/* Hero load sequence */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.ha1{animation:fadeIn .5s var(--ease) .2s both}
+.ha2{animation:fadeUp .6s var(--ease) .35s both}
+.ha3{animation:fadeIn .5s var(--ease) .55s both}
+.ha4{animation:scaleIn .5s var(--ease) .7s both}
+.ha5{animation:fadeIn .5s var(--ease) .9s both}
+
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes kb{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+
+/* ═══ NAVBAR ═══ */
+.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--g100);transition:box-shadow .3s}
+.nav.sc{box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:56px}
+@media(min-width:768px){.nav-in{height:64px}}
+.nav-logo{font-family:var(--ff);font-size:1.35rem;letter-spacing:-.03em}
+.nav-logo b{font-weight:700}.rd{color:var(--red)}
+.nav-lk{display:none;gap:1.5rem}
+.nav-lk a{font-size:.85rem;font-weight:500;color:var(--g600);padding:.5rem 0;position:relative;transition:color .2s}
+.nav-lk a:hover,.nav-lk a.ac{color:var(--black)}
+.nav-lk a.ac::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--red);border-radius:1px}
+.nav-act{display:flex;align-items:center;gap:.35rem}
+@media(min-width:768px){.nav-lk{display:flex}.ham{display:none}.nav-act{gap:.5rem}}
+
+/* Google btn */
+.g-btn{height:36px;padding:0 10px;border-radius:8px;font-size:.8rem;font-weight:500;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--g200);background:var(--white);color:var(--g700);transition:all .25s;cursor:pointer}
+.g-btn:hover{border-color:var(--g300);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.g-btn svg{width:16px;height:16px;flex-shrink:0}
+.g-btn span{display:none}
+@media(min-width:640px){.g-btn span{display:inline}.g-btn{height:38px;padding:0 12px}}
+
+/* List Free btn */
+.nbp{height:36px;padding:0 12px;border-radius:8px;font-size:.8rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;background:var(--red);color:var(--white);transition:all .25s}
+.nbp:hover{background:var(--red-d);transform:translateY(-1px)}
+@media(min-width:640px){.nbp{height:38px;padding:0 16px}}
+
+.ham{display:flex;flex-direction:column;gap:5px;padding:8px;margin-left:4px}
+.ham span{width:20px;height:2px;background:var(--black);border-radius:2px}
+
+/* Mobile menu */
+.mm{position:fixed;inset:0;z-index:200;background:var(--white);display:flex;flex-direction:column;padding:1.5rem;transform:translateX(100%);transition:transform .4s var(--ease)}
+.mm.open{transform:translateX(0)}
+.mm-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+.mm-c{font-size:1.5rem;padding:.5rem;line-height:1}
+.mm-n a{display:block;font-family:var(--ff);font-size:1.5rem;color:var(--g800);padding:.75rem 0;border-bottom:1px solid var(--g100)}
+.mm-g{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--g100)}
+.mm-g .g-btn{width:100%;justify-content:center;height:44px;font-size:.95rem}
+.mm-g .g-btn span{display:inline}
+
+/* ═══ MARQUEES ═══ */
+.marquee{overflow:hidden;padding:.6rem 0;border-bottom:1px solid var(--g100);background:var(--white)}
+.mq-inner{display:flex;gap:2.5rem;animation:mq 28s linear infinite;width:max-content}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mq-item{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--g500);font-weight:500;white-space:nowrap}
+.mq-item .ic svg{width:14px;height:14px}
+
+/* Brand marquee */
+/* Brand logo marquee */
+.brand-mq{overflow:hidden;padding:1rem 0;border-bottom:1px solid var(--g100);background:var(--white)}
+.brand-mq-label{text-align:center;font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;color:var(--g400);font-weight:600;margin-bottom:.75rem}
+.brand-track{display:flex;gap:1.5rem;animation:mq 60s linear infinite;width:max-content;align-items:center}
+.brand-track:hover{animation-play-state:paused}
+@media(min-width:768px){.brand-track{gap:2rem}}
+.bl{display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:default}
+.bl svg{height:14px;width:auto;opacity:1;transition:transform .3s var(--ease)}
+.bl:hover svg{transform:scale(1.1)}
+@media(min-width:768px){.bl svg{height:18px}}
+.bl-sep{font-size:.45rem;text-transform:uppercase;letter-spacing:.14em;color:var(--red);font-weight:700;background:var(--red-l);border:1px solid var(--red-100);border-radius:100px;padding:.15rem .5rem;white-space:nowrap;flex-shrink:0}
+@media(min-width:768px){.bl-sep{font-size:.5rem;padding:.18rem .6rem}}
+
+/* ═══ HERO ═══ */
+.hero{position:relative;overflow:hidden;padding:4rem 0 3rem}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;animation:kb 25s ease-in-out infinite alternate}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.85) 0%,rgba(255,255,255,.96) 50%,var(--white) 100%)}
+.hero-ct{position:relative;z-index:1;text-align:center}
+.hero-bd{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem 1rem;background:var(--red-l);border:1px solid var(--red-100);border-radius:100px;font-size:.75rem;color:var(--red);font-weight:600;margin-bottom:1.25rem}
+.hero-bd .dot{width:7px;height:7px;background:var(--red);border-radius:50%;animation:pls 2s ease-in-out infinite}
+.hero h1{max-width:700px;margin:0 auto 1rem}
+.hero-sub{font-size:1rem;color:var(--g500);max-width:500px;margin:0 auto 2rem;line-height:1.7}
+@media(min-width:768px){.hero{padding:6rem 0 4rem}.hero-sub{font-size:1.15rem}}
+
+/* Search */
+.srch{max-width:560px;margin:0 auto 1.5rem;position:relative}
+.srch input{width:100%;height:50px;padding:0 52px 0 1.25rem;border:2px solid var(--g200);border-radius:14px;font-size:.95rem;background:var(--white);transition:all .3s}
+.srch input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-l)}
+.srch input::placeholder{color:var(--g400)}
+.srch-b{position:absolute;right:5px;top:5px;width:40px;height:40px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;transition:all .25s}
+.srch-b:hover{background:var(--red-d)}
+.srch-b svg{stroke:var(--white);fill:none;width:18px;height:18px;stroke-width:2.5}
+@media(min-width:768px){.srch input{height:56px;padding:0 58px 0 1.5rem;font-size:1rem}.srch-b{width:46px;height:46px}}
+
+.hero-st{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;font-size:.8rem;color:var(--g500)}
+.hero-st strong{color:var(--black)}
+
+/* ═══ CARDS ═══ */
+.fc{background:var(--white);border:1px solid var(--g100);border-radius:var(--r);box-shadow:0 1px 3px rgba(0,0,0,.03);transition:transform .45s var(--ease),box-shadow .45s var(--ease),border-color .3s}
+.fc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.1);border-color:var(--g200)}
+
+/* Section header */
+.sh{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:.75rem}
+.sh h2{margin-bottom:.15rem}.sh p{color:var(--g500);font-size:.95rem}
+.va{font-size:.8rem;font-weight:600;color:var(--red);display:inline-flex;align-items:center;gap:.25rem;white-space:nowrap;transition:.2s}
+.va:hover{color:var(--red-d);gap:.4rem}.va::after{content:'→'}
+
+/* ═══ CATEGORY GRID ═══ */
+.cg{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+@media(min-width:640px){.cg{grid-template-columns:repeat(4,1fr);gap:1rem}}
+@media(min-width:768px){.cg{gap:1.25rem}}
+.cc{padding:1.25rem .75rem;text-align:center;cursor:pointer;position:relative;overflow:hidden}
+.cc:hover{border-color:var(--red-100)}
+.cc:hover .ic svg{transform:scale(1.1)}
+.cc .ic{margin:0 auto .5rem}.cc .ic svg{transition:transform .3s var(--spring)}
+.cc-n{font-weight:600;font-size:.9rem;margin-bottom:.1rem}
+.cc-c{font-size:.75rem;color:var(--g400)}
+@media(min-width:768px){.cc{padding:1.75rem 1rem}.cc-n{font-size:.95rem}}
+
+/* ═══ PRODUCT GRID ═══ */
+.pg{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:480px){.pg{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.pg{grid-template-columns:repeat(3,1fr)}}
+.pc{overflow:hidden;display:flex;flex-direction:column}
+.pc-img{aspect-ratio:4/3;background:var(--g50);position:relative;overflow:hidden}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.pc:hover .pc-img img{transform:scale(1.06)}
+.pc-b{padding:1rem;flex:1;display:flex;flex-direction:column}
+@media(min-width:768px){.pc-b{padding:1.25rem}}
+.pc-m{display:flex;gap:.35rem;margin-bottom:.4rem;flex-wrap:wrap}
+.bdg{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.06em}
+.bdg-l{background:var(--g100);color:var(--g700)}
+.bdg-a{background:var(--red);color:var(--white)}
+.bdg-f{background:var(--black);color:var(--white)}
+.pc-t{font-weight:600;font-size:.9rem;line-height:1.4;margin-bottom:.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pc-s{font-size:.75rem;color:var(--g500);margin-bottom:.75rem}
+.pc-s .vr{color:var(--green);font-weight:600}
+.pc-f{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;padding-top:.6rem;border-top:1px solid var(--g100)}
+.pc-p{font-weight:700;font-size:1.05rem;letter-spacing:-.02em}
+.pc-pu{font-size:.6rem;font-weight:400;color:var(--g500);display:block}
+
+/* Tabs — sticky with red indicator */
+.tb-wrap{position:sticky;top:56px;z-index:50;background:var(--g50);padding:.5rem 0;border-bottom:1px solid var(--g100);transition:box-shadow .3s}
+.tb-wrap.stuck{box-shadow:0 2px 8px rgba(0,0,0,.05)}
+@media(min-width:768px){.tb-wrap{top:64px}}
+.tb{display:flex;gap:.35rem;padding:3px;background:var(--white);border-radius:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border:1px solid var(--g100)}
+.tb::-webkit-scrollbar{display:none}
+.tb-b{padding:.5rem 1.1rem;border-radius:11px;font-size:.78rem;font-weight:600;color:var(--g500);white-space:nowrap;transition:all .3s var(--spring);position:relative}
+.tb-b:hover{color:var(--g800)}
+.tb-b.ac{color:var(--black)}
+.tb-b.ac::after{content:'';position:absolute;bottom:2px;left:20%;right:20%;height:2px;background:var(--red);border-radius:1px;animation:tabIn .25s var(--ease)}
+@keyframes tabIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* Steps */
+.stg{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem}
+@media(min-width:768px){.stg{grid-template-columns:repeat(4,1fr);gap:1.25rem}}
+.stc{padding:1.5rem 1rem;text-align:center}
+.stc-n{font-family:var(--ff);font-size:2.25rem;color:var(--red-100);line-height:1;margin-bottom:.5rem;transition:color .4s}
+.stc:hover .stc-n{color:var(--red)}
+.stc h4{font-weight:700;font-size:.9rem;margin-bottom:.3rem}
+.stc p{font-size:.75rem;color:var(--g500);line-height:1.5}
+@media(min-width:768px){.stc{padding:2rem 1.25rem}.stc-n{font-size:3rem}.stc p{font-size:.85rem}}
+
+/* Image banner */
+.ib{position:relative;height:240px;overflow:hidden;border-radius:var(--r)}
+.ib img{width:100%;height:100%;object-fit:cover}
+.ib::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.05) 100%)}
+.ib-ct{position:absolute;bottom:1.5rem;left:1.5rem;z-index:1;color:var(--white);max-width:320px}
+.ib-ct h3{color:var(--white);margin-bottom:.3rem;font-size:1.25rem}
+.ib-ct p{font-size:.8rem;color:rgba(255,255,255,.85);line-height:1.5}
+@media(min-width:768px){.ib{height:380px}.ib-ct{bottom:2.5rem;left:2.5rem;max-width:380px}.ib-ct h3{font-size:1.5rem}}
+
+/* ═══ PRICE TRACKER ═══ */
+.pt{background:var(--white);border:1px solid var(--g100);border-radius:var(--r);padding:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.pt-hd{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem}
+@media(min-width:640px){.pt-hd{flex-direction:row;justify-content:space-between;align-items:flex-start}}
+.pt-hd h3{font-family:var(--fb);font-weight:700;font-size:1rem}
+.pt-hd p{font-size:.75rem;color:var(--g500)}
+.pt-fl{display:flex;gap:.4rem;flex-wrap:wrap}
+.pt-f{padding:.3rem .75rem;border-radius:100px;font-size:.7rem;font-weight:600;border:1px solid var(--g200);color:var(--g600);transition:all .2s;cursor:pointer;background:var(--white)}
+.pt-f:hover{border-color:var(--g400)}.pt-f.ac{background:var(--black);color:var(--white);border-color:var(--black)}
+.pt-ch{position:relative;height:220px;margin-bottom:.75rem}
+@media(min-width:768px){.pt-ch{height:280px}}
+.pt-ch canvas{width:100%!important;height:100%!important}
+.pt-lg{display:flex;gap:1rem;flex-wrap:wrap;font-size:.7rem;color:var(--g500)}
+.pt-lg-i{display:flex;align-items:center;gap:4px}
+.pt-lg-d{width:8px;height:8px;border-radius:2px}
+.pt-st{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--g100)}
+@media(min-width:640px){.pt-st{grid-template-columns:repeat(5,1fr)}}
+.pt-s{text-align:center}
+.pt-sv{font-weight:700;font-size:.9rem}.pt-sl{font-size:.65rem;color:var(--g400);margin-top:1px}
+.pt-sd{font-size:.65rem;font-weight:600;margin-top:1px}
+.pt-sd.up{color:var(--green)}.pt-sd.dn{color:var(--red)}
+
+/* Stats */
+.stb{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;padding:2rem 0;border-top:1px solid var(--g100);border-bottom:1px solid var(--g100)}
+@media(min-width:768px){.stb{grid-template-columns:repeat(4,1fr)}}
+.sti{text-align:center}
+.stv{font-family:var(--ff);font-size:1.75rem;color:var(--black);line-height:1.1}
+@media(min-width:768px){.stv{font-size:2.25rem}}
+.stl{font-size:.7rem;color:var(--g500);margin-top:.2rem}
+
+/* Forum */
+.fch{display:grid;grid-template-columns:1fr;gap:.6rem;margin-bottom:1.5rem}
+@media(min-width:768px){.fch{grid-template-columns:repeat(3,1fr)}}
+.fcc{padding:1rem;cursor:pointer;display:flex;align-items:center;gap:.6rem}
+.fcc:hover{border-color:var(--red-100)}
+.fci h4{font-weight:600;font-size:.85rem}.fci p{font-size:.75rem;color:var(--g500)}
+.tl{display:flex;flex-direction:column;gap:.4rem}
+.tr{padding:.75rem 1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;border-radius:10px;transition:background .2s}
+.tr:hover{background:var(--g50)}
+.tp{font-size:.75rem;width:16px;text-align:center;flex-shrink:0}
+.tc{flex:1;min-width:0}
+.tc-t{font-weight:600;font-size:.85rem;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tc-e{font-size:.75rem;color:var(--g500);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ts{display:none;gap:.75rem;font-size:.7rem;color:var(--g400);white-space:nowrap;flex-shrink:0}
+@media(min-width:768px){.ts{display:flex}}
+
+/* CTA */
+.cta{background:var(--black);color:var(--white);border-radius:20px;padding:3rem 1.25rem;text-align:center;margin:2rem 0}
+@media(min-width:768px){.cta{padding:4rem 2rem;border-radius:24px;margin:3rem 0}}
+.cta h2{color:var(--white);margin-bottom:.6rem}
+.cta>p{color:var(--g400);margin-bottom:2rem;max-width:440px;margin-left:auto;margin-right:auto;font-size:.9rem}
+.cta-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font-weight:600;font-size:.85rem;border-radius:8px;transition:all .25s var(--ease);cursor:pointer}
+.btn-lg{height:48px;padding:0 1.5rem;font-size:.9rem;border-radius:12px}
+@media(min-width:768px){.btn-lg{height:52px;padding:0 2rem;font-size:1rem}}
+.btn-r{background:var(--red);color:var(--white);border:2px solid var(--red)}
+.btn-r:hover{background:var(--red-d);transform:translateY(-2px);box-shadow:0 6px 20px rgba(220,38,38,.3)}
+.btn-o{border:2px solid var(--g600);color:var(--white);background:transparent}
+.btn-o:hover{border-color:var(--white);transform:translateY(-2px)}
+
+/* Footer */
+.ft{background:var(--g50);border-top:1px solid var(--g100);padding:3rem 0 1.25rem}
+.ft-g{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+@media(min-width:768px){.ft-g{grid-template-columns:2fr 1fr 1fr 1fr}}
+.ft-br{grid-column:1/-1}
+@media(min-width:768px){.ft-br{grid-column:auto}}
+.ft-br h3{font-family:var(--ff);margin-bottom:.5rem;font-size:1.35rem}
+.ft-br p{font-size:.8rem;color:var(--g500);line-height:1.7;max-width:280px}
+.ft-c h4{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--g400);margin-bottom:.75rem}
+.ft-c a{display:block;font-size:.8rem;color:var(--g600);padding:.2rem 0;transition:color .2s}
+.ft-c a:hover{color:var(--red)}
+.ft-b{display:flex;flex-wrap:wrap;justify-content:space-between;padding-top:1rem;border-top:1px solid var(--g200);font-size:.75rem;color:var(--g400);gap:.5rem}
+
+/* AI FAB */
+.fab{position:fixed;bottom:20px;right:20px;width:48px;height:48px;background:var(--red);color:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(220,38,38,.3);z-index:90;transition:all .25s}
+.fab:hover{transform:scale(1.08);box-shadow:0 8px 30px rgba(220,38,38,.4)}
+.fab svg{stroke:var(--white);fill:none;width:22px;height:22px;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:768px){.fab{bottom:28px;right:28px;width:56px;height:56px}.fab svg{width:24px;height:24px}}
+</style>
+</head>
+<body>
+
+<!-- Trust Marquee -->
+<div class="marquee"><div class="mq-inner">
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Escrow Protected</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>Verified Sellers</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>COD Courier</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Live Auctions</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>SBP Compliant</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>Escrow Protected</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>Verified Sellers</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></span>COD Courier</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Live Auctions</span>
+  <span class="mq-item"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>SBP Compliant</span>
+</div></div>
+
+<!-- Navbar -->
+<nav class="nav" id="navbar"><div class="ctn nav-in">
+  <a href="#" class="nav-logo"><span class="ll">P</span><span class="ll">K</span><span class="ll"><b>B</b></span><span class="ll"><b>i</b></span><span class="ll"><b>d</b></span><span class="ll"><b>s</b></span><span class="ll rd">.</span></a>
+  <div class="nav-lk"><a href="#home" class="ac">Home</a><a href="#products">Products</a><a href="#tracker">Prices</a><a href="#community">Community</a><a href="#sell">Sell</a></div>
+  <div class="nav-act">
+    <button class="g-btn" onclick="alert('Google OAuth → /auth/google endpoint')"><svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11.96 11.96 0 0 0 0 12c0 1.94.46 3.77 1.28 5.4l3.56-2.77z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.09 14.97 0 12 0 7.7 0 3.99 2.47 2.18 6.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span>Sign in</span></button>
+    <button class="nbp"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:white;fill:none;stroke-width:2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>List Free</button>
+    <button class="ham" id="hamBtn"><span></span><span></span><span></span></button>
+  </div>
+</div></nav>
+
+<!-- Mobile Menu -->
+<div class="mm" id="mm"><div class="mm-h"><span class="nav-logo">PK<b>Bids</b><span class="rd">.</span></span><button class="mm-c" id="mmC">✕</button></div>
+<div class="mm-n"><a href="#home" onclick="closeMM()">Home</a><a href="#products" onclick="closeMM()">Products</a><a href="#tracker" onclick="closeMM()">Prices</a><a href="#community" onclick="closeMM()">Community</a><a href="#sell" onclick="closeMM()">Sell</a></div>
+<div class="mm-g"><button class="g-btn"><svg viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A11.96 11.96 0 0 0 0 12c0 1.94.46 3.77 1.28 5.4l3.56-2.77z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 1.09 14.97 0 12 0 7.7 0 3.99 2.47 2.18 6.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span>Continue with Google</span></button></div></div>
+
+<!-- Hero -->
+<header class="hero" id="home">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1400&auto=format&fit=crop&q=80" alt="Solar panels" loading="eager"></div>
+  <div class="hero-ct ctn">
+    <div class="hero-bd ha1"><span class="dot"></span>Pakistan's first solar trading marketplace</div>
+    <h1 class="ha2">Buy, Sell & Bid on Solar Equipment</h1>
+    <p class="hero-sub ha3">Bid, make offers, or buy at fixed price — all with escrow protection and verified sellers across Pakistan.</p>
+    <div class="srch ha4"><input type="search" placeholder="Search solar panels, inverters, batteries..." aria-label="Search"><button class="srch-b" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button></div>
+    <div class="hero-st ha5"><span><strong class="cu" data-to="2400">2,400</strong>+ Listings</span><span><strong class="cu" data-to="850">850</strong>+ Sellers</span><span>PKR <strong class="cu" data-to="2.1" data-dec="1">2.1</strong>B Traded</span></div>
+  </div>
+</header>
+
+<!-- Brand Logo Marquee — corrected colors, local brands, CNC red/black -->
+<div class="brand-mq">
+  <div class="brand-mq-label">Trusted brands traded on PKBids</div>
+  <div class="brand-track">
+    <span class="bl-sep">Panels</span>
+    <span class="bl"><svg viewBox="0 0 120 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#1A428A" letter-spacing=".5">JINKO</text><text x="63" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="300" fill="#1A428A">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 82 28"><rect x="0" y="5" width="5" height="18" rx="1" fill="#009A44"/><text x="10" y="21" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#009A44" letter-spacing="-.5">LONGi</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="800" fill="#003DA5">JA</text><text x="24" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#003DA5">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 148 28"><circle cx="10" cy="14" r="8" fill="none" stroke="#CC2131" stroke-width="1.8"/><text x="24" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">Canadian Solar</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 100 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003366">Trina</text><text x="48" y="20" font-family="Arial,sans-serif" font-size="10" font-weight="600" fill="#003366">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 110 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#00529B">Astronergy</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E31E24">Inverex</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 70 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1A1A1A">Crown</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 80 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#003DA5">Q CELLS</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E63312">Risen</text></svg></span>
+
+    <span class="bl-sep">Inverters</span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#F37021">Growatt</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#0054A6">Solis</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#CF0A2C" letter-spacing="1.5">HUAWEI</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#EE7203">GoodWe</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 52 28"><text x="0" y="21" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#0068B4" letter-spacing="1">SMA</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#E2001A">Fronius</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E31E24">Inverex</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 95 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#F7941D">SolarMax</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 58 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">Knox</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#004EA2">INVT</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#EE7F00">Sungrow</text></svg></span>
+
+    <span class="bl-sep">Batteries</span>
+    <span class="bl"><svg viewBox="0 0 105 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#009A44" letter-spacing=".8">PYLONTECH</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 46 28"><text x="0" y="22" font-family="Arial,sans-serif" font-size="20" font-weight="900" fill="#C00000">BYD</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 75 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#005BAA">Narada</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 74 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#F7941D">Felicity</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 60 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#CC0000">Tesla</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#003DA5">Phoenix</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 48 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#E31E24">AGS</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1A1A1A">Osaka</text></svg></span>
+
+    <span class="bl-sep">Protection</span>
+    <span class="bl"><svg viewBox="0 0 115 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="900" fill="#CC0000">CNC</text><text x="38" y="20" font-family="Arial,sans-serif" font-size="11" font-weight="600" fill="#1A1A1A">ELECTRIC</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="21" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#D60C18" letter-spacing=".5">CHINT</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 72 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#0058A3" letter-spacing=".5">TOMZN</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">Mora</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 105 28"><text x="0" y="19" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#3DCD58">Schneider</text><text x="68" y="19" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#3DCD58">Electric</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 45 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#F47920">CHC</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 46 28"><text x="0" y="22" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#FF000F" letter-spacing="1">ABB</text></svg></span>
+
+    <!-- Duplicate for seamless loop -->
+    <span class="bl-sep">Panels</span>
+    <span class="bl"><svg viewBox="0 0 120 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#1A428A" letter-spacing=".5">JINKO</text><text x="63" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="300" fill="#1A428A">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 82 28"><rect x="0" y="5" width="5" height="18" rx="1" fill="#009A44"/><text x="10" y="21" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#009A44" letter-spacing="-.5">LONGi</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="800" fill="#003DA5">JA</text><text x="24" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#003DA5">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 148 28"><circle cx="10" cy="14" r="8" fill="none" stroke="#CC2131" stroke-width="1.8"/><text x="24" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">Canadian Solar</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 100 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#003366">Trina</text><text x="48" y="20" font-family="Arial,sans-serif" font-size="10" font-weight="600" fill="#003366">SOLAR</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 110 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#00529B">Astronergy</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E31E24">Inverex</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 70 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1A1A1A">Crown</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 80 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#003DA5">Q CELLS</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E63312">Risen</text></svg></span>
+
+    <span class="bl-sep">Inverters</span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#F37021">Growatt</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#0054A6">Solis</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#CF0A2C" letter-spacing="1.5">HUAWEI</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#EE7203">GoodWe</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 52 28"><text x="0" y="21" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#0068B4" letter-spacing="1">SMA</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#E2001A">Fronius</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#E31E24">Inverex</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 95 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#F7941D">SolarMax</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 58 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">Knox</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#004EA2">INVT</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 90 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#EE7F00">Sungrow</text></svg></span>
+
+    <span class="bl-sep">Batteries</span>
+    <span class="bl"><svg viewBox="0 0 105 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#009A44" letter-spacing=".8">PYLONTECH</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 46 28"><text x="0" y="22" font-family="Arial,sans-serif" font-size="20" font-weight="900" fill="#C00000">BYD</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 75 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#005BAA">Narada</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 74 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#F7941D">Felicity</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 60 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#CC0000">Tesla</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 78 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#003DA5">Phoenix</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 48 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#E31E24">AGS</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1A1A1A">Osaka</text></svg></span>
+
+    <span class="bl-sep">Protection</span>
+    <span class="bl"><svg viewBox="0 0 115 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="900" fill="#CC0000">CNC</text><text x="38" y="20" font-family="Arial,sans-serif" font-size="11" font-weight="600" fill="#1A1A1A">ELECTRIC</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 65 28"><text x="0" y="21" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#D60C18" letter-spacing=".5">CHINT</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 72 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#0058A3" letter-spacing=".5">TOMZN</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 55 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">Mora</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 105 28"><text x="0" y="19" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#3DCD58">Schneider</text><text x="68" y="19" font-family="Arial,sans-serif" font-size="8" font-weight="500" fill="#3DCD58">Electric</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 45 28"><text x="0" y="20" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#F47920">CHC</text></svg></span>
+    <span class="bl"><svg viewBox="0 0 46 28"><text x="0" y="22" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#FF000F" letter-spacing="1">ABB</text></svg></span>
+  </div>
+</div>
+
+<!-- Categories -->
+<section class="sec" id="products"><div class="ctn">
+  <div class="sh rv"><div><h2>Browse by Category</h2><p>Everything for your solar project</p></div><a href="#" class="va">View all</a></div>
+  <div class="cg">
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></div><div class="cc-n">Solar Panels</div><div class="cc-c">1,200+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div><div class="cc-n">Inverters</div><div class="cc-c">340+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="10" x2="23" y2="14"/></svg></div><div class="cc-n">Batteries</div><div class="cc-c">280+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><polyline points="2 7 12 2 22 7"/></svg></div><div class="cc-n">Systems</div><div class="cc-c">150+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="cc-n">Protection</div><div class="cc-c">420+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg></div><div class="cc-n">Cables</div><div class="cc-c">310+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="cc-n">Monitoring</div><div class="cc-c">90+</div></div>
+    <div class="fc cc rv"><div class="ic ic-lg"><svg viewBox="0 0 24 24"><path d="M2 20h20M5 20V8l7-5 7 5v12M9 20v-6h6v6"/></svg></div><div class="cc-n">Structures</div><div class="cc-c">170+</div></div>
+  </div>
+</div></section>
+
+<!-- Featured -->
+<section class="sec" style="background:var(--g50);padding-top:2rem"><div class="ctn">
+  <div class="sh rv"><div><h2>Featured Listings</h2><p>Top deals from verified sellers</p></div><a href="#" class="va">View all</a></div>
+</div></section>
+<div class="tb-wrap" id="stickyTabs"><div class="ctn"><div class="tb"><button class="tb-b ac" data-tab="all">All</button><button class="tb-b" data-tab="panels">Panels</button><button class="tb-b" data-tab="inverters">Inverters</button><button class="tb-b" data-tab="batteries">Batteries</button><button class="tb-b" data-tab="auctions">Auctions</button></div></div></div>
+<section class="sec" style="background:var(--g50);padding-top:1.5rem"><div class="ctn">
+  <div class="pg">
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=600&auto=format&fit=crop&q=75" alt="Solar panels" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-l">Fixed</span><span class="bdg bdg-f">Featured</span></div><div class="pc-t">High-Efficiency 585W Bifacial Panel for Home & Commercial Rooftops</div><div class="pc-s">SunTech Traders <span class="vr">✓</span> · ★4.8</div><div class="pc-f"><div><div class="pc-p">PKR 23,400</div><span class="pc-pu">per panel · from 21,500 bulk</span></div><span style="font-size:.7rem;color:var(--g400)">Lahore</span></div></div></article>
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1521618755572-156ae0cdd74d?w=600&auto=format&fit=crop&q=75" alt="Solar farm" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-a">Auction</span></div><div class="pc-t">Premium 640W HPBC Bifacial — Highest Efficiency for Limited Space</div><div class="pc-s">Alpha Solar <span class="vr">✓</span> · ★4.9</div><div class="pc-f"><div><div class="pc-p">PKR 39.5/W</div><span class="pc-pu">12 bids · 3 days left</span></div><span style="font-size:.7rem;color:var(--g400)">Lahore</span></div></div></article>
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=600&auto=format&fit=crop&q=75" alt="Inverter" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-l">Fixed</span><span class="bdg bdg-f">Featured</span></div><div class="pc-t">10kW Hybrid Inverter — Best for 8-10 Room Houses with Battery</div><div class="pc-s">PowerMax <span class="vr">✓</span> · ★4.7</div><div class="pc-f"><div><div class="pc-p">PKR 385,000</div><span class="pc-pu">per unit · from 355K bulk</span></div><span style="font-size:.7rem;color:var(--g400)">Lahore</span></div></div></article>
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&auto=format&fit=crop&q=75" alt="Battery" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-l">Fixed</span></div><div class="pc-t">5kWh LiFePO4 Battery — 15+ Year Solar Home Backup</div><div class="pc-s">BatteryWala.pk <span class="vr">✓</span> · ★4.8</div><div class="pc-f"><div><div class="pc-p">PKR 245,000</div><span class="pc-pu">per unit · from 225K bulk</span></div><span style="font-size:.7rem;color:var(--g400)">Lahore</span></div></div></article>
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&auto=format&fit=crop&q=75" alt="Solar system" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-a">Auction</span></div><div class="pc-t">10kW Complete Hybrid System — Power 5-Bedroom House Year-Round</div><div class="pc-s">SunSolar <span class="vr">✓</span> · ★4.9</div><div class="pc-f"><div><div class="pc-p">PKR 1.72M</div><span class="pc-pu">8 bids · per system</span></div><span style="font-size:.7rem;color:var(--g400)">Lahore</span></div></div></article>
+    <article class="fc pc rv"><div class="pc-img"><img src="https://images.unsplash.com/photo-1545208942-e1c9c916524b?w=600&auto=format&fit=crop&q=75" alt="Panel closeup" loading="lazy"></div><div class="pc-b"><div class="pc-m"><span class="bdg bdg-l">Fixed</span></div><div class="pc-t">Budget 610W Panel for Ground Mount Projects — Great Price/Watt</div><div class="pc-s">Green Energy Hub <span class="vr">✓</span> · ★4.6</div><div class="pc-f"><div><div class="pc-p">PKR 21,350</div><span class="pc-pu">per panel · MOQ 10</span></div><span style="font-size:.7rem;color:var(--g400)">Karachi</span></div></div></article>
+  </div>
+</div></section>
+
+<!-- Price Tracker -->
+<section class="sec" id="tracker"><div class="ctn">
+  <div class="sh rv"><div><h2>Price Tracker</h2><p>Live solar panel prices — updated daily</p></div></div>
+  <div class="pt rv">
+    <div class="pt-hd">
+      <div><h3>Solar Panel Price/Watt (PKR)</h3><p>Last 30 days · Lahore Market</p></div>
+      <div class="pt-fl" id="ptF">
+        <button class="pt-f ac" data-b="all">All</button><button class="pt-f" data-b="jinko">Jinko</button><button class="pt-f" data-b="longi">Longi</button><button class="pt-f" data-b="ja">JA Solar</button><button class="pt-f" data-b="canadian">Canadian</button><button class="pt-f" data-b="trina">Trina</button>
+      </div>
+    </div>
+    <div class="pt-ch"><canvas id="priceChart"></canvas></div>
+    <div class="pt-lg" id="ptL"></div>
+    <div class="pt-st" id="ptS"></div>
+  </div>
+</div></section>
+
+<!-- Banner -->
+<section class="sec" style="padding:0"><div class="ctn"><div class="ib rv">
+  <img src="https://images.unsplash.com/photo-1624397640148-949b1732bb0a?w=1200&auto=format&fit=crop&q=80" alt="Commercial solar" loading="lazy">
+  <div class="ib-ct"><h3>Escrow-Protected Trading</h3><p>Every transaction secured. Funds released only after delivery confirmation.</p></div>
+</div></div></section>
+
+<!-- How It Works -->
+<section class="sec"><div class="ctn">
+  <div class="sh rv"><div><h2>How PKBids Works</h2><p>Three ways to trade — one platform</p></div></div>
+  <div class="stg">
+    <div class="fc stc rv"><div class="stc-n">01</div><h4>Fixed Price</h4><p>Buy at listed price with automatic bulk discounts.</p></div>
+    <div class="fc stc rv"><div class="stc-n">02</div><h4>Make Offer</h4><p>Submit your price. Accept, reject, or counter.</p></div>
+    <div class="fc stc rv"><div class="stc-n">03</div><h4>Bid Auctions</h4><p>Timed auctions with anti-sniping protection.</p></div>
+    <div class="fc stc rv"><div class="stc-n">04</div><h4>Secure Delivery</h4><p>Escrow + COD courier or goods bilty.</p></div>
+  </div>
+</div></section>
+
+<!-- Stats -->
+<section class="sec" style="padding-top:0"><div class="ctn"><div class="stb rv">
+  <div class="sti"><div class="stv"><span class="cu" data-to="16.9" data-dec="1">16.9</span> GW</div><div class="stl">PV imported 2024</div></div>
+  <div class="sti"><div class="stv"><span class="cu" data-to="100">100</span>%</div><div class="stl">Escrow protected</div></div>
+  <div class="sti"><div class="stv"><span class="cu" data-to="850">850</span>+</div><div class="stl">Verified sellers</div></div>
+  <div class="sti"><div class="stv"><span class="cu" data-to="24">24</span>hr</div><div class="stl">Dispute resolution</div></div>
+</div></div></section>
+
+<!-- Community -->
+<section class="sec" style="background:var(--g50)" id="community"><div class="ctn">
+  <div class="sh rv"><div><h2>Community</h2><p>Solar trading forum</p></div><a href="#" class="va">Visit forum</a></div>
+  <div class="fch">
+    <div class="fc fcc rv"><div class="ic"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div><div class="fci"><h4>Market Prices</h4><p>Daily updates</p></div></div>
+    <div class="fc fcc rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="fci"><h4>Installation Tips</h4><p>Guides & support</p></div></div>
+    <div class="fc fcc rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><div class="fci"><h4>Net Metering</h4><p>DISCO approvals</p></div></div>
+  </div>
+  <div class="tl">
+    <div class="fc tr rv"><span class="tp" style="color:var(--amber)">📌</span><div class="tc"><div class="tc-t">Daily Solar Panel Prices — March 2026 — Lahore Update</div><div class="tc-e">Jinko 585W at PKR 38-40/watt. Longi at 39.5...</div></div><div class="ts"><span>💬47</span><span>👁1.2K</span><span>2h</span></div></div>
+    <div class="fc tr rv"><span class="tp"></span><div class="tc"><div class="tc-t">How to Choose the Right Inverter Size — Guide</div><div class="tc-e">Calculating load and selecting capacity...</div></div><div class="ts"><span>💬23</span><span>👁856</span><span>5h</span></div></div>
+    <div class="fc tr rv"><span class="tp"></span><div class="tc"><div class="tc-t">Inverter Prices Dropping — Right Time to Buy?</div><div class="tc-e">Growatt and Solis 8-12% drops on hybrid...</div></div><div class="ts"><span>💬18</span><span>👁534</span><span>3h</span></div></div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section class="sec" id="sell"><div class="ctn"><div class="cta rv">
+  <h2>Start Selling on PKBids</h2>
+  <p>Zero listing fees. Escrow payments. Thousands of verified buyers.</p>
+  <div class="cta-btns"><button class="btn btn-lg btn-r">Register as Seller</button><button class="btn btn-lg btn-o">How It Works</button></div>
+</div></div></section>
+
+<!-- Footer -->
+<footer class="ft"><div class="ctn">
+  <div class="ft-g">
+    <div class="ft-br"><h3>PK<b>Bids</b><span class="rd">.</span></h3><p>Pakistan's first solar marketplace with escrow protection.</p></div>
+    <div class="ft-c"><h4>Marketplace</h4><a href="#">Solar Panels</a><a href="#">Inverters</a><a href="#">Batteries</a><a href="#">Systems</a></div>
+    <div class="ft-c"><h4>Community</h4><a href="#">Forum</a><a href="#">Prices</a><a href="#">Blog</a><a href="#">FAQs</a></div>
+    <div class="ft-c"><h4>Company</h4><a href="#">About</a><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Contact</a></div>
+  </div>
+  <div class="ft-b"><span>&copy; 2026 PKBids</span><span>Made with ☀️ in Lahore</span></div>
+</div></footer>
+
+<button class="fab" aria-label="AI Assistant"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+
+<!-- ═══ SCRIPTS — All wrapped in try/catch, content works without JS ═══ -->
+<script>
+try {
+  /* ═══ SCROLL REVEAL — native IntersectionObserver ═══ */
+  document.body.classList.add('rv-init');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); }});
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  /* ═══ COUNT-UP ═══ */
+  const cuObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target, to = parseFloat(el.dataset.to), dec = parseInt(el.dataset.dec || '0');
+      const dur = 1600, start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        const v = to * ease;
+        el.textContent = dec > 0 ? v.toFixed(dec) : Math.round(v).toLocaleString();
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      cuObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.cu').forEach(el => { el.textContent = '0'; cuObs.observe(el); });
+
+  /* ═══ NAVBAR SCROLL ═══ */
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('sc', scrollY > 10);
+  }, { passive: true });
+
+  /* ═══ MOBILE MENU ═══ */
+  document.getElementById('hamBtn').onclick = () => document.getElementById('mm').classList.add('open');
+  document.getElementById('mmC').onclick = closeMM;
+  function closeMM() { document.getElementById('mm').classList.remove('open'); }
+
+  /* ═══ TABS ═══ */
+  document.addEventListener('click', e => {
+    if (e.target.classList.contains('tb-b')) {
+      e.target.closest('.tb').querySelectorAll('.tb-b').forEach(b => b.classList.remove('ac'));
+      e.target.classList.add('ac');
+    }
+  });
+
+  /* ═══ STICKY TABS — shadow when stuck ═══ */
+  const stickyTabs = document.getElementById('stickyTabs');
+  if (stickyTabs) {
+    const tabObs = new IntersectionObserver(([e]) => {
+      stickyTabs.classList.toggle('stuck', e.intersectionRatio < 1);
+    }, { threshold: [1], rootMargin: '-57px 0px 0px 0px' });
+    tabObs.observe(stickyTabs);
+  }
+
+  /* ═══ SMOOTH NAV ═══ */
+  document.querySelectorAll('.nav-lk a,.mm-n a').forEach(a => {
+    a.addEventListener('click', e => {
+      const h = a.getAttribute('href');
+      if (h && h.startsWith('#')) {
+        e.preventDefault();
+        const t = document.querySelector(h);
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.nav-lk a').forEach(l => l.classList.remove('ac'));
+        document.querySelector('.nav-lk a[href="' + h + '"]')?.classList.add('ac');
+        closeMM();
+      }
+    });
+  });
+} catch(err) { console.warn('PKBids JS error:', err); }
+</script>
+
+<!-- Chart.js — loaded separately, wrapped in try/catch -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.js"></script>
+<script>
+try {
+  const PD = {
+    labels: Array.from({length:30},(_,i)=>{const d=new Date();d.setDate(d.getDate()-29+i);return d.toLocaleDateString('en-PK',{day:'numeric',month:'short'})}),
+    brands: {
+      jinko:{name:'Jinko',color:'#DC2626',data:[38.5,38.2,38,38.3,38.1,37.8,37.5,37.8,38,38.2,38.5,38.3,38,37.7,37.5,37.3,37.5,37.8,38,38.2,38,37.8,37.5,37.3,37,37.2,37.5,37.8,38,37.5]},
+      longi:{name:'Longi',color:'#0A0A0A',data:[39.8,39.5,39.5,39.8,40,39.8,39.5,39.5,39.8,40,39.8,39.5,39.5,39.2,39,39.2,39.5,39.5,39.8,39.5,39.5,39.2,39,39.2,39.5,39.5,39.8,39.5,39.5,39.5]},
+      ja:{name:'JA Solar',color:'#059669',data:[35,35.2,35,34.8,34.5,34.8,35,35.2,35,34.8,34.5,34.2,34,34.2,34.5,34.8,35,34.8,34.5,34.2,34,33.8,34,34.2,34.5,34.2,34,33.8,34,34]},
+      canadian:{name:'Canadian',color:'#2563EB',data:[36.5,36.5,36.8,37,36.8,36.5,36.5,36.8,37,36.8,36.5,36.2,36,36.2,36.5,36.5,36.8,36.5,36.5,36.2,36,36.2,36.5,36.5,36.8,36.5,36.2,36,36.2,36.5]},
+      trina:{name:'Trina',color:'#D97706',data:[33.5,33.2,33,33.2,33.5,33.5,33.8,33.5,33.2,33,33.2,33.5,33.5,33.2,33,32.8,33,33.2,33.5,33.2,33,32.8,32.5,32.8,33,33.2,33,32.8,33,33]}
+    }
+  };
+  let ch;
+  function buildChart(f) {
+    f = f || 'all';
+    const ctx = document.getElementById('priceChart');
+    if (ch) ch.destroy();
+    const ds = [], keys = f === 'all' ? Object.keys(PD.brands) : [f];
+    keys.forEach(k => { const b = PD.brands[k]; ds.push({label:b.name,data:b.data,borderColor:b.color,backgroundColor:b.color+'18',borderWidth:2,pointRadius:0,pointHoverRadius:4,pointHoverBackgroundColor:b.color,tension:.4,fill:keys.length===1}); });
+    ch = new Chart(ctx, {type:'line',data:{labels:PD.labels,datasets:ds},options:{
+      responsive:true,maintainAspectRatio:false,
+      animation:{duration:700,easing:'easeOutQuart'},
+      interaction:{intersect:false,mode:'index'},
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#0A0A0A',titleFont:{family:'DM Sans',size:11},bodyFont:{family:'DM Sans',size:10},padding:8,cornerRadius:6,callbacks:{label:c=>c.dataset.label+': PKR '+c.parsed.y.toFixed(1)+'/W'}}},
+      scales:{x:{grid:{display:false},ticks:{font:{family:'DM Sans',size:9},color:'#A3A3A3',maxTicksLimit:7}},y:{grid:{color:'#F0F0F0',drawBorder:false},ticks:{font:{family:'DM Sans',size:9},color:'#A3A3A3',callback:v=>'₨'+v},min:30,max:42}}
+    }});
+    document.getElementById('ptL').innerHTML = keys.map(k=>{const b=PD.brands[k];return'<span class="pt-lg-i"><span class="pt-lg-d" style="background:'+b.color+'"></span>'+b.name+'</span>'}).join('');
+    document.getElementById('ptS').innerHTML = Object.entries(PD.brands).map(([k,b])=>{
+      const c=b.data[b.data.length-1],p=b.data[0],d=((c-p)/p*100).toFixed(1);
+      return'<div class="pt-s"><div class="pt-sv">₨'+c+'</div><div class="pt-sl">'+b.name+'</div><div class="pt-sd '+(d<0?'dn':'up')+'">'+(d<0?'↓':'↑')+' '+Math.abs(d)+'%</div></div>'}).join('');
+  }
+  document.getElementById('ptF').addEventListener('click', e => {
+    if (!e.target.classList.contains('pt-f')) return;
+    document.querySelectorAll('.pt-f').forEach(b => b.classList.remove('ac'));
+    e.target.classList.add('ac');
+    buildChart(e.target.dataset.b);
+  });
+  buildChart('all');
+} catch(err) { console.warn('Chart error:', err); document.querySelector('.pt-ch').innerHTML = '<p style="text-align:center;color:#737373;padding:2rem;">Price chart loading...</p>'; }
+</script>
+</body>
+</html>
