@@ -476,11 +476,12 @@ function genReport(){
 
   // Table
   h+='<div class="rtbl-wrap"><table class="rtbl"><thead><tr>';
-  h+='<th>Worker</th><th>Designation</th><th>Days</th><th>Hours</th><th>OT</th><th>Late</th><th>TA</th><th>Avg/Day</th>';
+  h+='<th>#</th><th>Worker</th><th>Designation</th><th>Days</th><th>Hours</th><th>OT</th><th>Late</th><th>TA</th><th>Avg/Day</th>';
   h+='</tr></thead><tbody>';
-  wArr.forEach(function(w){
+  wArr.forEach(function(w,i){
     var avgH=w.days>0?Math.round(w.totalMin/w.days/60*10)/10:0;
     h+='<tr>';
+    h+='<td style="font-weight:700;color:var(--tx3)">'+(i+1)+'</td>';
     h+='<td style="font-weight:700">'+w.name+'</td>';
     h+='<td>'+w.desg+'</td>';
     h+='<td>'+w.days+'</td>';
@@ -493,7 +494,120 @@ function genReport(){
   });
   h+='</tbody></table></div>';
 
+  // ═══ LOCATION ANALYTICS ═══
+  var roads={},landmarks={},areas={},offices={};
+  recs.forEach(function(r){
+    if(r.road){roads[r.road]=(roads[r.road]||0)+1}
+    if(r.landmark){landmarks[r.landmark]=(landmarks[r.landmark]||0)+1}
+    if(r.area){areas[r.area]=(areas[r.area]||0)+1}
+    if(r.nearestOffice){offices[r.nearestOffice]=(offices[r.nearestOffice]||0)+1}
+  });
+
+  var topRoads=Object.entries(roads).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topLandmarks=Object.entries(landmarks).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topAreas=Object.entries(areas).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+  var topOffices=Object.entries(offices).sort(function(a,b){return b[1]-a[1]});
+
+  if(topRoads.length||topLandmarks.length||topAreas.length){
+    h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">📍 Location Analytics</div>';
+
+    // Office distribution
+    if(topOffices.length){
+      h+='<div style="margin-bottom:10px;font-size:12px;font-weight:700;color:var(--tx2)">Nearest Office Distribution</div>';
+      h+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">';
+      topOffices.forEach(function(o){
+        h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);padding:8px 14px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--B)">'+o[1]+'</div><div style="font-size:10px;color:var(--tx2)">'+o[0]+'</div></div>';
+      });
+      h+='</div>';
+    }
+
+    // Location tables side by side
+    h+='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px">';
+
+    if(topRoads.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🛣️ Top Roads</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topRoads.forEach(function(r,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+r[0]+'</span><span style="font-weight:800;color:var(--B)">'+r[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+
+    if(topAreas.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🏘️ Top Areas</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topAreas.forEach(function(a,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+a[0]+'</span><span style="font-weight:800;color:var(--B)">'+a[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+
+    if(topLandmarks.length){
+      h+='<div><div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:6px">🏢 Top Landmarks</div>';
+      h+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden">';
+      topLandmarks.forEach(function(l,i){
+        h+='<div style="display:flex;justify-content:space-between;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px"><span>'+(i+1)+'. '+l[0]+'</span><span style="font-weight:800;color:var(--B)">'+l[1]+'</span></div>';
+      });
+      h+='</div></div>';
+    }
+    h+='</div>';
+  }
+
+  // ═══ DAILY DETAIL TABLE ═══
+  h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">📋 Daily Detail</div>';
+  var sortedRecs=recs.slice().sort(function(a,b){return(a.dateKey||'').localeCompare(b.dateKey||'')});
+  h+='<div class="rtbl-wrap"><table class="rtbl"><thead><tr>';
+  h+='<th>#</th><th>Date</th><th>Worker</th><th>In</th><th>Out</th><th>Hours</th><th>OT</th><th>Road/Landmark</th><th>Area</th><th>KM</th><th>TA</th>';
+  h+='</tr></thead><tbody>';
+  sortedRecs.forEach(function(r,i){
+    var loc=r.road||r.landmark||'—';
+    var lateClr=r.late?'color:var(--A)':'';
+    h+='<tr>';
+    h+='<td style="color:var(--tx3)">'+(i+1)+'</td>';
+    h+='<td style="font-size:11px">'+(r.date||'—')+'</td>';
+    h+='<td style="font-weight:700;font-size:12px">'+(r.name||'—')+'</td>';
+    h+='<td style="'+lateClr+'">'+(r.checkIn||'—')+'</td>';
+    h+='<td>'+(r.checkOut||'—')+'</td>';
+    h+='<td>'+(r.totalHours||'—')+'</td>';
+    h+='<td style="color:var(--A)">'+(r.otMinutes>0?r.otHours:'—')+'</td>';
+    h+='<td style="font-size:11px">'+loc+'</td>';
+    h+='<td style="font-size:11px">'+(r.area||'—')+'</td>';
+    h+='<td>'+(r.checkInKmFromOffice||0)+'</td>';
+    h+='<td style="color:var(--G)">Rs '+(r.taAmount||0)+'</td>';
+    h+='</tr>';
+  });
+  h+='</tbody></table></div>';
+
+  // ═══ MAP — All check-in locations ═══
+  var gpsRecs=recs.filter(function(r){return r.checkInLat&&r.checkInLng});
+  if(gpsRecs.length){
+    h+='<div style="margin:18px 0 8px;font-size:15px;font-weight:800">🗺️ Check-in Locations Map</div>';
+    h+='<div id="rpt-map" style="width:100%;height:300px;border-radius:var(--r);border:1px solid var(--bdr)"></div>';
+  }
+
   $('report-out').innerHTML=h;
+
+  // Init report map
+  if(gpsRecs.length){
+    setTimeout(function(){
+      var rMap=L.map('rpt-map');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(rMap);
+      var bounds=[];
+      gpsRecs.forEach(function(r){
+        var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
+        bounds.push([lat,lng]);
+        var popup='<b>'+(r.name||'?')+'</b><br>'+(r.date||'')+' · '+(r.checkIn||'')+'<br>'+(r.road?'🛣️ '+r.road+'<br>':'')+(r.landmark?'🏢 '+r.landmark+'<br>':'')+(r.area?'📍 '+r.area:'');
+        L.circleMarker([lat,lng],{radius:7,fillColor:'#3b82f6',color:'#fff',weight:2,fillOpacity:.8}).addTo(rMap).bindPopup(popup);
+      });
+      // Office markers
+      OFC.forEach(function(o){
+        L.circleMarker([o.la,o.ln],{radius:10,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.9}).addTo(rMap).bindPopup('🏢 '+o.n);
+        bounds.push([o.la,o.ln]);
+      });
+      if(bounds.length)rMap.fitBounds(bounds,{padding:[20,20]});
+      setTimeout(function(){rMap.invalidateSize()},200);
+    },100);
+  }
 }
 
 /* ═══ AI ANALYSIS ═══ */
