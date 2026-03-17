@@ -191,6 +191,7 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
   <div class="sts" id="dn-sts"><div class="sts-i" id="dn-i">🏠</div><div class="sts-h" id="dn-h">رخصت ہو گئی</div><div class="sts-p">اللہ حافظ — کل ملیں گے</div></div>
   <div class="inf" id="dn-info"></div>
   <div style="text-align:center;margin-top:10px;font-size:12px;color:var(--G5);line-height:1.8">📍 GPS · 📸 سیلفی · 🎙️ <span id="dn-v">—</span></div>
+  <button class="btn btn-d" style="margin-top:14px" onclick="App.goHome()">🏠 واپس ہوم — نیا دن</button>
 </div>
 
 </div>
@@ -753,6 +754,17 @@ var App = {
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 60000 }
     );
+  },
+
+  goHome: function() {
+    _who = null; _geo = null; _pic = null; _inTime = null; _fbKey = null; _saving = false;
+    _mBlob = null; _mUrl = null; _rSec = 0; _gpsTrail = []; _gpsCount = 0;
+    if (_wkInt) { clearInterval(_wkInt); _wkInt = null; }
+    if (_gpsTracker) { clearInterval(_gpsTracker); _gpsTracker = null; }
+    killStream();
+    this.show('select');
+    this.init();
+    log('Home reset');
   },
 
   stopTracking: function() {

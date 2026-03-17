@@ -95,6 +95,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 .spin{display:inline-block;width:20px;height:20px;border:3px solid var(--s3);border-top-color:var(--B);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .loading{text-align:center;padding:30px;color:var(--tx2)}
+.map-label{background:rgba(0,0,0,.7)!important;color:#fff!important;border:none!important;padding:2px 6px!important;font-size:10px!important;font-weight:700!important;border-radius:4px!important;box-shadow:none!important}
 </style>
 </head>
 <body>
@@ -135,8 +136,17 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 <div id="pn-map" class="panel">
   <div class="fbar">
     <button class="fbtn" onclick="loadLiveMap()">🔄 Refresh</button>
-    <span style="font-size:11px;color:var(--tx2)">Shows today's check-ins on map. Tap pin for details.</span>
+    <div class="fg"><label>Filter</label>
+      <select class="fi" id="map-fil" onchange="loadLiveMap()">
+        <option value="all">All</option>
+        <option value="working">🟢 Working Now</option>
+        <option value="done">✅ Done</option>
+        <option value="ontime">⏰ On Time</option>
+        <option value="late">🔴 Late</option>
+      </select>
+    </div>
   </div>
+  <div id="map-legend" style="padding:0 16px 8px;font-size:11px;color:var(--tx2)"></div>
   <div id="live-map" style="width:100%;height:500px;border-radius:var(--r);border:1px solid var(--bdr)"></div>
 </div>
 
@@ -719,66 +729,87 @@ function runAI(){
 var _liveMap=null;
 function loadLiveMap(){
   if(!_all.length){loadAll();setTimeout(loadLiveMap,2000);return}
-  var today=todayISO();
-  var todayKey=today.replace(/-/g,'');
+  var today=todayISO();var todayKey=today.replace(/-/g,'');
+  var fil=$('map-fil').value;
   var todayRecs=_all.filter(function(r){return r.dateKey===todayKey});
+
+  // Apply filter
+  if(fil==='working')todayRecs=todayRecs.filter(function(r){return r.status==='checked-in'});
+  else if(fil==='done')todayRecs=todayRecs.filter(function(r){return r.status==='checked-out'});
+  else if(fil==='ontime')todayRecs=todayRecs.filter(function(r){return!r.late});
+  else if(fil==='late')todayRecs=todayRecs.filter(function(r){return r.late});
+
+  // Legend
+  var working=todayRecs.filter(function(r){return r.status==='checked-in'}).length;
+  var done=todayRecs.filter(function(r){return r.status==='checked-out'}).length;
+  $('map-legend').innerHTML='<span style="color:var(--G)">🟢 '+working+' working</span> · <span style="color:var(--B)">✅ '+done+' done</span> · '+todayRecs.length+' total';
 
   var el=$('live-map');
   if(_liveMap){_liveMap.remove();_liveMap=null}
   _liveMap=L.map(el).setView([31.462915,74.320000],12);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_liveMap);
-
-  // Office markers
-  OFC.forEach(function(o){
-    L.circleMarker([o.la,o.ln],{radius:10,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.9}).addTo(_liveMap).bindPopup('🏢 '+o.n);
-  });
+  OFC.forEach(function(o){L.circleMarker([o.la,o.ln],{radius:10,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.9}).addTo(_liveMap).bindPopup('🏢 '+o.n)});
 
   var bounds=OFC.map(function(o){return[o.la,o.ln]});
   var colors=['#3b82f6','#22c55e','#f59e0b','#a855f7','#ec4899','#06b6d4','#f97316','#84cc16','#ef4444','#6366f1'];
+  var nowMin=new Date().getHours()*60+new Date().getMinutes();
 
   todayRecs.forEach(function(r,i){
     if(!r.checkInLat)return;
     var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
     var isOut=r.status==='checked-out';
-    var clr=colors[i%colors.length];
+    var clr=isOut?'#6b7280':colors[i%colors.length];
 
-    // Calculate hours
+    // Time since last known activity
+    var lastTime=r.checkOut||r.checkIn||'';
+    var agoTxt='';
+    if(lastTime){
+      var lp=lastTime.split(':');var lMin=parseInt(lp[0])*60+parseInt(lp[1]);
+      var diff=nowMin-lMin;
+      if(diff<1)agoTxt='ابھی';
+      else if(diff<60)agoTxt=diff+' min ago';
+      else agoTxt=Math.floor(diff/60)+'h '+diff%60+'m ago';
+    }
+
+    // Hours calculation
     var hrs='—';
     if(r.checkIn&&r.checkOut){
       var ci=r.checkIn.split(':'),co=r.checkOut.split(':');
       var m=(parseInt(co[0])*60+parseInt(co[1]))-(parseInt(ci[0])*60+parseInt(ci[1]));
       hrs=(m/60).toFixed(1)+'h';
     } else if(r.checkIn){
-      var now=new Date();var ci2=r.checkIn.split(':');
-      var m2=(now.getHours()*60+now.getMinutes())-(parseInt(ci2[0])*60+parseInt(ci2[1]));
+      var ci2=r.checkIn.split(':');
+      var m2=nowMin-(parseInt(ci2[0])*60+parseInt(ci2[1]));
       if(m2>0)hrs=(m2/60).toFixed(1)+'h (جاری)';
     }
 
-    var popup='<div style="font-family:system-ui;min-width:180px;padding:4px">'+
-      '<div style="background:#fbbf24;color:#000;padding:8px 10px;border-radius:8px;margin-bottom:6px">'+
-      '<div style="font-size:14px;font-weight:800">'+( r.name||'?')+'</div>'+
-      '<div style="font-size:11px;opacity:.8">'+(r.designation||'')+(r.code?' · '+r.code:'')+'</div></div>'+
-      '<div style="font-size:12px;line-height:1.8">'+
-      '⏰ <b>In:</b> '+(r.checkIn||'—')+'<br>'+
-      '🕐 <b>Out:</b> '+(r.checkOut||'<span style="color:#22c55e">جاری</span>')+'<br>'+
-      '📊 <b>Hours:</b> '+hrs+'<br>'+
-      (r.otMinutes>0?'🕐 <b>OT:</b> '+(r.otHours||'')+'<br>':'')+
+    var popup='<div style="font-family:system-ui;min-width:200px">'+
+      '<div style="background:#fbbf24;color:#000;padding:10px 12px;border-radius:8px;margin:-1px -1px 8px">'+
+      '<div style="font-size:15px;font-weight:800">'+(r.name||'?')+'</div>'+
+      '<div style="font-size:11px;opacity:.8">'+(r.designation||'')+'</div>'+
+      '<div style="font-size:10px;margin-top:2px;font-weight:700">'+(isOut?'✅ رخصت':'🟢 کام جاری')+' · '+agoTxt+'</div></div>'+
+      '<div style="font-size:12px;line-height:2">'+
+      '⏰ <b>حاضری:</b> '+(r.checkIn||'—')+(r.late?' <span style="color:#dc2626;font-size:10px;font-weight:800">LATE</span>':'')+'<br>'+
+      '🕐 <b>رخصت:</b> '+(r.checkOut||'<span style="color:#22c55e">جاری</span>')+'<br>'+
+      '📊 <b>وقت:</b> '+hrs+'<br>'+
+      (r.otMinutes>0?'🕐 <b>OT:</b> '+r.otHours+'<br>':'')+
       (r.road?'🛣️ '+r.road+'<br>':'')+
       (r.area?'📍 '+r.area+'<br>':'')+
       '🚗 '+(r.checkInKmFromOffice||0)+' km · 💰 Rs '+(r.taAmount||0)+
-      (r.trackingPoints?'<br>📡 '+r.trackingPoints+' GPS points · '+(r.trackingKm||0)+' km tracked':'')+
+      (r.trackingPoints?'<br>📡 '+r.trackingPoints+' GPS pts · '+(r.trackingKm||0)+' km':'')+
       '</div></div>';
 
-    L.circleMarker([lat,lng],{radius:isOut?8:12,fillColor:clr,color:'#fff',weight:2,fillOpacity:isOut?.7:1})
-      .addTo(_liveMap).bindPopup(popup);
+    var marker=L.circleMarker([lat,lng],{radius:isOut?8:12,fillColor:clr,color:'#fff',weight:2,fillOpacity:isOut?.6:1}).addTo(_liveMap).bindPopup(popup);
+    // Pulsing ring for active workers
     if(!isOut){
-      // Pulsing ring for active workers
-      L.circleMarker([lat,lng],{radius:18,fillColor:clr,color:clr,weight:1,fillOpacity:.15}).addTo(_liveMap);
+      L.circleMarker([lat,lng],{radius:20,fillColor:clr,color:clr,weight:1,fillOpacity:.12}).addTo(_liveMap);
     }
+    // Name label
+    L.tooltip({permanent:true,direction:'top',offset:[0,-14],className:'map-label'}).setContent((r.name||'?').split(' ')[0]+(isOut?'':'🟢')).setLatLng([lat,lng]).addTo(_liveMap);
     bounds.push([lat,lng]);
   });
 
-  if(bounds.length>1)_liveMap.fitBounds(bounds,{padding:[30,30]});
+  if(bounds.length>1)_liveMap.fitBounds(bounds,{padding:[40,40]});
   setTimeout(function(){_liveMap.invalidateSize()},300);
 }
 
@@ -794,49 +825,62 @@ function populateTrailEmp(){
 }
 
 function loadTrail(){
-  var code=$('tr-emp').value;
-  var date=$('tr-date').value;
-  if(!code||!date){return}
+  var code=$('tr-emp').value;var date=$('tr-date').value;
+  if(!code||!date)return;
   var dateKey=date.replace(/-/g,'');
-
   $('trail-stats').innerHTML='<div class="loading"><div class="spin"></div></div>';
   $('trail-list').innerHTML='';
 
-  // Load tracking data
   fbGet('/labour_tracking/'+code+'/'+dateKey,function(err,trail){
-    // Also load attendance for that day
     var dayRec=_all.find(function(r){return r.code===code&&r.dateKey===dateKey});
-
     var points=[];
     if(trail){
       if(Array.isArray(trail)){points=trail.filter(function(p){return p&&p.lat})}
-      else{Object.keys(trail).forEach(function(k){if(trail[k]&&trail[k].lat)points.push(trail[k])})}
+      else{Object.keys(trail).sort().forEach(function(k){if(trail[k]&&trail[k].lat)points.push(trail[k])})}
     }
-
-    // Add check-in point
+    // Prepend check-in
     if(dayRec&&dayRec.checkInLat){
-      points.unshift({lat:Number(dayRec.checkInLat),lng:Number(dayRec.checkInLng),time:dayRec.checkIn||'—',ts:'Check In'});
+      points.unshift({lat:Number(dayRec.checkInLat),lng:Number(dayRec.checkInLng),time:dayRec.checkIn||'—',ts:'Check In',type:'checkin'});
     }
-    // Add check-out point
+    // Append check-out
     if(dayRec&&dayRec.checkOutLat){
-      points.push({lat:Number(dayRec.checkOutLat),lng:Number(dayRec.checkOutLng),time:dayRec.checkOut||'—',ts:'Check Out'});
+      points.push({lat:Number(dayRec.checkOutLat),lng:Number(dayRec.checkOutLng),time:dayRec.checkOut||'—',ts:'Check Out',type:'checkout'});
     }
 
-    // Calculate actual KM
-    var totalKm=0;
-    for(var i=1;i<points.length;i++){
-      totalKm+=gDist(points[i-1].lat,points[i-1].lng,points[i].lat,points[i].lng)/1000;
+    // Calculate actual KM + site analysis
+    var totalKm=0;var siteRef=points.length?{lat:points[0].lat,lng:points[0].lng}:null;
+    var SITE_RADIUS=200;// meters
+    var timeline=[];
+    for(var i=0;i<points.length;i++){
+      if(i>0)totalKm+=gDist(points[i-1].lat,points[i-1].lng,points[i].lat,points[i].lng)/1000;
+      // Check if on-site or off-site
+      var distFromSite=siteRef?gDist(siteRef.lat,siteRef.lng,points[i].lat,points[i].lng):0;
+      points[i].onSite=distFromSite<=SITE_RADIUS;
+      points[i].distFromSite=Math.round(distFromSite);
+      // Detect transitions
+      if(i===0){timeline.push({type:'start',time:points[i].time,onSite:true})}
+      else if(points[i].onSite!==points[i-1].onSite){
+        if(points[i].onSite){timeline.push({type:'returned',time:points[i].time,from:points[i-1].time})}
+        else{timeline.push({type:'left',time:points[i].time,dist:points[i].distFromSite})}
+      }
     }
+    if(dayRec&&dayRec.checkOut){timeline.push({type:'end',time:dayRec.checkOut})}
+
+    var nm=dayRec?dayRec.name:code;
+    var otTxt=dayRec&&dayRec.otMinutes>0?dayRec.otHours:'0';
+    var onSiteCount=points.filter(function(p){return p.onSite}).length;
+    var offSiteCount=points.filter(function(p){return!p.onSite}).length;
 
     // Stats
-    var nm=dayRec?dayRec.name:code;
-    var sh='<div class="stats" style="margin-bottom:0">';
+    var sh='<div class="stats">';
     sh+='<div class="stat"><div class="stat-n sb">'+points.length+'</div><div class="stat-l">GPS Points</div></div>';
     sh+='<div class="stat"><div class="stat-n sg">'+totalKm.toFixed(2)+'</div><div class="stat-l">Actual KM</div></div>';
-    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkIn||'—':'—')+'</div><div class="stat-l">Check In</div></div>';
-    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkOut||'جاری':'—')+'</div><div class="stat-l">Check Out</div></div>';
+    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkIn||'—':'—')+'</div><div class="stat-l">In</div></div>';
+    sh+='<div class="stat"><div class="stat-n sb">'+(dayRec?dayRec.checkOut||'جاری':'—')+'</div><div class="stat-l">Out</div></div>';
     sh+='<div class="stat"><div class="stat-n sa">'+(dayRec?dayRec.totalHours||'—':'—')+'</div><div class="stat-l">Hours</div></div>';
-    sh+='<div class="stat"><div class="stat-n sr">'+(dayRec&&dayRec.otMinutes>0?dayRec.otHours:'0')+'</div><div class="stat-l">OT</div></div>';
+    sh+='<div class="stat"><div class="stat-n sr">'+otTxt+'</div><div class="stat-l">OT</div></div>';
+    sh+='<div class="stat"><div class="stat-n sg">'+onSiteCount+'</div><div class="stat-l">On Site</div></div>';
+    sh+='<div class="stat"><div class="stat-n" style="color:var(--R)">'+offSiteCount+'</div><div class="stat-l">Off Site</div></div>';
     sh+='</div>';
     $('trail-stats').innerHTML=sh;
 
@@ -844,41 +888,64 @@ function loadTrail(){
     if(_trailMap){_trailMap.remove();_trailMap=null}
     _trailMap=L.map('trail-map').setView([31.462915,74.320000],14);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_trailMap);
-
-    // Offices
-    OFC.forEach(function(o){
-      L.circleMarker([o.la,o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8}).addTo(_trailMap).bindPopup('🏢 '+o.n);
-    });
+    OFC.forEach(function(o){L.circleMarker([o.la,o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8}).addTo(_trailMap).bindPopup('🏢 '+o.n)});
 
     if(points.length){
       var latlngs=points.map(function(p){return[p.lat,p.lng]});
-
-      // Draw trail polyline
-      L.polyline(latlngs,{color:'#3b82f6',weight:3,opacity:.7,dashArray:'8,6'}).addTo(_trailMap);
-
-      // Draw points
+      // Site radius circle
+      if(siteRef)L.circle([siteRef.lat,siteRef.lng],{radius:SITE_RADIUS,color:'#22c55e',fillColor:'#22c55e',fillOpacity:.08,weight:1,dashArray:'4,4'}).addTo(_trailMap);
+      // Trail polyline — green on-site, red off-site
+      for(var j=1;j<points.length;j++){
+        var segClr=points[j].onSite&&points[j-1].onSite?'#22c55e':'#dc2626';
+        L.polyline([[points[j-1].lat,points[j-1].lng],[points[j].lat,points[j].lng]],{color:segClr,weight:3,opacity:.8}).addTo(_trailMap);
+      }
+      // Points
       points.forEach(function(p,idx){
         var isFirst=idx===0,isLast=idx===points.length-1;
-        var clr=isFirst?'#22c55e':isLast?'#dc2626':'#3b82f6';
+        var clr=isFirst?'#22c55e':isLast?'#dc2626':p.onSite?'#3b82f6':'#f59e0b';
         var rad=isFirst||isLast?10:6;
-        var label=isFirst?'🟢 Start':isLast?'🔴 End':'#'+(idx+1);
-
+        var label=isFirst?'🟢 Start':isLast?'🔴 End':'#'+(idx+1)+(p.onSite?' ✅':' ⚠️');
         L.circleMarker([p.lat,p.lng],{radius:rad,fillColor:clr,color:'#fff',weight:2,fillOpacity:.9})
-          .addTo(_trailMap)
-          .bindPopup('<b>'+label+'</b><br>⏰ '+(p.time||'—')+'<br>📡 '+Number(p.lat).toFixed(5)+', '+Number(p.lng).toFixed(5)+(p.acc?'<br>Accuracy: '+p.acc+'m':''));
+          .addTo(_trailMap).bindPopup('<b>'+label+'</b><br>⏰ '+(p.time||'—')+'<br>'+(p.onSite?'✅ On site':'⚠️ Off site — '+p.distFromSite+'m away')+'<br>📡 '+Number(p.lat).toFixed(5)+', '+Number(p.lng).toFixed(5));
       });
-
       _trailMap.fitBounds(latlngs,{padding:[30,30]});
     }
     setTimeout(function(){_trailMap.invalidateSize()},300);
 
-    // Point list
-    var lh='<div style="margin-top:14px;font-size:13px;font-weight:800;color:var(--tx2)">📡 GPS Trail Points</div>';
-    lh+='<div class="rtbl-wrap" style="margin-top:8px"><table class="rtbl"><thead><tr><th>#</th><th>Time</th><th>Lat</th><th>Lng</th><th>Accuracy</th><th>Dist from Prev</th></tr></thead><tbody>';
+    // ═══ TIMELINE + TABLE ═══
+    var lh='';
+    // Timeline narrative
+    lh+='<div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:16px;margin-bottom:14px">';
+    lh+='<div style="font-size:14px;font-weight:800;margin-bottom:10px">📋 Day Timeline — '+(nm||code)+'</div>';
+    timeline.forEach(function(ev,idx){
+      var dot='',txt='',clr='';
+      if(ev.type==='start'){dot='🟢';txt='<b>'+ev.time+'</b> — حاضری لگائی (reporting site)';clr='var(--G)'}
+      else if(ev.type==='left'){dot='🔴';txt='<b>'+ev.time+'</b> — سائٹ چھوڑ دی ('+ev.dist+'m away)';clr='var(--R)'}
+      else if(ev.type==='returned'){dot='🟢';txt='<b>'+ev.time+'</b> — واپس سائٹ پر آ گئے (was away since '+ev.from+')';clr='var(--G)'}
+      else if(ev.type==='end'){dot='🏠';txt='<b>'+ev.time+'</b> — رخصت';clr='var(--B)'}
+      lh+='<div style="display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--s3)"><span style="font-size:18px">'+dot+'</span><span style="font-size:13px;color:'+clr+';line-height:1.6">'+txt+'</span></div>';
+    });
+    // Summary line
+    var workStart=dayRec?dayRec.checkIn:'—';var workEnd=dayRec?dayRec.checkOut:'—';
+    lh+='<div style="margin-top:10px;padding-top:10px;border-top:2px solid var(--bdr);font-size:12px;line-height:1.8;color:var(--tx2)">';
+    lh+='📊 <b>Summary:</b> Arrived <b>'+workStart+'</b>';
+    if(dayRec&&dayRec.late)lh+=' <span style="color:var(--R)">(LATE)</span>';
+    lh+=' → Left <b>'+workEnd+'</b>';
+    lh+=' · Total: <b>'+(dayRec?dayRec.totalHours||'—':'—')+'</b>';
+    if(dayRec&&dayRec.otMinutes>0)lh+=' · OT: <b style="color:var(--A)">'+dayRec.otHours+'</b> (after 17:00)';
+    lh+=' · Actual KM: <b>'+totalKm.toFixed(2)+'</b>';
+    lh+=' · On-site: <b style="color:var(--G)">'+onSiteCount+'/'+points.length+'</b>';
+    if(offSiteCount>0)lh+=' · ⚠️ Off-site: <b style="color:var(--R)">'+offSiteCount+'</b>';
+    lh+='</div></div>';
+
+    // GPS table
+    lh+='<div style="font-size:13px;font-weight:800;color:var(--tx2);margin-bottom:6px">📡 GPS Trail Points</div>';
+    lh+='<div class="rtbl-wrap"><table class="rtbl"><thead><tr><th>#</th><th>Time</th><th>Lat</th><th>Lng</th><th>Acc</th><th>Site</th><th>Dist</th><th>From Prev</th></tr></thead><tbody>';
     points.forEach(function(p,idx){
       var dist='—';
       if(idx>0){var d=gDist(points[idx-1].lat,points[idx-1].lng,p.lat,p.lng);dist=d<100?Math.round(d)+'m':(d/1000).toFixed(2)+'km'}
-      lh+='<tr><td>'+(idx+1)+'</td><td>'+(p.time||p.ts||'—')+'</td><td>'+Number(p.lat).toFixed(5)+'</td><td>'+Number(p.lng).toFixed(5)+'</td><td>'+(p.acc||'—')+'m</td><td>'+dist+'</td></tr>';
+      var siteClr=p.onSite?'color:var(--G)':'color:var(--R)';
+      lh+='<tr><td>'+(idx+1)+'</td><td style="font-weight:700">'+(p.time||p.ts||'—')+'</td><td>'+Number(p.lat).toFixed(5)+'</td><td>'+Number(p.lng).toFixed(5)+'</td><td>'+(p.acc||'—')+'</td><td style="'+siteClr+';font-weight:700">'+(p.onSite?'✅':'⚠️')+'</td><td>'+p.distFromSite+'m</td><td>'+dist+'</td></tr>';
     });
     lh+='</tbody></table></div>';
     $('trail-list').innerHTML=lh;
