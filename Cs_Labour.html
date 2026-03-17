@@ -93,8 +93,7 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 .rec-ab:active{background:var(--G9)}
 
 /* Debug */
-.dbg{position:fixed;bottom:0;left:0;right:0;background:rgba(0,0,0,.95);color:#0f0;font-size:11px;font-family:monospace;padding:8px 10px 34px;min-height:60px;max-height:200px;overflow-y:auto;z-index:999;direction:ltr;text-align:left;display:block;border-top:3px solid #ff0}
-.dbg-x{position:fixed;bottom:4px;right:10px;z-index:1000;background:#ff0;color:#000;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:800;cursor:pointer;display:block}
+/* Debug removed */
 
 /* Toast */
 #toasts{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:999;display:flex;flex-direction:column;gap:4px;max-width:90%}
@@ -105,8 +104,6 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 </head>
 <body>
 <div id="toasts"></div>
-<div class="dbg" id="dbg"><span style="color:#ff0">═══ CS Labour V5 Debug ═══</span><br></div>
-<button class="dbg-x" id="dbg-x" onclick="var d=document.getElementById('dbg');d.style.display=d.style.display==='none'?'block':'none'">🔧 Debug</button>
 
 <div class="top">
   <div class="top-l">
@@ -192,19 +189,6 @@ button,input{font-family:inherit;border:none;outline:none;font-size:16px}
 
 </div>
 <script>
-/* ═══ GLOBAL ERROR CATCHER ═══ */
-window.onerror = function(msg, url, line, col, err) {
-  var d = document.getElementById('dbg');
-  if (d) {
-    d.style.display = 'block';
-    d.innerHTML += '<span style="color:red;font-weight:bold">ERROR line ' + line + ': ' + msg + '</span><br>';
-    d.scrollTop = d.scrollHeight;
-  }
-  var x = document.getElementById('dbg-x');
-  if (x) x.style.display = 'block';
-  console.error('CAUGHT:', msg, 'line:', line);
-  return false;
-};
 
 /* ═══ CONFIG ═══ */
 var OFC=[{n:'Lahore HO',la:31.462915,ln:74.320000},{n:'Brandreth Rd',la:31.575249,ln:74.323730},{n:'Karachi',la:24.857580,ln:67.043633}];
@@ -311,11 +295,18 @@ function gDist(a, b, c, d) {
 }
 function log(m) {
   console.log('[CS]', m);
-  var d = $('dbg');
-  d.style.display = 'block';
-  $('dbg-x').style.display = 'block';
-  d.innerHTML += '<span style="color:#888">' + new Date().toLocaleTimeString() + '</span> ' + m + '<br>';
-  d.scrollTop = d.scrollHeight;
+}
+function killStream() {
+  if (_stream) {
+    _stream.getTracks().forEach(function(t) { t.stop(); });
+    _stream = null;
+    log('Stream killed');
+  }
+  var vid = $('vid');
+  if (vid && vid.srcObject) {
+    vid.srcObject.getTracks().forEach(function(t) { t.stop(); });
+    vid.srcObject = null;
+  }
 }
 
 /* ═══ VOICE ═══ */
@@ -368,6 +359,7 @@ var App = {
 
   show: function(pg) {
     _curPg = pg;
+    killStream(); // always stop camera/mic on page change
     document.querySelectorAll('.pg').forEach(function(e) { e.classList.remove('on'); });
     var el = $('p-' + pg);
     if (el) el.classList.add('on');
@@ -436,9 +428,34 @@ var App = {
           var d = gDist(la, ln, o.la, o.ln);
           if (!best || d < best.d) best = { d: d, n: o.n };
         });
-        _geo = { la: la, ln: ln, km: +(best.d / 1000).toFixed(1), of: best.n };
+        _geo = { la: la, ln: ln, km: +(best.d / 1000).toFixed(1), of: best.n, addr: '', road: '', landmark: '' };
         $('gps').innerHTML = '📡 <span style="color:var(--grn);font-weight:800">✅ لوکیشن مل گئی</span> · ' + _geo.km + ' km ' + _geo.of + ' سے';
         log('GPS OK: ' + la.toFixed(4) + ',' + ln.toFixed(4) + ' → ' + _geo.km + 'km from ' + _geo.of);
+
+        // Reverse geocode via Nominatim
+        var nUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + la + '&lon=' + ln + '&zoom=18&addressdetails=1&accept-language=ur,en';
+        var nx = new XMLHttpRequest();
+        nx.open('GET', nUrl);
+        nx.onload = function() {
+          try {
+            var nr = JSON.parse(nx.responseText);
+            var a = nr.address || {};
+            _geo.addr = nr.display_name || '';
+            _geo.road = a.road || a.street || a.pedestrian || a.neighbourhood || '';
+            _geo.landmark = a.building || a.amenity || a.shop || a.tourism || a.leisure || a.historic || '';
+            _geo.area = a.suburb || a.neighbourhood || a.quarter || a.city_district || '';
+            _geo.city = a.city || a.town || a.village || '';
+            var locParts = [];
+            if (_geo.landmark) locParts.push('🏢 ' + _geo.landmark);
+            if (_geo.road) locParts.push('🛣️ ' + _geo.road);
+            if (_geo.area) locParts.push('📍 ' + _geo.area);
+            var locTxt = locParts.length > 0 ? locParts.join(' · ') : _geo.addr.split(',').slice(0,2).join(',');
+            $('gps').innerHTML = '📡 <span style="color:var(--grn);font-weight:800">✅</span> ' + _geo.km + ' km ' + _geo.of + ' سے<br><span style="font-size:11px;color:var(--G2)">' + locTxt + '</span>';
+            log('Nominatim: ' + locTxt);
+          } catch(e) { log('Nominatim parse error'); }
+        };
+        nx.onerror = function() { log('Nominatim failed'); };
+        nx.send();
       },
       function(err) {
         $('gps').innerHTML = '📡 <span style="color:var(--R);font-weight:800">❌ GPS نہیں ملی</span> — لوکیشن آن کریں';
@@ -568,6 +585,11 @@ var App = {
         checkInSelfie: url,
         checkInKmFromOffice: _geo.km,
         nearestOffice: _geo.of,
+        address: _geo.addr || '',
+        road: _geo.road || '',
+        landmark: _geo.landmark || '',
+        area: _geo.area || '',
+        city: _geo.city || '',
         taAmount: ta,
         late: late,
         status: 'checked-in',
@@ -588,8 +610,12 @@ var App = {
 
         self.show('in');
         $('in-sub').textContent = _who.n + ' · ' + _who.r + ' · ' + _inTime;
+        var locDetail = '';
+        if (_geo.road) locDetail += _geo.road;
+        if (_geo.area) locDetail += (locDetail ? ', ' : '') + _geo.area;
         $('in-info').innerHTML =
           self._row('📍 لوکیشن', _geo.of) +
+          (locDetail ? self._row('🛣️ جگہ', locDetail) : '') +
           self._row('🚗 فاصلہ', _geo.km + ' km') +
           self._row('💰 TA', 'Rs ' + ta, 'c-g') +
           self._row('⏰ وقت', _inTime) +
@@ -862,7 +888,7 @@ var App = {
 
 /* ═══ INIT ═══ */
 App.init();
-log('V5 loaded. HTTPS=' + (location.protocol === 'https:') + ' SecureCtx=' + window.isSecureContext + ' Camera=' + (!!navigator.mediaDevices) + ' getUserMedia=' + (!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)) + ' GPS=' + (!!navigator.geolocation) + ' Speech=' + (!!window.speechSynthesis) + ' MediaRecorder=' + (typeof MediaRecorder !== 'undefined') + ' URL=' + location.href);
+log('V5 loaded. HTTPS=' + (location.protocol === 'https:'));
 </script>
 </body>
 </html>
