@@ -161,18 +161,38 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 .sc-acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .sc-btn{padding:8px 14px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;border:none;color:var(--W)}
 .sc-btn:active{opacity:.8}
+
+/* Readonly mode for managers/supervisors */
+.readonly-mode .wc-acts .sc-btn[style*="background:var(--R)"]{display:none}
+.readonly-mode #pn-staff{display:none!important}
+.readonly-mode #pn-users{display:none!important}
 </style>
 </head>
 <body>
 
 <div class="top">
   <div class="top-t">CS <em>Labour</em> Admin</div>
-  <div class="top-r"><span class="top-v">V3</span><button onclick="openSettings()" style="background:var(--s2);color:var(--tx2);border:1px solid var(--bdr);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">⚙️</button></div>
+  <div class="top-r"><span class="top-v">V3</span><span id="role-badge" style="font-size:9px;padding:2px 8px;border-radius:6px;background:var(--B);color:var(--W);font-weight:800;margin-right:4px"></span><button onclick="openSettings()" style="background:var(--s2);color:var(--tx2);border:1px solid var(--bdr);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">⚙️</button></div>
 </div>
 
+<!-- AUTH GATE -->
+<div id="auth-gate" style="display:none;padding:40px 20px;text-align:center">
+  <div style="font-size:48px;margin-bottom:16px">🔐</div>
+  <div style="font-size:18px;font-weight:800;margin-bottom:8px">Admin Login</div>
+  <div style="font-size:13px;color:var(--tx2);margin-bottom:20px">Enter admin password or <a href="Cs_Labour_Register.html" style="color:var(--B);text-decoration:none;font-weight:700">register as Manager/Supervisor</a></div>
+  <div style="max-width:300px;margin:0 auto">
+    <input class="fi" id="auth-pw" type="password" placeholder="Password" style="width:100%;margin-bottom:10px;padding:14px;background:var(--s2);color:var(--tx);border:1px solid var(--bdr);border-radius:var(--r)">
+    <button onclick="doAdminLogin()" style="width:100%;padding:14px;background:var(--B);color:var(--W);border:none;border-radius:var(--r);font-weight:800;font-size:15px;cursor:pointer">🔓 Login</button>
+    <div id="auth-msg" style="margin-top:10px;font-size:13px;color:var(--R)"></div>
+  </div>
+</div>
+
+<!-- MAIN APP (hidden until auth) -->
+<div id="main-app" style="display:none">
 <div class="tabs" id="tabs">
   <div class="tab on" onclick="showTab('dash')">📊 Dashboard</div>
-  <div class="tab" onclick="showTab('staff')">👥 Staff</div>
+  <div class="tab tab-admin" onclick="showTab('staff')">👥 Staff</div>
+  <div class="tab tab-admin" onclick="showTab('users')">🔑 Users</div>
   <div class="tab" onclick="showTab('map')">🗺️ Live Map</div>
   <div class="tab" onclick="showTab('trail')">📍 Trail</div>
   <div class="tab" onclick="showTab('report')">📋 Report</div>
@@ -199,6 +219,8 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   </div>
   <!-- Summary strip -->
   <div class="d-summary" id="d-summary"></div>
+  <!-- PDF export -->
+  <div style="text-align:right;margin-bottom:10px"><button class="fbtn" style="font-size:11px;padding:6px 12px" onclick="exportDashPDF()">📄 Export PDF</button></div>
   <!-- Worker cards -->
   <div id="d-cards"></div>
   <!-- Load more -->
@@ -246,6 +268,19 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   </div>
 
   <div id="staff-list"></div>
+</div>
+
+<!-- USERS MANAGEMENT (admin only) -->
+<div id="pn-users" class="panel">
+  <div style="font-size:15px;font-weight:800;margin-bottom:14px">🔑 Registered Users & Approvals</div>
+  <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+    <button class="fbtn" onclick="loadUsers()" style="font-size:11px">🔄 Refresh</button>
+    <button class="chip chip-on" onclick="filterUsers('all',this)" style="font-size:11px">All</button>
+    <button class="chip" onclick="filterUsers('pending',this)" style="font-size:11px;background:var(--A);color:#000">⏳ Pending</button>
+    <button class="chip" onclick="filterUsers('approved',this)" style="font-size:11px;background:var(--G);color:#000">✅ Approved</button>
+    <button class="chip" onclick="filterUsers('blocked',this)" style="font-size:11px;background:var(--R)">🚫 Blocked</button>
+  </div>
+  <div id="users-list"></div>
 </div>
 
 <!-- LIVE MAP -->
@@ -330,11 +365,16 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
       <div id="set-status" style="font-size:12px;margin-top:8px;text-align:center"></div>
       <div class="m-section">Key Status</div>
       <div id="set-info" style="font-size:12px;color:var(--tx2);padding:8px;background:var(--s2);border-radius:var(--r)">—</div>
+      <div class="m-section">Account</div>
+      <button class="m-btn" style="background:var(--R);width:100%" onclick="doLogout()">🚪 Logout from this Device</button>
     </div>
   </div>
 </div>
 
+</div><!-- /main-app -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* ═══ CONFIG ═══ */
 var FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
@@ -385,11 +425,12 @@ function showTab(t){
   document.querySelectorAll('.tab').forEach(function(p){p.classList.remove('on')});
   $('pn-'+t).classList.add('on');
   var tabs=document.querySelectorAll('.tab');
-  var map={dash:0,staff:1,map:2,trail:3,report:4,ai:5};
+  var map={dash:0,staff:1,users:2,map:3,trail:4,report:5,ai:6};
   if(map[t]!==undefined)tabs[map[t]].classList.add('on');
   if(t==='map')setTimeout(function(){if(_liveMap)_liveMap.invalidateSize()},200);
   if(t==='trail')setTimeout(function(){if(_trailMap)_trailMap.invalidateSize()},200);
   if(t==='staff')loadStaff();
+  if(t==='users')loadUsers();
 }
 
 /* ═══ INIT ═══ */
@@ -460,41 +501,45 @@ function renderDash(){
   var rows=_all.filter(function(r){return!fromKey||!r.dateKey||r.dateKey>=fromKey});
   var todayKey=todayISO().replace(/-/g,'');
 
-  // Build per-worker roster
+  // Build per-worker roster with ALL sessions
   var staffMap={};
   if(_staff.length){
     _staff.forEach(function(s){
-      if(s.status!=='blocked')staffMap[s.code]={name:s.name,code:s.code,designation:s.designation,records:[],todayRec:null};
+      if(s.status!=='blocked')staffMap[s.code]={name:s.name,code:s.code,designation:s.designation,records:[],todaySessions:[]};
     });
   }
   rows.forEach(function(r){
     var code=r.code||r.name;
-    if(!staffMap[code])staffMap[code]={name:r.name||code,code:r.code||'',designation:r.designation||'',records:[],todayRec:null};
+    if(!staffMap[code])staffMap[code]={name:r.name||code,code:r.code||'',designation:r.designation||'',records:[],todaySessions:[]};
     staffMap[code].records.push(r);
-    if(r.dateKey===todayKey&&(!staffMap[code].todayRec||r.timestamp>staffMap[code].todayRec.timestamp))staffMap[code].todayRec=r;
+    if(r.dateKey===todayKey)staffMap[code].todaySessions.push(r);
+  });
+
+  // Sort today sessions by check-in time
+  Object.values(staffMap).forEach(function(w){
+    w.todaySessions.sort(function(a,b){return(a.checkIn||'').localeCompare(b.checkIn||'')});
+    w.latestRec=w.todaySessions.length?w.todaySessions[w.todaySessions.length-1]:null;
   });
 
   var workers=Object.values(staffMap);
-  // Status filter
-  if(_dStatus==='present')workers=workers.filter(function(w){return w.todayRec&&!w.todayRec.late});
-  else if(_dStatus==='late')workers=workers.filter(function(w){return w.todayRec&&w.todayRec.late});
-  else if(_dStatus==='absent')workers=workers.filter(function(w){return!w.todayRec});
-  else if(_dStatus==='working')workers=workers.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-in'});
+  if(_dStatus==='present')workers=workers.filter(function(w){return w.latestRec&&!w.latestRec.late});
+  else if(_dStatus==='late')workers=workers.filter(function(w){return w.latestRec&&w.latestRec.late});
+  else if(_dStatus==='absent')workers=workers.filter(function(w){return!w.latestRec});
+  else if(_dStatus==='working')workers=workers.filter(function(w){return w.latestRec&&w.latestRec.status==='checked-in'});
 
   workers.sort(function(a,b){
-    var sa=a.todayRec?(a.todayRec.status==='checked-in'?0:1):2;
-    var sb=b.todayRec?(b.todayRec.status==='checked-in'?0:1):2;
+    var sa=a.latestRec?(a.latestRec.status==='checked-in'?0:1):2;
+    var sb=b.latestRec?(b.latestRec.status==='checked-in'?0:1):2;
     return sa!==sb?sa-sb:(a.name||'').localeCompare(b.name||'');
   });
   _dFiltered=workers;
 
-  // Summary
   var allW=Object.values(staffMap);
-  var present=allW.filter(function(w){return w.todayRec}).length;
-  var late=allW.filter(function(w){return w.todayRec&&w.todayRec.late}).length;
-  var absent=allW.filter(function(w){return!w.todayRec}).length;
-  var working=allW.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-in'}).length;
-  var done=allW.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-out'}).length;
+  var present=allW.filter(function(w){return w.latestRec}).length;
+  var late=allW.filter(function(w){return w.latestRec&&w.latestRec.late}).length;
+  var absent=allW.filter(function(w){return!w.latestRec}).length;
+  var working=allW.filter(function(w){return w.latestRec&&w.latestRec.status==='checked-in'}).length;
+  var done=allW.filter(function(w){return w.latestRec&&w.latestRec.status==='checked-out'}).length;
 
   $('d-summary').innerHTML=
     '<div class="d-sm"><div class="d-sm-n" style="color:var(--G)">'+present+'</div><div class="d-sm-l">Present</div></div>'+
@@ -514,7 +559,8 @@ function renderDashCards(){
   var h='';
 
   show.forEach(function(w,idx){
-    var r=w.todayRec;
+    var r=w.latestRec;
+    var sessions=w.todaySessions;
     var isAbsent=!r,isLate=r&&r.late,isWorking=r&&r.status==='checked-in',isDone=r&&r.status==='checked-out';
     var badge,bClass;
     if(isAbsent){badge='❌ Absent';bClass='wb-absent'}
@@ -523,9 +569,11 @@ function renderDashCards(){
     else if(isLate){badge='✅ Late';bClass='wb-late'}
     else{badge='✅ On Time';bClass='wb-present'}
 
+    // Time summary
     var timeStr='';
     if(r){
-      timeStr=r.checkIn||'';
+      if(sessions.length>1)timeStr=sessions.length+' sessions · ';
+      timeStr+=(r.checkIn||'');
       if(isDone)timeStr+=' → '+(r.checkOut||'');
       else if(isWorking&&r.checkIn){
         var ci=r.checkIn.split(':');
@@ -544,39 +592,52 @@ function renderDashCards(){
     if(timeStr)h+='<div class="wc-time">'+timeStr+'</div>';
     h+='</div></div>';
 
-    if(r){
+    // Timeline dots — show ALL sessions
+    if(sessions.length){
       h+='<div class="wc-tl">';
-      h+='<div class="tl-dot tl-g">📍 '+(r.checkIn||'')+'</div>';
+      sessions.forEach(function(s,si){
+        var sNum=sessions.length>1?'#'+(si+1)+' ':'';
+        h+='<div class="tl-dot tl-g">📍 '+sNum+(s.checkIn||'')+'</div>';
+        if(s.late)h+='<div class="tl-dot tl-a">⏰ Late</div>';
+        if(s.status==='checked-out')h+='<div class="tl-dot tl-g">🏠 '+(s.checkOut||'')+'</div>';
+        if(s.status==='checked-out')h+='<div class="tl-dot tl-b">⏱️ '+(s.totalHours||'')+'</div>';
+        if(s.status==='checked-in')h+='<div class="tl-dot tl-b">🟢 Working</div>';
+      });
+      // Totals
       if(r.road)h+='<div class="tl-dot tl-b">🛣️ '+r.road+'</div>';
-      if(isLate)h+='<div class="tl-dot tl-a">⏰ Late</div>';
       if(r.trackingPoints)h+='<div class="tl-dot tl-b">📡 '+r.trackingPoints+'pts</div>';
-      if(isDone)h+='<div class="tl-dot tl-g">🏠 '+(r.checkOut||'')+'</div>';
-      if(isDone)h+='<div class="tl-dot tl-b">⏱️ '+(r.totalHours||'')+'</div>';
       if(r.otMinutes>0)h+='<div class="tl-dot tl-a">OT '+r.otHours+'</div>';
       h+='<div class="tl-dot tl-b">🚗 '+(r.checkInKmFromOffice||0)+'km</div>';
       h+='</div>';
     }
 
+    // Expandable body
     h+='<div class="wc-body" onclick="event.stopPropagation()">';
-    if(r){
-      h+='<div class="wc-det">';
-      h+='📅 <b>Date:</b> '+(r.date||'—')+'<br>';
-      h+='⏰ <b>Check In:</b> '+(r.checkIn||'—')+(isLate?' <span style="color:var(--A)">(LATE)</span>':'')+'<br>';
-      h+='🕐 <b>Check Out:</b> '+(r.checkOut||'<span style="color:var(--B)">Still working</span>')+'<br>';
-      h+='📊 <b>Total:</b> '+(r.totalHours||'—')+'<br>';
-      if(r.otMinutes>0)h+='🕐 <b>OT:</b> '+r.otHours+'<br>';
-      h+='📍 <b>Office:</b> '+(r.nearestOffice||'—')+'<br>';
-      if(r.road)h+='🛣️ <b>Road:</b> '+r.road+'<br>';
-      if(r.area)h+='🏘️ <b>Area:</b> '+r.area+'<br>';
-      h+='🚗 <b>Distance:</b> '+(r.checkInKmFromOffice||0)+' km · 💰 <b>TA:</b> Rs '+(r.taAmount||0)+'<br>';
-      if(r.trackingPoints)h+='📡 <b>GPS:</b> '+r.trackingPoints+' pts · '+(r.trackingKm||0)+' km<br>';
-      if(r.checkInSelfie)h+='<a href="'+r.checkInSelfie+'" target="_blank"><img style="width:100%;max-width:180px;border-radius:8px;margin:6px 0" src="'+r.checkInSelfie+'"></a><br>';
-      if(r.voiceNote&&r.voiceNote.length>50)h+='<audio controls style="width:100%;margin:6px 0" src="'+r.voiceNote+'"></audio><br>';
-      h+='</div>';
+    if(sessions.length){
+      // Show each session
+      sessions.forEach(function(s,si){
+        if(sessions.length>1)h+='<div style="font-size:12px;font-weight:800;color:var(--B);padding:8px 0 4px;border-top:1px solid var(--bdr);margin-top:6px">Session #'+(si+1)+'</div>';
+        h+='<div class="wc-det">';
+        h+='📅 <b>Date:</b> '+(s.date||'—')+'<br>';
+        h+='⏰ <b>In:</b> '+(s.checkIn||'—')+(s.late?' <span style="color:var(--A)">(LATE)</span>':'')+'<br>';
+        h+='🕐 <b>Out:</b> '+(s.checkOut||'<span style="color:var(--B)">Working</span>')+'<br>';
+        h+='📊 <b>Hours:</b> '+(s.totalHours||'—')+'<br>';
+        if(s.otMinutes>0)h+='🕐 <b>OT:</b> '+s.otHours+'<br>';
+        h+='📍 <b>Office:</b> '+(s.nearestOffice||'—')+'<br>';
+        if(s.road)h+='🛣️ <b>Road:</b> '+s.road+'<br>';
+        if(s.area)h+='🏘️ <b>Area:</b> '+s.area+'<br>';
+        h+='🚗 <b>Dist:</b> '+(s.checkInKmFromOffice||0)+' km · 💰 <b>TA:</b> Rs '+(s.taAmount||0)+'<br>';
+        if(s.trackingPoints)h+='📡 <b>GPS:</b> '+s.trackingPoints+' pts · '+(s.trackingKm||0)+' km<br>';
+        if(s.checkInSelfie)h+='<a href="'+s.checkInSelfie+'" target="_blank"><img style="width:100%;max-width:160px;border-radius:8px;margin:4px 0" src="'+s.checkInSelfie+'"></a><br>';
+        if(s.voiceNote&&s.voiceNote.length>50)h+='<audio controls style="width:100%;margin:4px 0" src="'+s.voiceNote+'"></audio><br>';
+        h+='</div>';
+      });
       if(r.checkInLat)h+='<div class="wc-map-sm" id="wcmap-'+idx+'"></div>';
       h+='<div class="wc-acts">';
       h+='<button class="sc-btn" style="background:var(--B)" onclick="openOnTrail(\''+w.code+'\')">📍 Trail</button>';
-      h+='<button class="sc-btn" style="background:var(--R)" onclick="delAttRec(\''+r._key+'\',\''+(w.name||'')+'\')">🗑 Delete</button>';
+      sessions.forEach(function(s,si){
+        h+='<button class="sc-btn" style="background:var(--R);font-size:10px" onclick="delAttRec(\''+s._key+'\',\''+(w.name||'')+'\')">🗑 #'+(si+1)+'</button>';
+      });
       h+='</div>';
     }else{
       h+='<div style="padding:16px;text-align:center;color:var(--tx3)">No check-in today<br><span style="font-size:11px">'+w.records.length+' records in period</span></div>';
@@ -593,8 +654,8 @@ function toggleWc(idx){
   var el=$('wc-'+idx);if(!el)return;
   var wasOpen=el.classList.contains('open');el.classList.toggle('open');
   if(!wasOpen){
-    var w=_dFiltered[idx];if(!w||!w.todayRec)return;
-    var r=w.todayRec,mapEl=$('wcmap-'+idx);
+    var w=_dFiltered[idx];if(!w||!w.latestRec)return;
+    var r=w.latestRec,mapEl=$('wcmap-'+idx);
     if(mapEl&&r.checkInLat&&!mapEl._loaded){
       mapEl._loaded=true;
       setTimeout(function(){
@@ -618,6 +679,55 @@ function delAttRec(key,name){
     _all=_all.filter(function(r){return r._key!==key});
     renderDash();
   });
+}
+
+/* ═══ PDF EXPORT ═══ */
+function exportDashPDF(){
+  if(typeof jspdf==='undefined'&&typeof window.jspdf==='undefined'){alert('PDF library loading...');return}
+  var jsPDF=window.jspdf.jsPDF;
+  var doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+
+  var todayStr=new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi',day:'2-digit',month:'short',year:'numeric'});
+  doc.setFontSize(18);
+  doc.text('CS Labour Attendance — '+todayStr,14,16);
+  doc.setFontSize(10);
+  doc.text('Period: '+_dPeriod+' | Filter: '+_dStatus+' | Generated: '+new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi'}),14,23);
+
+  // Table header
+  var y=30;
+  doc.setFontSize(9);doc.setFont(undefined,'bold');
+  var cols=['#','Name','Code','Designation','Status','Check In','Check Out','Hours','OT','KM','TA','Road','Sessions'];
+  var cw=[8,30,14,28,18,18,18,16,14,12,14,30,14];
+  var x=14;
+  cols.forEach(function(c,i){doc.text(c,x,y);x+=cw[i]});
+
+  doc.setFont(undefined,'normal');y+=6;
+  var workers=_dFiltered;
+  workers.forEach(function(w,idx){
+    if(y>190){doc.addPage();y=16}
+    var r=w.latestRec;
+    var status=!r?'Absent':r.late?(r.status==='checked-in'?'Late/Working':'Late/Done'):(r.status==='checked-in'?'Working':'On Time');
+    var row=[
+      String(idx+1),
+      (w.name||'?').substring(0,18),
+      w.code||'',
+      (w.designation||'').substring(0,16),
+      status,
+      r?r.checkIn||'':'—',
+      r?r.checkOut||'—':'—',
+      r?r.totalHours||'—':'—',
+      r&&r.otMinutes>0?r.otHours:'0',
+      r?String(r.checkInKmFromOffice||0):'—',
+      r?'Rs'+(r.taAmount||0):'—',
+      r?(r.road||'').substring(0,18):'—',
+      String(w.todaySessions.length)
+    ];
+    x=14;
+    row.forEach(function(v,i){doc.text(v,x,y);x+=cw[i]});
+    y+=5;
+  });
+
+  doc.save('Labour_Attendance_'+todayStr.replace(/ /g,'_')+'.pdf');
 }
 
 function populateNameFilter(){/* compat */}
@@ -1158,8 +1268,17 @@ function loadStaff(){
       Object.keys(data).forEach(function(k){var r=data[k];r._key=k;_staff.push(r)});
     }
     if(!_staff.length){
-      // Auto-seed from known employees
       seedStaff();return;
+    }
+    // Ensure L000 test exists
+    var hasL0=_staff.some(function(s){return s.code==='L000'});
+    if(!hasL0){
+      var x=new XMLHttpRequest();
+      x.open('PUT',FB_URL+'/labour_staff/L000.json');
+      x.setRequestHeader('Content-Type','application/json');
+      x.onload=function(){_staff.push({_key:'L000',name:'ٹیسٹ',code:'L000',designation:'ٹیسٹ',phone:'03228064444',salary:0,cnic:'',address:'',status:'active',deviceId:'LD1773782343664t5or',createdAt:''});renderStaff()};
+      x.send(JSON.stringify({name:'ٹیسٹ',code:'L000',designation:'ٹیسٹ',phone:'03228064444',salary:0,cnic:'',address:'',status:'active',deviceId:'LD1773782343664t5or',createdAt:new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi'})}));
+      return;
     }
     _staff.sort(function(a,b){return(a.code||'').localeCompare(b.code||'')});
     renderStaff();
@@ -1168,6 +1287,7 @@ function loadStaff(){
 
 function seedStaff(){
   var PPL=[
+    {n:'ٹیسٹ',c:'L000',r:'ٹیسٹ',ph:'03228064444'},
     {n:'اسحاق',c:'L001',r:'الیکٹریکل انجینئر',ph:'03242778907'},
     {n:'خبیب',c:'L002',r:'سپروائزر',ph:'03466741791'},
     {n:'وقاص',c:'L003',r:'سینئر الیکٹریشن',ph:'03484161094'},
@@ -1304,8 +1424,170 @@ function editStaff(key,idx){
   x.send(JSON.stringify(patch));
 }
 
+/* ═══ AUTH SYSTEM ═══ */
+var _role=''; // 'admin','manager','supervisor'
+var _adminDevKey='cs_labour_admin_dev';
+var ADMIN_PW='Muddasir';
+
+function initAuth(){
+  // Check device registration first
+  var saved=localStorage.getItem(_adminDevKey);
+  if(saved){
+    try{
+      var info=JSON.parse(saved);
+      if(info.role==='admin'){
+        authSuccess('admin',info.name||'Admin');return;
+      }
+      // Manager/supervisor — verify status from Firebase
+      if(info.key){
+        fbGet('/labour_admins/'+info.key,function(err,data){
+          if(err||!data){showAuthGate();return}
+          if(data.status==='approved'){
+            authSuccess(data.role,data.name);
+          }else if(data.status==='pending'){
+            alert('Your account is still pending approval.');
+            showAuthGate();
+          }else{
+            alert('Your account is blocked.');
+            showAuthGate();
+          }
+        });
+        return;
+      }
+    }catch(e){}
+  }
+  showAuthGate();
+}
+
+function showAuthGate(){
+  document.getElementById('auth-gate').style.display='block';
+  document.getElementById('main-app').style.display='none';
+}
+
+function doAdminLogin(){
+  var pw=document.getElementById('auth-pw').value;
+  var msg=document.getElementById('auth-msg');
+  if(pw===ADMIN_PW){
+    // Save admin device
+    localStorage.setItem(_adminDevKey,JSON.stringify({role:'admin',name:'Admin',ts:Date.now()}));
+    authSuccess('admin','Admin');
+  }else{
+    msg.textContent='Wrong password';
+  }
+}
+
+function authSuccess(role,name){
+  _role=role;
+  document.getElementById('auth-gate').style.display='none';
+  document.getElementById('main-app').style.display='block';
+
+  // Role badge
+  var badge=document.getElementById('role-badge');
+  badge.textContent=role.toUpperCase();
+  if(role==='admin')badge.style.background='var(--R)';
+  else if(role==='manager')badge.style.background='var(--B)';
+  else badge.style.background='var(--G)';
+
+  // Hide admin-only tabs for non-admins
+  if(role!=='admin'){
+    document.querySelectorAll('.tab-admin').forEach(function(t){t.style.display='none'});
+    // Hide delete buttons and add forms globally
+    document.documentElement.classList.add('readonly-mode');
+  }
+
+  loadAll();
+}
+
+function doLogout(){
+  if(!confirm('Logout from this device?'))return;
+  localStorage.removeItem(_adminDevKey);
+  location.reload();
+}
+
+/* ═══ USERS MANAGEMENT ═══ */
+var _users=[];
+var _userFilter='all';
+
+function loadUsers(){
+  document.getElementById('users-list').innerHTML='<div class="loading"><div class="spin"></div></div>';
+  fbGet('/labour_admins',function(err,data){
+    _users=[];
+    if(data){
+      Object.keys(data).forEach(function(k){var r=data[k];r._key=k;_users.push(r)});
+    }
+    _users.sort(function(a,b){return(b.registeredAt||'').localeCompare(a.registeredAt||'')});
+    renderUsers();
+  });
+}
+
+function filterUsers(f,el){
+  _userFilter=f;
+  document.querySelectorAll('#pn-users .chip').forEach(function(c){c.classList.remove('chip-on')});
+  if(el)el.classList.add('chip-on');
+  renderUsers();
+}
+
+function renderUsers(){
+  var rows=_users;
+  if(_userFilter!=='all')rows=rows.filter(function(u){return u.status===_userFilter});
+  var pending=_users.filter(function(u){return u.status==='pending'}).length;
+
+  if(!rows.length){document.getElementById('users-list').innerHTML='<div style="text-align:center;padding:30px;color:var(--tx3)">No users found</div>';return}
+
+  var h='';
+  if(pending>0)h+='<div style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:10px;margin-bottom:10px;font-size:13px;color:var(--A);font-weight:700">⏳ '+pending+' pending approval'+(pending>1?'s':'')+'</div>';
+
+  rows.forEach(function(u){
+    var stClr=u.status==='approved'?'var(--G)':u.status==='pending'?'var(--A)':'var(--R)';
+    var stIcon=u.status==='approved'?'✅':u.status==='pending'?'⏳':'🚫';
+    h+='<div class="sc" onclick="this.classList.toggle(\'open\')">';
+    h+='<div class="sc-hd">';
+    h+='<div class="sc-av">'+stIcon+'</div>';
+    h+='<div><div class="sc-nm">'+(u.name||'—')+'</div><div class="sc-sub">'+(u.role||'—')+' · '+(u.phone||'—')+' · '+(u.registeredAt||'—')+'</div></div>';
+    h+='<div class="sc-badges"><span class="sc-badge" style="background:rgba(0,0,0,.2);color:'+stClr+';border:1px solid '+stClr+'">'+u.status+'</span></div>';
+    h+='</div>';
+    h+='<div class="sc-body" onclick="event.stopPropagation()">';
+    h+='<div class="sc-row"><span class="sc-rl">Name</span><span class="sc-rv">'+(u.name||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">Phone</span><span class="sc-rv">'+(u.phone||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">Role</span><span class="sc-rv">'+(u.role||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">PIN</span><span class="sc-rv">'+(u.pin||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">Device</span><span class="sc-rv" style="font-size:10px;font-family:monospace">'+(u.deviceId||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">Registered</span><span class="sc-rv">'+(u.registeredAt||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">Status</span><span class="sc-rv" style="color:'+stClr+'">'+stIcon+' '+u.status+'</span></div>';
+    h+='<div class="sc-acts">';
+    if(u.status==='pending'){
+      h+='<button class="sc-btn" style="background:var(--G)" onclick="userAction(\''+u._key+'\',\'approved\')">✅ Approve</button>';
+      h+='<button class="sc-btn" style="background:var(--R)" onclick="userAction(\''+u._key+'\',\'blocked\')">🚫 Reject</button>';
+    }else if(u.status==='approved'){
+      h+='<button class="sc-btn" style="background:var(--A)" onclick="userAction(\''+u._key+'\',\'blocked\')">🚫 Block</button>';
+    }else{
+      h+='<button class="sc-btn" style="background:var(--G)" onclick="userAction(\''+u._key+'\',\'approved\')">✅ Approve</button>';
+    }
+    h+='<button class="sc-btn" style="background:var(--R)" onclick="deleteUser(\''+u._key+'\',\''+(u.name||'')+'\')">🗑 Delete</button>';
+    h+='</div></div></div>';
+  });
+  document.getElementById('users-list').innerHTML=h;
+}
+
+function userAction(key,status){
+  if(!confirm('Set status to '+status+'?'))return;
+  var x=new XMLHttpRequest();
+  x.open('PATCH',FB_URL+'/labour_admins/'+key+'.json');
+  x.setRequestHeader('Content-Type','application/json');
+  x.onload=function(){loadUsers()};
+  x.send(JSON.stringify({status:status}));
+}
+
+function deleteUser(key,name){
+  if(!confirm('Delete user '+name+'?'))return;
+  var x=new XMLHttpRequest();
+  x.open('DELETE',FB_URL+'/labour_admins/'+key+'.json');
+  x.onload=function(){loadUsers()};
+  x.send();
+}
+
 /* ═══ INIT LOAD ═══ */
-loadAll();
+initAuth();
 </script>
 </body>
 </html>

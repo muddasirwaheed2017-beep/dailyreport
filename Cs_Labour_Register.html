@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>CS Labour — Register</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f1117;--s1:#1a1d27;--s2:#242836;--s3:#2e3345;--bdr:#363b4e;--tx:#e2e4ea;--tx2:#8b90a0;--tx3:#5c6178;--R:#dc2626;--G:#22c55e;--A:#f59e0b;--B:#3b82f6;--W:#fff;--r:10px;--rl:14px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.box{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:30px;max-width:420px;width:100%}
+.logo{text-align:center;margin-bottom:20px}
+.logo h1{font-size:20px;font-weight:800}.logo h1 em{color:var(--R);font-style:normal}
+.logo p{font-size:12px;color:var(--tx2);margin-top:4px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--tx2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.fi{width:100%;padding:12px;border:1px solid var(--bdr);border-radius:var(--r);background:var(--s2);color:var(--tx);font-size:14px}
+.fi:focus{border-color:var(--B);outline:none}
+select.fi{appearance:none;-webkit-appearance:none}
+.btn{width:100%;padding:14px;border:none;border-radius:var(--r);font-size:15px;font-weight:800;cursor:pointer;color:var(--W);background:var(--B);margin-top:6px}
+.btn:active{opacity:.8}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin-top:14px;padding:12px;border-radius:var(--r);font-size:13px;text-align:center;display:none}
+.msg-ok{background:rgba(34,197,94,.15);color:var(--G);border:1px solid rgba(34,197,94,.3);display:block}
+.msg-err{background:rgba(220,38,38,.15);color:var(--R);border:1px solid rgba(220,38,38,.3);display:block}
+.msg-wait{background:rgba(245,158,11,.15);color:var(--A);border:1px solid rgba(245,158,11,.3);display:block}
+.status-box{text-align:center;padding:30px}
+.status-box .icon{font-size:48px;margin-bottom:12px}
+.status-box h2{font-size:18px;margin-bottom:6px}
+.status-box p{font-size:13px;color:var(--tx2);line-height:1.6}
+.link{color:var(--B);text-decoration:none;font-weight:700}
+.link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="box" id="register-box">
+  <div class="logo">
+    <h1>CS <em>Labour</em> Admin</h1>
+    <p>Manager / Supervisor Registration</p>
+  </div>
+  <div class="fg"><label>Full Name</label><input class="fi" id="r-name" placeholder="Your name"></div>
+  <div class="fg"><label>Phone</label><input class="fi" id="r-phone" placeholder="03xx-xxxxxxx"></div>
+  <div class="fg"><label>Role</label>
+    <select class="fi" id="r-role">
+      <option value="manager">Manager</option>
+      <option value="supervisor">Supervisor</option>
+    </select>
+  </div>
+  <div class="fg"><label>PIN (4 digits — for first login only)</label><input class="fi" id="r-pin" type="number" placeholder="1234" maxlength="4"></div>
+  <button class="btn" id="r-btn" onclick="doRegister()">📝 Register</button>
+  <div class="msg" id="r-msg"></div>
+</div>
+
+<div class="box" id="status-box" style="display:none">
+  <div class="status-box">
+    <div class="icon" id="st-icon">⏳</div>
+    <h2 id="st-title">Pending Approval</h2>
+    <p id="st-text">Your registration is pending admin approval. You'll be able to access the portal once approved.</p>
+    <button class="btn" style="margin-top:16px;background:var(--s3)" onclick="checkStatus()">🔄 Check Status</button>
+    <div class="msg" id="st-msg" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div style="margin-top:20px;text-align:center">
+  <a class="link" href="Cs_Labour_Admin_V3.html">↗ Go to Admin Portal</a>
+</div>
+
+<script>
+var FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app';
+var DEV_KEY='cs_labour_admin_dev';
+
+function genDeviceId(){return'LA'+Date.now()+Math.random().toString(36).substring(2,6)}
+
+function fbPost(path,data,cb){
+  var x=new XMLHttpRequest();
+  x.open('POST',FB_URL+path+'.json');
+  x.setRequestHeader('Content-Type','application/json');
+  x.onload=function(){try{cb(null,JSON.parse(x.responseText))}catch(e){cb(e)}};
+  x.onerror=function(){cb('Network error')};
+  x.send(JSON.stringify(data));
+}
+function fbGet(path,cb){
+  var x=new XMLHttpRequest();
+  x.open('GET',FB_URL+path+'.json');
+  x.onload=function(){try{cb(null,JSON.parse(x.responseText))}catch(e){cb(e)}};
+  x.onerror=function(){cb('Network error')};x.send();
+}
+
+// Check if already registered on this device
+function init(){
+  var saved=localStorage.getItem(DEV_KEY);
+  if(saved){
+    try{
+      var info=JSON.parse(saved);
+      if(info.key){
+        // Check status
+        showStatusScreen(info);
+        checkStatus();
+        return;
+      }
+    }catch(e){}
+  }
+}
+
+function doRegister(){
+  var name=document.getElementById('r-name').value.trim();
+  var phone=document.getElementById('r-phone').value.trim();
+  var role=document.getElementById('r-role').value;
+  var pin=document.getElementById('r-pin').value.trim();
+  var msg=document.getElementById('r-msg');
+
+  if(!name||!phone){msg.className='msg msg-err';msg.textContent='Name and phone required';return}
+  if(!pin||pin.length!==4){msg.className='msg msg-err';msg.textContent='Enter 4-digit PIN';return}
+
+  var btn=document.getElementById('r-btn');
+  btn.disabled=true;btn.textContent='Registering...';
+
+  var deviceId=genDeviceId();
+  var rec={
+    name:name,
+    phone:phone,
+    role:role,
+    pin:pin,
+    deviceId:deviceId,
+    status:'pending',
+    registeredAt:new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi'})
+  };
+
+  fbPost('/labour_admins',rec,function(err,res){
+    btn.disabled=false;btn.textContent='📝 Register';
+    if(err){msg.className='msg msg-err';msg.textContent='Registration failed';return}
+    var key=res.name;
+    var info={key:key,name:name,role:role,deviceId:deviceId,status:'pending'};
+    localStorage.setItem(DEV_KEY,JSON.stringify(info));
+    msg.className='msg msg-ok';msg.textContent='✅ Registered! Waiting for admin approval.';
+    setTimeout(function(){showStatusScreen(info)},1500);
+  });
+}
+
+function showStatusScreen(info){
+  document.getElementById('register-box').style.display='none';
+  document.getElementById('status-box').style.display='block';
+  updateStatusUI(info.status,info.name,info.role);
+}
+
+function updateStatusUI(status,name,role){
+  var icon=document.getElementById('st-icon');
+  var title=document.getElementById('st-title');
+  var text=document.getElementById('st-text');
+
+  if(status==='pending'){
+    icon.textContent='⏳';
+    title.textContent='Pending Approval';
+    text.innerHTML='<b>'+name+'</b> ('+role+')<br>Your registration is pending admin approval.';
+  }else if(status==='approved'){
+    icon.textContent='✅';
+    title.textContent='Approved!';
+    title.style.color='#22c55e';
+    text.innerHTML='<b>'+name+'</b> ('+role+')<br>You are approved! <a class="link" href="Cs_Labour_Admin_V3.html">Open Admin Portal →</a>';
+  }else if(status==='blocked'){
+    icon.textContent='🚫';
+    title.textContent='Blocked';
+    title.style.color='#dc2626';
+    text.innerHTML='Your account has been blocked by admin.';
+  }
+}
+
+function checkStatus(){
+  var saved=localStorage.getItem(DEV_KEY);
+  if(!saved)return;
+  var info=JSON.parse(saved);
+  var msg=document.getElementById('st-msg');
+  msg.className='msg msg-wait';msg.textContent='Checking...';
+
+  fbGet('/labour_admins/'+info.key,function(err,data){
+    if(err||!data){msg.className='msg msg-err';msg.textContent='Error checking status';return}
+    info.status=data.status;
+    localStorage.setItem(DEV_KEY,JSON.stringify(info));
+    updateStatusUI(data.status,data.name||info.name,data.role||info.role);
+    if(data.status==='approved'){
+      msg.className='msg msg-ok';msg.textContent='✅ Approved! Redirecting...';
+      setTimeout(function(){window.location.href='Cs_Labour_Admin_V3.html'},2000);
+    }else if(data.status==='pending'){
+      msg.className='msg msg-wait';msg.textContent='Still pending...';
+    }else{
+      msg.className='msg msg-err';msg.textContent='Status: '+data.status;
+    }
+  });
+}
+
+init();
+</script>
+</body>
+</html>
