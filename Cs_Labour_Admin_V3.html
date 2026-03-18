@@ -1069,8 +1069,52 @@ function loadStaff(){
     if(data){
       Object.keys(data).forEach(function(k){var r=data[k];r._key=k;_staff.push(r)});
     }
+    if(!_staff.length){
+      // Auto-seed from known employees
+      seedStaff();return;
+    }
     _staff.sort(function(a,b){return(a.code||'').localeCompare(b.code||'')});
     renderStaff();
+  });
+}
+
+function seedStaff(){
+  var PPL=[
+    {n:'اسحاق',c:'L001',r:'الیکٹریکل انجینئر',ph:'03242778907'},
+    {n:'خبیب',c:'L002',r:'سپروائزر',ph:'03466741791'},
+    {n:'وقاص',c:'L003',r:'سینئر الیکٹریشن',ph:'03484161094'},
+    {n:'بلال',c:'L004',r:'سینئر الیکٹریشن',ph:'03019735572'},
+    {n:'حریرہ',c:'L005',r:'الیکٹریشن',ph:'03090374430'},
+    {n:'سلمان جٹ',c:'L006',r:'الیکٹریشن',ph:'03187313165'},
+    {n:'جنید',c:'L007',r:'ہیلپر',ph:'03245151249'},
+    {n:'انس',c:'L008',r:'ہیلپر',ph:'03195835487'},
+    {n:'حمزہ',c:'L009',r:'ہیلپر',ph:'03264229382'},
+    {n:'صابر',c:'L010',r:'سینئر الیکٹریشن',ph:'03064557016'}
+  ];
+  // Build seed object
+  var seed={};
+  PPL.forEach(function(p){
+    seed[p.c]={name:p.n,code:p.c,designation:p.r,phone:p.ph,salary:0,cnic:'',address:'',status:'active',deviceId:'',createdAt:new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi'})};
+  });
+  // Check attendance for device IDs
+  fbGet('/labour_attendance',function(err2,att){
+    if(att){
+      Object.keys(att).forEach(function(k){
+        var r=att[k];
+        if(r.code&&seed[r.code]&&r.deviceId){
+          seed[r.code].deviceId=r.deviceId;
+        }
+      });
+    }
+    // Save to Firebase
+    var x=new XMLHttpRequest();
+    x.open('PUT',FB_URL+'/labour_staff.json');
+    x.setRequestHeader('Content-Type','application/json');
+    x.onload=function(){
+      loadStaff(); // Re-load now that data exists
+    };
+    x.onerror=function(){$('staff-list').innerHTML='<div style="color:var(--R);padding:20px">Seed failed</div>'};
+    x.send(JSON.stringify(seed));
   });
 }
 
