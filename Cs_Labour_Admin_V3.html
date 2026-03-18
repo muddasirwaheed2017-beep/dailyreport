@@ -96,6 +96,26 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 @keyframes sp{to{transform:rotate(360deg)}}
 .loading{text-align:center;padding:30px;color:var(--tx2)}
 .map-label{background:rgba(0,0,0,.7)!important;color:#fff!important;border:none!important;padding:2px 6px!important;font-size:10px!important;font-weight:700!important;border-radius:4px!important;box-shadow:none!important}
+
+/* Staff cards */
+.sc{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);margin-bottom:10px;overflow:hidden}
+.sc-hd{display:flex;align-items:center;gap:12px;padding:14px;cursor:pointer}
+.sc-hd:hover{background:var(--s2)}
+.sc-av{width:44px;height:44px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--tx2);flex-shrink:0}
+.sc-nm{font-weight:700;font-size:14px}.sc-sub{font-size:11px;color:var(--tx2);margin-top:2px}
+.sc-badges{display:flex;gap:4px;margin-left:auto;flex-shrink:0}
+.sc-badge{padding:3px 8px;border-radius:12px;font-size:9px;font-weight:800}
+.sc-b-active{background:rgba(34,197,94,.15);color:var(--G);border:1px solid rgba(34,197,94,.3)}
+.sc-b-blocked{background:rgba(220,38,38,.15);color:var(--R);border:1px solid rgba(220,38,38,.3)}
+.sc-b-new{background:rgba(59,130,246,.15);color:var(--B);border:1px solid rgba(59,130,246,.3)}
+.sc-body{display:none;padding:0 14px 14px;border-top:1px solid var(--bdr)}
+.sc.open .sc-body{display:block}
+.sc-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--s3);font-size:12px}
+.sc-row:last-child{border:none}
+.sc-rl{color:var(--tx2)}.sc-rv{font-weight:700;text-align:right;max-width:60%}
+.sc-acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.sc-btn{padding:8px 14px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;border:none;color:var(--W)}
+.sc-btn:active{opacity:.8}
 </style>
 </head>
 <body>
@@ -107,6 +127,7 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 
 <div class="tabs" id="tabs">
   <div class="tab on" onclick="showTab('dash')">📊 Dashboard</div>
+  <div class="tab" onclick="showTab('staff')">👥 Staff</div>
   <div class="tab" onclick="showTab('map')">🗺️ Live Map</div>
   <div class="tab" onclick="showTab('trail')">📍 Trail</div>
   <div class="tab" onclick="showTab('report')">📋 Report</div>
@@ -130,6 +151,46 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
   </div>
   <div class="stats" id="stats"></div>
   <div class="cards" id="cards"></div>
+</div>
+
+<!-- STAFF MANAGEMENT -->
+<div id="pn-staff" class="panel">
+  <div style="background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);padding:16px;margin-bottom:14px">
+    <div style="font-size:15px;font-weight:800;margin-bottom:12px">➕ Add Employee</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="fg"><label>Name (Urdu)</label><input class="fi" id="se-name" placeholder="نام"></div>
+      <div class="fg"><label>Code</label><input class="fi" id="se-code" placeholder="L011"></div>
+      <div class="fg"><label>Designation</label>
+        <select class="fi" id="se-desg">
+          <option value="الیکٹریکل انجینئر">الیکٹریکل انجینئر</option>
+          <option value="سپروائزر">سپروائزر</option>
+          <option value="سینئر الیکٹریشن">سینئر الیکٹریشن</option>
+          <option value="الیکٹریشن">الیکٹریشن</option>
+          <option value="ہیلپر">ہیلپر</option>
+          <option value="ٹیکنیشن">ٹیکنیشن</option>
+          <option value="مزدور">مزدور</option>
+        </select>
+      </div>
+      <div class="fg"><label>Phone</label><input class="fi" id="se-phone" placeholder="03xx..."></div>
+      <div class="fg"><label>Monthly Salary (Rs)</label><input class="fi" id="se-salary" type="number" placeholder="25000"></div>
+      <div class="fg"><label>CNIC / ID</label><input class="fi" id="se-cnic" placeholder="xxxxx-xxxxxxx-x"></div>
+      <div class="fg" style="grid-column:span 2"><label>Address</label><input class="fi" id="se-addr" placeholder="گھر کا پتہ"></div>
+    </div>
+    <button class="fbtn" style="margin-top:12px;width:100%" onclick="addStaff()">➕ Add Employee</button>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:10px">
+    <button class="fbtn" onclick="loadStaff()">🔄 Refresh</button>
+    <span style="font-size:12px;color:var(--tx2);align-self:center" id="staff-count">—</span>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap" id="staff-filters">
+    <button class="fbtn" style="background:var(--G);font-size:11px;padding:6px 12px" onclick="filterStaff('active')">✅ Active</button>
+    <button class="fbtn" style="background:var(--R);font-size:11px;padding:6px 12px" onclick="filterStaff('blocked')">🚫 Blocked</button>
+    <button class="fbtn" style="background:var(--tx3);font-size:11px;padding:6px 12px" onclick="filterStaff('all')">All</button>
+  </div>
+
+  <div id="staff-list"></div>
 </div>
 
 <!-- LIVE MAP -->
@@ -269,10 +330,11 @@ function showTab(t){
   document.querySelectorAll('.tab').forEach(function(p){p.classList.remove('on')});
   $('pn-'+t).classList.add('on');
   var tabs=document.querySelectorAll('.tab');
-  var map={dash:0,map:1,trail:2,report:3,ai:4};
+  var map={dash:0,staff:1,map:2,trail:3,report:4,ai:5};
   if(map[t]!==undefined)tabs[map[t]].classList.add('on');
   if(t==='map')setTimeout(function(){if(_liveMap)_liveMap.invalidateSize()},200);
   if(t==='trail')setTimeout(function(){if(_trailMap)_trailMap.invalidateSize()},200);
+  if(t==='staff')loadStaff();
 }
 
 /* ═══ INIT ═══ */
@@ -956,6 +1018,158 @@ function gDist(a,b,c,d){
   var R=6371000,dL=(c-a)*Math.PI/180,dN=(d-b)*Math.PI/180;
   var x=Math.sin(dL/2)*Math.sin(dL/2)+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dN/2)*Math.sin(dN/2);
   return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
+}
+
+/* ═══ STAFF MANAGEMENT ═══ */
+var _staff=[];
+var _staffFilter='active';
+
+function addStaff(){
+  var nm=$('se-name').value.trim();
+  var code=$('se-code').value.trim();
+  var desg=$('se-desg').value;
+  var ph=$('se-phone').value.trim();
+  var sal=parseInt($('se-salary').value)||0;
+  var cnic=$('se-cnic').value.trim();
+  var addr=$('se-addr').value.trim();
+  if(!nm||!code){alert('Name and Code required');return}
+
+  var rec={
+    name:nm,code:code,designation:desg,phone:ph,
+    salary:sal,cnic:cnic,address:addr,
+    status:'active',
+    createdAt:new Date().toLocaleString('en-GB',{timeZone:'Asia/Karachi'}),
+    deviceId:''
+  };
+
+  fbGet('/labour_staff',function(err,data){
+    // Check duplicate code
+    if(data){
+      var dup=false;
+      Object.keys(data).forEach(function(k){if(data[k].code===code)dup=true});
+      if(dup){alert('Code '+code+' already exists!');return}
+    }
+    var x=new XMLHttpRequest();
+    x.open('POST',FB_URL+'/labour_staff.json');
+    x.setRequestHeader('Content-Type','application/json');
+    x.onload=function(){
+      alert('✅ '+nm+' added!');
+      ['se-name','se-code','se-phone','se-salary','se-cnic','se-addr'].forEach(function(id){$(id).value=''});
+      loadStaff();
+    };
+    x.onerror=function(){alert('Failed to add')};
+    x.send(JSON.stringify(rec));
+  });
+}
+
+function loadStaff(){
+  $('staff-list').innerHTML='<div class="loading"><div class="spin"></div></div>';
+  fbGet('/labour_staff',function(err,data){
+    _staff=[];
+    if(data){
+      Object.keys(data).forEach(function(k){var r=data[k];r._key=k;_staff.push(r)});
+    }
+    _staff.sort(function(a,b){return(a.code||'').localeCompare(b.code||'')});
+    renderStaff();
+  });
+}
+
+function filterStaff(f){_staffFilter=f;renderStaff()}
+
+function renderStaff(){
+  var rows=_staff;
+  if(_staffFilter==='active')rows=rows.filter(function(s){return s.status!=='blocked'});
+  else if(_staffFilter==='blocked')rows=rows.filter(function(s){return s.status==='blocked'});
+
+  var active=_staff.filter(function(s){return s.status!=='blocked'}).length;
+  var blocked=_staff.filter(function(s){return s.status==='blocked'}).length;
+  $('staff-count').textContent=active+' active · '+blocked+' blocked · '+_staff.length+' total';
+
+  if(!rows.length){$('staff-list').innerHTML='<div style="text-align:center;padding:30px;color:var(--tx3)">No staff found</div>';return}
+
+  var h='';
+  rows.forEach(function(s,i){
+    var isBlocked=s.status==='blocked';
+    var hasDevice=s.deviceId&&s.deviceId.length>3;
+    var initials=(s.name||'?').substring(0,2);
+
+    h+='<div class="sc" id="sc-'+i+'" onclick="this.classList.toggle(\'open\')">';
+    h+='<div class="sc-hd">';
+    h+='<div class="sc-av">'+initials+'</div>';
+    h+='<div><div class="sc-nm">'+(s.name||'—')+'</div><div class="sc-sub">'+(s.designation||'—')+' · '+(s.code||'—')+' · '+(s.phone||'—')+'</div></div>';
+    h+='<div class="sc-badges">';
+    h+='<span class="sc-badge '+(isBlocked?'sc-b-blocked':'sc-b-active')+'">'+(isBlocked?'🚫 Blocked':'✅ Active')+'</span>';
+    if(hasDevice)h+='<span class="sc-badge sc-b-new">📱</span>';
+    h+='</div></div>';
+
+    h+='<div class="sc-body" onclick="event.stopPropagation()">';
+    h+='<div class="sc-row"><span class="sc-rl">📋 Code</span><span class="sc-rv">'+(s.code||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">🔧 Designation</span><span class="sc-rv">'+(s.designation||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">📞 Phone</span><span class="sc-rv">'+(s.phone||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">💰 Monthly Salary</span><span class="sc-rv" style="color:var(--G)">Rs '+(s.salary||0).toLocaleString()+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">🪪 CNIC</span><span class="sc-rv">'+(s.cnic||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">🏠 Address</span><span class="sc-rv" style="font-size:11px">'+(s.address||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">📱 Device ID</span><span class="sc-rv" style="font-size:10px;font-family:monospace">'+(s.deviceId||'Not registered')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">📅 Added</span><span class="sc-rv">'+(s.createdAt||'—')+'</span></div>';
+    h+='<div class="sc-row"><span class="sc-rl">📊 Status</span><span class="sc-rv" style="color:'+(isBlocked?'var(--R)':'var(--G)')+'">'+(isBlocked?'🚫 Blocked':'✅ Active')+'</span></div>';
+
+    h+='<div class="sc-acts">';
+    h+='<button class="sc-btn" style="background:var(--B)" onclick="editStaff(\''+s._key+'\','+i+')">✏️ Edit</button>';
+    if(isBlocked){
+      h+='<button class="sc-btn" style="background:var(--G)" onclick="toggleBlock(\''+s._key+'\',false)">✅ Unblock</button>';
+    }else{
+      h+='<button class="sc-btn" style="background:var(--A)" onclick="toggleBlock(\''+s._key+'\',true)">🚫 Block</button>';
+    }
+    h+='<button class="sc-btn" style="background:var(--s3)" onclick="resetDevice(\''+s._key+'\',\''+(s.name||'')+'\')">📱 Reset Device</button>';
+    h+='<button class="sc-btn" style="background:var(--R)" onclick="deleteStaff(\''+s._key+'\',\''+(s.name||'')+'\')">🗑 Delete</button>';
+    h+='</div></div></div>';
+  });
+  $('staff-list').innerHTML=h;
+}
+
+function toggleBlock(key,block){
+  if(!confirm(block?'Block this employee?':'Unblock this employee?'))return;
+  var x=new XMLHttpRequest();
+  x.open('PATCH',FB_URL+'/labour_staff/'+key+'.json');
+  x.setRequestHeader('Content-Type','application/json');
+  x.onload=function(){loadStaff()};
+  x.send(JSON.stringify({status:block?'blocked':'active'}));
+}
+
+function resetDevice(key,name){
+  if(!confirm('Reset device for '+name+'? They will need to select their name again.'))return;
+  var x=new XMLHttpRequest();
+  x.open('PATCH',FB_URL+'/labour_staff/'+key+'.json');
+  x.setRequestHeader('Content-Type','application/json');
+  x.onload=function(){alert('Device reset for '+name);loadStaff()};
+  x.send(JSON.stringify({deviceId:''}));
+}
+
+function deleteStaff(key,name){
+  if(!confirm('DELETE '+name+'? This cannot be undone!'))return;
+  if(!confirm('Are you sure? Type YES in next prompt to confirm.')){return}
+  var x=new XMLHttpRequest();
+  x.open('DELETE',FB_URL+'/labour_staff/'+key+'.json');
+  x.onload=function(){alert(name+' deleted');loadStaff()};
+  x.onerror=function(){alert('Delete failed')};
+  x.send();
+}
+
+function editStaff(key,idx){
+  var s=_staff[idx];if(!s)return;
+  var nm=window.prompt('Name:',s.name||'');if(nm===null)return;
+  var desg=window.prompt('Designation:',s.designation||'');if(desg===null)return;
+  var ph=window.prompt('Phone:',s.phone||'');if(ph===null)return;
+  var sal=window.prompt('Monthly Salary (Rs):',s.salary||0);if(sal===null)return;
+  var cnic=window.prompt('CNIC:',s.cnic||'');if(cnic===null)return;
+  var addr=window.prompt('Address:',s.address||'');if(addr===null)return;
+
+  var patch={name:nm,designation:desg,phone:ph,salary:parseInt(sal)||0,cnic:cnic,address:addr};
+  var x=new XMLHttpRequest();
+  x.open('PATCH',FB_URL+'/labour_staff/'+key+'.json');
+  x.setRequestHeader('Content-Type','application/json');
+  x.onload=function(){alert('Updated!');loadStaff()};
+  x.send(JSON.stringify(patch));
 }
 
 /* ═══ INIT LOAD ═══ */
