@@ -23,7 +23,52 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 .tab:hover{color:var(--tx2)}.tab.on{color:var(--B);border-bottom-color:var(--B)}
 
 /* Panels */
-.panel{display:none;padding:16px}.panel.on{display:block}
+.panel{display:none;padding:12px}.panel.on{display:block}
+
+/* Chips */
+.chips{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.chip{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;background:var(--s2);color:var(--tx2);cursor:pointer;white-space:nowrap;border:1px solid var(--bdr);transition:.2s}
+.chip:active{transform:scale(.96)}
+.chip-on{background:var(--B);color:var(--W);border-color:var(--B)}
+
+/* Dashboard summary */
+.d-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;margin-bottom:14px}
+.d-sm{background:var(--s1);border:1px solid var(--bdr);border-radius:10px;padding:10px 8px;text-align:center}
+.d-sm-n{font-size:20px;font-weight:800;line-height:1.2}
+.d-sm-l{font-size:9px;font-weight:700;color:var(--tx3);margin-top:2px;text-transform:uppercase;letter-spacing:.5px}
+
+/* Worker attendance cards */
+.wc{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rl);margin-bottom:10px;overflow:hidden}
+.wc-hd{display:flex;align-items:center;gap:10px;padding:12px;cursor:pointer}
+.wc-hd:active{background:var(--s2)}
+.wc-av{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--bdr)}
+.wc-av-ph{width:40px;height:40px;border-radius:50%;background:var(--s3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.wc-info{flex:1;min-width:0}
+.wc-nm{font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wc-sub{font-size:11px;color:var(--tx2);margin-top:1px}
+.wc-right{text-align:right;flex-shrink:0}
+.wc-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:800}
+.wb-present{background:rgba(34,197,94,.15);color:var(--G);border:1px solid rgba(34,197,94,.3)}
+.wb-late{background:rgba(245,158,11,.15);color:var(--A);border:1px solid rgba(245,158,11,.3)}
+.wb-absent{background:rgba(220,38,38,.15);color:var(--R);border:1px solid rgba(220,38,38,.3)}
+.wb-working{background:rgba(59,130,246,.15);color:var(--B);border:1px solid rgba(59,130,246,.3)}
+.wc-time{font-size:11px;color:var(--tx2);margin-top:3px}
+
+/* Timeline strip in card header */
+.wc-tl{display:flex;gap:4px;padding:0 12px 10px;flex-wrap:wrap}
+.tl-dot{padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;display:flex;align-items:center;gap:3px}
+.tl-g{background:rgba(34,197,94,.12);color:var(--G)}
+.tl-r{background:rgba(220,38,38,.12);color:var(--R)}
+.tl-a{background:rgba(245,158,11,.12);color:var(--A)}
+.tl-b{background:rgba(59,130,246,.12);color:var(--B)}
+
+/* Expanded detail */
+.wc-body{display:none;padding:0 12px 12px;border-top:1px solid var(--bdr)}
+.wc.open .wc-body{display:block}
+.wc-det{font-size:12px;line-height:1.8;color:var(--tx2)}
+.wc-det b{color:var(--tx)}
+.wc-map-sm{height:160px;border-radius:8px;margin-top:8px;border:1px solid var(--bdr)}
+.wc-acts{display:flex;gap:6px;margin-top:10px}
 
 /* Filter bar */
 .fbar{background:var(--s2);padding:12px;border-radius:var(--rl);margin-bottom:14px;display:flex;gap:10px;align-items:end;flex-wrap:wrap}
@@ -136,21 +181,31 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
 
 <!-- DASHBOARD -->
 <div id="pn-dash" class="panel on">
-  <div class="fbar">
-    <div class="fg"><label>From</label><input type="date" class="fi" id="f-from"></div>
-    <div class="fg"><label>To</label><input type="date" class="fi" id="f-to"></div>
-    <div class="fg"><label>Worker</label><select class="fi" id="f-name"><option value="">All</option></select></div>
-    <div class="fg"><label>Status</label>
-      <select class="fi" id="f-status"><option value="">All</option><option value="checked-in">Working</option><option value="checked-out">Done</option></select>
-    </div>
-    <div class="fg"><label>Designation</label>
-      <select class="fi" id="f-desg"><option value="">All</option><option value="الیکٹریشن">الیکٹریشن</option><option value="ٹیکنیشن">ٹیکنیشن</option><option value="مزدور">مزدور</option><option value="ہیلپر">ہیلپر</option></select>
-    </div>
-    <button class="fbtn" onclick="applyFilter()">🔄 Load</button>
-    <button class="fbtn fbtn-r" onclick="loadAll()">📋 All</button>
+  <!-- Period chips -->
+  <div class="chips" id="d-period">
+    <button class="chip chip-on" onclick="setPeriod('today',this)">Today</button>
+    <button class="chip" onclick="setPeriod('3d',this)">3 Days</button>
+    <button class="chip" onclick="setPeriod('7d',this)">7 Days</button>
+    <button class="chip" onclick="setPeriod('30d',this)">30 Days</button>
+    <button class="chip" onclick="setPeriod('all',this)">All</button>
   </div>
-  <div class="stats" id="stats"></div>
-  <div class="cards" id="cards"></div>
+  <!-- Status chips -->
+  <div class="chips" id="d-status">
+    <button class="chip chip-on" onclick="setStatus('all',this)">All</button>
+    <button class="chip" onclick="setStatus('present',this)">✅ Present</button>
+    <button class="chip" onclick="setStatus('late',this)">⏰ Late</button>
+    <button class="chip" onclick="setStatus('absent',this)">❌ Absent</button>
+    <button class="chip" onclick="setStatus('working',this)">🟢 Working</button>
+  </div>
+  <!-- Summary strip -->
+  <div class="d-summary" id="d-summary"></div>
+  <!-- Worker cards -->
+  <div id="d-cards"></div>
+  <!-- Load more -->
+  <div id="d-more" style="display:none;text-align:center;padding:14px">
+    <button class="fbtn" onclick="showMore()">Load More ↓</button>
+    <div style="font-size:11px;color:var(--tx3);margin-top:4px" id="d-more-txt"></div>
+  </div>
 </div>
 
 <!-- STAFF MANAGEMENT -->
@@ -339,15 +394,10 @@ function showTab(t){
 
 /* ═══ INIT ═══ */
 var today=todayISO();
-$('f-from').value=today;$('f-to').value=today;
 $('r-month').value=today.substring(0,7);
 $('ai-from').value=today;$('ai-to').value=today;
 
-/* Prompt for Claude key if not set */
-if(!CLAUDE_KEY){
-  var k=localStorage.getItem('csvt8');
-  if(k)CLAUDE_KEY=k;
-}
+if(!CLAUDE_KEY){var k=localStorage.getItem('csvt8');if(k)CLAUDE_KEY=k}
 
 /* ═══ FIREBASE ═══ */
 function fbGet(path,cb){
@@ -363,177 +413,215 @@ function fbDel(path,cb){
   x.onerror=function(){cb('Network error')};x.send();
 }
 
-/* ═══ LOAD DATA ═══ */
+/* ═══ DASHBOARD ═══ */
+var _dPeriod='today',_dStatus='all',_dPage=10,_dFiltered=[];
+
 function loadAll(){
-  showLoading();
+  $('d-cards').innerHTML='<div class="loading"><div class="spin"></div></div>';
   fbGet('/labour_attendance',function(err,raw){
-    if(err||!raw){_all=[];_data=[];renderAll();return}
+    if(err||!raw){_all=[];renderDash();return}
     _all=[];
     Object.keys(raw).forEach(function(k){var r=raw[k];r._key=k;_all.push(r)});
     _all.sort(function(a,b){return(b.timestamp||'').localeCompare(a.timestamp||'')});
-    populateNameFilter();
     populateTrailEmp();
-    _data=_all.slice();
-    renderAll();
+    // Also load staff for roster
+    fbGet('/labour_staff',function(e2,sdata){
+      _staff=[];
+      if(sdata){Object.keys(sdata).forEach(function(k){var r=sdata[k];r._key=k;_staff.push(r)})}
+      renderDash();
+    });
   });
 }
-function applyFilter(){
-  var from=$('f-from').value.replace(/-/g,'');
-  var to=$('f-to').value.replace(/-/g,'');
-  var nm=$('f-name').value;
-  var st=$('f-status').value;
-  var dg=$('f-desg').value;
-  if(!_all.length){loadAll();return}
-  _data=_all.filter(function(r){
-    if(from&&r.dateKey&&r.dateKey<from)return false;
-    if(to&&r.dateKey&&r.dateKey>to)return false;
-    if(nm&&r.name!==nm)return false;
-    if(st&&r.status!==st)return false;
-    if(dg&&r.designation!==dg)return false;
-    return true;
+
+function dateOffset(days){
+  var d=new Date();d.setDate(d.getDate()-days);
+  return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+}
+
+function setPeriod(p,el){
+  _dPeriod=p;_dPage=10;
+  document.querySelectorAll('#d-period .chip').forEach(function(c){c.classList.remove('chip-on')});
+  el.classList.add('chip-on');renderDash();
+}
+function setStatus(s,el){
+  _dStatus=s;_dPage=10;
+  document.querySelectorAll('#d-status .chip').forEach(function(c){c.classList.remove('chip-on')});
+  el.classList.add('chip-on');renderDash();
+}
+function showMore(){_dPage+=10;renderDashCards()}
+
+function renderDash(){
+  var fromKey='00000000';
+  if(_dPeriod==='today')fromKey=todayISO().replace(/-/g,'');
+  else if(_dPeriod==='3d')fromKey=dateOffset(2);
+  else if(_dPeriod==='7d')fromKey=dateOffset(6);
+  else if(_dPeriod==='30d')fromKey=dateOffset(29);
+
+  var rows=_all.filter(function(r){return!fromKey||!r.dateKey||r.dateKey>=fromKey});
+  var todayKey=todayISO().replace(/-/g,'');
+
+  // Build per-worker roster
+  var staffMap={};
+  if(_staff.length){
+    _staff.forEach(function(s){
+      if(s.status!=='blocked')staffMap[s.code]={name:s.name,code:s.code,designation:s.designation,records:[],todayRec:null};
+    });
+  }
+  rows.forEach(function(r){
+    var code=r.code||r.name;
+    if(!staffMap[code])staffMap[code]={name:r.name||code,code:r.code||'',designation:r.designation||'',records:[],todayRec:null};
+    staffMap[code].records.push(r);
+    if(r.dateKey===todayKey&&(!staffMap[code].todayRec||r.timestamp>staffMap[code].todayRec.timestamp))staffMap[code].todayRec=r;
   });
-  renderAll();
-}
-function populateNameFilter(){
-  var names={};
-  _all.forEach(function(r){if(r.name)names[r.name]=1});
-  var h='<option value="">All</option>';
-  Object.keys(names).sort().forEach(function(n){h+='<option value="'+n+'">'+n+'</option>'});
-  $('f-name').innerHTML=h;
-}
-function showLoading(){$('cards').innerHTML='<div class="loading"><div class="spin"></div><br>Loading...</div>';$('stats').innerHTML=''}
 
-/* ═══ RENDER ═══ */
-function renderAll(){renderStats();renderCards()}
+  var workers=Object.values(staffMap);
+  // Status filter
+  if(_dStatus==='present')workers=workers.filter(function(w){return w.todayRec&&!w.todayRec.late});
+  else if(_dStatus==='late')workers=workers.filter(function(w){return w.todayRec&&w.todayRec.late});
+  else if(_dStatus==='absent')workers=workers.filter(function(w){return!w.todayRec});
+  else if(_dStatus==='working')workers=workers.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-in'});
 
-function renderStats(){
-  var t=_data.length;
-  var working=0,done=0,late=0,totMin=0,totOT=0,totTA=0;
-  _data.forEach(function(r){
-    if(r.status==='checked-in')working++;
-    if(r.status==='checked-out')done++;
-    if(r.late)late++;
-    totMin+=(r.totalMinutes||0);
-    totOT+=(r.otMinutes||0);
-    totTA+=(r.taAmount||0);
+  workers.sort(function(a,b){
+    var sa=a.todayRec?(a.todayRec.status==='checked-in'?0:1):2;
+    var sb=b.todayRec?(b.todayRec.status==='checked-in'?0:1):2;
+    return sa!==sb?sa-sb:(a.name||'').localeCompare(b.name||'');
   });
-  var avgH=t>0?Math.round(totMin/t/60*10)/10:0;
-  $('stats').innerHTML=
-    '<div class="stat"><div class="stat-n sb">'+t+'</div><div class="stat-l">Records</div></div>'+
-    '<div class="stat"><div class="stat-n sg">'+working+'</div><div class="stat-l">Working</div></div>'+
-    '<div class="stat"><div class="stat-n sb">'+done+'</div><div class="stat-l">Done</div></div>'+
-    '<div class="stat"><div class="stat-n sa">'+late+'</div><div class="stat-l">Late</div></div>'+
-    '<div class="stat"><div class="stat-n sp">'+avgH+'h</div><div class="stat-l">Avg Hours</div></div>'+
-    '<div class="stat"><div class="stat-n sr">'+Math.round(totOT/60*10)/10+'h</div><div class="stat-l">OT Total</div></div>'+
-    '<div class="stat"><div class="stat-n sg">Rs '+totTA+'</div><div class="stat-l">TA Total</div></div>';
+  _dFiltered=workers;
+
+  // Summary
+  var allW=Object.values(staffMap);
+  var present=allW.filter(function(w){return w.todayRec}).length;
+  var late=allW.filter(function(w){return w.todayRec&&w.todayRec.late}).length;
+  var absent=allW.filter(function(w){return!w.todayRec}).length;
+  var working=allW.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-in'}).length;
+  var done=allW.filter(function(w){return w.todayRec&&w.todayRec.status==='checked-out'}).length;
+
+  $('d-summary').innerHTML=
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--G)">'+present+'</div><div class="d-sm-l">Present</div></div>'+
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--R)">'+absent+'</div><div class="d-sm-l">Absent</div></div>'+
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--A)">'+late+'</div><div class="d-sm-l">Late</div></div>'+
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--B)">'+working+'</div><div class="d-sm-l">Working</div></div>'+
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--tx2)">'+done+'</div><div class="d-sm-l">Done</div></div>'+
+    '<div class="d-sm"><div class="d-sm-n" style="color:var(--tx)">'+rows.length+'</div><div class="d-sm-l">Records</div></div>';
+  renderDashCards();
 }
 
-function renderCards(){
-  if(!_data.length){$('cards').innerHTML='<div class="empty"><div class="empty-i">📋</div><div class="empty-h">No records</div></div>';return}
-  var h='';
-  _data.forEach(function(r,i){
-    var isOut=r.status==='checked-out';
-    var bc=r.late?'b-late':(isOut?'b-out':'b-in');
-    var bt=r.late?'LATE':(isOut?'DONE':'WORKING');
-    var nm=r.name||'Unknown',dg=r.designation||'—',cd=r.code||'—';
-    var sf=r.checkInSelfie?'<img class="card-av" src="'+r.checkInSelfie+'">':'<div class="card-av-ph">👤</div>';
-    var hv=r.voiceNote&&r.voiceNote.length>50;
-    h+='<div class="card" data-idx="'+i+'" onclick="openDetail('+i+')">'+
-      '<div class="card-top">'+sf+'<div><div class="card-nm">'+nm+'</div><div class="card-sub">'+dg+' · '+(r.date||cd)+'</div></div><span class="card-badge '+bc+'">'+bt+'</span></div>'+
-      '<div class="card-grid">'+
-        '<div class="card-cell"><div class="card-cv">'+(r.checkIn||'—')+'</div><div class="card-cl">In</div></div>'+
-        '<div class="card-cell"><div class="card-cv">'+(r.checkOut||'—')+'</div><div class="card-cl">Out</div></div>'+
-        '<div class="card-cell"><div class="card-cv">'+(r.totalHours||'—')+'</div><div class="card-cl">Hours</div></div>'+
-        '<div class="card-cell"><div class="card-cv">'+(r.otMinutes>0?r.otHours:'0')+'</div><div class="card-cl">OT</div></div>'+
-      '</div>'+
-      '<div class="card-ft">'+
-        '<span class="card-ic has">📍 '+(r.checkInKmFromOffice||0)+'km</span>'+
-        '<span class="card-ic has">💰 Rs'+(r.taAmount||0)+'</span>'+
-        (r.road?'<span class="card-ic has">🛣️ '+r.road+'</span>':'')+
-        (hv?'<span class="card-ic has">🎙️</span>':'')+
-        (r.checkInSelfie?'<span class="card-ic has">📸</span>':'')+
-      '</div></div>';
-  });
-  $('cards').innerHTML=h;
-}
-
-/* ═══ DETAIL MODAL ═══ */
-function openDetail(i){
-  var r=_data[i];if(!r)return;
-  var nm=r.name||'Unknown',dg=r.designation||'—';
-  $('m-name').textContent=nm+' · '+dg;
-  var hv=r.voiceNote&&r.voiceNote.length>50;
+function renderDashCards(){
+  var workers=_dFiltered;
+  if(!workers.length){$('d-cards').innerHTML='<div style="text-align:center;padding:40px;color:var(--tx3)">No workers found</div>';$('d-more').style.display='none';return}
+  var show=workers.slice(0,_dPage);
+  var nowMin=new Date().getHours()*60+new Date().getMinutes();
   var h='';
 
-  if(r.checkInSelfie){
-    h+='<a href="'+r.checkInSelfie+'" target="_blank"><img class="m-selfie" src="'+r.checkInSelfie+'"></a>';
-  }
+  show.forEach(function(w,idx){
+    var r=w.todayRec;
+    var isAbsent=!r,isLate=r&&r.late,isWorking=r&&r.status==='checked-in',isDone=r&&r.status==='checked-out';
+    var badge,bClass;
+    if(isAbsent){badge='❌ Absent';bClass='wb-absent'}
+    else if(isWorking&&isLate){badge='🟢 Late';bClass='wb-late'}
+    else if(isWorking){badge='🟢 Working';bClass='wb-working'}
+    else if(isLate){badge='✅ Late';bClass='wb-late'}
+    else{badge='✅ On Time';bClass='wb-present'}
 
-  h+='<div class="m-section">Attendance</div>';
-  h+=mRow('📅 Date',r.date||'—');
-  h+=mRow('⏰ Check In',r.checkIn||'—');
-  h+=mRow('🕐 Check Out',r.checkOut||'—');
-  h+=mRow('📊 Total',r.totalHours||'—');
-  h+=mRow('🕐 OT',r.otMinutes>0?r.otHours:'None');
-  h+=mRow('⏰ Late',r.late?'<span style="color:var(--A)">Yes</span>':'<span style="color:var(--G)">No</span>');
-  h+=mRow('📊 Status',r.status||'—');
+    var timeStr='';
+    if(r){
+      timeStr=r.checkIn||'';
+      if(isDone)timeStr+=' → '+(r.checkOut||'');
+      else if(isWorking&&r.checkIn){
+        var ci=r.checkIn.split(':');
+        var diff=nowMin-(parseInt(ci[0])*60+parseInt(ci[1]));
+        if(diff>0)timeStr+=' · since '+Math.floor(diff/60)+'h '+diff%60+'m';
+      }
+    }
 
-  h+='<div class="m-section">Location</div>';
-  h+=mRow('📍 Office',r.nearestOffice||'—');
-  if(r.landmark)h+=mRow('🏢 Landmark',r.landmark);
-  if(r.road)h+=mRow('🛣️ Road',r.road);
-  if(r.area)h+=mRow('🏘️ Area',r.area);
-  if(r.city)h+=mRow('🌆 City',r.city);
-  if(r.address)h+=mRow('📬 Address','<span style="font-size:11px">'+r.address+'</span>');
-  h+=mRow('🚗 Distance',(r.checkInKmFromOffice||0)+' km');
-  h+=mRow('💰 TA','Rs '+(r.taAmount||0));
-  h+=mRow('📡 GPS',(r.checkInLat?Number(r.checkInLat).toFixed(5)+', '+Number(r.checkInLng).toFixed(5):'—'));
+    var av=r&&r.checkInSelfie?'<img class="wc-av" src="'+r.checkInSelfie+'">':'<div class="wc-av-ph">👤</div>';
 
-  h+='<div class="m-section">Voice Note</div>';
-  if(hv){h+='<audio class="m-audio" controls src="'+r.voiceNote+'"></audio>';}
-  else{h+='<div style="padding:10px;text-align:center;color:var(--tx3);font-size:12px">No voice note</div>';}
+    h+='<div class="wc" id="wc-'+idx+'">';
+    h+='<div class="wc-hd" onclick="toggleWc('+idx+')">';
+    h+=av;
+    h+='<div class="wc-info"><div class="wc-nm">'+(w.name||'?')+'</div><div class="wc-sub">'+(w.designation||'—')+' · '+(w.code||'')+'</div></div>';
+    h+='<div class="wc-right"><div class="wc-badge '+bClass+'">'+badge+'</div>';
+    if(timeStr)h+='<div class="wc-time">'+timeStr+'</div>';
+    h+='</div></div>';
 
-  if(r.checkInLat){
-    h+='<div class="m-section">Map</div>';
-    h+='<div class="m-map" id="m-map"></div>';
-  }
+    if(r){
+      h+='<div class="wc-tl">';
+      h+='<div class="tl-dot tl-g">📍 '+(r.checkIn||'')+'</div>';
+      if(r.road)h+='<div class="tl-dot tl-b">🛣️ '+r.road+'</div>';
+      if(isLate)h+='<div class="tl-dot tl-a">⏰ Late</div>';
+      if(r.trackingPoints)h+='<div class="tl-dot tl-b">📡 '+r.trackingPoints+'pts</div>';
+      if(isDone)h+='<div class="tl-dot tl-g">🏠 '+(r.checkOut||'')+'</div>';
+      if(isDone)h+='<div class="tl-dot tl-b">⏱️ '+(r.totalHours||'')+'</div>';
+      if(r.otMinutes>0)h+='<div class="tl-dot tl-a">OT '+r.otHours+'</div>';
+      h+='<div class="tl-dot tl-b">🚗 '+(r.checkInKmFromOffice||0)+'km</div>';
+      h+='</div>';
+    }
 
-  h+='<div class="m-section">Actions</div>';
-  h+='<button class="m-btn" style="background:var(--R)" onclick="doDelete('+i+')">🗑 Delete Record</button>';
+    h+='<div class="wc-body" onclick="event.stopPropagation()">';
+    if(r){
+      h+='<div class="wc-det">';
+      h+='📅 <b>Date:</b> '+(r.date||'—')+'<br>';
+      h+='⏰ <b>Check In:</b> '+(r.checkIn||'—')+(isLate?' <span style="color:var(--A)">(LATE)</span>':'')+'<br>';
+      h+='🕐 <b>Check Out:</b> '+(r.checkOut||'<span style="color:var(--B)">Still working</span>')+'<br>';
+      h+='📊 <b>Total:</b> '+(r.totalHours||'—')+'<br>';
+      if(r.otMinutes>0)h+='🕐 <b>OT:</b> '+r.otHours+'<br>';
+      h+='📍 <b>Office:</b> '+(r.nearestOffice||'—')+'<br>';
+      if(r.road)h+='🛣️ <b>Road:</b> '+r.road+'<br>';
+      if(r.area)h+='🏘️ <b>Area:</b> '+r.area+'<br>';
+      h+='🚗 <b>Distance:</b> '+(r.checkInKmFromOffice||0)+' km · 💰 <b>TA:</b> Rs '+(r.taAmount||0)+'<br>';
+      if(r.trackingPoints)h+='📡 <b>GPS:</b> '+r.trackingPoints+' pts · '+(r.trackingKm||0)+' km<br>';
+      if(r.checkInSelfie)h+='<a href="'+r.checkInSelfie+'" target="_blank"><img style="width:100%;max-width:180px;border-radius:8px;margin:6px 0" src="'+r.checkInSelfie+'"></a><br>';
+      if(r.voiceNote&&r.voiceNote.length>50)h+='<audio controls style="width:100%;margin:6px 0" src="'+r.voiceNote+'"></audio><br>';
+      h+='</div>';
+      if(r.checkInLat)h+='<div class="wc-map-sm" id="wcmap-'+idx+'"></div>';
+      h+='<div class="wc-acts">';
+      h+='<button class="sc-btn" style="background:var(--B)" onclick="openOnTrail(\''+w.code+'\')">📍 Trail</button>';
+      h+='<button class="sc-btn" style="background:var(--R)" onclick="delAttRec(\''+r._key+'\',\''+(w.name||'')+'\')">🗑 Delete</button>';
+      h+='</div>';
+    }else{
+      h+='<div style="padding:16px;text-align:center;color:var(--tx3)">No check-in today<br><span style="font-size:11px">'+w.records.length+' records in period</span></div>';
+    }
+    h+='</div></div>';
+  });
 
-  $('m-body').innerHTML=h;
-  $('modal').classList.add('on');
+  $('d-cards').innerHTML=h;
+  if(workers.length>_dPage){$('d-more').style.display='block';$('d-more-txt').textContent='Showing '+Math.min(_dPage,workers.length)+' of '+workers.length}
+  else{$('d-more').style.display='none'}
+}
 
-  if(r.checkInLat){
-    setTimeout(function(){
-      if(_map){_map.remove();_map=null}
-      var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
-      _map=L.map('m-map').setView([lat,lng],15);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'OSM',maxZoom:19}).addTo(_map);
-      L.marker([lat,lng]).addTo(_map).bindPopup('<b>'+nm+'</b><br>'+(r.checkIn||'')).openPopup();
-      OFC.forEach(function(o){
-        L.circleMarker([o.la,o.ln],{radius:8,fillColor:'#dc2626',color:'#fff',weight:2,fillOpacity:.8}).addTo(_map).bindPopup('🏢 '+o.n);
-      });
-      setTimeout(function(){_map.invalidateSize()},200);
-    },100);
+function toggleWc(idx){
+  var el=$('wc-'+idx);if(!el)return;
+  var wasOpen=el.classList.contains('open');el.classList.toggle('open');
+  if(!wasOpen){
+    var w=_dFiltered[idx];if(!w||!w.todayRec)return;
+    var r=w.todayRec,mapEl=$('wcmap-'+idx);
+    if(mapEl&&r.checkInLat&&!mapEl._loaded){
+      mapEl._loaded=true;
+      setTimeout(function(){
+        var lat=Number(r.checkInLat),lng=Number(r.checkInLng);
+        var m=L.map(mapEl,{zoomControl:false,attributionControl:false}).setView([lat,lng],15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(m);
+        L.circleMarker([lat,lng],{radius:8,fillColor:'#3b82f6',color:'#fff',weight:2,fillOpacity:1}).addTo(m);
+        OFC.forEach(function(o){L.circleMarker([o.la,o.ln],{radius:6,fillColor:'#dc2626',color:'#fff',weight:1,fillOpacity:.8}).addTo(m)});
+        setTimeout(function(){m.invalidateSize()},200);
+      },100);
+    }
   }
 }
 
-function closeModal(){$('modal').classList.remove('on');if(_map){_map.remove();_map=null}}
+function openOnTrail(code){showTab('trail');$('tr-emp').value=code;$('tr-date').value=todayISO();loadTrail()}
 
-function doDelete(i){
-  var r=_data[i];if(!r||!r._key)return;
-  if(!confirm('Delete record for '+(r.name||'Unknown')+' on '+(r.date||'?')+'?'))return;
-  var key=r._key;
+function delAttRec(key,name){
+  if(!confirm('Delete record for '+name+'?'))return;
   fbDel('/labour_attendance/'+key,function(err){
-    if(err){alert('Delete failed: '+err);return}
-    // Remove from arrays
-    var ai=_all.indexOf(r);if(ai>=0)_all.splice(ai,1);
-    _data.splice(i,1);
-    closeModal();
-    renderAll();
+    if(err){alert('Failed');return}
+    _all=_all.filter(function(r){return r._key!==key});
+    renderDash();
   });
 }
+
+function populateNameFilter(){/* compat */}
+function closeModal(){$('modal').classList.remove('on');if(_map){_map.remove();_map=null}}
 
 /* ═══ REPORT ═══ */
 function genReport(){
