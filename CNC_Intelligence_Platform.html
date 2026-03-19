@@ -3,30 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CNC Intelligence Platform v5.1</title>
+<title>CNC Intelligence Platform v5.2</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg0:#0a0a0f;--bg1:#12121a;--bg2:#16161f;--bg3:#1c1c28;--bgS:#0e0e16;
---bdr:#1e1e2e;--bdrA:#2d5af0;
---t1:#e8e8f0;--t2:#8888a0;--t3:#55556a;
---blue:#2d5af0;--blueS:rgba(45,90,240,.12);
---green:#22c55e;--greenS:rgba(34,197,94,.12);
---red:#ef4444;--redS:rgba(239,68,68,.12);
---amber:#f59e0b;--amberS:rgba(245,158,11,.12);
---purple:#8b5cf6;--purpleS:rgba(139,92,246,.12);
---cyan:#06b6d4;--cyanS:rgba(6,182,212,.12);
---r:10px;--sw:250px;
---f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;
-}
+:root{--bg0:#0a0a0f;--bg1:#12121a;--bg2:#16161f;--bg3:#1c1c28;--bgS:#0e0e16;--bdr:#1e1e2e;--t1:#e8e8f0;--t2:#8888a0;--t3:#55556a;--blue:#2d5af0;--blueS:rgba(45,90,240,.12);--green:#22c55e;--greenS:rgba(34,197,94,.12);--red:#ef4444;--redS:rgba(239,68,68,.12);--amber:#f59e0b;--amberS:rgba(245,158,11,.12);--purple:#8b5cf6;--purpleS:rgba(139,92,246,.12);--cyan:#06b6d4;--cyanS:rgba(6,182,212,.12);--r:10px;--sw:250px;--f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace}
 body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;height:100vh}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:10px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:10px}
 
-/* SIDEBAR */
 .sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bgS);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto;overflow-x:hidden}
 .sb-logo{padding:16px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
 .sb-logo .ico{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff}
@@ -36,7 +22,6 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 .ni:hover{background:var(--bg2);color:var(--t1)}.ni.on{background:var(--blueS);color:var(--blue)}
 .ni svg{width:16px;height:16px;flex-shrink:0;opacity:.6}.ni.on svg{opacity:1}
 .ni .badge{margin-left:auto;font-size:9px;font-family:var(--fm);background:var(--greenS);color:var(--green);padding:2px 6px;border-radius:10px;font-weight:600}
-/* GROUPS */
 .ng{}.ngh{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--t2);font-size:12.5px;font-weight:500;transition:all .15s;user-select:none}
 .ngh:hover{background:var(--bg2);color:var(--t1)}.ngh.ha{color:var(--blue)}.ngh svg{width:16px;height:16px;flex-shrink:0;opacity:.6}.ngh.ha svg{opacity:1}
 .ngh .chev{margin-left:auto;width:14px;height:14px;transition:transform .2s;opacity:.4}
@@ -46,21 +31,17 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 .nsi:hover{color:var(--t2);background:rgba(255,255,255,.02)}.nsi.on{color:var(--blue);background:var(--blueS)}
 .nsi::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0}.nsi.on::before{opacity:1}
 
-/* MAIN */
 .mn{margin-left:var(--sw);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 .top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--bdr);background:var(--bg1);flex-shrink:0}
-.top-l{display:flex;align-items:center;gap:12px}.top-t{font-size:15px;font-weight:600}.top-s{font-size:11px;color:var(--t3)}
+.top-t{font-size:15px;font-weight:600}.top-s{font-size:11px;color:var(--t3)}
 .top-r{display:flex;align-items:center;gap:8px}
 .dot{width:7px;height:7px;border-radius:50%}.dot.live{background:var(--green);box-shadow:0 0 6px var(--green);animation:pls 2s infinite}.dot.off{background:var(--red)}
 @keyframes pls{0%,100%{opacity:1}50%{opacity:.5}}
 .btn{padding:6px 12px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg2);color:var(--t2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s}
 .btn:hover{border-color:var(--blue);color:var(--t1)}.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
 
-/* CONTENT */
 .ca{flex:1;overflow-y:auto;padding:20px}
 .pg{display:none}.pg.on{display:block}
-
-/* CARDS & METRICS */
 .cd{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:14px}
 .cd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .cd-t{font-size:13px;font-weight:600}.cd-sub{font-size:10px;color:var(--t3);margin-top:2px}
@@ -69,21 +50,17 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 .mc-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
 .mc-v{font-size:24px;font-weight:700;margin:4px 0;font-family:var(--fm)}
 
-/* SCROLLABLE TABLES — THE FIX */
 .tbl-wrap{max-height:420px;overflow-y:auto;border:1px solid var(--bdr);border-radius:8px}
 .tbl{width:100%;border-collapse:collapse}
 .tbl th{text-align:left;padding:9px 10px;font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);background:var(--bg1);position:sticky;top:0;z-index:1}
 .tbl td{padding:9px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--t2)}
 .tbl tbody tr{cursor:pointer;transition:background .1s}.tbl tbody tr:hover{background:var(--bg3)}
 .mn-font{font-family:var(--fm);font-size:11px}
-
-/* TAGS */
 .tg{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:600}
 .tg-g{background:var(--greenS);color:var(--green)}.tg-r{background:var(--redS);color:var(--red)}
 .tg-a{background:var(--amberS);color:var(--amber)}.tg-b{background:var(--blueS);color:var(--blue)}
 .tg-p{background:var(--purpleS);color:var(--purple)}.tg-c{background:var(--cyanS);color:var(--cyan)}
 
-/* DEEP-DIVE */
 .dd{display:grid;grid-template-columns:320px 1fr;gap:14px;height:calc(100vh - 120px)}
 .vl-p{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
 .vl-h{padding:12px 14px;border-bottom:1px solid var(--bdr)}
@@ -98,7 +75,6 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 .vr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:2px}
 .vr-dot.ac{background:var(--green);box-shadow:0 0 5px var(--green)}.vr-dot.id{background:var(--amber)}.vr-dot.en{background:var(--t3)}
 
-/* JOURNEY */
 .jp{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
 .jp-h{padding:14px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
 .jp-b{flex:1;overflow-y:auto;padding:18px}
@@ -109,38 +85,35 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 .tl-ev{position:relative;margin-bottom:5px;padding:9px 12px;background:var(--bg1);border-radius:7px;border:1px solid transparent;transition:border-color .15s}
 .tl-ev:hover{border-color:var(--bdr)}
 .tl-dot{position:absolute;left:-22px;top:12px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg0)}
-.tl-dot.pg{background:var(--blue)}.tl-dot.pr{background:var(--purple)}.tl-dot.ct{background:var(--amber)}
-.tl-dot.ck{background:var(--cyan)}.tl-dot.pu{background:var(--green)}.tl-dot.bh{background:var(--red)}.tl-dot.sr{background:var(--t2)}
-.tl-time{font-size:9px;color:var(--t3);font-family:var(--fm)}.tl-title{font-size:12px;font-weight:600;margin:2px 0}
-.tl-det{font-size:11px;color:var(--t2)}.tl-det span{color:var(--t1);font-weight:500}
+.tl-dot.dpg{background:var(--blue)}.tl-dot.dpr{background:var(--purple)}.tl-dot.dct{background:var(--amber)}
+.tl-dot.dck{background:var(--cyan)}.tl-dot.dpu{background:var(--green)}.tl-dot.dbh{background:var(--red)}.tl-dot.dsr{background:var(--t2)}
 
-/* FUNNEL */
 .fn{display:flex;flex-direction:column;gap:3px;max-width:560px;margin:0 auto}
 .fn-s{display:flex;align-items:center;gap:12px}
 .fn-bar{height:32px;border-radius:5px;display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:600;color:#fff;min-width:50px;white-space:nowrap;transition:width .8s}
-.fn-lbl{font-size:11px;color:var(--t2);width:110px;flex-shrink:0}.fn-val{font-size:11px;font-family:var(--fm);color:var(--t3);width:50px;text-align:right;flex-shrink:0}
-.fn-drop{font-size:10px;color:var(--red);font-family:var(--fm);width:50px;flex-shrink:0}
+.fn-lbl{font-size:11px;color:var(--t2);width:110px;flex-shrink:0}
+.fn-val{font-size:11px;font-family:var(--fm);color:var(--t3);width:50px;text-align:right;flex-shrink:0}
 
-/* SETUP */
 .st-steps{counter-reset:step}
 .st-step{position:relative;padding:14px 14px 14px 50px;background:var(--bg1);border-radius:7px;margin-bottom:8px;border:1px solid var(--bdr);counter-increment:step}
 .st-step::before{content:counter(step);position:absolute;left:14px;top:14px;width:24px;height:24px;border-radius:50%;background:var(--blueS);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--fm)}
 .st-step.done::before{background:var(--greenS);color:var(--green);content:'✓'}
 .st-step h4{font-size:12px;font-weight:600;margin-bottom:3px}.st-step p{font-size:11px;color:var(--t2);line-height:1.5}
-.codeblk{background:var(--bg0);border:1px solid var(--bdr);border-radius:5px;padding:10px 12px;margin-top:8px;font-family:var(--fm);font-size:10px;color:var(--cyan);overflow-x:auto;white-space:pre;line-height:1.6}
 
-/* EMPTY */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 16px;text-align:center}
 .empty-i{font-size:40px;margin-bottom:12px;opacity:.3}.empty h3{font-size:14px;font-weight:600;margin-bottom:6px}.empty p{font-size:12px;color:var(--t3);max-width:380px;line-height:1.5}
 .spin{width:18px;height:18px;border:2px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite;margin:30px auto}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* DEBUG PANEL */
+.dbg{background:#1a1a2e;border:1px solid #2a2a4e;border-radius:8px;padding:12px;margin-bottom:14px;font-family:var(--fm);font-size:11px;color:#8be9fd;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.dbg-title{color:var(--amber);font-weight:700;margin-bottom:6px;font-size:12px}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <nav class="sb">
-  <div class="sb-logo"><div class="ico">CNC</div><div><div class="txt">Intelligence</div></div><span class="ver">v5.1</span></div>
+  <div class="sb-logo"><div class="ico">CNC</div><div><div class="txt">Intelligence</div></div><span class="ver">v5.2</span></div>
   <div class="sb-sec"><div class="sb-lbl">Core</div>
     <div class="ni on" data-pg="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
     <div class="ni" data-pg="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Live Visitors<span class="badge" id="lv-cnt">0</span></div>
@@ -148,7 +121,7 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
   <div class="sb-sec"><div class="sb-lbl">Analysis</div>
     <div class="ni" data-pg="deepdive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>Visitor Deep-Dive</div>
     <div class="ng" id="g-fun"><div class="ngh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Funnel<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div class="ngc"><div class="nsi" data-pg="funnel">Conversion Funnel</div><div class="nsi" data-pg="cart-abandon">Cart Abandonment</div><div class="nsi" data-pg="checkout-drop">Checkout Drop-off</div></div>
+      <div class="ngc"><div class="nsi" data-pg="funnel">Conversion Funnel</div><div class="nsi" data-pg="cart-abandon">Cart Abandonment</div></div>
     </div>
     <div class="ng" id="g-attr"><div class="ngh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 012 2v7"/></svg>Attribution<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
       <div class="ngc"><div class="nsi" data-pg="sources">Traffic Sources</div><div class="nsi" data-pg="campaigns">Campaigns</div></div>
@@ -158,17 +131,16 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
   <div class="sb-sec"><div class="sb-lbl">System</div>
     <div class="ni" data-pg="quality"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Data Quality</div>
     <div class="ni" data-pg="webhooks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Webhooks<span class="tg tg-a" style="margin-left:auto;font-size:8px">SETUP</span></div>
-    <div class="ni" data-pg="health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health</div>
+    <div class="ni" data-pg="debug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>🔧 Debug</div>
   </div>
 </nav>
 
-<!-- MAIN -->
 <div class="mn">
   <div class="top">
-    <div class="top-l"><div><div class="top-t" id="pg-title">Dashboard</div><div class="top-s" id="pg-sub">CNC Electric Pakistan — Real-time Intelligence</div></div></div>
+    <div><div class="top-t" id="pg-title">Dashboard</div><div class="top-s" id="pg-sub">CNC Electric Pakistan — Real-time Intelligence</div></div>
     <div class="top-r">
       <div style="display:flex;align-items:center;gap:5px"><div class="dot" id="fb-dot"></div><span style="font-size:10px;color:var(--t3)" id="fb-txt">Connecting...</span></div>
-      <button class="btn" onclick="refreshData()">↻ Refresh</button>
+      <button class="btn" onclick="refreshAll()">↻ Refresh</button>
     </div>
   </div>
 
@@ -178,127 +150,108 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
     <div class="pg on" id="pg-dashboard">
       <div class="mg" id="dash-m"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div class="cd"><div class="cd-h"><div><div class="cd-t">Live Activity</div><div class="cd-sub">Last 30 events</div></div></div><div id="feed" style="max-height:360px;overflow-y:auto"></div></div>
-        <div class="cd"><div class="cd-h"><div><div class="cd-t">Traffic Sources Today</div></div></div><div id="src-bk"></div></div>
+        <div class="cd"><div class="cd-h"><div><div class="cd-t">Live Activity</div><div class="cd-sub">Recent events</div></div></div><div id="feed" style="max-height:360px;overflow-y:auto"></div></div>
+        <div class="cd"><div class="cd-h"><div><div class="cd-t">Traffic Sources</div></div></div><div id="src-bk"></div></div>
       </div>
     </div>
 
     <!-- LIVE VISITORS -->
     <div class="pg" id="pg-live">
       <div class="mg">
-        <div class="mc"><div class="mc-l">Active Now</div><div class="mc-v" style="color:var(--green)" id="lv-a">0</div></div>
-        <div class="mc"><div class="mc-l">Browsing Products</div><div class="mc-v" id="lv-b">0</div></div>
-        <div class="mc"><div class="mc-l">In Checkout</div><div class="mc-v" style="color:var(--cyan)" id="lv-c">0</div></div>
-        <div class="mc"><div class="mc-l">Avg Session</div><div class="mc-v" id="lv-t">0m</div></div>
+        <div class="mc"><div class="mc-l">Total Sessions</div><div class="mc-v" style="color:var(--green)" id="lv-total">0</div></div>
+        <div class="mc"><div class="mc-l">Active (5min)</div><div class="mc-v" style="color:var(--cyan)" id="lv-active">0</div></div>
+        <div class="mc"><div class="mc-l">From Facebook</div><div class="mc-v" id="lv-fb">0</div></div>
+        <div class="mc"><div class="mc-l">From Direct/Other</div><div class="mc-v" id="lv-other">0</div></div>
       </div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Active Sessions</div><button class="btn" onclick="nav('deepdive')">Open Deep-Dive →</button></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Page</th><th>Pages</th><th>Time</th><th>Cart</th><th>Intent</th><th></th></tr></thead><tbody id="lv-tbl"></tbody></table></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Sessions</div><button class="btn" onclick="nav('deepdive')">Deep-Dive →</button></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Page</th><th>Pages</th><th>Time</th><th>Cart</th><th>Device</th><th></th></tr></thead><tbody id="lv-tbl"></tbody></table></div>
       </div>
     </div>
 
-    <!-- VISITOR DEEP-DIVE -->
+    <!-- DEEP-DIVE -->
     <div class="pg" id="pg-deepdive">
       <div class="dd">
         <div class="vl-p">
-          <div class="vl-h">
-            <input type="text" class="vl-s" placeholder="Search visitors..." id="v-search">
+          <div class="vl-h"><input type="text" class="vl-s" placeholder="Search visitors..." id="v-search">
             <div style="display:flex;gap:4px;margin-top:6px">
               <button class="btn pri" style="flex:1;font-size:10px;padding:4px 6px" data-flt="all">All</button>
-              <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="active">Active</button>
+              <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="fb">Facebook</button>
               <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="cart">Cart</button>
-              <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="checkout">Checkout</button>
             </div>
           </div>
-          <div class="vl-b" id="vl-body"><div class="empty" style="padding:30px 14px"><div class="empty-i">👤</div><h3>Loading...</h3></div></div>
+          <div class="vl-b" id="vl-body"><div class="empty" style="padding:30px"><div class="empty-i">👤</div><h3>Loading...</h3></div></div>
         </div>
         <div class="jp">
-          <div class="jp-h" id="jp-h" style="display:none"><div id="jp-info"><h3 id="jp-name" style="font-size:14px;font-weight:600">Select a visitor</h3><p id="jp-meta" style="font-size:11px;color:var(--t3);margin-top:2px"></p></div><div id="jp-badges" style="display:flex;gap:6px"></div></div>
-          <div class="jp-b" id="jp-body"><div class="empty"><div class="empty-i">🔍</div><h3>Select a Visitor</h3><p>Click any visitor to see their complete journey from ad click to purchase.</p></div></div>
+          <div class="jp-h" id="jp-h" style="display:none"><div><h3 id="jp-name" style="font-size:14px;font-weight:600"></h3><p id="jp-meta" style="font-size:11px;color:var(--t3);margin-top:2px"></p></div><div id="jp-badges" style="display:flex;gap:6px"></div></div>
+          <div class="jp-b" id="jp-body"><div class="empty"><div class="empty-i">🔍</div><h3>Select a Visitor</h3><p>Click any visitor to see their journey + raw Firestore data.</p></div></div>
         </div>
       </div>
     </div>
 
     <!-- FUNNEL -->
     <div class="pg" id="pg-funnel">
-      <div class="mg">
-        <div class="mc"><div class="mc-l">Overall Conversion</div><div class="mc-v" id="f-rate">0%</div></div>
-        <div class="mc"><div class="mc-l">Cart→Checkout</div><div class="mc-v" id="f-c2c">0%</div></div>
-        <div class="mc"><div class="mc-l">Checkout→Purchase</div><div class="mc-v" id="f-c2p">0%</div></div>
-        <div class="mc"><div class="mc-l">Revenue Today</div><div class="mc-v" id="f-rev">₨0</div></div>
-      </div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Conversion Funnel — Last 7 Days</div></div><div class="fn" id="fn-chart"></div></div>
+      <div class="mg" id="fn-metrics"></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Conversion Funnel</div></div><div class="fn" id="fn-chart"></div></div>
     </div>
 
     <!-- CART ABANDON -->
     <div class="pg" id="pg-cart-abandon">
       <div class="cd"><div class="cd-h"><div class="cd-t">Cart Abandonment</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Cart Value</th><th>Products</th><th>Time Ago</th><th>Device</th></tr></thead><tbody id="ca-tbl"></tbody></table></div>
-      </div>
-    </div>
-
-    <!-- CHECKOUT DROP -->
-    <div class="pg" id="pg-checkout-drop">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Checkout Drop-off Analysis</div></div>
-        <div class="empty"><div class="empty-i">💳</div><h3>Tracking Checkout Steps</h3><p>Web Pixel events: checkout_started → contact_info → shipping → payment → completed</p></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Page</th><th>Time</th><th>Device</th><th></th></tr></thead><tbody id="ca-tbl"></tbody></table></div>
       </div>
     </div>
 
     <!-- SOURCES -->
     <div class="pg" id="pg-sources">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Traffic Source Performance</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Source</th><th>Sessions</th><th>Conversion</th><th>Revenue</th><th>AOV</th><th>ROAS</th></tr></thead><tbody id="src-tbl"></tbody></table></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Traffic Sources</div></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Source</th><th>Sessions</th><th>%</th></tr></thead><tbody id="src-tbl"></tbody></table></div>
       </div>
     </div>
 
     <!-- CAMPAIGNS -->
     <div class="pg" id="pg-campaigns">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Campaign Performance</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campaign</th><th>Source</th><th>Sessions</th><th>Conv</th><th>Revenue</th><th>CPA</th></tr></thead><tbody id="cmp-tbl"></tbody></table></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">UTM Campaigns</div></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campaign</th><th>Source</th><th>Sessions</th></tr></thead><tbody id="cmp-tbl"></tbody></table></div>
       </div>
     </div>
 
     <!-- PRODUCTS -->
     <div class="pg" id="pg-products">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Top Products</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Product</th><th>Views</th><th>Add to Cart</th><th>Purchases</th><th>Conv Rate</th><th>Revenue</th></tr></thead><tbody id="prod-tbl"></tbody></table></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Top Pages / Products Visited</div></div>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Page / Product</th><th>Views</th><th>%</th></tr></thead><tbody id="prod-tbl"></tbody></table></div>
       </div>
     </div>
 
-    <!-- DATA QUALITY -->
+    <!-- QUALITY -->
     <div class="pg" id="pg-quality">
       <div class="mg">
-        <div class="mc"><div class="mc-l">Quality Score</div><div class="mc-v" style="color:var(--green)" id="dq-sc">—</div></div>
-        <div class="mc"><div class="mc-l">Events Today</div><div class="mc-v" id="dq-ev">0</div></div>
-        <div class="mc"><div class="mc-l">Sessions Today</div><div class="mc-v" id="dq-ss">0</div></div>
-        <div class="mc"><div class="mc-l">Error Rate</div><div class="mc-v" id="dq-er">0%</div></div>
+        <div class="mc"><div class="mc-l">Sessions Collection</div><div class="mc-v" id="dq-ss">0</div></div>
+        <div class="mc"><div class="mc-l">Events Collection</div><div class="mc-v" id="dq-ev">0</div></div>
+        <div class="mc"><div class="mc-l">Pageviews Collection</div><div class="mc-v" id="dq-pv">0</div></div>
+        <div class="mc"><div class="mc-l">Orders Collection</div><div class="mc-v" id="dq-or">0</div></div>
       </div>
       <div class="cd"><div class="cd-h"><div class="cd-t">Tracking Layers</div></div><div id="layers"></div></div>
     </div>
 
     <!-- WEBHOOKS -->
     <div class="pg" id="pg-webhooks">
-      <div class="mg">
-        <div class="mc"><div class="mc-l">Firebase Plan</div><div class="mc-v" style="font-size:16px">Spark</div><div style="font-size:10px;color:var(--red)">Needs Blaze</div></div>
-        <div class="mc"><div class="mc-l">Webhooks</div><div class="mc-v">0/6</div></div>
-        <div class="mc"><div class="mc-l">Purchase Tracking</div><div class="mc-v" style="font-size:16px;color:var(--red)">Not Active</div></div>
-        <div class="mc"><div class="mc-l">Stitching Rate</div><div class="mc-v" style="font-size:16px">~85%</div><div style="font-size:10px;color:var(--t3)">via cart attributes</div></div>
-      </div>
-      <div class="cd"><div class="cd-h"><div><div class="cd-t">🔧 Webhook Setup</div><div class="cd-sub">See the team guide document for full instructions</div></div></div>
+      <div class="cd"><div class="cd-h"><div><div class="cd-t">🔧 Webhook Setup</div><div class="cd-sub">See team guide for full instructions</div></div></div>
         <div class="st-steps">
-          <div class="st-step done"><h4>Firebase Project Created</h4><p>cnc-website-tracking (asia-south1)</p></div>
-          <div class="st-step done"><h4>Theme.liquid Tracker v2</h4><p>Live — pageviews, products, cart, UTMs</p></div>
+          <div class="st-step done"><h4>Firebase Project</h4><p>cnc-website-tracking (asia-south1)</p></div>
+          <div class="st-step done"><h4>Theme.liquid Tracker v2</h4><p>Live — sessions flowing to Firestore</p></div>
           <div class="st-step done"><h4>Web Pixel Connected</h4><p>CNC Firebase Tracker — checkout events</p></div>
-          <div class="st-step"><h4>⚡ Upgrade to Blaze</h4><p>Firebase Console → Modify plan → Blaze. Cost: Rs.0/month.</p></div>
-          <div class="st-step"><h4>Deploy Cloud Function</h4><p>firebase deploy --only functions</p></div>
-          <div class="st-step"><h4>Create 6 Shopify Webhooks</h4><p>Settings → Notifications → Webhooks</p></div>
-          <div class="st-step"><h4>Set Secret + Test</h4><p>firebase functions:config:set → test order</p></div>
+          <div class="st-step"><h4>⚡ Upgrade to Blaze</h4><p>Firebase Console → Modify plan → Blaze</p></div>
+          <div class="st-step"><h4>Deploy Cloud Function + Create Webhooks</h4><p>See webhook brief document</p></div>
         </div>
       </div>
     </div>
 
-    <!-- HEALTH -->
-    <div class="pg" id="pg-health">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Tracker Health</div></div><div id="health-c"></div></div>
+    <!-- DEBUG -->
+    <div class="pg" id="pg-debug">
+      <div class="cd"><div class="cd-h"><div><div class="cd-t">🔧 Firestore Raw Data Inspector</div><div class="cd-sub">Shows actual field names from your database</div></div><button class="btn pri" onclick="runDiag()">Run Diagnostic</button></div>
+        <div id="diag-out"></div>
+      </div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Collections Found</div></div><div id="coll-list"></div></div>
     </div>
 
   </div>
@@ -308,274 +261,415 @@ body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;
 // ============================================================
 // FIREBASE
 // ============================================================
-const fbCfg={apiKey:"AIzaSyDummyKeyReplace",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.appspot.com",messagingSenderId:"000000000000",appId:"1:000000000000:web:0000000000000000"};
-let db=null,fbOK=false;
-try{firebase.initializeApp(fbCfg);db=firebase.firestore();
-db.collection('sessions').limit(1).get().then(()=>{fbOK=true;$('fb-dot').classList.add('live');$('fb-txt').textContent='Connected';loadFB();startRT()}).catch(()=>{$('fb-dot').classList.add('off');$('fb-txt').textContent='Demo Mode';demo()})}catch(e){$('fb-dot').classList.add('off');$('fb-txt').textContent='Demo Mode';demo()}
+const fbCfg={apiKey:"AIzaSyC8YS69F2QLiiPVsHkS_gna7brKVPY4eh4",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"440218345498",appId:"1:440218345498:web:924e301e498637c098f498"};
+let db=null,fbOK=false,RAW_SESSIONS=[],RAW_EVENTS=[],RAW_PV=[];
+try{
+  firebase.initializeApp(fbCfg);db=firebase.firestore();
+  db.collection('sessions').limit(1).get().then(()=>{
+    fbOK=true;$('fb-dot').classList.add('live');$('fb-txt').textContent='Connected';
+    loadAll();
+  }).catch(e=>{
+    $('fb-dot').classList.add('off');$('fb-txt').textContent='Error: '+e.message;
+  });
+}catch(e){$('fb-dot').classList.add('off');$('fb-txt').textContent='Init Error'}
 
 function $(id){return document.getElementById(id)}
 
 // ============================================================
-// NAVIGATION — ALL FIXED
+// SMART FIELD READER — tries multiple field names
 // ============================================================
-const pgTitles={dashboard:['Dashboard','CNC Electric Pakistan — Real-time Intelligence'],live:['Live Visitors','Active sessions right now'],deepdive:['Visitor Deep-Dive','Click any visitor for complete journey'],funnel:['Conversion Funnel','Visit → Cart → Checkout → Purchase'],'cart-abandon':['Cart Abandonment','Visitors who added but didn\u2019t buy'],'checkout-drop':['Checkout Drop-off','Step-by-step completion analysis'],sources:['Traffic Sources','Performance by source'],campaigns:['Campaign Performance','Meta & organic campaign metrics'],products:['Top Products','By views, carts, and revenue'],quality:['Data Quality','Tracking completeness'],webhooks:['Webhook Setup','Server-side purchase tracking'],health:['Tracker Health','System diagnostics']};
-
-function nav(pgId){
-  // Switch page
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  const tgt=$('pg-'+pgId);if(tgt)tgt.classList.add('on');
-  // Reset scroll of content area
-  $('ca').scrollTop=0;
-  // Update sidebar active states
-  document.querySelectorAll('.ni,.nsi').forEach(n=>n.classList.remove('on'));
-  document.querySelectorAll('.ngh').forEach(h=>h.classList.remove('ha'));
-  const navEl=document.querySelector(`[data-pg="${pgId}"]`);
-  if(navEl){navEl.classList.add('on');const pg=navEl.closest('.ng');if(pg){pg.querySelector('.ngh').classList.add('ha');pg.classList.add('exp')}}
-  // Update topbar
-  const[t,s]=pgTitles[pgId]||['Page',''];$('pg-title').textContent=t;$('pg-sub').textContent=s;
+function F(doc, ...keys){
+  for(const k of keys){if(doc[k]!==undefined&&doc[k]!==null&&doc[k]!=='')return doc[k]}
+  return null;
+}
+function FNum(doc,...keys){const v=F(doc,...keys);return v?Number(v):0}
+function FStr(doc,...keys){const v=F(doc,...keys);return v?String(v):''}
+function FTime(doc,...keys){
+  for(const k of keys){
+    const v=doc[k];if(!v)continue;
+    if(v.toDate)return v.toDate();
+    if(v.seconds)return new Date(v.seconds*1000);
+    if(typeof v==='string')return new Date(v);
+    if(typeof v==='number')return new Date(v);
+  }
+  return null;
 }
 
-// Event delegation — ONE listener for all nav clicks
-document.querySelector('.sb').addEventListener('click',function(e){
-  e.preventDefault();e.stopPropagation();
-  // Nav item click
-  const ni=e.target.closest('.ni');
-  if(ni&&ni.dataset.pg){nav(ni.dataset.pg);return}
-  // Sub item click
-  const nsi=e.target.closest('.nsi');
-  if(nsi&&nsi.dataset.pg){nav(nsi.dataset.pg);return}
-  // Group header click (toggle)
-  const ngh=e.target.closest('.ngh');
-  if(ngh){const g=ngh.closest('.ng');document.querySelectorAll('.ng').forEach(x=>{if(x!==g)x.classList.remove('exp')});g.classList.toggle('exp');return}
-});
-
-// Filter buttons in deep-dive
-document.addEventListener('click',function(e){
-  const fBtn=e.target.closest('[data-flt]');
-  if(fBtn){e.preventDefault();document.querySelectorAll('[data-flt]').forEach(b=>b.classList.remove('pri'));fBtn.classList.add('pri');filterVis(fBtn.dataset.flt)}
-});
-
-// Search
-document.addEventListener('input',function(e){if(e.target.id==='v-search')searchVis(e.target.value)});
-
-function refreshData(){fbOK?loadFB():demo()}
-
-// ============================================================
-// FIREBASE DATA LOADING
-// ============================================================
-function loadFB(){
-  const now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  db.collection('sessions').where('lastActivity','>=',today).get().then(s=>{
-    const d=s.docs.map(x=>({id:x.id,...x.data()}));upDash(d);upLive(d);setVis(d)});
-  db.collection('events').where('timestamp','>=',today).orderBy('timestamp','desc').limit(50).get().then(s=>{
-    upFeed(s.docs.map(x=>({id:x.id,...x.data()})))}).catch(()=>{});
-  db.collection('orders').orderBy('createdAt','desc').limit(100).get().then(s=>{
-    upRev(s.docs.map(x=>({id:x.id,...x.data()})))}).catch(()=>{});
-}
-function startRT(){
-  if(!fbOK)return;const ago=new Date(Date.now()-5*60000);
-  db.collection('sessions').where('status','==','active').where('lastActivity','>=',ago).onSnapshot(s=>{$('lv-cnt').textContent=s.size;$('lv-a').textContent=s.size},()=>{});
+// Normalize a session doc into consistent fields
+function normSession(raw){
+  return{
+    _raw:raw, id:raw.id,
+    visitorId:FStr(raw,'visitorId','visitor_id','vid','clientId','client_id'),
+    status:FStr(raw,'status','state'),
+    referrer:FStr(raw,'referrer','referer','referring_site','referringUrl'),
+    utmSource:FStr(raw,'utmSource','utm_source','source','trafficSource'),
+    utmMedium:FStr(raw,'utmMedium','utm_medium','medium'),
+    utmCampaign:FStr(raw,'utmCampaign','utm_campaign','campaign'),
+    currentPage:FStr(raw,'currentPage','current_page','page','lastPage','last_page','landingPage','landing_page','url'),
+    landingPage:FStr(raw,'landingPage','landing_page','entryPage','entry_page','url','currentPage'),
+    pageCount:FNum(raw,'pageCount','page_count','pageViews','pageviews','pages','pagesViewed','totalPages'),
+    cartValue:FNum(raw,'cartValue','cart_value','cartTotal','cart_total'),
+    checkoutStarted:F(raw,'checkoutStarted','checkout_started','inCheckout')||false,
+    purchased:F(raw,'purchased','converted','hasPurchase')||false,
+    orderValue:FNum(raw,'orderValue','order_value','revenue'),
+    startTime:FTime(raw,'startTime','start_time','startedAt','started_at','createdAt','created_at','firstSeen','first_seen','timestamp'),
+    lastActivity:FTime(raw,'lastActivity','last_activity','lastSeen','last_seen','updatedAt','updated_at','lastActive','timestamp'),
+    device:FStr(raw,'device','deviceType','device_type'),
+    userAgent:FStr(raw,'userAgent','user_agent','ua'),
+    channel:FStr(raw,'channel','trafficChannel'),
+    city:FStr(raw,'city','location'),
+    fbclid:FStr(raw,'fbclid','fb_click_id'),
+    gclid:FStr(raw,'gclid','g_click_id'),
+  };
 }
 
-// ============================================================
-// INTENT CLASSIFIER
-// ============================================================
+// Derive source label from all available data
+function getSource(s){
+  if(s.utmSource)return s.utmSource;
+  if(s.channel)return s.channel;
+  const r=s.referrer;
+  if(!r||r==='direct'||r==='Direct')return'Direct';
+  if(r.includes('facebook')||r.includes('fb.'))return'Facebook';
+  if(r.includes('instagram'))return'Instagram';
+  if(r.includes('google'))return'Google';
+  if(r.includes('chatgpt')||r.includes('openai'))return'ChatGPT';
+  if(r.includes('tiktok'))return'TikTok';
+  try{return new URL(r).hostname.replace('www.','')}catch(e){return r.slice(0,30)}
+}
+
+// Is session active (seen in last 5 min)?
+function isActive(s){
+  if(s.status==='active')return true;
+  const la=s.lastActivity||s.startTime;
+  if(!la)return false;
+  return(Date.now()-la.getTime())<5*60000;
+}
+
+function getDur(s){
+  const st=s.startTime;if(!st)return 0;
+  const end=s.lastActivity||new Date();
+  return Math.max(0,Math.round((end.getTime()-st.getTime())/1000));
+}
+function fmtDur(sec){if(sec<60)return sec+'s';if(sec<3600)return Math.round(sec/60)+'m';return Math.round(sec/3600)+'h '+Math.round((sec%3600)/60)+'m'}
+
+function getDevice(s){
+  if(s.device)return s.device;
+  const ua=(s.userAgent||'').toLowerCase();
+  if(ua.includes('mobile')||ua.includes('android')||ua.includes('iphone'))return'mobile';
+  if(ua.includes('tablet')||ua.includes('ipad'))return'tablet';
+  if(ua)return'desktop';
+  return'—';
+}
+
 function intent(s){
-  if(s.cartValue>0&&(s.checkoutStarted||s.currentPage?.includes('checkout')))return{l:'Buyer',c:'tg-g'};
-  if(s.cartValue>0)return{l:'High Intent',c:'tg-c'};
-  if((s.pageCount||0)>=4)return{l:'Researcher',c:'tg-p'};
-  if((s.pageCount||0)>=2)return{l:'Browsing',c:'tg-b'};
+  if(s.purchased)return{l:'Buyer',c:'tg-g'};
+  if(s.cartValue>0&&s.checkoutStarted)return{l:'Checkout',c:'tg-c'};
+  if(s.cartValue>0)return{l:'Cart',c:'tg-a'};
+  if(s.pageCount>=4)return{l:'Researcher',c:'tg-p'};
+  if(s.pageCount>=2)return{l:'Browsing',c:'tg-b'};
   return{l:'New',c:'tg-a'};
 }
-function dur(s){return s.startTime?.toDate?Math.round((Date.now()-s.startTime.toDate().getTime())/60000):0}
 
 // ============================================================
-// DASHBOARD
+// NAVIGATION
 // ============================================================
-function upDash(ss){
-  const ac=ss.filter(s=>s.status==='active').length,tot=ss.length,cart=ss.filter(s=>s.cartValue>0).length,avg=(ss.reduce((a,s)=>a+(s.pageCount||0),0)/Math.max(tot,1)).toFixed(1);
-  $('dash-m').innerHTML=`<div class="mc"><div class="mc-l">Active Now</div><div class="mc-v" style="color:var(--green)">${ac}</div></div><div class="mc"><div class="mc-l">Sessions Today</div><div class="mc-v">${tot}</div></div><div class="mc"><div class="mc-l">With Cart</div><div class="mc-v" style="color:var(--amber)">${cart}</div></div><div class="mc"><div class="mc-l">Avg Pages</div><div class="mc-v">${avg}</div></div>`;
+const pgTitles={dashboard:['Dashboard','Real-time Intelligence'],live:['Live Visitors','All sessions'],deepdive:['Visitor Deep-Dive','Click visitor for journey'],funnel:['Conversion Funnel','Visitor → Purchase'],'cart-abandon':['Cart Abandonment','Added but didn\'t buy'],sources:['Traffic Sources','By source'],campaigns:['Campaigns','UTM campaigns'],products:['Top Pages','Most visited'],quality:['Data Quality','Collection stats'],webhooks:['Webhooks','Setup guide'],debug:['Debug','Firestore raw data inspector']};
+
+function nav(pgId){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const t=$('pg-'+pgId);if(t)t.classList.add('on');
+  $('ca').scrollTop=0;
+  document.querySelectorAll('.ni,.nsi').forEach(n=>n.classList.remove('on'));
+  document.querySelectorAll('.ngh').forEach(h=>h.classList.remove('ha'));
+  const el=document.querySelector(`[data-pg="${pgId}"]`);
+  if(el){el.classList.add('on');const g=el.closest('.ng');if(g){g.querySelector('.ngh').classList.add('ha');g.classList.add('exp')}}
+  const[tt,ss]=pgTitles[pgId]||['',''];$('pg-title').textContent=tt;$('pg-sub').textContent=ss;
 }
 
-function upFeed(evts){
-  const f=$('feed');if(!evts.length){f.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">No events yet</div>';return}
-  const icons={page_view:'📄',product_viewed:'👁️',product_added_to_cart:'🛒',checkout_started:'💳',purchase:'✅',search_submitted:'🔍'};
-  f.innerHTML=evts.slice(0,30).map(e=>{const t=e.timestamp?.toDate?e.timestamp.toDate().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';const i=icons[e.event_name]||'📌';
-    return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="font-size:14px">${i}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:500">${(e.event_name||'').replace(/_/g,' ')}</div><div style="font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.page_url||e.product_title||''}</div></div><span style="font-size:9px;color:var(--t3);font-family:var(--fm);flex-shrink:0">${t}</span></div>`}).join('');
-}
+document.querySelector('.sb').addEventListener('click',function(e){
+  e.preventDefault();e.stopPropagation();
+  const ni=e.target.closest('.ni');if(ni&&ni.dataset.pg){nav(ni.dataset.pg);return}
+  const nsi=e.target.closest('.nsi');if(nsi&&nsi.dataset.pg){nav(nsi.dataset.pg);return}
+  const ngh=e.target.closest('.ngh');if(ngh){const g=ngh.closest('.ng');document.querySelectorAll('.ng').forEach(x=>{if(x!==g)x.classList.remove('exp')});g.classList.toggle('exp')}
+});
+document.addEventListener('click',function(e){
+  const fb=e.target.closest('[data-flt]');
+  if(fb){e.preventDefault();document.querySelectorAll('[data-flt]').forEach(b=>b.classList.remove('pri'));fb.classList.add('pri');filterVL(fb.dataset.flt)}
+});
+document.addEventListener('input',function(e){if(e.target.id==='v-search')searchVL(e.target.value)});
 
 // ============================================================
-// LIVE VISITORS TABLE — FIXED: max 10, scrollable, View works
+// DATA LOADING — reads actual Firestore, normalizes fields
 // ============================================================
-function upLive(ss){
-  const tbl=$('lv-tbl'),ac=ss.filter(s=>s.status==='active');
-  $('lv-b').textContent=ac.filter(s=>(s.pageCount||0)>1).length;
-  $('lv-c').textContent=ac.filter(s=>s.checkoutStarted).length;
-  const avgT=ac.length?Math.round(ac.reduce((a,s)=>a+dur(s),0)/ac.length):0;$('lv-t').textContent=avgT+'m';
-  if(!ac.length){tbl.innerHTML='<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--t3)">No active visitors</td></tr>';return}
-  tbl.innerHTML=ac.slice(0,10).map(s=>{const d=dur(s),it=intent(s);
-    return`<tr><td><span class="mn-font">${(s.visitorId||s.id).slice(0,8)}</span></td><td>${s.utmSource||s.referrer||'Direct'}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.currentPage||'/'}</td><td class="mn-font">${s.pageCount||0}</td><td class="mn-font">${d}m</td><td class="mn-font">${s.cartValue?'₨'+Number(s.cartValue).toLocaleString():'—'}</td><td><span class="tg ${it.c}">${it.l}</span></td><td><button class="btn" style="font-size:10px;padding:3px 8px" onclick="event.stopPropagation();viewVis('${s.id}')">View</button></td></tr>`}).join('');
+let allSessions=[];
+
+function loadAll(){
+  if(!fbOK)return;
+  // Load sessions — get recent ones, no field-specific query that might fail
+  db.collection('sessions').orderBy('lastActivity','desc').limit(200).get()
+    .then(s=>{RAW_SESSIONS=s.docs.map(d=>({id:d.id,...d.data()}));processData()})
+    .catch(()=>{
+      // lastActivity might not exist, try other orderings
+      db.collection('sessions').limit(200).get()
+        .then(s=>{RAW_SESSIONS=s.docs.map(d=>({id:d.id,...d.data()}));processData()})
+        .catch(e=>console.error('Sessions load fail:',e));
+    });
+
+  // Load events
+  db.collection('events').orderBy('timestamp','desc').limit(100).get()
+    .then(s=>{RAW_EVENTS=s.docs.map(d=>({id:d.id,...d.data()}))})
+    .catch(()=>{});
+
+  // Load pageviews
+  db.collection('pageviews').orderBy('timestamp','desc').limit(100).get()
+    .then(s=>{RAW_PV=s.docs.map(d=>({id:d.id,...d.data()}))})
+    .catch(()=>{});
+
+  // Count collections for data quality
+  ['sessions','events','pageviews','orders'].forEach((c,i)=>{
+    db.collection(c).limit(1).get().then(s=>{
+      const ids=['dq-ss','dq-ev','dq-pv','dq-or'];
+      if(s.empty)$(ids[i]).textContent='empty';
+      else{
+        // Get count — Firestore doesn't have count on free plan, so estimate
+        db.collection(c).get().then(all=>{$(ids[i]).textContent=all.size}).catch(()=>$(ids[i]).textContent='1+');
+      }
+    }).catch(()=>{const ids=['dq-ss','dq-ev','dq-pv','dq-or'];$(ids[i]).textContent='N/A'});
+  });
 }
 
-// VIEW BUTTON — ACTUALLY WORKS NOW
-function viewVis(id){nav('deepdive');setTimeout(()=>selVis(id),50)}
-
-// ============================================================
-// VISITOR DEEP-DIVE — ALL FIXED
-// ============================================================
-let allVis=[],selId=null,curFlt='all';
-
-function setVis(ss){allVis=ss.sort((a,b)=>(b.lastActivity?.toDate?.()||new Date(0))-(a.lastActivity?.toDate?.()||new Date(0)));renderVL(allVis)}
-
-function renderVL(vis){
-  const body=$('vl-body');
-  if(!vis.length){body.innerHTML='<div class="empty" style="padding:30px 14px"><div class="empty-i">👤</div><h3>No visitors</h3></div>';return}
-  body.innerHTML=vis.slice(0,10).map(v=>{
-    const id=v.visitorId||v.id,sh=id.slice(0,8),cols=['#2d5af0','#8b5cf6','#06b6d4','#22c55e','#f59e0b','#ef4444'],col=cols[sh.charCodeAt(0)%cols.length],
-      st=v.status==='active'?'ac':v.status==='idle'?'id':'en',src=v.utmSource||v.referrer||'Direct',pg=v.pageCount||0,d=dur(v),sel=selId===v.id?'sel':'';
-    return`<div class="vr ${sel}" onclick="selVis('${v.id}')"><div class="vr-dot ${st}"></div><div class="vr-av" style="background:${col}20;color:${col}">${sh.slice(0,2).toUpperCase()}</div><div class="vr-info"><div class="vr-name">${sh}…</div><div class="vr-meta"><span>${src}</span><span>${pg}pg</span><span>${d}m</span>${v.cartValue>0?`<span style="color:var(--amber)">₨${Number(v.cartValue).toLocaleString()}</span>`:''}</div></div></div>`
-  }).join('')+(vis.length>10?`<div style="padding:8px 14px;text-align:center;font-size:10px;color:var(--t3)">${vis.length-10} more visitors...</div>`:'');
+function processData(){
+  allSessions=RAW_SESSIONS.map(normSession).sort((a,b)=>{
+    const ta=a.lastActivity||a.startTime||new Date(0);
+    const tb=b.lastActivity||b.startTime||new Date(0);
+    return tb-ta;
+  });
+  renderAll();
 }
 
-function searchVis(q){const f=allVis.filter(v=>(v.visitorId||v.id).toLowerCase().includes(q.toLowerCase())||(v.utmSource||'').toLowerCase().includes(q.toLowerCase()));renderVL(applyFlt(f))}
-function filterVis(flt){curFlt=flt;renderVL(applyFlt(allVis))}
-function applyFlt(arr){if(curFlt==='active')return arr.filter(v=>v.status==='active');if(curFlt==='cart')return arr.filter(v=>v.cartValue>0);if(curFlt==='checkout')return arr.filter(v=>v.checkoutStarted);return arr}
+function renderAll(){
+  const ss=allSessions;
+  const ac=ss.filter(isActive).length;
+  $('lv-cnt').textContent=ss.length;
 
-function selVis(sid){
-  selId=sid;renderVL(applyFlt(allVis));
-  const s=allVis.find(v=>v.id===sid);if(!s){$('jp-body').innerHTML='<div class="empty"><h3>Not found</h3></div>';return}
-  $('jp-h').style.display='flex';
-  const sh=(s.visitorId||s.id).slice(0,8),it=intent(s),src=s.utmSource||s.referrer||'Direct',st=s.startTime?.toDate?s.startTime.toDate().toLocaleString():'';
-  $('jp-name').textContent='Visitor '+sh+'…';$('jp-meta').textContent=src+' • '+st;
-  $('jp-badges').innerHTML=`<span class="tg ${it.c}">${it.l}</span><span class="tg tg-b">${s.pageCount||0} pages</span>${s.cartValue>0?`<span class="tg tg-a">₨${Number(s.cartValue).toLocaleString()}</span>`:''}`;
-  $('jp-body').innerHTML='<div class="spin"></div>';
+  // Dashboard metrics
+  $('dash-m').innerHTML=`
+    <div class="mc"><div class="mc-l">Total Sessions</div><div class="mc-v" style="color:var(--green)">${ss.length}</div></div>
+    <div class="mc"><div class="mc-l">Active (5min)</div><div class="mc-v">${ac}</div></div>
+    <div class="mc"><div class="mc-l">From Facebook</div><div class="mc-v" style="color:var(--blue)">${ss.filter(s=>getSource(s).toLowerCase().includes('facebook')).length}</div></div>
+    <div class="mc"><div class="mc-l">With Cart</div><div class="mc-v" style="color:var(--amber)">${ss.filter(s=>s.cartValue>0).length}</div></div>`;
 
-  if(fbOK){
-    db.collection('events').where('sessionId','==',s.id).orderBy('timestamp','asc').get()
-      .then(snap=>renderJ(s,snap.docs.map(d=>({id:d.id,...d.data()}))))
-      .catch(()=>db.collection('pageviews').where('sessionId','==',s.id).orderBy('timestamp','asc').get()
-        .then(snap=>renderJ(s,snap.docs.map(d=>({id:d.id,...d.data(),event_name:'page_view'}))))
-        .catch(()=>renderJ(s,[])));
-  }else{renderJ(s,demoEvts())}
-}
+  // Live metrics
+  $('lv-total').textContent=ss.length;
+  $('lv-active').textContent=ac;
+  $('lv-fb').textContent=ss.filter(s=>{const src=getSource(s).toLowerCase();return src.includes('facebook')||src.includes('fb.')}).length;
+  $('lv-other').textContent=ss.filter(s=>{const src=getSource(s).toLowerCase();return!src.includes('facebook')&&!src.includes('instagram')&&!src.includes('google')}).length;
 
-function renderJ(s,evts){
-  const b=$('jp-body'),d=dur(s),pg=s.pageCount||evts.filter(e=>e.event_name==='page_view').length,
-    hc=s.cartValue>0,q=Math.min(100,(pg*10)+(hc?30:0)+(d>2?15:0)+(s.utmSource?10:0)),
-    pp=s.purchased?100:(hc?65:(pg>3?35:15));
-  let h=`<div class="j-scores"><div class="sc"><div class="sv" style="color:var(--blue)">${q}</div><div class="sl">Quality</div></div><div class="sc"><div class="sv" style="color:var(--purple)">${pp}%</div><div class="sl">Purchase Prob</div></div><div class="sc"><div class="sv">${d}m</div><div class="sl">Duration</div></div><div class="sc"><div class="sv">${pg}</div><div class="sl">Pages</div></div></div><div style="font-size:10px;margin-bottom:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Journey Timeline</div><div class="tl">`;
-  if(!evts.length){h+=tlFromSession(s)}else{evts.forEach(e=>{
-    const t=e.timestamp?.toDate?e.timestamp.toDate().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}):'',ev=catEv(e);
-    h+=`<div class="tl-ev"><div class="tl-dot ${ev.d}"></div><div class="tl-time">${t}</div><div class="tl-title">${ev.t}</div><div class="tl-det">${ev.dt}</div></div>`})}
-  h+='</div>';b.innerHTML=h;
-}
+  // Live table (max 10)
+  renderLiveTable(ss.slice(0,10));
 
-function tlFromSession(s){
-  let h='',t=s.startTime?.toDate?s.startTime.toDate().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'—';
-  h+=`<div class="tl-ev"><div class="tl-dot pg"></div><div class="tl-time">${t}</div><div class="tl-title">Session Started</div><div class="tl-det">Landing: <span>${s.landingPage||s.currentPage||'/'}</span> • Source: <span>${s.utmSource||s.referrer||'Direct'}</span>${s.utmCampaign?'<br>Campaign: <span>'+s.utmCampaign+'</span>':''}</div></div>`;
-  if((s.pageCount||0)>1)h+=`<div class="tl-ev"><div class="tl-dot pg"></div><div class="tl-time">+</div><div class="tl-title">Browsed ${s.pageCount} pages</div><div class="tl-det">Current: <span>${s.currentPage||'—'}</span></div></div>`;
-  if(s.cartValue>0)h+=`<div class="tl-ev"><div class="tl-dot ct"></div><div class="tl-time">+</div><div class="tl-title">Added to Cart</div><div class="tl-det">Value: <span>₨${Number(s.cartValue).toLocaleString()}</span></div></div>`;
-  if(s.checkoutStarted)h+=`<div class="tl-ev"><div class="tl-dot ck"></div><div class="tl-time">+</div><div class="tl-title">Checkout Started</div><div class="tl-det">Proceeding to payment</div></div>`;
-  if(s.purchased)h+=`<div class="tl-ev"><div class="tl-dot pu"></div><div class="tl-time">+</div><div class="tl-title">🎉 Purchase!</div><div class="tl-det">₨${Number(s.orderValue||s.cartValue||0).toLocaleString()}</div></div>`;
-  return h;
-}
+  // Visitor list
+  renderVL(ss);
 
-function catEv(e){
-  const n=e.event_name||'',u=e.page_url||'',t=e.product_title||'';
-  if(n==='page_view')return{d:'pg',t:'Page View',dt:`<span>${u||t}</span>`};
-  if(n==='product_viewed')return{d:'pr',t:'Viewed: '+t,dt:`₨${e.price||0} • SKU: ${e.sku||'—'}`};
-  if(n==='product_added_to_cart')return{d:'ct',t:'Added: '+t,dt:`Qty: <span>${e.quantity||1}</span> • ₨${e.price||0}`};
-  if(n==='product_removed_from_cart')return{d:'bh',t:'Removed: '+t,dt:''};
-  if(n==='checkout_started')return{d:'ck',t:'Checkout Started',dt:`₨${e.total_price||0} • ${e.item_count||0} items`};
-  if(n==='payment_info_submitted')return{d:'ck',t:'Payment Info',dt:''};
-  if(n==='checkout_completed'||n==='purchase')return{d:'pu',t:'🎉 Purchase!',dt:`Order: <span>${e.order_id||'—'}</span> • ₨${e.total_price||0}`};
-  if(n==='scroll')return{d:'bh',t:'Deep Scroll',dt:`<span>${e.depth||e.scroll_depth||0}%</span> on ${u}`};
-  if(n==='hesitation')return{d:'bh',t:'⏳ Hesitation',dt:`${e.duration||0}s on <span>${u}</span>`};
-  if(n.includes('search'))return{d:'sr',t:`Search: "${e.query||e.search_query||''}"`,dt:''};
-  return{d:'pg',t:n.replace(/_/g,' '),dt:u?`<span>${u}</span>`:''};
-}
-
-// ============================================================
-// REVENUE
-// ============================================================
-function upRev(orders){
-  const now=new Date();now.setHours(0,0,0,0);const y=new Date(now);y.setDate(y.getDate()-1);
-  const tO=orders.filter(o=>new Date(o.createdAt)>=now),yO=orders.filter(o=>{const d=new Date(o.createdAt);return d>=y&&d<now});
-  const tR=tO.reduce((a,o)=>a+parseFloat(o.totalPrice||0),0);
-  $('f-rev').textContent='₨'+tR.toLocaleString();
-}
-
-// ============================================================
-// DEMO DATA
-// ============================================================
-function demo(){
-  const mk=(i)=>({id:'s'+i,visitorId:crypto.randomUUID(),status:i<5?'active':i<8?'idle':'ended',
-    utmSource:['facebook','google','','instagram','facebook'][i%5]||'',
-    utmCampaign:['solar_3kw_march','breakers_sale','','brand_awareness','solar_3kw_march'][i%5],
-    referrer:['','','direct','',''][i%5],
-    currentPage:['/products/3kw-solar-db-bundle','/products/wifi-smart-breaker-1p','/collections/breakers','/products/ats-63a','/products/fire-extinguisher-ycfp7','/'][i%6],
-    landingPage:'/products/3kw-solar-db-bundle',pageCount:Math.floor(Math.random()*8)+1,
-    cartValue:i<7?Math.floor(Math.random()*15000):0,checkoutStarted:i<3,purchased:i===0,
-    startTime:{toDate:()=>new Date(Date.now()-Math.random()*30*60000)},
-    lastActivity:{toDate:()=>new Date(Date.now()-Math.random()*5*60000)}});
-  const ss=Array.from({length:18},(_,i)=>mk(i));
-  $('lv-cnt').textContent='5';upDash(ss);upLive(ss);setVis(ss);
-
-  // Funnel
-  buildFn({v:842,pv:456,ac:127,ck:48,pu:23});
-  $('f-rate').textContent='2.7%';$('f-c2c').textContent='37.8%';$('f-c2p').textContent='47.9%';$('f-rev').textContent='₨32,500';
+  // Source breakdown
+  renderSources(ss);
 
   // Feed
-  const evts=[{event_name:'page_view',page_url:'/products/3kw-solar-db-bundle',timestamp:{toDate:()=>new Date()}},{event_name:'product_viewed',product_title:'WiFi Smart Breaker 1P',timestamp:{toDate:()=>new Date(Date.now()-60000)}},{event_name:'product_added_to_cart',product_title:'3KW Solar DB Bundle',timestamp:{toDate:()=>new Date(Date.now()-120000)}},{event_name:'checkout_started',page_url:'/checkout',timestamp:{toDate:()=>new Date(Date.now()-180000)}},{event_name:'purchase',product_title:'Solar DB Bundle 5KW',timestamp:{toDate:()=>new Date(Date.now()-360000)}}];
-  upFeed(evts);
+  renderFeed();
 
-  // Sources
-  $('src-bk').innerHTML=[{s:'Facebook Ads',v:342,c:'var(--blue)',p:45},{s:'Google',v:187,c:'var(--green)',p:25},{s:'Direct',v:156,c:'var(--purple)',p:20},{s:'Instagram',v:78,c:'var(--amber)',p:10}].map(x=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:11px;width:100px;color:var(--t2)">${x.s}</span><div style="flex:1;height:22px;background:var(--bg1);border-radius:3px;overflow:hidden"><div style="height:100%;width:${x.p}%;background:${x.c};border-radius:3px;opacity:.7"></div></div><span class="mn-font" style="width:35px;text-align:right">${x.v}</span></div>`).join('');
+  // Funnel
+  renderFunnel(ss);
 
-  // Tables
-  $('src-tbl').innerHTML=`<tr><td><span class="tg tg-b">Facebook</span></td><td class="mn-font">342</td><td class="mn-font">3.2%</td><td class="mn-font">₨18,500</td><td class="mn-font">₨1,690</td><td class="mn-font" style="color:var(--green)">6.8x</td></tr><tr><td><span class="tg tg-g">Google</span></td><td class="mn-font">187</td><td class="mn-font">2.1%</td><td class="mn-font">₨8,200</td><td class="mn-font">₨2,050</td><td class="mn-font" style="color:var(--green)">4.2x</td></tr><tr><td><span class="tg tg-p">Direct</span></td><td class="mn-font">156</td><td class="mn-font">4.5%</td><td class="mn-font">₨12,800</td><td class="mn-font">₨1,830</td><td class="mn-font">—</td></tr><tr><td><span class="tg tg-a">Instagram</span></td><td class="mn-font">78</td><td class="mn-font">1.3%</td><td class="mn-font">₨2,500</td><td class="mn-font">₨2,500</td><td class="mn-font" style="color:var(--amber)">3.1x</td></tr>`;
+  // Products/pages
+  renderProducts(ss);
 
-  $('cmp-tbl').innerHTML=`<tr><td>solar_3kw_march</td><td>Facebook</td><td class="mn-font">198</td><td class="mn-font">8</td><td class="mn-font">₨14,200</td><td class="mn-font">₨625</td></tr><tr><td>breakers_sale</td><td>Facebook</td><td class="mn-font">144</td><td class="mn-font">5</td><td class="mn-font">₨4,300</td><td class="mn-font">₨900</td></tr><tr><td>brand_awareness</td><td>Instagram</td><td class="mn-font">78</td><td class="mn-font">1</td><td class="mn-font">₨2,500</td><td class="mn-font">₨4,500</td></tr>`;
-
-  $('prod-tbl').innerHTML=`<tr><td>3KW Solar DB Bundle</td><td class="mn-font">156</td><td class="mn-font">42</td><td class="mn-font">8</td><td class="mn-font" style="color:var(--green)">5.1%</td><td class="mn-font">₨18,400</td></tr><tr><td>WiFi Smart Breaker 1P</td><td class="mn-font">134</td><td class="mn-font">38</td><td class="mn-font">6</td><td class="mn-font" style="color:var(--green)">4.5%</td><td class="mn-font">₨5,400</td></tr><tr><td>ATS 63A Auto Transfer</td><td class="mn-font">98</td><td class="mn-font">22</td><td class="mn-font">4</td><td class="mn-font">4.1%</td><td class="mn-font">₨7,200</td></tr><tr><td>Fire Extinguisher YCFP7</td><td class="mn-font">67</td><td class="mn-font">15</td><td class="mn-font">3</td><td class="mn-font">4.5%</td><td class="mn-font">₨7,500</td></tr><tr><td>SPD 40KA 2P</td><td class="mn-font">54</td><td class="mn-font">12</td><td class="mn-font">2</td><td class="mn-font">3.7%</td><td class="mn-font">₨3,200</td></tr>`;
-
-  // Cart abandonment demo
-  $('ca-tbl').innerHTML=Array.from({length:8},(_,i)=>{const ids=['e911d486f1','e134e3bdb3','44752b7e15','8abf26c087','49d6edc57c','38bcf28428','a12bc45d67','f98e76cd21'];const srcs=['Direct','Facebook Paid','Direct','Direct','Facebook Organic','Facebook Organic','Google','Instagram'];const vals=[2300,4800,1200,890,3500,2100,5600,1800];const prods=['Solar 3KW Bundle','Breaker+ATS','WiFi Breaker','SPD 40KA','Solar 5KW Bundle','Fire Ext YCFP7','Solar 10KW Bundle','MC4 Connectors'];const devs=['mobile','mobile','desktop','mobile','mobile','mobile','desktop','mobile'];const times=['27s','23s','2h','10s','0s','19m','4m','45s'];
-    return`<tr onclick="viewVis('s${i}')"><td class="mn-font">${ids[i]}</td><td><span class="tg ${srcs[i].includes('Facebook')?'tg-b':srcs[i].includes('Google')?'tg-g':srcs[i]==='Instagram'?'tg-p':'tg-a'}">${srcs[i]}</span></td><td class="mn-font">₨${vals[i].toLocaleString()}</td><td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${prods[i]}</td><td class="mn-font">${times[i]}</td><td class="mn-font">${devs[i]}</td></tr>`}).join('');
-
-  // Quality
-  $('dq-sc').textContent='92/100';$('dq-ev').textContent='1,247';$('dq-ss').textContent='842';$('dq-er').textContent='0.3%';
-  $('layers').innerHTML=[['LIVE','tag-green','Layer 1 — theme.liquid v2','pageview, product, cart, scroll'],['LIVE','tag-green','Layer 2 — Web Pixel','checkout_started → completed'],['SETUP','tag-amber','Layer 3 — Webhooks','Needs Blaze + deploy'],['PENDING','tag-red','Layer 4 — Session Stitching','After Layer 3'],['PENDING','tag-red','Layer 5 — Analytics','Scheduled functions']].map(([s,c,t,d])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:6px"><span class="tg ${c}" style="font-size:9px">${s}</span><span style="font-size:12px;font-weight:500">${t}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${d}</span></div>`).join('');
-
-  // Health
-  $('health-c').innerHTML=[['✅','cnc-tracker.js on theme.liquid'],['✅','Firestore asia-south1'],['✅','Cart attributes (_cnc_session_id, _cnc_visitor_id)'],['✅','Web Pixel connected'],['✅','Chatbot tracking snippet'],['⚠️','Firebase Blaze needed'],['❌','Webhook endpoints not deployed'],['❌','Session stitching not active']].map(([i,t])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:5px"><span style="font-size:16px">${i}</span><span style="font-size:12px">${t}</span></div>`).join('');
+  // Layers
+  renderLayers();
 }
 
-function buildFn(d){
-  const steps=[{l:'Visitors',n:d.v,c:'var(--blue)'},{l:'Product Views',n:d.pv,c:'var(--purple)'},{l:'Add to Cart',n:d.ac,c:'var(--amber)'},{l:'Checkout',n:d.ck,c:'var(--cyan)'},{l:'Purchase',n:d.pu,c:'var(--green)'}];
+function renderLiveTable(ss){
+  $('lv-tbl').innerHTML=ss.map(s=>{
+    const src=getSource(s),d=getDur(s),it=intent(s),dev=getDevice(s);
+    return`<tr><td class="mn-font">${(s.visitorId||s.id).slice(0,8)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.currentPage||'/'}</td><td class="mn-font">${s.pageCount}</td><td class="mn-font">${fmtDur(d)}</td><td class="mn-font">${s.cartValue?'₨'+s.cartValue.toLocaleString():'—'}</td><td class="mn-font">${dev}</td><td><button class="btn" style="font-size:10px;padding:3px 8px" onclick="event.stopPropagation();viewVis('${s.id}')">View</button></td></tr>`}).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3)">No sessions found</td></tr>';
+}
+
+function renderSources(ss){
+  const src={};ss.forEach(s=>{const k=getSource(s);src[k]=(src[k]||0)+1});
+  const sorted=Object.entries(src).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0]?sorted[0][1]:1;
+  $('src-bk').innerHTML=sorted.slice(0,8).map(([k,v])=>{
+    const pct=Math.round(v/ss.length*100);
+    const col=k.toLowerCase().includes('facebook')?'var(--blue)':k.toLowerCase().includes('google')?'var(--green)':k.toLowerCase().includes('instagram')?'var(--purple)':'var(--amber)';
+    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:11px;width:120px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k}</span><div style="flex:1;height:22px;background:var(--bg1);border-radius:3px;overflow:hidden"><div style="height:100%;width:${Math.round(v/max*100)}%;background:${col};border-radius:3px;opacity:.7"></div></div><span class="mn-font" style="width:50px;text-align:right">${v} (${pct}%)</span></div>`}).join('');
+
+  // Sources table
+  $('src-tbl').innerHTML=sorted.map(([k,v])=>`<tr><td>${k}</td><td class="mn-font">${v}</td><td class="mn-font">${Math.round(v/ss.length*100)}%</td></tr>`).join('');
+
+  // Campaigns table
+  const camps={};ss.forEach(s=>{if(s.utmCampaign){const key=s.utmCampaign;if(!camps[key])camps[key]={src:getSource(s),n:0};camps[key].n++}});
+  $('cmp-tbl').innerHTML=Object.entries(camps).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<tr><td>${k}</td><td>${v.src}</td><td class="mn-font">${v.n}</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--t3)">No UTM campaigns detected yet</td></tr>';
+}
+
+function renderFeed(){
+  const evts=[...RAW_EVENTS,...RAW_PV].sort((a,b)=>{
+    const ta=FTime(a,'timestamp')||new Date(0);const tb=FTime(b,'timestamp')||new Date(0);return tb-ta;
+  }).slice(0,30);
+  const icons={page_view:'📄',product_viewed:'👁️',product_added_to_cart:'🛒',checkout_started:'💳',purchase:'✅',search_submitted:'🔍',pageview:'📄'};
+  $('feed').innerHTML=evts.length?evts.map(e=>{
+    const name=FStr(e,'event_name','eventName','type','event')||'pageview';
+    const t=FTime(e,'timestamp','created_at');const ts=t?t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
+    const url=FStr(e,'page_url','url','page','path');const title=FStr(e,'product_title','title');
+    return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="font-size:14px">${icons[name]||'📌'}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:500">${name.replace(/_/g,' ')}</div><div style="font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${url||title||''}</div></div><span style="font-size:9px;color:var(--t3);font-family:var(--fm)">${ts}</span></div>`}).join(''):'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">No events in events/pageviews collections</div>';
+}
+
+function renderFunnel(ss){
+  const tot=ss.length;
+  const withPages=ss.filter(s=>s.pageCount>0).length;
+  const withCart=ss.filter(s=>s.cartValue>0).length;
+  const withCheckout=ss.filter(s=>s.checkoutStarted).length;
+  const purchased=ss.filter(s=>s.purchased).length;
+  $('fn-metrics').innerHTML=`
+    <div class="mc"><div class="mc-l">Sessions</div><div class="mc-v">${tot}</div></div>
+    <div class="mc"><div class="mc-l">Browsed Pages</div><div class="mc-v">${withPages}</div></div>
+    <div class="mc"><div class="mc-l">Added to Cart</div><div class="mc-v" style="color:var(--amber)">${withCart}</div></div>
+    <div class="mc"><div class="mc-l">Purchased</div><div class="mc-v" style="color:var(--green)">${purchased}</div></div>`;
+  const steps=[{l:'Sessions',n:tot,c:'var(--blue)'},{l:'Viewed Pages',n:withPages||tot,c:'var(--purple)'},{l:'Added to Cart',n:withCart,c:'var(--amber)'},{l:'Checkout',n:withCheckout,c:'var(--cyan)'},{l:'Purchase',n:purchased,c:'var(--green)'}];
   const mx=steps[0].n||1;
-  $('fn-chart').innerHTML=steps.map((s,i)=>{const pct=Math.round(s.n/mx*100);const dr=i>0?'-'+Math.round((1-s.n/steps[i-1].n)*100)+'%':'';
-    return`<div class="fn-s"><div class="fn-lbl">${s.l}</div><div class="fn-bar" style="width:${Math.max(pct,8)}%;background:${s.c}">${s.n}</div><div class="fn-val">${pct}%</div><div class="fn-drop">${dr}</div></div>`}).join('');
+  $('fn-chart').innerHTML=steps.map((s,i)=>{const pct=Math.round(s.n/mx*100);return`<div class="fn-s"><div class="fn-lbl">${s.l}</div><div class="fn-bar" style="width:${Math.max(pct,5)}%;background:${s.c}">${s.n}</div><div class="fn-val">${pct}%</div></div>`}).join('');
 }
 
-function demoEvts(){
-  const n=Date.now();return[
-    {event_name:'page_view',page_url:'/',timestamp:{toDate:()=>new Date(n-600000)}},
-    {event_name:'page_view',page_url:'/collections/solar',timestamp:{toDate:()=>new Date(n-540000)}},
-    {event_name:'product_viewed',product_title:'3KW Solar DB Bundle',price:2300,sku:'SOL-3KW',timestamp:{toDate:()=>new Date(n-480000)}},
-    {event_name:'scroll',depth:85,page_url:'/products/3kw-solar-db-bundle',timestamp:{toDate:()=>new Date(n-460000)}},
-    {event_name:'hesitation',duration:12,page_url:'/products/3kw-solar-db-bundle',timestamp:{toDate:()=>new Date(n-440000)}},
-    {event_name:'product_viewed',product_title:'5KW Solar DB Bundle',price:3800,sku:'SOL-5KW',timestamp:{toDate:()=>new Date(n-360000)}},
-    {event_name:'product_added_to_cart',product_title:'3KW Solar DB Bundle',price:2300,quantity:1,timestamp:{toDate:()=>new Date(n-300000)}},
-    {event_name:'product_viewed',product_title:'Fire Extinguisher YCFP7',price:2500,sku:'YCFP7',timestamp:{toDate:()=>new Date(n-240000)}},
-    {event_name:'product_added_to_cart',product_title:'Fire Extinguisher YCFP7',price:2500,quantity:1,timestamp:{toDate:()=>new Date(n-200000)}},
-    {event_name:'checkout_started',total_price:4800,item_count:2,timestamp:{toDate:()=>new Date(n-120000)}},
-    {event_name:'payment_info_submitted',timestamp:{toDate:()=>new Date(n-60000)}},
-    {event_name:'purchase',order_id:'CNC-1847',total_price:4800,timestamp:{toDate:()=>new Date(n-30000)}}];
+function renderProducts(ss){
+  const pages={};ss.forEach(s=>{const p=s.currentPage||s.landingPage;if(p&&p!=='/'){pages[p]=(pages[p]||0)+1}});
+  const sorted=Object.entries(pages).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  $('prod-tbl').innerHTML=sorted.map(([p,n])=>`<tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p}</td><td class="mn-font">${n}</td><td class="mn-font">${Math.round(n/ss.length*100)}%</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--t3)">No page data</td></tr>';
 }
 
-// Init
-document.addEventListener('DOMContentLoaded',()=>{if(!fbOK)demo()});
+function renderLayers(){
+  $('layers').innerHTML=[
+    ['✅','Layer 1 — theme.liquid v2','Sessions flowing to Firestore'],
+    ['✅','Layer 2 — Web Pixel','Checkout events'],
+    [RAW_SESSIONS.some(s=>s.note_attributes||s.orderId)?'✅':'❌','Layer 3 — Webhooks','Order/purchase tracking'],
+    [allSessions.some(s=>s.purchased)?'✅':'⚠️','Layer 4 — Session Stitching','Visitor→Purchase linking'],
+  ].map(([i,t,d])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:5px"><span style="font-size:16px">${i}</span><span style="font-size:12px;font-weight:500">${t}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${d}</span></div>`).join('');
+}
+
+// ============================================================
+// VISITOR LIST + DEEP-DIVE
+// ============================================================
+let curFlt='all';
+function renderVL(vis){
+  const list=vis.slice(0,15);
+  $('vl-body').innerHTML=list.map(v=>{
+    const sh=(v.visitorId||v.id).slice(0,8),src=getSource(v),d=getDur(v),
+      cols=['#2d5af0','#8b5cf6','#06b6d4','#22c55e','#f59e0b','#ef4444'],col=cols[sh.charCodeAt(0)%cols.length],
+      act=isActive(v)?'ac':'en',sel=selId===v.id?'sel':'';
+    return`<div class="vr ${sel}" onclick="selVis('${v.id}')"><div class="vr-dot ${act}"></div><div class="vr-av" style="background:${col}20;color:${col}">${sh.slice(0,2).toUpperCase()}</div><div class="vr-info"><div class="vr-name">${sh}…</div><div class="vr-meta"><span>${src}</span><span>${v.pageCount}pg</span><span>${fmtDur(d)}</span>${v.cartValue>0?`<span style="color:var(--amber)">₨${v.cartValue.toLocaleString()}</span>`:''}</div></div></div>`
+  }).join('')+(vis.length>15?`<div style="padding:8px 14px;text-align:center;font-size:10px;color:var(--t3)">${vis.length-15} more…</div>`:'');
+}
+
+function searchVL(q){const f=allSessions.filter(v=>((v.visitorId||v.id)+getSource(v)+(v.currentPage||'')).toLowerCase().includes(q.toLowerCase()));renderVL(applyFlt(f))}
+function filterVL(flt){curFlt=flt;renderVL(applyFlt(allSessions))}
+function applyFlt(arr){
+  if(curFlt==='fb')return arr.filter(v=>getSource(v).toLowerCase().includes('facebook'));
+  if(curFlt==='cart')return arr.filter(v=>v.cartValue>0);
+  return arr;
+}
+
+let selId=null;
+function viewVis(id){nav('deepdive');setTimeout(()=>selVis(id),50)}
+
+function selVis(sid){
+  selId=sid;renderVL(applyFlt(allSessions));
+  const s=allSessions.find(v=>v.id===sid);if(!s)return;
+  $('jp-h').style.display='flex';
+  const sh=(s.visitorId||s.id).slice(0,8),src=getSource(s),it=intent(s);
+  $('jp-name').textContent='Visitor '+sh+'…';
+  $('jp-meta').textContent=src+' • '+(s.startTime?s.startTime.toLocaleString():'—');
+  $('jp-badges').innerHTML=`<span class="tg ${it.c}">${it.l}</span><span class="tg tg-b">${s.pageCount} pages</span>${s.cartValue>0?`<span class="tg tg-a">₨${s.cartValue.toLocaleString()}</span>`:''}`;
+
+  // Show journey + RAW DATA
+  let h=`<div class="j-scores"><div class="sc"><div class="sv">${s.pageCount}</div><div class="sl">Pages</div></div><div class="sc"><div class="sv">${fmtDur(getDur(s))}</div><div class="sl">Duration</div></div><div class="sc"><div class="sv">${getDevice(s)}</div><div class="sl">Device</div></div><div class="sc"><div class="sv">${isActive(s)?'🟢':'⚪'}</div><div class="sl">Status</div></div></div>`;
+
+  // Timeline from session
+  h+=`<div style="font-size:10px;margin-bottom:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Journey</div><div class="tl">`;
+  h+=`<div class="tl-ev"><div class="tl-dot dpg"></div><div class="tl-time">${s.startTime?s.startTime.toLocaleTimeString():'—'}</div><div class="tl-title">Session Started</div><div class="tl-det">Source: <span>${src}</span> • Landing: <span>${s.landingPage||s.currentPage||'/'}</span>${s.utmCampaign?'<br>Campaign: <span>'+s.utmCampaign+'</span>':''}${s.fbclid?'<br>fbclid: <span>'+s.fbclid.slice(0,20)+'…</span>':''}</div></div>`;
+  if(s.pageCount>1)h+=`<div class="tl-ev"><div class="tl-dot dpg"></div><div class="tl-time">+</div><div class="tl-title">Browsed ${s.pageCount} pages</div><div class="tl-det">Last page: <span>${s.currentPage||'—'}</span></div></div>`;
+  if(s.cartValue>0)h+=`<div class="tl-ev"><div class="tl-dot dct"></div><div class="tl-time">+</div><div class="tl-title">Cart Active</div><div class="tl-det">Value: <span>₨${s.cartValue.toLocaleString()}</span></div></div>`;
+  if(s.checkoutStarted)h+=`<div class="tl-ev"><div class="tl-dot dck"></div><div class="tl-time">+</div><div class="tl-title">Checkout</div><div class="tl-det">In checkout flow</div></div>`;
+  if(s.purchased)h+=`<div class="tl-ev"><div class="tl-dot dpu"></div><div class="tl-time">+</div><div class="tl-title">🎉 Purchased!</div><div class="tl-det">₨${s.orderValue.toLocaleString()}</div></div>`;
+  h+=`</div>`;
+
+  // RAW DATA — this is key for debugging
+  h+=`<div style="font-size:10px;margin:16px 0 8px;color:var(--amber);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📦 Raw Firestore Data</div>`;
+  h+=`<div class="dbg">${JSON.stringify(s._raw,null,2)}</div>`;
+
+  $('jp-body').innerHTML=h;
+
+  // Also load events for this session
+  if(fbOK){
+    db.collection('events').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get()
+      .then(snap=>{if(snap.size>0){
+        let evH=`<div style="font-size:10px;margin:12px 0 8px;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📋 Events for this session (${snap.size})</div><div class="dbg">`;
+        snap.docs.forEach(d=>{const e=d.data();evH+=JSON.stringify(e,null,2)+'\n---\n'});
+        evH+='</div>';$('jp-body').innerHTML+= evH;
+      }}).catch(()=>{});
+    db.collection('pageviews').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get()
+      .then(snap=>{if(snap.size>0){
+        let pvH=`<div style="font-size:10px;margin:12px 0 8px;color:var(--green);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📄 Pageviews for this session (${snap.size})</div><div class="dbg">`;
+        snap.docs.forEach(d=>{const e=d.data();pvH+=JSON.stringify(e,null,2)+'\n---\n'});
+        pvH+='</div>';$('jp-body').innerHTML+= pvH;
+      }}).catch(()=>{});
+  }
+}
+
+// ============================================================
+// DIAGNOSTIC
+// ============================================================
+function runDiag(){
+  if(!fbOK){$('diag-out').innerHTML='<div class="dbg">Firebase not connected</div>';return}
+  $('diag-out').innerHTML='<div class="spin"></div>';
+  let out='';
+
+  const collections=['sessions','events','pageviews','orders','webhook_events','cart_token_index','abandoned_checkouts','customer_ltv'];
+  let done=0;
+  const results={};
+
+  collections.forEach(coll=>{
+    db.collection(coll).limit(2).get().then(snap=>{
+      results[coll]={exists:!snap.empty,count:snap.size,docs:snap.docs.map(d=>({id:d.id,...d.data()}))};
+    }).catch(e=>{
+      results[coll]={exists:false,error:e.message};
+    }).finally(()=>{
+      done++;
+      if(done===collections.length){
+        let html='';
+        for(const[c,r]of Object.entries(results)){
+          html+=`<div class="dbg"><div class="dbg-title">Collection: ${c} ${r.exists?'✅':'❌'}</div>`;
+          if(r.error)html+=`Error: ${r.error}\n`;
+          else if(r.docs&&r.docs.length>0){
+            html+=`Documents found: ${r.count}\n\nSample doc fields:\n`;
+            const doc=r.docs[0];
+            const fields=Object.keys(doc).filter(k=>k!=='id');
+            fields.forEach(f=>{
+              const v=doc[f];
+              const type=v===null?'null':Array.isArray(v)?'array':typeof v==='object'&&v.seconds?'timestamp':typeof v;
+              const preview=type==='timestamp'?new Date(v.seconds*1000).toISOString():type==='object'?JSON.stringify(v).slice(0,80):String(v).slice(0,80);
+              html+=`  ${f}: (${type}) ${preview}\n`;
+            });
+            html+='\nFull JSON:\n'+JSON.stringify(doc,null,2);
+          }else html+='Collection is empty';
+          html+=`</div>`;
+        }
+        $('diag-out').innerHTML=html;
+
+        // Collection list
+        $('coll-list').innerHTML=Object.entries(results).map(([c,r])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:5px"><span style="font-size:16px">${r.exists?'✅':'❌'}</span><span style="font-size:12px;font-weight:500">${c}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${r.exists?r.count+' docs sampled':(r.error||'empty')}</span></div>`).join('');
+      }
+    });
+  });
+}
+
+function refreshAll(){if(fbOK)loadAll()}
 </script>
 </body>
 </html>
