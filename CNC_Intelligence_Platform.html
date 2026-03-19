@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CNC Electric — Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0c0c0f;--bg2:#131318;--card:#1a1a22;--card2:#22222d;--border:#2a2a36;--border2:#333342;--text:#e8e8ed;--text2:#9898a8;--text3:#5c5c6e;--red:#e60012;--red2:#ff2d3b;--red-bg:rgba(230,0,18,.12);--green:#22c55e;--green-bg:rgba(34,197,94,.12);--blue:#3b82f6;--blue-bg:rgba(59,130,246,.12);--amber:#f59e0b;--amber-bg:rgba(245,158,11,.12);--purple:#8b5cf6;--purple-bg:rgba(139,92,246,.12);--cyan:#06b6d4;--cyan-bg:rgba(6,182,212,.12);--pink:#ec4899;--shadow:0 2px 8px rgba(0,0,0,.3);--r:8px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:13px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:10px}
+
+/* Layout */
+.shell{display:flex;height:100vh;overflow:hidden}
+.side{width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:var(--bg2);border-bottom:1px solid var(--border);gap:10px;flex-wrap:wrap;flex-shrink:0}
+.main-scroll{flex:1;overflow-y:auto;padding:16px 20px}
+
+/* Sidebar */
+.side-logo{padding:16px 16px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.side-logo img{height:28px;border-radius:4px}
+.side-logo-text{font-size:13px;font-weight:800;color:var(--red);letter-spacing:-.02em}
+.side-logo-sub{font-size:9px;color:var(--text3);font-weight:500}
+.side-section{padding:12px 0}
+.side-label{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:0 16px 6px}
+.side-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.side-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.side-item.on{background:var(--red-bg);color:var(--red);border-left-color:var(--red);font-weight:700}
+.side-item .si-icon{width:18px;text-align:center;font-size:13px}
+.side-sub{padding-left:32px}.side-sub .side-item{font-size:11px;padding:5px 16px}
+
+/* Topbar */
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.live{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--green-bg);border:1px solid rgba(34,197,94,.25);border-radius:14px;font-size:10px;color:var(--green);font-weight:600}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.timer{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.burger{display:none;background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text2);cursor:pointer;transition:.15s;font-family:inherit;white-space:nowrap}
+.btn:hover{background:var(--card2);border-color:var(--border2)}.btn:active{transform:scale(.97)}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red)}.btn-red:hover{background:var(--red2)}
+.btn-sm{padding:3px 7px;font-size:10px}
+
+/* Selects */
+.fs{padding:5px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px;font-family:inherit;color:var(--text);background:var(--card);cursor:pointer}
+.fs:focus{outline:none;border-color:var(--red)}
+.filter-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fg{display:flex;align-items:center;gap:4px}
+.fl{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);opacity:.5}
+.sc-l{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.sc-v{font-size:22px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-.03em;line-height:1}
+.sc-s{font-size:10px;color:var(--text3);margin-top:4px}
+.sc-t{font-size:9px;display:inline-flex;align-items:center;gap:2px;padding:1px 5px;border-radius:4px;font-weight:600;margin-top:4px}
+.sc-up{background:var(--green-bg);color:var(--green)}.sc-dn{background:var(--red-bg);color:var(--red2)}
+
+/* Panels */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);gap:8px;flex-wrap:wrap}
+.pt{font-size:12px;font-weight:700}.pt-sub{font-size:10px;color:var(--text3)}
+.pb{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.pp{padding:12px 14px;overflow-y:auto;max-height:380px}.pp.ns{max-height:none;overflow:visible}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+
+/* Tables */
+.dt{width:100%;border-collapse:collapse;font-size:11px}
+.dt th{text-align:left;padding:7px 8px;font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:1}
+.dt td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04)}
+.dt tr:hover td{background:rgba(255,255,255,.02)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:10px}
+
+/* Badges */
+.badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;display:inline-block}
+.b-fb{background:rgba(24,119,242,.15);color:#5b9bf6}
+.b-goog{background:var(--green-bg);color:var(--green)}
+.b-direct{background:rgba(255,255,255,.06);color:var(--text3)}
+.b-ref{background:var(--cyan-bg);color:var(--cyan)}
+.b-mob{background:var(--purple-bg);color:var(--purple)}.b-desk{background:var(--blue-bg);color:var(--blue)}.b-tab{background:var(--amber-bg);color:var(--amber)}
+
+/* Feed */
+.fi{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.fi-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.fi-text{font-size:11px;line-height:1.35}.fi-meta{font-size:9px;color:var(--text3);margin-top:1px;font-family:'JetBrains Mono',monospace}
+
+/* Funnel */
+.fr{display:flex;align-items:center;gap:10px;padding:6px 0}
+.fr-l{width:90px;font-size:11px;font-weight:600;color:var(--text2);flex-shrink:0}
+.fr-bg{flex:1;height:24px;background:var(--bg2);border-radius:5px;overflow:hidden}
+.fr-bar{height:100%;border-radius:5px;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:700;color:#fff;transition:width .6s;min-width:fit-content}
+.fr-n{width:40px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;flex-shrink:0}
+.fr-p{width:40px;text-align:right;font-size:10px;color:var(--text3);flex-shrink:0}
+
+/* Chart */
+.chart-c{position:relative;height:200px;width:100%}
+
+/* Timeline */
+.tl{position:relative;padding-left:20px}.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;padding:5px 0 5px 12px}
+.tl-dot{position:absolute;left:-16px;top:8px;width:9px;height:9px;border-radius:50%;border:2px solid var(--bg);box-shadow:0 0 0 2px var(--border)}
+.tl-time{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--text3)}
+.tl-act{font-size:11px;margin-top:1px}.tl-det{font-size:10px;color:var(--text2);margin-top:1px}
+
+/* AI Chat Widget */
+.ai-toggle{position:fixed;bottom:20px;right:20px;width:48px;height:48px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:20px;cursor:pointer;box-shadow:0 4px 16px rgba(230,0,18,.4);z-index:1000;transition:.2s}
+.ai-toggle:hover{transform:scale(1.08)}
+.ai-panel{position:fixed;bottom:80px;right:20px;width:380px;max-width:calc(100vw - 40px);height:500px;max-height:calc(100vh - 120px);background:var(--bg2);border:1px solid var(--border);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);z-index:1001;display:none;flex-direction:column;overflow:hidden}
+.ai-panel.open{display:flex}
+.ai-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border);background:var(--card)}
+.ai-header-title{font-size:13px;font-weight:700;color:var(--red)}
+.ai-close{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer}
+.ai-messages{flex:1;overflow-y:auto;padding:12px 14px}
+.ai-msg{margin-bottom:10px;max-width:90%}
+.ai-msg.user{margin-left:auto}
+.ai-msg-bubble{padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.45}
+.ai-msg.bot .ai-msg-bubble{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.ai-msg.user .ai-msg-bubble{background:var(--red);color:#fff}
+.ai-input-wrap{display:flex;gap:6px;padding:10px 14px;border-top:1px solid var(--border);background:var(--card)}
+.ai-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--text);font-family:inherit;resize:none;outline:none}
+.ai-input:focus{border-color:var(--red)}
+.ai-send{background:var(--red);border:none;color:#fff;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+
+/* Empty */
+.empty{text-align:center;padding:24px 12px;color:var(--text3)}.empty-i{font-size:28px;opacity:.3;margin-bottom:6px}.empty-t{font-size:11px}
+
+/* Heatmap */
+.hm-grid{display:grid;grid-template-columns:repeat(24,1fr);gap:2px}
+.hm-cell{aspect-ratio:1;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:7px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.6);cursor:default}
+
+/* Score bars */
+.score-bar{height:6px;border-radius:3px;background:var(--bg2);overflow:hidden;flex:1}
+.score-fill{height:100%;border-radius:3px;transition:width .5s}
+
+/* Mobile */
+@media(max-width:768px){
+.side{position:fixed;left:-240px;top:0;bottom:0;z-index:200;transition:.3s;box-shadow:4px 0 24px rgba(0,0,0,.5)}.side.open{left:0}
+.burger{display:block}
+.main-scroll{padding:10px 12px}.stats{grid-template-columns:repeat(2,1fr);gap:6px}.sc-v{font-size:18px}
+.g2,.g3{grid-template-columns:1fr}
+.ai-panel{width:calc(100vw - 20px);right:10px;bottom:70px;height:calc(100vh - 100px)}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- Sidebar Navigation -->
+<div class="side" id="sidebar">
+<div class="side-logo">
+<img src="https://raw.githubusercontent.com/muddasirwaheed2017-beep/dailyreport/main/CNC-Electric-Pakistan-Logo-PNG.png" alt="CNC" onerror="this.style.display='none'">
+<div><div class="side-logo-text">CNC Electric</div><div class="side-logo-sub">Intelligence Platform</div></div>
+</div>
+
+<div class="side-section">
+<div class="side-label">Analytics</div>
+<div class="side-item on" onclick="nav('overview')"><span class="si-icon">📊</span>Overview</div>
+<div class="side-item" onclick="nav('sources')"><span class="si-icon">🔗</span>Traffic Sources</div>
+<div class="side-sub" id="sub-sources" style="display:none">
+<div class="side-item" onclick="nav('sources','channels')">Channel Breakdown</div>
+<div class="side-item" onclick="nav('sources','campaigns')">Campaigns</div>
+<div class="side-item" onclick="nav('sources','ads')">Ad Performance</div>
+</div>
+<div class="side-item" onclick="nav('sessions')"><span class="si-icon">👥</span>Sessions</div>
+<div class="side-sub" id="sub-sessions" style="display:none">
+<div class="side-item" onclick="nav('sessions','all')">All Sessions</div>
+<div class="side-item" onclick="nav('sessions','buyers')">🟢 Buyers</div>
+<div class="side-item" onclick="nav('sessions','carters')">🟡 Cart Adders</div>
+<div class="side-item" onclick="nav('sessions','engaged')">🔵 High Engagement</div>
+<div class="side-item" onclick="nav('sessions','bouncers')">🔴 Bouncers</div>
+</div>
+<div class="side-item" onclick="nav('pages')"><span class="si-icon">📄</span>Pages</div>
+<div class="side-item" onclick="nav('products')"><span class="si-icon">📦</span>Products</div>
+</div>
+
+<div class="side-section">
+<div class="side-label">Conversion</div>
+<div class="side-item" onclick="nav('funnel')"><span class="si-icon">🔄</span>Funnel</div>
+<div class="side-item" onclick="nav('revenue')"><span class="si-icon">💰</span>Revenue</div>
+<div class="side-item" onclick="nav('behavior')"><span class="si-icon">🧠</span>Behavior Scores</div>
+</div>
+
+<div class="side-section">
+<div class="side-label">Intelligence</div>
+<div class="side-item" onclick="nav('meta')"><span class="si-icon">📱</span>Meta Ads</div>
+<div class="side-sub" id="sub-meta" style="display:none">
+<div class="side-item" onclick="nav('meta','overview')">Overview</div>
+<div class="side-item" onclick="nav('meta','creatives')">Creatives A/B</div>
+<div class="side-item" onclick="nav('meta','placements')">Placements</div>
+<div class="side-item" onclick="nav('meta','audiences')">Audiences</div>
+</div>
+<div class="side-item" onclick="nav('seo')"><span class="si-icon">🔍</span>SEO</div>
+<div class="side-sub" id="sub-seo" style="display:none">
+<div class="side-item" onclick="nav('seo','organic')">Organic Traffic</div>
+<div class="side-item" onclick="nav('seo','keywords')">Keywords</div>
+<div class="side-item" onclick="nav('seo','pages')">Page Health</div>
+</div>
+<div class="side-item" onclick="nav('quality')"><span class="si-icon">📏</span>Data Quality</div>
+<div class="side-item" onclick="nav('ai')"><span class="si-icon">🤖</span>AI Reports</div>
+</div>
+
+<div class="side-section">
+<div class="side-label">Live</div>
+<div class="side-item" onclick="nav('feed')"><span class="si-icon">⚡</span>Event Feed</div>
+<div class="side-item" onclick="nav('timeline')"><span class="si-icon">⏱</span>Session Replay</div>
+</div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+<div class="topbar">
+<div class="tb-left">
+<button class="burger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+<div class="filter-row">
+<div class="fg"><span class="fl">Period</span>
+<select class="fs" id="fPeriod" onchange="refresh()">
+<option value="1h">1 Hour</option><option value="3h">3 Hours</option><option value="6h">6 Hours</option>
+<option value="12h">12 Hours</option><option value="24h" selected>24 Hours</option>
+<option value="3d">3 Days</option><option value="7d">7 Days</option><option value="30d">30 Days</option>
+<option value="90d">90 Days</option><option value="year">This Year</option><option value="all">All Time</option>
+</select></div>
+<div class="fg"><span class="fl">Device</span>
+<select class="fs" id="fDevice" onchange="refresh()"><option value="all">All</option><option value="mobile">Mobile</option><option value="desktop">Desktop</option><option value="tablet">Tablet</option></select></div>
+<div class="fg"><span class="fl">Source</span>
+<select class="fs" id="fSource" onchange="refresh()"><option value="all">All</option><option value="Facebook Paid">Facebook</option><option value="Google Organic">Google</option><option value="Direct">Direct</option><option value="Referral">Referral</option></select></div>
+</div>
+</div>
+<div class="tb-right">
+<div class="live"><div class="live-dot"></div><span id="statusText">Connecting...</span></div>
+<div class="timer" id="refreshTimer">Auto: 10m</div>
+<button class="btn" onclick="exportCSV()">📊 CSV</button>
+<button class="btn" onclick="refresh()">🔄</button>
+</div>
+</div>
+
+<div class="main-scroll" id="mainScroll">
+<!-- TAB: Overview -->
+<div class="tc on" id="t-overview">
+<div class="stats">
+<div class="sc"><div class="sc-l">Active Now</div><div class="sc-v" style="color:var(--green)" id="mActive">0</div><div class="sc-s">Real-time</div></div>
+<div class="sc"><div class="sc-l">Sessions</div><div class="sc-v" style="color:var(--blue)" id="mSessions">0</div><div class="sc-s" id="mSPV">--</div></div>
+<div class="sc"><div class="sc-l">Page Views</div><div class="sc-v" style="color:var(--amber)" id="mPV">0</div></div>
+<div class="sc"><div class="sc-l">Cart Adds</div><div class="sc-v" style="color:var(--purple)" id="mCarts">0</div></div>
+<div class="sc"><div class="sc-l">Checkouts</div><div class="sc-v" style="color:var(--cyan)" id="mCheckouts">0</div></div>
+<div class="sc"><div class="sc-l">Purchases</div><div class="sc-v" style="color:var(--green)" id="mPurchases">0</div></div>
+<div class="sc"><div class="sc-l">Revenue</div><div class="sc-v" style="color:var(--red)" id="mRevenue">₨0</div></div>
+<div class="sc"><div class="sc-l">Conv. Rate</div><div class="sc-v" style="color:var(--green)" id="mCR">0%</div></div>
+</div>
+<div class="g2">
+<div class="panel"><div class="ph"><div class="pt">Hourly Traffic</div></div><div class="pp ns"><div class="chart-c"><canvas id="chHourly"></canvas></div></div></div>
+<div class="panel"><div class="ph"><div class="pt">Source Breakdown</div></div><div class="pp ns"><div class="chart-c"><canvas id="chSources"></canvas></div></div></div>
+</div>
+<div class="g2">
+<div class="panel"><div class="ph"><div class="pt">Device Split</div></div><div class="pp ns"><div class="chart-c" style="height:170px"><canvas id="chDevice"></canvas></div></div></div>
+<div class="panel"><div class="ph"><div class="pt">Traffic Heatmap</div></div><div class="pp ns"><div class="hm-grid" id="hmGrid"></div></div></div>
+</div>
+</div>
+
+<!-- TAB: Sources -->
+<div class="tc" id="t-sources">
+<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+<div class="sc" style="--red:#1877f2"><div class="sc-l">Facebook Paid</div><div class="sc-v" style="color:#5b9bf6" id="srcFB">0</div></div>
+<div class="sc"><div class="sc-l">Google Organic</div><div class="sc-v" style="color:var(--green)" id="srcGoog">0</div></div>
+<div class="sc"><div class="sc-l">Direct</div><div class="sc-v" style="color:var(--text3)" id="srcDir">0</div></div>
+<div class="sc"><div class="sc-l">Referral</div><div class="sc-v" style="color:var(--cyan)" id="srcRef">0</div></div>
+</div>
+<!-- Sub: Channels -->
+<div class="sub-tc on" id="st-sources-channels">
+<div class="panel"><div class="ph"><div class="pt">Source / Medium Detail</div><button class="btn btn-sm" onclick="exportCSV('sources')">CSV</button></div>
+<div class="pp"><table class="dt"><thead><tr><th>Source / Medium</th><th>Channel</th><th>Sessions</th><th>Views</th><th>Bounce</th><th>Carts</th><th>Purchases</th><th>Revenue</th></tr></thead><tbody id="tbSrcDetail"></tbody></table></div></div>
+</div>
+<!-- Sub: Campaigns -->
+<div class="sub-tc" id="st-sources-campaigns">
+<div class="panel"><div class="ph"><div class="pt">Campaign Performance</div><button class="btn btn-sm" onclick="exportCSV('campaigns')">CSV</button></div>
+<div class="pp"><table class="dt"><thead><tr><th>Campaign ID</th><th>Source</th><th>Sessions</th><th>Carts</th><th>Purchases</th><th>Revenue</th><th>ROAS</th></tr></thead><tbody id="tbCampaigns"></tbody></table></div></div>
+</div>
+<!-- Sub: Ads -->
+<div class="sub-tc" id="st-sources-ads">
+<div class="panel"><div class="ph"><div class="pt">Individual Ad Performance</div><button class="btn btn-sm" onclick="exportCSV('ads')">CSV</button></div>
+<div class="pp"><table class="dt"><thead><tr><th>Ad ID</th><th>Campaign</th><th>Sessions</th><th>Carts</th><th>Bounce</th><th>Avg Time</th></tr></thead><tbody id="tbAds"></tbody></table></div></div>
+</div>
+</div>
+
+<!-- TAB: Sessions -->
+<div class="tc" id="t-sessions">
+<div class="sub-tc on" id="st-sessions-all">
+<div class="panel"><div class="ph"><div class="pt">All Sessions</div><div class="pb" style="background:var(--blue-bg);color:var(--blue)" id="sesCount">0</div><button class="btn btn-sm" onclick="exportCSV('sessions')">CSV</button></div>
+<div class="pp" style="max-height:600px"><table class="dt"><thead><tr><th>Visitor</th><th>Source</th><th>Started</th><th>Duration</th><th>Pages</th><th>Device</th><th>Landing</th><th>Events</th><th></th></tr></thead><tbody id="tbSessions"></tbody></table></div></div>
+</div>
+<div class="sub-tc" id="st-sessions-buyers">
+<div class="panel"><div class="ph"><div class="pt">🟢 Buyers — Sessions that Converted</div><button class="btn btn-sm" onclick="exportCSV('buyers')">CSV</button></div>
+<div class="pp" id="buyersList"><div class="empty"><div class="empty-i">💰</div><div class="empty-t">Purchase data from Web Pixel needed</div></div></div></div>
+</div>
+<div class="sub-tc" id="st-sessions-carters">
+<div class="panel"><div class="ph"><div class="pt">🟡 Cart Adders — Added but Didn't Buy</div><button class="btn btn-sm" onclick="exportCSV('carters')">CSV</button></div>
+<div class="pp" id="cartersList"><div class="empty"><div class="empty-i">🛒</div><div class="empty-t">Loading...</div></div></div></div>
+</div>
+<div class="sub-tc" id="st-sessions-engaged">
+<div class="panel"><div class="ph"><div class="pt">🔵 Engaged — Spent 2+ min, No Cart Add</div></div>
+<div class="pp" id="engagedList"><div class="empty"><div class="empty-i">⏱</div><div class="empty-t">Loading...</div></div></div></div>
+</div>
+<div class="sub-tc" id="st-sessions-bouncers">
+<div class="panel"><div class="ph"><div class="pt">🔴 Bouncers — Single Page, Under 15s</div></div>
+<div class="pp" id="bouncersList"><div class="empty"><div class="empty-i">💨</div><div class="empty-t">Loading...</div></div></div></div>
+</div>
+</div>
+
+<!-- TAB: Pages -->
+<div class="tc" id="t-pages">
+<div class="panel"><div class="ph"><div class="pt">Page Performance</div><button class="btn btn-sm" onclick="exportCSV('pages')">CSV</button></div>
+<div class="pp" style="max-height:600px"><table class="dt"><thead><tr><th>URL</th><th>Views</th><th>Avg Time</th><th>Scroll %</th><th>Sources</th><th>Type</th></tr></thead><tbody id="tbPages"></tbody></table></div></div>
+</div>
+
+<!-- TAB: Products -->
+<div class="tc" id="t-products">
+<div class="g2">
+<div class="panel"><div class="ph"><div class="pt">Most Viewed Products</div><button class="btn btn-sm" onclick="exportCSV('products')">CSV</button></div><div class="pp" id="prodViews"><div class="empty"><div class="empty-i">📦</div></div></div></div>
+<div class="panel"><div class="ph"><div class="pt">Product Interest</div></div><div class="pp ns"><div class="chart-c"><canvas id="chProducts"></canvas></div></div></div>
+</div>
+<div class="panel"><div class="ph"><div class="pt">Cart Activity</div><button class="btn btn-sm" onclick="exportCSV('cart')">CSV</button></div><div class="pp" id="cartAct"><div class="empty"><div class="empty-i">🛒</div></div></div></div>
+</div>
+
+<!-- TAB: Funnel -->
+<div class="tc" id="t-funnel">
+<div class="panel"><div class="ph"><div class="pt">Conversion Funnel</div></div><div class="pp ns" id="funnelBody">
+<div class="fr"><div class="fr-l">Visitors</div><div class="fr-bg"><div class="fr-bar" id="fV" style="width:100%;background:var(--blue)">100%</div></div><div class="fr-n" id="fVn">0</div><div class="fr-p">100%</div></div>
+<div class="fr"><div class="fr-l">Product View</div><div class="fr-bg"><div class="fr-bar" id="fPV" style="width:0;background:var(--cyan)"></div></div><div class="fr-n" id="fPVn">0</div><div class="fr-p" id="fPVp">0%</div></div>
+<div class="fr"><div class="fr-l">Add to Cart</div><div class="fr-bg"><div class="fr-bar" id="fATC" style="width:0;background:var(--amber)"></div></div><div class="fr-n" id="fATCn">0</div><div class="fr-p" id="fATCp">0%</div></div>
+<div class="fr"><div class="fr-l">Checkout</div><div class="fr-bg"><div class="fr-bar" id="fCO" style="width:0;background:var(--purple)"></div></div><div class="fr-n" id="fCOn">0</div><div class="fr-p" id="fCOp">0%</div></div>
+<div class="fr"><div class="fr-l">Purchase</div><div class="fr-bg"><div class="fr-bar" id="fPU" style="width:0;background:var(--green)"></div></div><div class="fr-n" id="fPUn">0</div><div class="fr-p" id="fPUp">0%</div></div>
+</div></div>
+<div class="g2">
+<div class="panel"><div class="ph"><div class="pt">Page Types</div></div><div class="pp ns"><div class="chart-c"><canvas id="chPageTypes"></canvas></div></div></div>
+<div class="panel"><div class="ph"><div class="pt">Scroll Depth</div></div><div class="pp ns"><div class="chart-c"><canvas id="chScroll"></canvas></div></div></div>
+</div>
+</div>
+
+<!-- TAB: Revenue -->
+<div class="tc" id="t-revenue">
+<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+<div class="sc"><div class="sc-l">Total Revenue</div><div class="sc-v" style="color:var(--red)" id="revTotal">₨0</div></div>
+<div class="sc"><div class="sc-l">Orders</div><div class="sc-v" style="color:var(--green)" id="revOrders">0</div></div>
+<div class="sc"><div class="sc-l">AOV</div><div class="sc-v" style="color:var(--blue)" id="revAOV">₨0</div></div>
+<div class="sc"><div class="sc-l">Rev/Session</div><div class="sc-v" style="color:var(--purple)" id="revRPS">₨0</div></div>
+<div class="sc"><div class="sc-l">Conv Rate</div><div class="sc-v" style="color:var(--green)" id="revCR">0%</div></div>
+</div>
+<div class="panel"><div class="ph"><div class="pt">Purchase Log</div><button class="btn btn-sm" onclick="exportCSV('purchases')">CSV</button></div>
+<div class="pp"><table class="dt"><thead><tr><th>Time</th><th>Order</th><th>Source</th><th>Items</th><th>Revenue</th><th>Email</th></tr></thead><tbody id="tbPurchases"><tr><td colspan="6" class="empty">Install Web Pixel for purchase data</td></tr></tbody></table></div></div>
+</div>
+
+<!-- TAB: Behavior -->
+<div class="tc" id="t-behavior">
+<div class="panel"><div class="ph"><div class="pt">Behavior Quality Index</div><div class="pb" style="background:var(--amber-bg);color:var(--amber)" id="bqiScore">--</div></div>
+<div class="pp ns">
+<div class="g3" style="margin-top:8px">
+<div class="sc"><div class="sc-l">Avg Engagement</div><div class="sc-v" style="color:var(--blue)" id="bqiEng">--</div><div class="sc-s">pages × time score</div></div>
+<div class="sc"><div class="sc-l">Frustration Rate</div><div class="sc-v" style="color:var(--red)" id="bqiFrust">0%</div><div class="sc-s">rage + exit intent</div></div>
+<div class="sc"><div class="sc-l">Hesitation Rate</div><div class="sc-v" style="color:var(--amber)" id="bqiHes">0%</div><div class="sc-s">price/buy hesitations</div></div>
+</div>
+<div id="behaviorDetails" style="margin-top:12px"></div>
+</div></div>
+</div>
+
+<!-- TAB: Meta Ads -->
+<div class="tc" id="t-meta">
+<div class="panel" style="border-color:var(--amber)"><div class="ph"><div class="pt">⚠️ Meta Ads Integration</div></div>
+<div class="pp ns" style="text-align:center;padding:24px">
+<p style="color:var(--text2);font-size:12px;max-width:500px;margin:0 auto">Meta Marketing API data is analyzed through the AI Chat Widget. Click the red 🤖 button in the bottom right, and ask questions like:</p>
+<div style="margin:16px auto;max-width:400px;text-align:left">
+<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin:6px 0;font-size:11px;color:var(--text2)">"Analyze my campaign performance for the last 7 days"</div>
+<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin:6px 0;font-size:11px;color:var(--text2)">"Which ad creative has the best ROAS?"</div>
+<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;margin:6px 0;font-size:11px;color:var(--text2)">"Compare Facebook Paid vs Google Organic conversion"</div>
+</div>
+<p style="color:var(--text3);font-size:11px">Campaign/ad data from UTM parameters is shown in the Sources → Campaigns tab</p>
+</div></div>
+<div class="sub-tc on" id="st-meta-overview"><div class="panel"><div class="ph"><div class="pt">Campaign Data (from UTMs)</div></div>
+<div class="pp"><table class="dt"><thead><tr><th>Campaign</th><th>Sessions</th><th>Carts</th><th>Revenue</th></tr></thead><tbody id="tbMetaCampaigns"></tbody></table></div></div></div>
+<div class="sub-tc" id="st-meta-creatives"><div class="panel"><div class="ph"><div class="pt">Creative / Ad Content Performance</div></div>
+<div class="pp"><table class="dt"><thead><tr><th>Content ID</th><th>Sessions</th><th>Bounce %</th><th>Carts</th><th>Avg Time</th></tr></thead><tbody id="tbCreatives"></tbody></table></div></div></div>
+<div class="sub-tc" id="st-meta-placements"><div class="panel"><div class="ph"><div class="pt">Placement Analysis</div><div class="pt-sub">(Based on referrer patterns)</div></div>
+<div class="pp" id="placementData"><div class="empty">Referrer data analyzed below</div></div></div></div>
+<div class="sub-tc" id="st-meta-audiences"><div class="panel"><div class="ph"><div class="pt">Audience Quality Analysis</div></div>
+<div class="pp" id="audienceData"><div class="empty">Analysis runs via AI Chat</div></div></div></div>
+</div>
+
+<!-- TAB: SEO -->
+<div class="tc" id="t-seo">
+<div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+<div class="sc"><div class="sc-l">Organic Sessions</div><div class="sc-v" style="color:var(--green)" id="seoOrg">0</div></div>
+<div class="sc"><div class="sc-l">Landing Pages</div><div class="sc-v" style="color:var(--blue)" id="seoLP">0</div></div>
+<div class="sc"><div class="sc-l">Organic Bounce</div><div class="sc-v" style="color:var(--red)" id="seoBounce">0%</div></div>
+<div class="sc"><div class="sc-l">SEO Index</div><div class="sc-v" style="color:var(--amber)" id="seoIndex">--</div></div>
+</div>
+<div class="sub-tc on" id="st-seo-organic">
+<div class="panel"><div class="ph"><div class="pt">Organic Landing Pages</div><button class="btn btn-sm" onclick="exportCSV('seo')">CSV</button></div>
+<div class="pp"><table class="dt"><thead><tr><th>Page</th><th>Sessions</th><th>Bounce</th><th>Avg Time</th><th>Device</th></tr></thead><tbody id="tbSEO"></tbody></table></div></div>
+</div>
+<div class="sub-tc" id="st-seo-keywords">
+<div class="panel"><div class="ph"><div class="pt">Keyword Suggestions</div><div class="pt-sub">Based on landing page analysis</div></div>
+<div class="pp" id="keywordSuggestions"><div class="empty"><div class="empty-i">🔍</div><div class="empty-t">Analyzed via AI</div></div></div></div>
+</div>
+<div class="sub-tc" id="st-seo-pages">
+<div class="panel"><div class="ph"><div class="pt">Page Health Report</div></div>
+<div class="pp" id="pageHealth"><div class="empty">Use AI Chat to generate SEO analysis</div></div></div>
+</div>
+</div>
+
+<!-- TAB: Data Quality -->
+<div class="tc" id="t-quality">
+<div class="panel"><div class="ph"><div class="pt">Data Quality Index</div><div class="pb" style="background:var(--amber-bg);color:var(--amber)" id="dqiScore">--</div></div>
+<div class="pp ns" id="dqiBody"></div></div>
+</div>
+
+<!-- TAB: AI Reports -->
+<div class="tc" id="t-ai">
+<div class="panel"><div class="ph"><div class="pt">AI-Powered Analysis</div><button class="btn btn-red" onclick="runAI()">🤖 Generate Report</button></div>
+<div class="pp ns" id="aiReport" style="min-height:200px"><div class="empty"><div class="empty-i">🤖</div><div class="empty-t">Click Generate to analyze current data with Claude AI</div></div></div></div>
+</div>
+
+<!-- TAB: Feed -->
+<div class="tc" id="t-feed">
+<div class="panel"><div class="ph"><div class="pt">Live Event Feed</div><div class="pb" style="background:var(--green-bg);color:var(--green)">⚡ REAL-TIME</div></div>
+<div class="pp" style="max-height:700px" id="liveFeed"><div class="empty"><div class="empty-i">📡</div><div class="empty-t">Waiting for events...</div></div></div></div>
+</div>
+
+<!-- TAB: Timeline -->
+<div class="tc" id="t-timeline">
+<div class="panel"><div class="ph"><div class="pt">Select Session</div></div><div class="pp" id="tlSessions"><div class="empty"><div class="empty-i">⏱</div></div></div></div>
+<div class="panel" id="tlPanel" style="display:none"><div class="ph"><div class="pt" id="tlTitle">Timeline</div></div><div class="pp ns" id="tlBody"></div></div>
+</div>
+
+</div><!-- end main-scroll -->
+</div><!-- end content -->
+</div><!-- end shell -->
+
+<!-- AI Chat Widget -->
+<button class="ai-toggle" onclick="toggleAI()">🤖</button>
+<div class="ai-panel" id="aiPanel">
+<div class="ai-header"><div class="ai-header-title">🤖 CNC AI Assistant</div><button class="ai-close" onclick="toggleAI()">✕</button></div>
+<div class="ai-messages" id="aiMessages">
+<div class="ai-msg bot"><div class="ai-msg-bubble">I'm your CNC Electric analytics assistant. I can analyze your traffic, campaigns, conversion data, and suggest optimizations. Try asking:<br><br>• "What's working and what's not?"<br>• "Analyze my Facebook campaign ROAS"<br>• "Why are visitors bouncing?"<br>• "SEO suggestions for my top pages"</div></div>
+</div>
+<div class="ai-input-wrap">
+<textarea class="ai-input" id="aiInput" rows="1" placeholder="Ask about your data..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI()}"></textarea>
+<button class="ai-send" onclick="sendAI()">Send</button>
+</div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyB7zR2KAGyygQuZV1R23henUjFq9i6Uvfs",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"510778332738",appId:"1:510778332738:web:0305d7fb678ee4042cffdb"});
+const db=firebase.firestore();
+let D={sessions:[],pageviews:[],events:[],cart_events:[],checkout_events:[],purchases:[]};
+let charts={};
+const CLAUDE_KEY=''; // User adds their API key
+
+// Navigation
+function nav(tab,sub){
+document.querySelectorAll('.side-item').forEach(i=>i.classList.remove('on'));
+event?.target?.classList.add('on');
+document.querySelectorAll('.tc').forEach(t=>t.classList.remove('on'));
+const el=document.getElementById('t-'+tab);if(el)el.classList.add('on');
+// Toggle sub-menus
+['sources','sessions','meta','seo'].forEach(s=>{
+const subEl=document.getElementById('sub-'+s);
+if(subEl)subEl.style.display=tab===s?'block':'none';
+});
+// Sub-tabs
+if(sub){document.querySelectorAll('#t-'+tab+' .sub-tc').forEach(s=>s.classList.remove('on'));
+const st=document.getElementById('st-'+tab+'-'+sub);if(st)st.classList.add('on');}
+document.getElementById('sidebar').classList.remove('open');
+document.getElementById('mainScroll').scrollTop=0;
+}
+
+// Filters
+function getFilterDate(){const p=document.getElementById('fPeriod').value;const n=Date.now();
+const m={'1h':36e5,'3h':108e5,'6h':216e5,'12h':432e5,'24h':864e5,'3d':2592e5,'7d':6048e5,'30d':2592e6,'90d':7776e6,'year':n-new Date(new Date().getFullYear(),0,1).getTime(),'all':n};
+return new Date(n-(m[p]||864e5));}
+
+// Helpers
+function fT(ts){if(!ts)return'--';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function fD(ts){if(!ts)return'--';const d=ts.toDate?ts.toDate():new Date(ts);return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});}
+function tSec(s,e){if(!s||!e)return 0;const a=s.toDate?s.toDate():new Date(s);const b=e.toDate?e.toDate():new Date(e);return Math.max(0,Math.floor((b-a)/1000));}
+function tFmt(sec){if(sec<60)return sec+'s';if(sec<3600)return Math.floor(sec/60)+'m '+sec%60+'s';return Math.floor(sec/3600)+'h '+Math.floor((sec%3600)/60)+'m';}
+function gCh(s){return s.channel||s.attribution?.channel||cRef(s.referrer,s.utm_source,s.utm_medium);}
+function cRef(ref,src,med){if(med==='paid'&&src==='facebook')return'Facebook Paid';if(ref&&(ref.includes('facebook.com')||ref.includes('fb.com')||ref.includes('m.facebook.com')))return src?'Facebook Paid':'Facebook Organic';if(ref&&ref.includes('google.com'))return'Google Organic';if(!ref||ref==='')return'Direct';return'Referral';}
+function chB(ch){const m={'Facebook Paid':'b-fb','Google Organic':'b-goog','Direct':'b-direct'};return`<span class="badge ${m[ch]||'b-ref'}">${ch||'Unknown'}</span>`;}
+function eI(t){const m={click:'👆',scroll_milestone:'📜',add_to_cart:'🛒',ajax_add_to_cart:'🛒',hesitation:'🤔',exit_intent:'🚪',rage_click:'😤',search:'🔍',checkout_started:'💳',purchase:'💰',page_exit:'👋',tab_hidden:'🙈',tab_visible:'👀'};return m[t]||'⚡';}
+function eBg(t){const m={add_to_cart:'var(--purple-bg)',ajax_add_to_cart:'var(--purple-bg)',hesitation:'var(--amber-bg)',exit_intent:'var(--red-bg)',rage_click:'var(--red-bg)',checkout_started:'var(--green-bg)',purchase:'var(--green-bg)'};return m[t]||'rgba(255,255,255,.04)';}
+function eTx(ev){const d=ev.data||{};switch(ev.type){case'click':return d.isAddToCart?'Added to cart':'Click: '+(d.text||'').substring(0,25);case'scroll_milestone':return'Scroll '+d.depth+'%';case'add_to_cart':case'ajax_add_to_cart':return'Cart: '+(d.product||'item');case'hesitation':return'Hesitated';case'exit_intent':return'Exit intent';case'rage_click':return'Rage click!';case'search':return'Search: "'+d.query+'"';case'checkout_started':return'Checkout';case'purchase':return'PURCHASE ₨'+(d.total_price||0);case'page_exit':return'Left ('+d.timeOnPage+'s)';default:return ev.type.replace(/_/g,' ');}}
+
+// CSV Export
+function exportCSV(type){
+let rows=[],fn='cnc_'+Date.now()+'.csv';const since=getFilterDate();
+const filt=(arr,tsField='timestamp')=>arr.filter(i=>{const t=i[tsField]?.toDate?i[tsField].toDate():i[tsField]?new Date(i[tsField]):null;return t&&t>=since;});
+if(type==='sessions'){rows=[['Visitor','Source','Channel','Started','Duration','Pages','Device','Landing','Events','UTM_Campaign','Ad_ID']];
+filt(D.sessions,'startedAt').forEach(s=>rows.push([(s.visitorId||'').slice(0,12),s.utm_source||'',gCh(s),fD(s.startedAt),tFmt(tSec(s.startedAt,s.lastActivity)),(s.pagesViewed||[]).length,s.device?.deviceType||'',s.landingPage||'',s.eventsCount||0,s.utm_campaign||'',s.ad_id||'']));}
+else if(type==='purchases'){rows=[['Time','Order','Source','Items','Revenue','Email','Campaign','Visitor']];
+D.purchases.forEach(p=>rows.push([p.timestamp||'',p.order_id||'',p.channel||p.utm_source||'',p.item_count||0,p.total_price||0,p.email||'',p.utm_campaign||'',p.visitor_id||'']));}
+else if(type==='cart'){rows=[['Time','Product','Qty','Source','Page','Visitor']];
+filt(D.cart_events).forEach(c=>rows.push([fD(c.timestamp),c.product||'',c.quantity||1,c.channel||'',c.page||'',c.visitorId||'']));}
+else{rows=[['Collection','Type','Visitor','Session','Page','Channel','Timestamp']];
+['pageviews','events','cart_events','purchases'].forEach(col=>D[col].forEach(d=>rows.push([col,d.type||d.pageType||d.action||'',(d.visitorId||'').slice(0,12),(d.sessionId||'').slice(0,12),d.page||d.url||'',d.channel||gCh(d)||'',fD(d.timestamp)])));fn='cnc_all.csv';}
+const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=fn;a.click();}
+
+// ═══════════════════════════════════════════
+// MAIN REFRESH — processes all data
+// ═══════════════════════════════════════════
+function refresh(){
+const since=getFilterDate(),dF=document.getElementById('fDevice').value,sF=document.getElementById('fSource').value;
+let ses=D.sessions.filter(s=>{const t=s.startedAt?.toDate?s.startedAt.toDate():null;if(!t||t<since)return false;if(dF!=='all'&&s.device?.deviceType!==dF)return false;if(sF!=='all'&&gCh(s)!==sF)return false;return true;});
+let pvs=D.pageviews.filter(p=>{const t=p.timestamp?.toDate?p.timestamp.toDate():null;return t&&t>=since;});
+let carts=D.cart_events.filter(c=>{const t=c.timestamp?.toDate?c.timestamp.toDate():null;return t&&t>=since;});
+let checkouts=D.checkout_events.filter(c=>c.event_name==='checkout_started');
+let purchases=D.purchases;
+let evts=D.events.filter(e=>{const t=e.timestamp?.toDate?e.timestamp.toDate():null;return t&&t>=since;});
+const fiveAgo=new Date(Date.now()-3e5);
+const active=D.sessions.filter(s=>{const la=s.lastActivity?.toDate?s.lastActivity.toDate():null;return la&&la>fiveAgo&&s.status==='active';});
+const uVis=new Set(ses.map(s=>s.visitorId)).size;
+const totalRev=purchases.reduce((s,p)=>s+parseFloat(p.total_price||0),0);
+
+// Overview metrics
+document.getElementById('mActive').textContent=active.length;
+document.getElementById('mSessions').textContent=uVis;
+document.getElementById('mPV').textContent=pvs.length;
+document.getElementById('mCarts').textContent=carts.length;
+document.getElementById('mCheckouts').textContent=checkouts.length;
+document.getElementById('mPurchases').textContent=purchases.length;
+document.getElementById('mRevenue').textContent='₨'+totalRev.toLocaleString();
+document.getElementById('mCR').textContent=uVis>0?(purchases.length/uVis*100).toFixed(1)+'%':'0%';
+
+// Revenue
+document.getElementById('revTotal').textContent='₨'+totalRev.toLocaleString();
+document.getElementById('revOrders').textContent=purchases.length;
+document.getElementById('revAOV').textContent='₨'+(purchases.length>0?Math.round(totalRev/purchases.length):0).toLocaleString();
+document.getElementById('revRPS').textContent='₨'+(uVis>0?Math.round(totalRev/uVis):0);
+document.getElementById('revCR').textContent=uVis>0?(purchases.length/uVis*100).toFixed(1)+'%':'0%';
+
+// Sources
+const srcC={};ses.forEach(s=>{const ch=gCh(s);srcC[ch]=(srcC[ch]||0)+1;});
+document.getElementById('srcFB').textContent=srcC['Facebook Paid']||0;
+document.getElementById('srcGoog').textContent=srcC['Google Organic']||0;
+document.getElementById('srcDir').textContent=srcC['Direct']||0;
+document.getElementById('srcRef').textContent=(srcC['Referral']||0)+(srcC['Facebook Organic']||0);
+
+// Charts
+const hrs=new Array(24).fill(0);pvs.forEach(p=>{const t=p.timestamp?.toDate?p.timestamp.toDate():null;if(t)hrs[t.getHours()]++;});
+if(charts.hourly)charts.hourly.destroy();
+charts.hourly=new Chart(document.getElementById('chHourly'),{type:'bar',data:{labels:hrs.map((_,i)=>i+'h'),datasets:[{data:hrs,backgroundColor:'rgba(230,0,18,.18)',borderColor:'#e60012',borderWidth:1,borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#5c5c6e',font:{size:9}}},x:{grid:{display:false},ticks:{color:'#5c5c6e',font:{size:8}}}}}});
+
+const srcE=Object.entries(srcC).sort((a,b)=>b[1]-a[1]);
+const srcCl={'Facebook Paid':'#1877f2','Google Organic':'#22c55e','Direct':'#5c5c6e','Referral':'#06b6d4','Facebook Organic':'#4267B2','Instagram':'#ec4899','WhatsApp':'#25D366'};
+if(charts.sources)charts.sources.destroy();
+if(srcE.length)charts.sources=new Chart(document.getElementById('chSources'),{type:'doughnut',data:{labels:srcE.map(([k])=>k),datasets:[{data:srcE.map(([_,v])=>v),backgroundColor:srcE.map(([k])=>srcCl[k]||'#6b7280'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#9898a8',font:{size:9},padding:8}}},cutout:'62%'}});
+
+const devs={mobile:0,desktop:0,tablet:0};ses.forEach(s=>{const d=s.device?.deviceType||'desktop';devs[d]=(devs[d]||0)+1;});
+if(charts.device)charts.device.destroy();
+charts.device=new Chart(document.getElementById('chDevice'),{type:'doughnut',data:{labels:['Mobile','Desktop','Tablet'],datasets:[{data:[devs.mobile,devs.desktop,devs.tablet],backgroundColor:['#8b5cf6','#3b82f6','#f59e0b'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#9898a8',font:{size:9},padding:8}}},cutout:'62%'}});
+
+// Heatmap
+const hmMax=Math.max(...hrs,1);
+document.getElementById('hmGrid').innerHTML=hrs.map((c,i)=>`<div class="hm-cell" style="background:${c===0?'var(--bg2)':'rgba(230,0,18,'+(0.1+c/hmMax*0.85)+')'}" title="${i}:00 — ${c}">${c||''}</div>`).join('');
+
+// Sessions table
+const sesSorted=[...ses].sort((a,b)=>(b.startedAt?.toDate?b.startedAt.toDate():0)-(a.startedAt?.toDate?a.startedAt.toDate():0));
+document.getElementById('sesCount').textContent=sesSorted.length;
+document.getElementById('tbSessions').innerHTML=sesSorted.length===0?'<tr><td colspan="9" class="empty">No sessions</td></tr>':
+sesSorted.slice(0,80).map(s=>`<tr><td class="mono" style="color:var(--blue)">${(s.visitorId||'').slice(0,10)}</td><td>${chB(gCh(s))}</td><td style="font-size:10px">${fD(s.startedAt)}</td><td class="mono">${tFmt(tSec(s.startedAt,s.lastActivity))}</td><td class="mono">${(s.pagesViewed||[]).length}</td><td><span class="badge b-${(s.device?.deviceType||'desk').slice(0,3)}">${s.device?.deviceType||'-'}</span></td><td style="font-size:9px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.landingPage||'/'}</td><td class="mono">${s.eventsCount||0}</td><td><button class="btn btn-sm" onclick="viewSession('${s.sessionId}')">View</button></td></tr>`).join('');
+
+// Buyer / Carter / Engaged / Bouncer segments
+const purchaseVids=new Set(purchases.map(p=>p.visitor_id));
+const cartVids=new Set(carts.map(c=>c.visitorId));
+const buyers=sesSorted.filter(s=>purchaseVids.has(s.visitorId));
+const carters=sesSorted.filter(s=>cartVids.has(s.visitorId)&&!purchaseVids.has(s.visitorId));
+const engaged=sesSorted.filter(s=>{const dur=tSec(s.startedAt,s.lastActivity);return dur>120&&!cartVids.has(s.visitorId)&&!purchaseVids.has(s.visitorId);});
+const bouncers=sesSorted.filter(s=>(s.pagesViewed||[]).length<=1&&tSec(s.startedAt,s.lastActivity)<15);
+
+function renderSegment(el,list,type){
+document.getElementById(el).innerHTML=list.length===0?`<div class="empty"><div class="empty-i">${type==='buyers'?'💰':type==='carters'?'🛒':'📊'}</div><div class="empty-t">No matching sessions</div></div>`:
+list.slice(0,30).map(s=>`<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--blue);width:80px">${(s.visitorId||'').slice(0,10)}</span>${chB(gCh(s))}<span class="mono" style="flex:1">${(s.pagesViewed||[]).length}pg · ${tFmt(tSec(s.startedAt,s.lastActivity))}</span><span class="badge b-${(s.device?.deviceType||'desk').slice(0,3)}">${s.device?.deviceType||'-'}</span><button class="btn btn-sm" onclick="viewSession('${s.sessionId}')">View</button></div>`).join('');}
+renderSegment('buyersList',buyers,'buyers');
+renderSegment('cartersList',carters,'carters');
+renderSegment('engagedList',engaged,'engaged');
+renderSegment('bouncersList',bouncers,'bouncers');
+
+// Source detail table
+const sd={};ses.forEach(s=>{const k=(s.utm_source||'(none)')+'/'+(s.utm_medium||'(none)');if(!sd[k])sd[k]={src:s.utm_source||'(none)',med:s.utm_medium||'(none)',ch:gCh(s),ses:0,pvs:0,bounces:0,dur:0,carts:0,purchases:0,rev:0};sd[k].ses++;if((s.pagesViewed||[]).length<=1)sd[k].bounces++;sd[k].dur+=tSec(s.startedAt,s.lastActivity);});
+carts.forEach(c=>{const k=(c.utm_source||'(none)')+'/'+(c.utm_medium||'(none)');if(sd[k])sd[k].carts++;});
+purchases.forEach(p=>{const k=(p.utm_source||'(none)')+'/'+(p.utm_medium||'(none)');if(sd[k]){sd[k].purchases++;sd[k].rev+=parseFloat(p.total_price||0);}});
+const sdE=Object.entries(sd).sort((a,b)=>b[1].ses-a[1].ses);
+document.getElementById('tbSrcDetail').innerHTML=sdE.length===0?'<tr><td colspan="8" class="empty">No data</td></tr>':
+sdE.map(([_,d])=>`<tr><td style="font-size:10px">${d.src}/${d.med}</td><td>${chB(d.ch)}</td><td class="mono">${d.ses}</td><td class="mono">${d.pvs||'--'}</td><td class="mono" style="color:${d.ses>0&&d.bounces/d.ses>.7?'var(--red)':'inherit'}">${d.ses>0?Math.round(d.bounces/d.ses*100):0}%</td><td class="mono">${d.carts}</td><td class="mono">${d.purchases}</td><td class="mono" style="color:var(--green)">${d.rev>0?'₨'+d.rev.toLocaleString():''}</td></tr>`).join('');
+
+// Campaigns
+const camps={};ses.forEach(s=>{const c=s.utm_campaign||s.campaign_id||s.attribution?.campaign_id||'';if(!c)return;if(!camps[c])camps[c]={ses:0,carts:0,purch:0,rev:0,src:s.utm_source||''};camps[c].ses++;});
+carts.forEach(c=>{const k=c.utm_campaign||'';if(camps[k])camps[k].carts++;});
+purchases.forEach(p=>{const k=p.utm_campaign||'';if(camps[k]){camps[k].purch++;camps[k].rev+=parseFloat(p.total_price||0);}});
+const campE=Object.entries(camps).sort((a,b)=>b[1].ses-a[1].ses);
+document.getElementById('tbCampaigns').innerHTML=document.getElementById('tbMetaCampaigns').innerHTML=
+campE.length===0?'<tr><td colspan="7" class="empty">No campaigns</td></tr>':
+campE.map(([id,d])=>`<tr><td class="mono" style="max-width:140px;overflow:hidden;text-overflow:ellipsis">${id}</td><td style="font-size:10px">${d.src}</td><td class="mono">${d.ses}</td><td class="mono">${d.carts}</td><td class="mono">${d.purch}</td><td class="mono" style="color:var(--green)">₨${d.rev.toLocaleString()}</td><td class="mono" style="color:var(--amber)">${d.ses>0&&d.rev>0?(d.rev/(d.ses*5)).toFixed(1)+'x':'--'}</td></tr>`).join('');
+
+// Ad performance (by ad_id/utm_content)
+const ads={};ses.forEach(s=>{const a=s.ad_id||s.utm_content||s.attribution?.ad_id||'';if(!a)return;if(!ads[a])ads[a]={ses:0,carts:0,bounces:0,dur:0,camp:s.utm_campaign||''};ads[a].ses++;if((s.pagesViewed||[]).length<=1)ads[a].bounces++;ads[a].dur+=tSec(s.startedAt,s.lastActivity);});
+carts.forEach(c=>{const a=c.utm_content||'';if(ads[a])ads[a].carts++;});
+document.getElementById('tbAds').innerHTML=Object.entries(ads).length===0?'<tr><td colspan="6" class="empty">No ad data</td></tr>':
+Object.entries(ads).sort((a,b)=>b[1].ses-a[1].ses).map(([id,d])=>`<tr><td class="mono" style="max-width:140px;overflow:hidden;text-overflow:ellipsis">${id}</td><td class="mono" style="max-width:100px;overflow:hidden">${d.camp}</td><td class="mono">${d.ses}</td><td class="mono">${d.carts}</td><td class="mono" style="color:${d.ses>0&&d.bounces/d.ses>.7?'var(--red)':'inherit'}">${d.ses>0?Math.round(d.bounces/d.ses*100):0}%</td><td class="mono">${d.ses>0?Math.round(d.dur/d.ses):0}s</td></tr>`).join('');
+
+// Creatives table
+const creatives={};ses.forEach(s=>{const c=s.utm_content||s.attribution?.utm_content||'';if(!c)return;if(!creatives[c])creatives[c]={ses:0,bounces:0,carts:0,dur:0};creatives[c].ses++;if((s.pagesViewed||[]).length<=1)creatives[c].bounces++;creatives[c].dur+=tSec(s.startedAt,s.lastActivity);});
+carts.forEach(c=>{const k=c.utm_content||'';if(creatives[k])creatives[k].carts++;});
+document.getElementById('tbCreatives').innerHTML=Object.entries(creatives).length===0?'<tr><td colspan="5" class="empty">Tag creatives with utm_content</td></tr>':
+Object.entries(creatives).sort((a,b)=>b[1].ses-a[1].ses).map(([id,d])=>`<tr><td class="mono" style="max-width:150px;overflow:hidden;text-overflow:ellipsis">${id}</td><td class="mono">${d.ses}</td><td class="mono" style="color:${d.ses>0&&d.bounces/d.ses>.6?'var(--red)':'inherit'}">${d.ses>0?Math.round(d.bounces/d.ses*100):0}%</td><td class="mono">${d.carts}</td><td class="mono">${d.ses>0?Math.round(d.dur/d.ses):0}s</td></tr>`).join('');
+
+// Pages
+const pm={};pvs.forEach(p=>{const u=p.url||'/';if(!pm[u])pm[u]={v:0,t:0,s:0,sn:0,type:p.pageType||'other',src:{}};pm[u].v++;const ch=p.channel||'Direct';pm[u].src[ch]=(pm[u].src[ch]||0)+1;});
+evts.filter(e=>e.type==='page_exit').forEach(e=>{const u=e.page||'/';if(pm[u]){pm[u].t+=(e.data?.timeOnPage||0);if(e.data?.maxScrollDepth){pm[u].s+=e.data.maxScrollDepth;pm[u].sn++;}}});
+document.getElementById('tbPages').innerHTML=Object.entries(pm).sort((a,b)=>b[1].v-a[1].v).slice(0,50).map(([u,d])=>`<tr><td style="font-size:10px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u}</td><td class="mono" style="font-weight:700">${d.v}</td><td class="mono">${d.v>0?Math.round(d.t/d.v):0}s</td><td class="mono">${d.sn>0?Math.round(d.s/d.sn):0}%</td><td style="font-size:9px">${Object.entries(d.src).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k,v])=>k+':'+v).join(' ')}</td><td><span class="badge">${d.type}</span></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No data</td></tr>';
+
+// Products
+const prods={};pvs.filter(p=>p.product?.title).forEach(p=>{const n=p.product.title;if(!prods[n])prods[n]={v:0,p:p.product.price};prods[n].v++;});
+const prodS=Object.entries(prods).sort((a,b)=>b[1].v-a[1].v);
+document.getElementById('prodViews').innerHTML=prodS.length===0?'<div class="empty"><div class="empty-i">📦</div></div>':
+prodS.slice(0,12).map(([n,d],i)=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)"><div style="width:20px;height:20px;border-radius:4px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--red);flex-shrink:0">${i+1}</div><div style="flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${n}</div><div class="mono" style="color:var(--red);font-weight:600">${d.v}</div></div>`).join('');
+if(charts.products)charts.products.destroy();
+if(prodS.length)charts.products=new Chart(document.getElementById('chProducts'),{type:'bar',data:{labels:prodS.slice(0,7).map(([n])=>n.substring(0,20)+'…'),datasets:[{data:prodS.slice(0,7).map(([_,d])=>d.v),backgroundColor:'rgba(230,0,18,.15)',borderColor:'#e60012',borderWidth:1,borderRadius:2}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#5c5c6e'}},y:{grid:{display:false},ticks:{color:'#9898a8',font:{size:8}}}}}});
+
+// Cart
+document.getElementById('cartAct').innerHTML=carts.length===0?'<div class="empty"><div class="empty-i">🛒</div></div>':
+[...carts].sort((a,b)=>(b.timestamp?.toDate?b.timestamp.toDate():0)-(a.timestamp?.toDate?a.timestamp.toDate():0)).slice(0,15).map(c=>`<div class="fi"><div class="fi-icon" style="background:var(--purple-bg)">🛒</div><div><div class="fi-text">${c.product||'item'} ${chB(c.channel||'')}</div><div class="fi-meta">${fD(c.timestamp)} · qty:${c.quantity||1}</div></div></div>`).join('');
+
+// Funnel
+const pvU=new Set(pvs.filter(p=>p.pageType==='product').map(p=>p.visitorId)).size;
+const cartU=new Set(carts.map(c=>c.visitorId)).size;
+function sF(id,n,tot){const p=tot>0?Math.round(n/tot*100):0;document.getElementById(id).style.width=Math.max(p,2)+'%';document.getElementById(id).textContent=p+'%';document.getElementById(id+'n').textContent=n;document.getElementById(id+'p').textContent=p+'%';}
+document.getElementById('fVn').textContent=uVis;
+sF('fPV',pvU,uVis);sF('fATC',cartU,uVis);sF('fCO',checkouts.length,uVis);sF('fPU',purchases.length,uVis);
+
+// Page types + Scroll charts
+const ptC={};pvs.forEach(p=>{const t=p.pageType||'other';ptC[t]=(ptC[t]||0)+1;});
+if(charts.pageTypes)charts.pageTypes.destroy();
+const ptE=Object.entries(ptC).sort((a,b)=>b[1]-a[1]);
+const ptCl={home:'#22c55e',product:'#3b82f6',collection:'#f59e0b',cart:'#8b5cf6',checkout:'#dc2626',page:'#06b6d4',search:'#6366f1',other:'#5c5c6e'};
+if(ptE.length)charts.pageTypes=new Chart(document.getElementById('chPageTypes'),{type:'doughnut',data:{labels:ptE.map(([t])=>t),datasets:[{data:ptE.map(([_,c])=>c),backgroundColor:ptE.map(([t])=>ptCl[t]||'#5c5c6e'),borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#9898a8',font:{size:9},padding:8}}},cutout:'60%'}});
+const sb={'0-25':0,'25-50':0,'50-75':0,'75-100':0};evts.filter(e=>e.type==='scroll_milestone').forEach(e=>{const d=e.data?.depth||0;if(d<=25)sb['0-25']++;else if(d<=50)sb['25-50']++;else if(d<=75)sb['50-75']++;else sb['75-100']++;});
+if(charts.scroll)charts.scroll.destroy();
+charts.scroll=new Chart(document.getElementById('chScroll'),{type:'bar',data:{labels:Object.keys(sb),datasets:[{data:Object.values(sb),backgroundColor:['rgba(220,38,38,.3)','rgba(245,158,11,.3)','rgba(34,197,94,.3)','#22c55e'],borderWidth:0,borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'rgba(255,255,255,.04)'},ticks:{color:'#5c5c6e'}},x:{grid:{display:false},ticks:{color:'#5c5c6e'}}}}});
+
+// Purchases table
+document.getElementById('tbPurchases').innerHTML=purchases.length===0?'<tr><td colspan="6" class="empty">Install Web Pixel for purchase data</td></tr>':
+purchases.map(p=>`<tr><td class="mono">${p.timestamp||'--'}</td><td class="mono">${(p.order_id||'').toString().slice(0,12)}</td><td>${chB(p.channel||p.utm_source||'')}</td><td class="mono">${p.item_count||0}</td><td class="mono" style="color:var(--green);font-weight:700">₨${parseFloat(p.total_price||0).toLocaleString()}</td><td style="font-size:10px">${p.email||'--'}</td></tr>`).join('');
+
+// Behavior Quality Index
+const frustrations=evts.filter(e=>['rage_click','exit_intent'].includes(e.type)).length;
+const hesitations=evts.filter(e=>e.type==='hesitation').length;
+const engScore=ses.length>0?((pvs.length/ses.length)*10+ses.reduce((s,v)=>s+Math.min(tSec(v.startedAt,v.lastActivity),300),0)/ses.length/30*10).toFixed(0):0;
+document.getElementById('bqiEng').textContent=engScore+'/100';
+document.getElementById('bqiFrust').textContent=ses.length>0?Math.round(frustrations/ses.length*100)+'%':'0%';
+document.getElementById('bqiHes').textContent=ses.length>0?Math.round(hesitations/ses.length*100)+'%':'0%';
+const bqi=Math.max(0,Math.min(100,Math.round(engScore-(frustrations/Math.max(ses.length,1)*50))));
+document.getElementById('bqiScore').textContent=bqi+'/100';
+document.getElementById('behaviorDetails').innerHTML=`<div style="padding:8px 0"><div style="margin-bottom:8px"><span style="font-size:11px;font-weight:600">Engagement</span><div class="score-bar"><div class="score-fill" style="width:${engScore}%;background:var(--blue)"></div></div></div><div style="margin-bottom:8px"><span style="font-size:11px;font-weight:600">Frustration (lower=better)</span><div class="score-bar"><div class="score-fill" style="width:${Math.min(frustrations/Math.max(ses.length,1)*100,100)}%;background:var(--red)"></div></div></div><div><span style="font-size:11px;font-weight:600">Hesitation (buying uncertainty)</span><div class="score-bar"><div class="score-fill" style="width:${Math.min(hesitations/Math.max(ses.length,1)*100,100)}%;background:var(--amber)"></div></div></div></div>`;
+
+// Data Quality Index
+const checks=[{n:'Tracker active',ok:ses.length>0},{n:'Page views recording',ok:pvs.length>0},{n:'UTM parsing',ok:ses.some(s=>s.utm_source)},{n:'Cart tracking',ok:carts.length>0},{n:'Web Pixel (checkout)',ok:checkouts.length>0},{n:'Web Pixel (purchases)',ok:purchases.length>0},{n:'Session IDs',ok:ses.every(s=>s.sessionId)},{n:'Visitor IDs',ok:ses.every(s=>s.visitorId)},{n:'Device detection',ok:ses.some(s=>s.device?.deviceType)},{n:'Channel classification',ok:ses.some(s=>gCh(s)!=='Direct')},{n:'Scroll tracking',ok:evts.some(e=>e.type==='scroll_milestone')},{n:'Click tracking',ok:evts.some(e=>e.type==='click')}];
+const passed=checks.filter(c=>c.ok).length;
+document.getElementById('dqiScore').textContent=Math.round(passed/checks.length*100)+'/100';
+document.getElementById('dqiBody').innerHTML=checks.map(c=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span style="font-size:14px">${c.ok?'✅':'❌'}</span><span style="font-size:12px;flex:1">${c.n}</span><span class="badge" style="background:${c.ok?'var(--green-bg)':'var(--red-bg)'};color:${c.ok?'var(--green)':'var(--red)'}">${c.ok?'Active':'Missing'}</span></div>`).join('');
+
+// SEO
+const orgSes=ses.filter(s=>gCh(s)==='Google Organic');
+document.getElementById('seoOrg').textContent=orgSes.length;
+const landMap={};orgSes.forEach(s=>{const lp=s.landingPage||(s.pagesViewed||[])[0]||'/';if(!landMap[lp])landMap[lp]={ses:0,bounces:0,mob:0,dur:0};landMap[lp].ses++;if((s.pagesViewed||[]).length<=1)landMap[lp].bounces++;if(s.device?.deviceType==='mobile')landMap[lp].mob++;landMap[lp].dur+=tSec(s.startedAt,s.lastActivity);});
+const lE=Object.entries(landMap).sort((a,b)=>b[1].ses-a[1].ses);
+document.getElementById('seoLP').textContent=lE.length;
+const orgBounce=orgSes.length>0?Math.round(orgSes.filter(s=>(s.pagesViewed||[]).length<=1).length/orgSes.length*100):0;
+document.getElementById('seoBounce').textContent=orgBounce+'%';
+document.getElementById('seoIndex').textContent=Math.max(0,100-orgBounce)+'/100';
+document.getElementById('tbSEO').innerHTML=lE.length===0?'<tr><td colspan="5" class="empty">No organic data</td></tr>':
+lE.slice(0,20).map(([u,d])=>`<tr><td style="font-size:10px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u}</td><td class="mono">${d.ses}</td><td class="mono" style="color:${d.ses>0&&d.bounces/d.ses>.7?'var(--red)':'var(--green)'}">${d.ses>0?Math.round(d.bounces/d.ses*100):0}%</td><td class="mono">${d.ses>0?Math.round(d.dur/d.ses):0}s</td><td class="mono">📱${d.ses>0?Math.round(d.mob/d.ses*100):0}%</td></tr>`).join('');
+
+// Timeline
+document.getElementById('tlSessions').innerHTML=sesSorted.length===0?'<div class="empty">No sessions</div>':
+sesSorted.slice(0,12).map(s=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)"><span class="mono" style="color:var(--blue);width:70px">${(s.visitorId||'').slice(0,8)}</span><span style="flex:1;font-size:10px">${(s.pagesViewed||[]).length}pg · ${tFmt(tSec(s.startedAt,s.lastActivity))} ${chB(gCh(s))}</span><button class="btn btn-sm" onclick="viewSession('${s.sessionId}')">View</button></div>`).join('');
+
+document.getElementById('statusText').textContent='Live · '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+
+// Session timeline viewer
+async function viewSession(sid){
+nav('timeline');const p=document.getElementById('tlPanel');p.style.display='block';
+const s=D.sessions.find(x=>x.sessionId===sid);
+if(s)document.getElementById('tlTitle').innerHTML='Session: '+(s.visitorId||'').slice(0,10)+' · '+chB(gCh(s));
+const body=document.getElementById('tlBody');body.innerHTML='<div style="text-align:center;padding:20px;color:var(--text3)">Loading...</div>';
+try{let tl=[];
+const q1=await db.collection('pageviews').where('sessionId','==',sid).limit(50).get();
+q1.forEach(d=>{const x=d.data();tl.push({time:x.timestamp,type:'pageview',page:x.url,product:x.product?.title,ch:x.channel});});
+const q2=await db.collection('events').where('sessionId','==',sid).limit(50).get();
+q2.forEach(d=>{const x=d.data();tl.push({time:x.timestamp,type:x.type,page:x.page,data:x.data||{},ch:x.channel});});
+tl.sort((a,b)=>(a.time?.toDate?a.time.toDate():0)-(b.time?.toDate?b.time.toDate():0));
+body.innerHTML=tl.length===0?'<div class="empty">No events</div>':
+'<div class="tl">'+tl.map(i=>{const c=i.type==='pageview'?'var(--blue)':'var(--red)';
+let act=i.type==='pageview'?'Viewed '+(i.product?'<b>'+i.product+'</b>':i.page):eTx({type:i.type,data:i.data});
+return`<div class="tl-item"><div class="tl-dot" style="background:${c}"></div><div class="tl-time">${fT(i.time)}</div><div class="tl-act">${eI(i.type)} ${act}</div></div>`;}).join('')+'</div>';
+}catch(e){body.innerHTML='<div style="color:var(--red);padding:12px">'+e.message+'</div>';}}
+
+// Live feed
+function addFeed(ev){const f=document.getElementById('liveFeed');const e=f.querySelector('.empty');if(e)e.remove();
+f.insertAdjacentHTML('afterbegin',`<div class="fi"><div class="fi-icon" style="background:${eBg(ev.type)}">${eI(ev.type)}</div><div><div class="fi-text">${eTx(ev)} <span style="color:var(--text3)">· ${ev.page||''}</span></div><div class="fi-meta">${fT(ev.timestamp)} · ${(ev.visitorId||'').slice(0,8)}</div></div></div>`);
+while(f.children.length>40)f.removeChild(f.lastChild);}
+
+// AI Chat
+function toggleAI(){document.getElementById('aiPanel').classList.toggle('open');}
+async function sendAI(){
+const input=document.getElementById('aiInput');const q=input.value.trim();if(!q)return;input.value='';
+const msgs=document.getElementById('aiMessages');
+msgs.innerHTML+=`<div class="ai-msg user"><div class="ai-msg-bubble">${q}</div></div>`;
+msgs.innerHTML+=`<div class="ai-msg bot" id="aiThinking"><div class="ai-msg-bubble" style="color:var(--text3)">Analyzing...</div></div>`;
+msgs.scrollTop=msgs.scrollHeight;
+// Build context
+const ctx=`CNC Electric Pakistan analytics data:\n- Sessions: ${D.sessions.length}, Pageviews: ${D.pageviews.length}\n- Cart events: ${D.cart_events.length}, Purchases: ${D.purchases.length}\n- Top sources: ${JSON.stringify(Object.entries((() => { const s = {}; D.sessions.forEach(x => { const ch = gCh(x); s[ch] = (s[ch]||0)+1; }); return s; })()).sort((a,b)=>b[1]-a[1]).slice(0,5))}\n- Revenue: ₨${D.purchases.reduce((s,p)=>s+parseFloat(p.total_price||0),0).toLocaleString()}\n- Top products: ${JSON.stringify(Object.entries((() => { const p = {}; D.pageviews.filter(x=>x.product?.title).forEach(x => { p[x.product.title] = (p[x.product.title]||0)+1; }); return p; })()).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,v])=>n.substring(0,30)+':'+v))}\n- Device: mobile ${D.sessions.filter(s=>s.device?.deviceType==='mobile').length}, desktop ${D.sessions.filter(s=>s.device?.deviceType==='desktop').length}\n- Products: breakers, ATS, solar DB bundles, fire extinguishers, energy meters, changeover switches. Store: cncelectric.pk Pakistan.\n- Business: 25-40K PKR daily revenue, scaling to 1000K. Meta ads 4-5K/day.`;
+try{
+const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-dangerous-direct-browser-access':'true'},
+body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:ctx+'\n\nUser question: '+q+'\n\nBe specific, data-driven, actionable. Reference actual numbers. Keep response concise.'}]})});
+const data=await r.json();const text=data.content?.[0]?.text||'Error: '+JSON.stringify(data);
+document.getElementById('aiThinking').querySelector('.ai-msg-bubble').innerHTML=text.replace(/\n/g,'<br>');
+}catch(e){document.getElementById('aiThinking').querySelector('.ai-msg-bubble').innerHTML='<span style="color:var(--red)">API error. Add your Claude API key in the code (CLAUDE_KEY variable) or check network.</span>';}
+msgs.scrollTop=msgs.scrollHeight;}
+
+// AI Report
+async function runAI(){
+const el=document.getElementById('aiReport');el.innerHTML='<div style="text-align:center;padding:24px;color:var(--text3)">🤖 Generating comprehensive report...</div>';
+if(!CLAUDE_KEY){el.innerHTML='<div style="padding:16px;color:var(--amber)">⚠️ Add your Claude API key to enable AI reports. Set CLAUDE_KEY in the dashboard code.</div>';return;}
+const ctx=`Full CNC Electric analytics snapshot:\nSessions: ${D.sessions.length}\nPageviews: ${D.pageviews.length}\nCart adds: ${D.cart_events.length}\nCheckouts: ${D.checkout_events.length}\nPurchases: ${D.purchases.length}\nRevenue: ₨${D.purchases.reduce((s,p)=>s+parseFloat(p.total_price||0),0)}\nStore: cncelectric.pk, Shopify, Pakistan. Products: electrical breakers, ATS, solar DB bundles, fire extinguishers.\nCurrent daily: 25-40K PKR. Target: 1000K PKR. Meta ads 4-5K/day at 6-8x ROAS.`;
+try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':CLAUDE_KEY,'anthropic-dangerous-direct-browser-access':'true'},
+body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2000,messages:[{role:'user',content:ctx+'\n\nGenerate: 1) Traffic analysis 2) Conversion bottlenecks 3) Top performing products & pages 4) Source quality comparison 5) Specific recommendations. Be data-driven.'}]})});
+const data=await r.json();el.innerHTML='<div style="font-size:12px;line-height:1.6;white-space:pre-wrap">'+(data.content?.[0]?.text||'Error')+'</div>';
+}catch(e){el.innerHTML='<div style="color:var(--red);padding:16px">'+e.message+'</div>';}}
+
+// Firebase listeners
+function startListeners(){
+[{n:'sessions',o:'lastActivity',l:300},{n:'pageviews',o:'timestamp',l:500},{n:'events',o:'timestamp',l:300},{n:'cart_events',o:'timestamp',l:100},{n:'checkout_events',o:'timestamp',l:50},{n:'purchases',o:'timestamp',l:50}].forEach(c=>{
+db.collection(c.n).orderBy(c.o,'desc').limit(c.l).onSnapshot(snap=>{
+D[c.n]=[];snap.forEach(doc=>D[c.n].push(doc.data()));
+if(c.n==='events')snap.docChanges().forEach(ch=>{if(ch.type==='added')addFeed(ch.doc.data());});
+refresh();
+},()=>{db.collection(c.n).limit(c.l).onSnapshot(snap=>{D[c.n]=[];snap.forEach(doc=>D[c.n].push(doc.data()));refresh();},()=>{});});
+});}
+
+startListeners();
+// Auto refresh every 10 minutes
+setInterval(()=>{refresh();},600000);
+let countdown=600;setInterval(()=>{countdown--;if(countdown<=0)countdown=600;document.getElementById('refreshTimer').textContent='Auto: '+Math.floor(countdown/60)+'m '+countdown%60+'s';},1000);
+</script>
+</body></html>
