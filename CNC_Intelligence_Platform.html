@@ -644,9 +644,9 @@ document.getElementById('cartAct').innerHTML=carts.length===0?'<div class="empty
 // Funnel
 const pvU=new Set(pvs.filter(p=>p.pageType==='product').map(p=>p.visitorId)).size;
 const cartU=new Set(carts.map(c=>c.visitorId)).size;
-function sF(id,n,tot){const p=tot>0?Math.round(n/tot*100):0;document.getElementById(id).style.width=Math.max(p,2)+'%';document.getElementById(id).textContent=p+'%';document.getElementById(id+'n').textContent=n;document.getElementById(id+'p').textContent=p+'%';}
+function setBar(id,n,tot){const p=tot>0?Math.round(n/tot*100):0;document.getElementById(id).style.width=Math.max(p,2)+'%';document.getElementById(id).textContent=p+'%';document.getElementById(id+'n').textContent=n;document.getElementById(id+'p').textContent=p+'%';}
 document.getElementById('fVn').textContent=uVis;
-sF('fPV',pvU,uVis);sF('fATC',cartU,uVis);sF('fCO',checkouts.length,uVis);sF('fPU',purchases.length,uVis);
+setBar('fPV',pvU,uVis);setBar('fATC',cartU,uVis);setBar('fCO',checkouts.length,uVis);setBar('fPU',purchases.length,uVis);
 
 // Page types + Scroll charts
 const ptC={};pvs.forEach(p=>{const t=p.pageType||'other';ptC[t]=(ptC[t]||0)+1;});
