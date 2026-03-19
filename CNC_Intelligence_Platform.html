@@ -164,7 +164,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 <div class="side" id="sidebar">
 <div class="side-logo">
 <img src="https://raw.githubusercontent.com/muddasirwaheed2017-beep/dailyreport/main/CNC-Electric-Pakistan-Logo-PNG.png" alt="CNC" onerror="this.style.display='none'">
-<div><div class="side-logo-text">CNC Electric</div><div class="side-logo-sub">Intelligence Platform</div></div>
+<div><div class="side-logo-text">CNC Electric</div><div class="side-logo-sub">Intelligence Platform · v4.1</div></div>
 </div>
 
 <div class="side-section">
@@ -453,8 +453,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);fon
 <div class="ai-panel" id="aiPanel">
 <div class="ai-header"><div class="ai-header-title">🤖 CNC AI Assistant</div><button class="ai-close" onclick="toggleAI()">✕</button></div>
 <div class="ai-key-wrap">
-<div class="ai-key-label">Claude API Key (paste once, saved in browser)</div>
-<input class="ai-key-input" id="aiKeyInput" type="password" placeholder="sk-ant-api03-..." oninput="saveKey()" value="">
+<div class="ai-key-label">Claude API Key <span id="keyStatus" style="color:var(--green);margin-left:6px"></span></div>
+<input class="ai-key-input" id="aiKeyInput" type="password" placeholder="sk-ant-api03-... (just paste, auto-saved)" oninput="saveKey();showKeyStatus()" value="">
 </div>
 <div class="ai-messages" id="aiMessages">
 <div class="ai-msg bot"><div class="ai-msg-bubble">I'm your CNC Electric analytics assistant. I can analyze your traffic, campaigns, conversion data, and suggest optimizations. Try asking:<br><br>• "What's working and what's not?"<br>• "Analyze my Facebook campaign ROAS"<br>• "Why are visitors bouncing?"<br>• "SEO suggestions for my top pages"</div></div>
@@ -473,7 +473,8 @@ let D={sessions:[],pageviews:[],events:[],cart_events:[],checkout_events:[],purc
 let charts={};
 function getKey(){return document.getElementById('aiKeyInput').value||sessionStorage.getItem('_cnc_aikey')||'';}
 function saveKey(){const v=document.getElementById('aiKeyInput').value;if(v)sessionStorage.setItem('_cnc_aikey',v);}
-window.addEventListener('load',function(){const k=sessionStorage.getItem('_cnc_aikey');if(k)document.getElementById('aiKeyInput').value=k;});
+function showKeyStatus(){var v=document.getElementById('aiKeyInput').value;document.getElementById('keyStatus').textContent=v.length>10?'✅ Saved — ready':'';} 
+window.addEventListener('load',function(){const k=sessionStorage.getItem('_cnc_aikey');if(k){document.getElementById('aiKeyInput').value=k;showKeyStatus();}});
 
 // Navigation
 function nav(tab,sub){
