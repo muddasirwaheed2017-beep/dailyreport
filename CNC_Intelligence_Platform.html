@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CNC Intelligence Platform v6.0</title>
+<title>CNC Intelligence Platform v6.1</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -89,7 +89,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--t1);overflow:hidden;h
 <body>
 
 <nav class="sb">
-  <div class="sb-top"><div class="sb-ico">CNC</div><div class="sb-txt">Intelligence</div><span class="sb-ver">v6.0</span></div>
+  <div class="sb-top"><div class="sb-ico">CNC</div><div class="sb-txt">Intelligence</div><span class="sb-ver">v6.1</span></div>
   <div class="sb-sec"><div class="sb-lbl">Core</div>
     <div class="ni on" data-p="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
     <div class="ni" data-p="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Live Visitors<span class="bdg" id="cnt">0</span></div>
@@ -118,7 +118,7 @@ body{font-family:var(--f);background:var(--bg);color:var(--t1);overflow:hidden;h
 
     <!-- DASHBOARD -->
     <div class="pg on" id="pg-dash">
-      <div class="mg" id="dm"></div>
+      <div class="mg" id="dm"><div class="mc" style="grid-column:1/-1"><div class="mc-l">Loading</div><div class="mc-v" style="font-size:14px;color:var(--t3)">Connecting to Firebase...</div></div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div class="cd"><div class="cd-h"><div class="cd-t">Recent Activity</div></div><div id="feed" style="max-height:350px;overflow-y:auto"></div></div>
         <div class="cd"><div class="cd-h"><div class="cd-t">Sources</div></div><div id="srcB"></div></div>
@@ -190,9 +190,22 @@ body{font-family:var(--f);background:var(--bg);color:var(--t1);overflow:hidden;h
 // ========================================
 const FC={apiKey:"AIzaSyC8YS69F2QLiiPVsHkS_gna7brKVPY4eh4",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"440218345498",appId:"1:440218345498:web:924e301e498637c098f498"};
 let db,ok=false;
-try{firebase.initializeApp(FC);db=firebase.firestore();ok=true;
-  $('dot').style.background='#22c55e';$('dot').style.boxShadow='0 0 6px #22c55e';$('fbt').textContent='Connected';load();
-}catch(e){$('dot').style.background='#ef4444';$('fbt').textContent='Error'}
+try{firebase.initializeApp(FC);db=firebase.firestore();
+  // Test connection with a simple read — NO orderBy
+  $('fbt').textContent='Connecting...';
+  db.collection('sessions').limit(1).get().then(snap=>{
+    ok=true;
+    $('dot').style.background='#22c55e';$('dot').style.boxShadow='0 0 6px #22c55e';
+    $('fbt').textContent='Connected — loading data...';
+    load();
+  }).catch(e=>{
+    $('dot').style.background='#ef4444';
+    $('fbt').textContent='Firebase error: '+e.message;
+    console.error('Firebase connection test failed:',e);
+    // Show error on dashboard
+    $('dm').innerHTML='<div class="mc" style="grid-column:1/-1"><div class="mc-l" style="color:#ef4444">Connection error</div><div style="font-size:12px;color:#ef4444;margin-top:4px">'+e.message+'</div><div style="font-size:11px;color:var(--t3);margin-top:8px">Check browser console (F12) for details. Common fix: enable Firestore in Firebase Console.</div></div>';
+  });
+}catch(e){$('dot').style.background='#ef4444';$('fbt').textContent='Init error: '+e.message}
 
 function $(id){return document.getElementById(id)}
 
@@ -284,21 +297,33 @@ let curFilter='all', curSearch='';
 
 function load(){
   if(!ok)return;
-  // Load sessions
-  db.collection('sessions').orderBy('lastActivity','desc').limit(500).get().then(s=>{
+  $('fbt').textContent='Loading...';
+  // NO orderBy — these need Firestore indexes which may not exist
+  // Load ALL then sort client-side
+  db.collection('sessions').limit(500).get().then(s=>{
     RAW=s.docs.map(d=>({_id:d.id,...d.data()}));
+    // Sort client-side by lastActivity desc
+    RAW.sort((a,b)=>{const ta=toDate(a[F.lastActivity])||new Date(0);const tb=toDate(b[F.lastActivity])||new Date(0);return tb-ta});
     ALL=RAW;
     $('cnt').textContent=ALL.length;
+    $('fbt').textContent='Connected \u2022 '+ALL.length+' sessions';
     render();
   }).catch(e=>{
-    // Fallback without orderBy
-    db.collection('sessions').limit(500).get().then(s=>{
-      RAW=s.docs.map(d=>({_id:d.id,...d.data()}));ALL=RAW;$('cnt').textContent=ALL.length;render();
-    }).catch(()=>{});
+    $('fbt').textContent='Session load error: '+e.message;
+    console.error('Sessions error:',e);
   });
-  // Load events
-  db.collection('events').orderBy('timestamp','desc').limit(100).get().then(s=>{EVT=s.docs.map(d=>d.data());renderFeed()}).catch(()=>{});
-  db.collection('pageviews').orderBy('timestamp','desc').limit(100).get().then(s=>{PV=s.docs.map(d=>d.data());renderFeed()}).catch(()=>{});
+  // Events — no orderBy
+  db.collection('events').limit(200).get().then(s=>{
+    EVT=s.docs.map(d=>d.data());
+    EVT.sort((a,b)=>{const ta=toDate(a.timestamp)||new Date(0);const tb=toDate(b.timestamp)||new Date(0);return tb-ta});
+    renderFeed();
+  }).catch(e=>console.warn('Events:',e.message));
+  // Pageviews — no orderBy
+  db.collection('pageviews').limit(200).get().then(s=>{
+    PV=s.docs.map(d=>d.data());
+    PV.sort((a,b)=>{const ta=toDate(a.timestamp)||new Date(0);const tb=toDate(b.timestamp)||new Date(0);return tb-ta});
+    renderFeed();
+  }).catch(e=>console.warn('Pageviews:',e.message));
 }
 
 // ========================================
@@ -507,11 +532,12 @@ function selVis(id){
   // Load events for this session
   if(ok){
     const sid=s._id;
-    db.collection('events').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get().then(snap=>{
+    db.collection('events').where('sessionId','==',sid).limit(50).get().then(snap=>{
       if(snap.size>0){
-        let eh=`<div style="font-size:9px;color:var(--cy);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Events (${snap.size})</div><div class="tl">`;
-        snap.docs.forEach(d=>{
-          const e=d.data();const name=e.event_name||e.type||'event';
+        const docs=snap.docs.map(d=>d.data()).sort((a,b)=>(toDate(a.timestamp)||0)-(toDate(b.timestamp)||0));
+        let eh=`<div style="font-size:9px;color:var(--cy);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Events (${docs.length})</div><div class="tl">`;
+        docs.forEach(e=>{
+          const name=e.event_name||e.type||'event';
           const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString():'';
           const url=e.page_url||e.url||'';const title=e.product_title||'';
           const dotC=name.includes('product')?'var(--pp)':name.includes('cart')?'var(--am)':name.includes('checkout')?'var(--cy)':name.includes('purchase')?'var(--gn)':'var(--bl)';
@@ -519,18 +545,19 @@ function selVis(id){
         });
         eh+='</div>';$('jj').innerHTML+=eh;
       }
-    }).catch(()=>{});
-    db.collection('pageviews').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get().then(snap=>{
+    }).catch(e=>console.warn('Events for session:',e.message));
+    db.collection('pageviews').where('sessionId','==',sid).limit(50).get().then(snap=>{
       if(snap.size>0){
-        let ph=`<div style="font-size:9px;color:var(--gn);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Pageviews (${snap.size})</div><div class="tl">`;
-        snap.docs.forEach(d=>{
-          const e=d.data();const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString():'';
+        const docs=snap.docs.map(d=>d.data()).sort((a,b)=>(toDate(a.timestamp)||0)-(toDate(b.timestamp)||0));
+        let ph=`<div style="font-size:9px;color:var(--gn);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Pageviews (${docs.length})</div><div class="tl">`;
+        docs.forEach(e=>{
+          const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString():'';
           const url=e.url||e.page||e.path||'';
           ph+=`<div class="te"><div class="td" style="background:var(--gn)"></div><div class="tt">${ts}</div><div class="tn">Page view</div><div class="tx"><b>${esc(url)}</b></div></div>`;
         });
         ph+='</div>';$('jj').innerHTML+=ph;
       }
-    }).catch(()=>{});
+    }).catch(e=>console.warn('PVs for session:',e.message));
   }
 }
 
