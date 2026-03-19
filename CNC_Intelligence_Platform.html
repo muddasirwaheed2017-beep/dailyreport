@@ -3,673 +3,558 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CNC Intelligence Platform v5.2</title>
+<title>CNC Intelligence Platform v6.0</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg0:#0a0a0f;--bg1:#12121a;--bg2:#16161f;--bg3:#1c1c28;--bgS:#0e0e16;--bdr:#1e1e2e;--t1:#e8e8f0;--t2:#8888a0;--t3:#55556a;--blue:#2d5af0;--blueS:rgba(45,90,240,.12);--green:#22c55e;--greenS:rgba(34,197,94,.12);--red:#ef4444;--redS:rgba(239,68,68,.12);--amber:#f59e0b;--amberS:rgba(245,158,11,.12);--purple:#8b5cf6;--purpleS:rgba(139,92,246,.12);--cyan:#06b6d4;--cyanS:rgba(6,182,212,.12);--r:10px;--sw:250px;--f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace}
-body{font-family:var(--f);background:var(--bg0);color:var(--t1);overflow:hidden;height:100vh}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:10px}
+:root{--bg:#0a0a0f;--bg1:#12121a;--bg2:#16161f;--bg3:#1c1c28;--bgS:#0e0e16;--bd:#1e1e2e;--t1:#e8e8f0;--t2:#8888a0;--t3:#55556a;--bl:#2d5af0;--blS:rgba(45,90,240,.12);--gn:#22c55e;--gnS:rgba(34,197,94,.12);--rd:#ef4444;--rdS:rgba(239,68,68,.12);--am:#f59e0b;--amS:rgba(245,158,11,.12);--pp:#8b5cf6;--ppS:rgba(139,92,246,.12);--cy:#06b6d4;--cyS:rgba(6,182,212,.12);--r:10px;--sw:240px;--f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:10px}
 
-.sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bgS);border-right:1px solid var(--bdr);display:flex;flex-direction:column;z-index:100;overflow-y:auto;overflow-x:hidden}
-.sb-logo{padding:16px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px}
-.sb-logo .ico{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff}
-.sb-logo .txt{font-weight:700;font-size:14px}.sb-logo .ver{font-size:9px;color:var(--t3);margin-left:auto;font-family:var(--fm)}
-.sb-sec{padding:12px 10px 4px}.sb-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;padding:0 8px;margin-bottom:4px}
-.ni{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--t2);font-size:12.5px;font-weight:500;transition:all .15s;user-select:none}
-.ni:hover{background:var(--bg2);color:var(--t1)}.ni.on{background:var(--blueS);color:var(--blue)}
-.ni svg{width:16px;height:16px;flex-shrink:0;opacity:.6}.ni.on svg{opacity:1}
-.ni .badge{margin-left:auto;font-size:9px;font-family:var(--fm);background:var(--greenS);color:var(--green);padding:2px 6px;border-radius:10px;font-weight:600}
-.ng{}.ngh{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;color:var(--t2);font-size:12.5px;font-weight:500;transition:all .15s;user-select:none}
-.ngh:hover{background:var(--bg2);color:var(--t1)}.ngh.ha{color:var(--blue)}.ngh svg{width:16px;height:16px;flex-shrink:0;opacity:.6}.ngh.ha svg{opacity:1}
-.ngh .chev{margin-left:auto;width:14px;height:14px;transition:transform .2s;opacity:.4}
-.ng.exp .chev{transform:rotate(90deg);opacity:.7}
-.ngc{max-height:0;overflow:hidden;transition:max-height .25s ease}.ng.exp .ngc{max-height:300px}
-.nsi{display:flex;align-items:center;gap:7px;padding:6px 10px 6px 38px;border-radius:6px;cursor:pointer;color:var(--t3);font-size:11.5px;font-weight:500;transition:all .15s;user-select:none}
-.nsi:hover{color:var(--t2);background:rgba(255,255,255,.02)}.nsi.on{color:var(--blue);background:var(--blueS)}
-.nsi::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.5;flex-shrink:0}.nsi.on::before{opacity:1}
+/* SIDEBAR */
+.sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bgS);border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-top{padding:14px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.sb-ico{width:28px;height:28px;background:var(--bl);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;color:#fff}
+.sb-txt{font-weight:700;font-size:13px}.sb-ver{font-size:9px;color:var(--t3);margin-left:auto;font-family:var(--fm)}
+.sb-sec{padding:10px 8px 4px}.sb-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:4px}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;cursor:pointer;color:var(--t2);font-size:12px;font-weight:500;transition:all .15s;user-select:none}
+.ni:hover{background:var(--bg2);color:var(--t1)}.ni.on{background:var(--blS);color:var(--bl)}
+.ni svg{width:15px;height:15px;flex-shrink:0;opacity:.6}.ni.on svg{opacity:1}
+.ni .bdg{margin-left:auto;font-size:9px;font-family:var(--fm);background:var(--gnS);color:var(--gn);padding:1px 6px;border-radius:8px;font-weight:600}
 
-.mn{margin-left:var(--sw);height:100vh;display:flex;flex-direction:column;overflow:hidden}
-.top{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--bdr);background:var(--bg1);flex-shrink:0}
-.top-t{font-size:15px;font-weight:600}.top-s{font-size:11px;color:var(--t3)}
-.top-r{display:flex;align-items:center;gap:8px}
-.dot{width:7px;height:7px;border-radius:50%}.dot.live{background:var(--green);box-shadow:0 0 6px var(--green);animation:pls 2s infinite}.dot.off{background:var(--red)}
-@keyframes pls{0%,100%{opacity:1}50%{opacity:.5}}
-.btn{padding:6px 12px;border-radius:6px;border:1px solid var(--bdr);background:var(--bg2);color:var(--t2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s}
-.btn:hover{border-color:var(--blue);color:var(--t1)}.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
-
-.ca{flex:1;overflow-y:auto;padding:20px}
+/* MAIN */
+.mn{margin-left:var(--sw);height:100vh;display:flex;flex-direction:column}
+.tp{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--bd);background:var(--bg1);flex-shrink:0}
+.tp-t{font-size:14px;font-weight:600}.tp-s{font-size:10px;color:var(--t3)}
+.bt{padding:5px 12px;border-radius:6px;border:1px solid var(--bd);background:var(--bg2);color:var(--t2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s}
+.bt:hover{border-color:var(--bl);color:var(--t1)}
+.ca{flex:1;overflow-y:auto;padding:18px}
 .pg{display:none}.pg.on{display:block}
-.cd{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:14px}
-.cd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.cd-t{font-size:13px;font-weight:600}.cd-sub{font-size:10px;color:var(--t3);margin-top:2px}
-.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:16px}
-.mc{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);padding:14px}
-.mc-l{font-size:10px;color:var(--t3);font-weight:500;text-transform:uppercase;letter-spacing:.5px}
-.mc-v{font-size:24px;font-weight:700;margin:4px 0;font-family:var(--fm)}
+.cd{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.cd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.cd-t{font-size:13px;font-weight:600}
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin-bottom:14px}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:12px}
+.mc-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.mc-v{font-size:22px;font-weight:700;margin-top:3px;font-family:var(--fm)}
+.tw{max-height:420px;overflow-y:auto;border:1px solid var(--bd);border-radius:8px}
+.tb{width:100%;border-collapse:collapse}
+.tb th{text-align:left;padding:8px 10px;font-size:9px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);background:var(--bg1);position:sticky;top:0;z-index:1}
+.tb td{padding:8px 10px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--t2)}
+.tb tr:hover{background:var(--bg3)}
+.m{font-family:var(--fm);font-size:10px}
+.tg{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:600}
 
-.tbl-wrap{max-height:420px;overflow-y:auto;border:1px solid var(--bdr);border-radius:8px}
-.tbl{width:100%;border-collapse:collapse}
-.tbl th{text-align:left;padding:9px 10px;font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bdr);background:var(--bg1);position:sticky;top:0;z-index:1}
-.tbl td{padding:9px 10px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--t2)}
-.tbl tbody tr{cursor:pointer;transition:background .1s}.tbl tbody tr:hover{background:var(--bg3)}
-.mn-font{font-family:var(--fm);font-size:11px}
-.tg{display:inline-block;padding:2px 7px;border-radius:5px;font-size:10px;font-weight:600}
-.tg-g{background:var(--greenS);color:var(--green)}.tg-r{background:var(--redS);color:var(--red)}
-.tg-a{background:var(--amberS);color:var(--amber)}.tg-b{background:var(--blueS);color:var(--blue)}
-.tg-p{background:var(--purpleS);color:var(--purple)}.tg-c{background:var(--cyanS);color:var(--cyan)}
+/* FILTERS */
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.f-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--bd);background:var(--bg1);color:var(--t3);font-size:10px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s}
+.f-btn:hover{border-color:var(--bl);color:var(--t1)}.f-btn.on{background:var(--blS);border-color:var(--bl);color:var(--bl)}
+.search{width:100%;padding:7px 10px;background:var(--bg1);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-size:11px;font-family:var(--f);outline:none;margin-bottom:8px}
+.search:focus{border-color:var(--bl)}
 
-.dd{display:grid;grid-template-columns:320px 1fr;gap:14px;height:calc(100vh - 120px)}
-.vl-p{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
-.vl-h{padding:12px 14px;border-bottom:1px solid var(--bdr)}
-.vl-s{width:100%;padding:7px 10px;background:var(--bg1);border:1px solid var(--bdr);border-radius:6px;color:var(--t1);font-size:11px;font-family:var(--f);outline:none}
-.vl-s:focus{border-color:var(--blue)}
+/* DEEP DIVE */
+.dd{display:grid;grid-template-columns:300px 1fr;gap:12px;height:calc(100vh - 110px)}
+.vl{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.vl-h{padding:10px 12px;border-bottom:1px solid var(--bd)}
 .vl-b{flex:1;overflow-y:auto}
-.vr{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .1s}
-.vr:hover{background:var(--bg3)}.vr.sel{background:var(--blueS);border-left:3px solid var(--blue)}
-.vr-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:10px;flex-shrink:0}
-.vr-info{flex:1;min-width:0}.vr-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.vr-meta{font-size:10px;color:var(--t3);display:flex;gap:7px;margin-top:1px}
-.vr-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:2px}
-.vr-dot.ac{background:var(--green);box-shadow:0 0 5px var(--green)}.vr-dot.id{background:var(--amber)}.vr-dot.en{background:var(--t3)}
+.vr{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.03);cursor:pointer;transition:background .1s}
+.vr:hover{background:var(--bg3)}.vr.sel{background:var(--blS);border-left:3px solid var(--bl)}
+.vr-a{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:9px;flex-shrink:0}
+.vr-n{font-size:11px;font-weight:600}.vr-m{font-size:9px;color:var(--t3);display:flex;gap:6px;margin-top:1px}
+.vr-d{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:2px}
+.jp{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.jp-h{padding:12px 16px;border-bottom:1px solid var(--bd)}
+.jp-b{flex:1;overflow-y:auto;padding:16px}
+.sc-g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px}
+.sc{background:var(--bg1);border-radius:6px;padding:8px;text-align:center}
+.sc-v{font-size:18px;font-weight:700;font-family:var(--fm)}.sc-l{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;margin-top:2px}
+.tl{position:relative;padding-left:24px}.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--bd)}
+.te{position:relative;margin-bottom:4px;padding:8px 10px;background:var(--bg1);border-radius:6px}
+.td{position:absolute;left:-21px;top:11px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg)}
+.tt{font-size:9px;color:var(--t3);font-family:var(--fm)}.tn{font-size:11px;font-weight:600;margin:2px 0}.tx{font-size:10px;color:var(--t2)}
+.tx b{color:var(--t1);font-weight:500}
+.raw{font-family:var(--fm);font-size:10px;color:var(--cy);background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:10px;max-height:250px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin-top:10px}
 
-.jp{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
-.jp-h{padding:14px 18px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between}
-.jp-b{flex:1;overflow-y:auto;padding:18px}
-.j-scores{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
-.sc{background:var(--bg1);border-radius:7px;padding:10px;text-align:center}
-.sc .sv{font-size:20px;font-weight:700;font-family:var(--fm)}.sc .sl{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
-.tl{position:relative;padding-left:26px}.tl::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--bdr)}
-.tl-ev{position:relative;margin-bottom:5px;padding:9px 12px;background:var(--bg1);border-radius:7px;border:1px solid transparent;transition:border-color .15s}
-.tl-ev:hover{border-color:var(--bdr)}
-.tl-dot{position:absolute;left:-22px;top:12px;width:10px;height:10px;border-radius:50%;border:2px solid var(--bg0)}
-.tl-dot.dpg{background:var(--blue)}.tl-dot.dpr{background:var(--purple)}.tl-dot.dct{background:var(--amber)}
-.tl-dot.dck{background:var(--cyan)}.tl-dot.dpu{background:var(--green)}.tl-dot.dbh{background:var(--red)}.tl-dot.dsr{background:var(--t2)}
-
-.fn{display:flex;flex-direction:column;gap:3px;max-width:560px;margin:0 auto}
-.fn-s{display:flex;align-items:center;gap:12px}
-.fn-bar{height:32px;border-radius:5px;display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:600;color:#fff;min-width:50px;white-space:nowrap;transition:width .8s}
-.fn-lbl{font-size:11px;color:var(--t2);width:110px;flex-shrink:0}
-.fn-val{font-size:11px;font-family:var(--fm);color:var(--t3);width:50px;text-align:right;flex-shrink:0}
-
-.st-steps{counter-reset:step}
-.st-step{position:relative;padding:14px 14px 14px 50px;background:var(--bg1);border-radius:7px;margin-bottom:8px;border:1px solid var(--bdr);counter-increment:step}
-.st-step::before{content:counter(step);position:absolute;left:14px;top:14px;width:24px;height:24px;border-radius:50%;background:var(--blueS);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:var(--fm)}
-.st-step.done::before{background:var(--greenS);color:var(--green);content:'✓'}
-.st-step h4{font-size:12px;font-weight:600;margin-bottom:3px}.st-step p{font-size:11px;color:var(--t2);line-height:1.5}
-
-.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 16px;text-align:center}
-.empty-i{font-size:40px;margin-bottom:12px;opacity:.3}.empty h3{font-size:14px;font-weight:600;margin-bottom:6px}.empty p{font-size:12px;color:var(--t3);max-width:380px;line-height:1.5}
-.spin{width:18px;height:18px;border:2px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite;margin:30px auto}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-/* DEBUG PANEL */
-.dbg{background:#1a1a2e;border:1px solid #2a2a4e;border-radius:8px;padding:12px;margin-bottom:14px;font-family:var(--fm);font-size:11px;color:#8be9fd;max-height:300px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
-.dbg-title{color:var(--amber);font-weight:700;margin-bottom:6px;font-size:12px}
+/* FUNNEL */
+.fn-s{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.fn-l{font-size:11px;color:var(--t2);width:100px;flex-shrink:0}
+.fn-b{height:28px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;min-width:40px}
+.fn-v{font-size:10px;font-family:var(--fm);color:var(--t3);width:50px;text-align:right;flex-shrink:0}
+.empty{display:flex;flex-direction:column;align-items:center;padding:40px 16px;text-align:center}
+.empty h3{font-size:13px;font-weight:600;margin-bottom:4px}.empty p{font-size:11px;color:var(--t3)}
 </style>
 </head>
 <body>
 
 <nav class="sb">
-  <div class="sb-logo"><div class="ico">CNC</div><div><div class="txt">Intelligence</div></div><span class="ver">v5.2</span></div>
+  <div class="sb-top"><div class="sb-ico">CNC</div><div class="sb-txt">Intelligence</div><span class="sb-ver">v6.0</span></div>
   <div class="sb-sec"><div class="sb-lbl">Core</div>
-    <div class="ni on" data-pg="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
-    <div class="ni" data-pg="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Live Visitors<span class="badge" id="lv-cnt">0</span></div>
+    <div class="ni on" data-p="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+    <div class="ni" data-p="live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Live Visitors<span class="bdg" id="cnt">0</span></div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analysis</div>
-    <div class="ni" data-pg="deepdive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>Visitor Deep-Dive</div>
-    <div class="ng" id="g-fun"><div class="ngh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Funnel<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div class="ngc"><div class="nsi" data-pg="funnel">Conversion Funnel</div><div class="nsi" data-pg="cart-abandon">Cart Abandonment</div></div>
-    </div>
-    <div class="ng" id="g-attr"><div class="ngh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 012 2v7"/></svg>Attribution<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
-      <div class="ngc"><div class="nsi" data-pg="sources">Traffic Sources</div><div class="nsi" data-pg="campaigns">Campaigns</div></div>
-    </div>
-    <div class="ni" data-pg="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/></svg>Products</div>
+    <div class="ni" data-p="deep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>Deep-Dive</div>
+    <div class="ni" data-p="sources"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 012 2v7"/></svg>Traffic Sources</div>
+    <div class="ni" data-p="pages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Top Pages</div>
+    <div class="ni" data-p="funnel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Funnel</div>
+    <div class="ni" data-p="devices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Devices</div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">System</div>
-    <div class="ni" data-pg="quality"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Data Quality</div>
-    <div class="ni" data-pg="webhooks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Webhooks<span class="tg tg-a" style="margin-left:auto;font-size:8px">SETUP</span></div>
-    <div class="ni" data-pg="debug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>🔧 Debug</div>
+    <div class="ni" data-p="health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health</div>
   </div>
 </nav>
 
 <div class="mn">
-  <div class="top">
-    <div><div class="top-t" id="pg-title">Dashboard</div><div class="top-s" id="pg-sub">CNC Electric Pakistan — Real-time Intelligence</div></div>
-    <div class="top-r">
-      <div style="display:flex;align-items:center;gap:5px"><div class="dot" id="fb-dot"></div><span style="font-size:10px;color:var(--t3)" id="fb-txt">Connecting...</span></div>
-      <button class="btn" onclick="refreshAll()">↻ Refresh</button>
+  <div class="tp">
+    <div><div class="tp-t" id="pt">Dashboard</div><div class="tp-s" id="ps">CNC Electric Pakistan</div></div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:5px"><div style="width:7px;height:7px;border-radius:50%" id="dot"></div><span style="font-size:10px;color:var(--t3)" id="fbt"></span></div>
+      <button class="bt" onclick="load()">↻ Refresh</button>
     </div>
   </div>
-
   <div class="ca" id="ca">
 
     <!-- DASHBOARD -->
-    <div class="pg on" id="pg-dashboard">
-      <div class="mg" id="dash-m"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-        <div class="cd"><div class="cd-h"><div><div class="cd-t">Live Activity</div><div class="cd-sub">Recent events</div></div></div><div id="feed" style="max-height:360px;overflow-y:auto"></div></div>
-        <div class="cd"><div class="cd-h"><div><div class="cd-t">Traffic Sources</div></div></div><div id="src-bk"></div></div>
+    <div class="pg on" id="pg-dash">
+      <div class="mg" id="dm"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="cd"><div class="cd-h"><div class="cd-t">Recent Activity</div></div><div id="feed" style="max-height:350px;overflow-y:auto"></div></div>
+        <div class="cd"><div class="cd-h"><div class="cd-t">Sources</div></div><div id="srcB"></div></div>
       </div>
     </div>
 
-    <!-- LIVE VISITORS -->
+    <!-- LIVE -->
     <div class="pg" id="pg-live">
-      <div class="mg">
-        <div class="mc"><div class="mc-l">Total Sessions</div><div class="mc-v" style="color:var(--green)" id="lv-total">0</div></div>
-        <div class="mc"><div class="mc-l">Active (5min)</div><div class="mc-v" style="color:var(--cyan)" id="lv-active">0</div></div>
-        <div class="mc"><div class="mc-l">From Facebook</div><div class="mc-v" id="lv-fb">0</div></div>
-        <div class="mc"><div class="mc-l">From Direct/Other</div><div class="mc-v" id="lv-other">0</div></div>
-      </div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Sessions</div><button class="btn" onclick="nav('deepdive')">Deep-Dive →</button></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Page</th><th>Pages</th><th>Time</th><th>Cart</th><th>Device</th><th></th></tr></thead><tbody id="lv-tbl"></tbody></table></div>
+      <div class="mg" id="lm"></div>
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">All Sessions</div><button class="bt" onclick="nav('deep')">Deep-Dive →</button></div>
+        <div class="filters" id="lf"></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Visitor</th><th>Source</th><th>Landing page</th><th>Pages</th><th>Duration</th><th>Device</th><th>Status</th><th></th></tr></thead><tbody id="lt"></tbody></table></div>
       </div>
     </div>
 
-    <!-- DEEP-DIVE -->
-    <div class="pg" id="pg-deepdive">
+    <!-- DEEP DIVE -->
+    <div class="pg" id="pg-deep">
       <div class="dd">
-        <div class="vl-p">
-          <div class="vl-h"><input type="text" class="vl-s" placeholder="Search visitors..." id="v-search">
-            <div style="display:flex;gap:4px;margin-top:6px">
-              <button class="btn pri" style="flex:1;font-size:10px;padding:4px 6px" data-flt="all">All</button>
-              <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="fb">Facebook</button>
-              <button class="btn" style="flex:1;font-size:10px;padding:4px 6px" data-flt="cart">Cart</button>
-            </div>
+        <div class="vl">
+          <div class="vl-h"><input type="text" class="search" placeholder="Search visitors..." id="vs">
+            <div class="filters" id="df"></div>
           </div>
-          <div class="vl-b" id="vl-body"><div class="empty" style="padding:30px"><div class="empty-i">👤</div><h3>Loading...</h3></div></div>
+          <div class="vl-b" id="vb"></div>
         </div>
         <div class="jp">
-          <div class="jp-h" id="jp-h" style="display:none"><div><h3 id="jp-name" style="font-size:14px;font-weight:600"></h3><p id="jp-meta" style="font-size:11px;color:var(--t3);margin-top:2px"></p></div><div id="jp-badges" style="display:flex;gap:6px"></div></div>
-          <div class="jp-b" id="jp-body"><div class="empty"><div class="empty-i">🔍</div><h3>Select a Visitor</h3><p>Click any visitor to see their journey + raw Firestore data.</p></div></div>
+          <div class="jp-h" id="jh" style="display:none"><div><div id="jn" style="font-size:14px;font-weight:600"></div><div id="jm" style="font-size:10px;color:var(--t3);margin-top:2px"></div></div><div id="jb" style="display:flex;gap:5px"></div></div>
+          <div class="jp-b" id="jj"><div class="empty"><h3>Select a visitor</h3><p>Click any visitor for their complete journey + raw Firestore data</p></div></div>
         </div>
-      </div>
-    </div>
-
-    <!-- FUNNEL -->
-    <div class="pg" id="pg-funnel">
-      <div class="mg" id="fn-metrics"></div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Conversion Funnel</div></div><div class="fn" id="fn-chart"></div></div>
-    </div>
-
-    <!-- CART ABANDON -->
-    <div class="pg" id="pg-cart-abandon">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Cart Abandonment</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Visitor</th><th>Source</th><th>Page</th><th>Time</th><th>Device</th><th></th></tr></thead><tbody id="ca-tbl"></tbody></table></div>
       </div>
     </div>
 
     <!-- SOURCES -->
     <div class="pg" id="pg-sources">
       <div class="cd"><div class="cd-h"><div class="cd-t">Traffic Sources</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Source</th><th>Sessions</th><th>%</th></tr></thead><tbody id="src-tbl"></tbody></table></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Source</th><th>Sessions</th><th>%</th><th>Avg pages</th><th>Avg duration</th></tr></thead><tbody id="st"></tbody></table></div>
       </div>
     </div>
 
-    <!-- CAMPAIGNS -->
-    <div class="pg" id="pg-campaigns">
-      <div class="cd"><div class="cd-h"><div class="cd-t">UTM Campaigns</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campaign</th><th>Source</th><th>Sessions</th></tr></thead><tbody id="cmp-tbl"></tbody></table></div>
+    <!-- PAGES -->
+    <div class="pg" id="pg-pages">
+      <div class="cd"><div class="cd-h"><div class="cd-t">Top landing pages</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Page</th><th>Sessions</th><th>%</th></tr></thead><tbody id="pgt"></tbody></table></div>
       </div>
     </div>
 
-    <!-- PRODUCTS -->
-    <div class="pg" id="pg-products">
-      <div class="cd"><div class="cd-h"><div class="cd-t">Top Pages / Products Visited</div></div>
-        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Page / Product</th><th>Views</th><th>%</th></tr></thead><tbody id="prod-tbl"></tbody></table></div>
+    <!-- FUNNEL -->
+    <div class="pg" id="pg-funnel">
+      <div class="mg" id="fm"></div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Session depth funnel</div></div><div id="fc"></div></div>
+    </div>
+
+    <!-- DEVICES -->
+    <div class="pg" id="pg-devices">
+      <div class="cd"><div class="cd-h"><div class="cd-t">Devices</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Device</th><th>Sessions</th><th>%</th><th>Avg pages</th></tr></thead><tbody id="dt"></tbody></table></div>
       </div>
     </div>
 
-    <!-- QUALITY -->
-    <div class="pg" id="pg-quality">
-      <div class="mg">
-        <div class="mc"><div class="mc-l">Sessions Collection</div><div class="mc-v" id="dq-ss">0</div></div>
-        <div class="mc"><div class="mc-l">Events Collection</div><div class="mc-v" id="dq-ev">0</div></div>
-        <div class="mc"><div class="mc-l">Pageviews Collection</div><div class="mc-v" id="dq-pv">0</div></div>
-        <div class="mc"><div class="mc-l">Orders Collection</div><div class="mc-v" id="dq-or">0</div></div>
-      </div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Tracking Layers</div></div><div id="layers"></div></div>
-    </div>
-
-    <!-- WEBHOOKS -->
-    <div class="pg" id="pg-webhooks">
-      <div class="cd"><div class="cd-h"><div><div class="cd-t">🔧 Webhook Setup</div><div class="cd-sub">See team guide for full instructions</div></div></div>
-        <div class="st-steps">
-          <div class="st-step done"><h4>Firebase Project</h4><p>cnc-website-tracking (asia-south1)</p></div>
-          <div class="st-step done"><h4>Theme.liquid Tracker v2</h4><p>Live — sessions flowing to Firestore</p></div>
-          <div class="st-step done"><h4>Web Pixel Connected</h4><p>CNC Firebase Tracker — checkout events</p></div>
-          <div class="st-step"><h4>⚡ Upgrade to Blaze</h4><p>Firebase Console → Modify plan → Blaze</p></div>
-          <div class="st-step"><h4>Deploy Cloud Function + Create Webhooks</h4><p>See webhook brief document</p></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- DEBUG -->
-    <div class="pg" id="pg-debug">
-      <div class="cd"><div class="cd-h"><div><div class="cd-t">🔧 Firestore Raw Data Inspector</div><div class="cd-sub">Shows actual field names from your database</div></div><button class="btn pri" onclick="runDiag()">Run Diagnostic</button></div>
-        <div id="diag-out"></div>
-      </div>
-      <div class="cd"><div class="cd-h"><div class="cd-t">Collections Found</div></div><div id="coll-list"></div></div>
-    </div>
+    <!-- HEALTH -->
+    <div class="pg" id="pg-health"><div class="cd"><div class="cd-h"><div class="cd-t">System health</div></div><div id="hc"></div></div></div>
 
   </div>
 </div>
 
 <script>
-// ============================================================
-// FIREBASE
-// ============================================================
-const fbCfg={apiKey:"AIzaSyC8YS69F2QLiiPVsHkS_gna7brKVPY4eh4",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"440218345498",appId:"1:440218345498:web:924e301e498637c098f498"};
-let db=null,fbOK=false,RAW_SESSIONS=[],RAW_EVENTS=[],RAW_PV=[];
-try{
-  firebase.initializeApp(fbCfg);db=firebase.firestore();
-  db.collection('sessions').limit(1).get().then(()=>{
-    fbOK=true;$('fb-dot').classList.add('live');$('fb-txt').textContent='Connected';
-    loadAll();
-  }).catch(e=>{
-    $('fb-dot').classList.add('off');$('fb-txt').textContent='Error: '+e.message;
-  });
-}catch(e){$('fb-dot').classList.add('off');$('fb-txt').textContent='Init Error'}
+// ========================================
+// FIREBASE — VERIFIED CONFIG
+// ========================================
+const FC={apiKey:"AIzaSyC8YS69F2QLiiPVsHkS_gna7brKVPY4eh4",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"440218345498",appId:"1:440218345498:web:924e301e498637c098f498"};
+let db,ok=false;
+try{firebase.initializeApp(FC);db=firebase.firestore();ok=true;
+  $('dot').style.background='#22c55e';$('dot').style.boxShadow='0 0 6px #22c55e';$('fbt').textContent='Connected';load();
+}catch(e){$('dot').style.background='#ef4444';$('fbt').textContent='Error'}
 
 function $(id){return document.getElementById(id)}
 
-// ============================================================
-// SMART FIELD READER — tries multiple field names
-// ============================================================
-function F(doc, ...keys){
-  for(const k of keys){if(doc[k]!==undefined&&doc[k]!==null&&doc[k]!=='')return doc[k]}
-  return null;
-}
-function FNum(doc,...keys){const v=F(doc,...keys);return v?Number(v):0}
-function FStr(doc,...keys){const v=F(doc,...keys);return v?String(v):''}
-function FTime(doc,...keys){
-  for(const k of keys){
-    const v=doc[k];if(!v)continue;
-    if(v.toDate)return v.toDate();
-    if(v.seconds)return new Date(v.seconds*1000);
-    if(typeof v==='string')return new Date(v);
-    if(typeof v==='number')return new Date(v);
-  }
-  return null;
-}
+// ========================================
+// VERIFIED FIELD MAP FROM DIAGNOSTIC
+// ========================================
+const F={
+  visitorId:'visitorId',
+  status:'status',
+  referrer:'referrer',
+  utmSource:'utm_source',
+  utmCampaign:'utm_campaign',
+  utmMedium:'utm_medium',
+  currentPage:'landingPage',
+  landingPage:'landingPage',
+  pageCount:'pagesViewed',
+  startTime:'startedAt',
+  lastActivity:'lastActivity',
+  device:'device',
+  fbclid:'fbclid',
+};
 
-// Normalize a session doc into consistent fields
-function normSession(raw){
-  return{
-    _raw:raw, id:raw.id,
-    visitorId:FStr(raw,'visitorId','visitor_id','vid','clientId','client_id'),
-    status:FStr(raw,'status','state'),
-    referrer:FStr(raw,'referrer','referer','referring_site','referringUrl'),
-    utmSource:FStr(raw,'utmSource','utm_source','source','trafficSource'),
-    utmMedium:FStr(raw,'utmMedium','utm_medium','medium'),
-    utmCampaign:FStr(raw,'utmCampaign','utm_campaign','campaign'),
-    currentPage:FStr(raw,'currentPage','current_page','page','lastPage','last_page','landingPage','landing_page','url'),
-    landingPage:FStr(raw,'landingPage','landing_page','entryPage','entry_page','url','currentPage'),
-    pageCount:FNum(raw,'pageCount','page_count','pageViews','pageviews','pages','pagesViewed','totalPages'),
-    cartValue:FNum(raw,'cartValue','cart_value','cartTotal','cart_total'),
-    checkoutStarted:F(raw,'checkoutStarted','checkout_started','inCheckout')||false,
-    purchased:F(raw,'purchased','converted','hasPurchase')||false,
-    orderValue:FNum(raw,'orderValue','order_value','revenue'),
-    startTime:FTime(raw,'startTime','start_time','startedAt','started_at','createdAt','created_at','firstSeen','first_seen','timestamp'),
-    lastActivity:FTime(raw,'lastActivity','last_activity','lastSeen','last_seen','updatedAt','updated_at','lastActive','timestamp'),
-    device:FStr(raw,'device','deviceType','device_type'),
-    userAgent:FStr(raw,'userAgent','user_agent','ua'),
-    channel:FStr(raw,'channel','trafficChannel'),
-    city:FStr(raw,'city','location'),
-    fbclid:FStr(raw,'fbclid','fb_click_id'),
-    gclid:FStr(raw,'gclid','g_click_id'),
-  };
-}
+// Read a field safely
+function g(doc,key){const f=F[key]||key;const v=doc[f];if(v===undefined||v===null)return null;return v}
+function gn(doc,key){const v=g(doc,key);if(v===null||v===undefined)return 0;const n=Number(v);return isNaN(n)?0:n}
+function gs(doc,key){const v=g(doc,key);return v?String(v):''}
+function gt(doc,key){const v=g(doc,key);if(!v)return null;if(v.toDate)try{return v.toDate()}catch(e){return null};if(v.seconds)return new Date(v.seconds*1000);if(typeof v==='string'){const d=new Date(v);return isNaN(d)?null:d};if(typeof v==='number')return new Date(v);return null}
 
-// Derive source label from all available data
-function getSource(s){
-  if(s.utmSource)return s.utmSource;
-  if(s.channel)return s.channel;
-  const r=s.referrer;
-  if(!r||r==='direct'||r==='Direct')return'Direct';
-  if(r.includes('facebook')||r.includes('fb.'))return'Facebook';
-  if(r.includes('instagram'))return'Instagram';
-  if(r.includes('google'))return'Google';
-  if(r.includes('chatgpt')||r.includes('openai'))return'ChatGPT';
-  if(r.includes('tiktok'))return'TikTok';
+// Derive source from referrer URL
+function src(doc){
+  const utm=gs(doc,'utmSource');if(utm)return utm;
+  const r=gs(doc,'referrer');
+  if(!r||r==='direct'||r==='Direct'||r==='(direct)')return'Direct';
+  const rl=r.toLowerCase();
+  if(rl.includes('facebook')||rl.includes('fb.com')||rl.includes('fb.me'))return'Facebook';
+  if(rl.includes('instagram'))return'Instagram';
+  if(rl.includes('google'))return'Google';
+  if(rl.includes('chatgpt')||rl.includes('openai'))return'ChatGPT';
+  if(rl.includes('tiktok'))return'TikTok';
+  if(rl.includes('youtube'))return'YouTube';
   try{return new URL(r).hostname.replace('www.','')}catch(e){return r.slice(0,30)}
 }
 
-// Is session active (seen in last 5 min)?
-function isActive(s){
-  if(s.status==='active')return true;
-  const la=s.lastActivity||s.startTime;
-  if(!la)return false;
+function dur(doc){
+  const s=gt(doc,'startTime'),e=gt(doc,'lastActivity');
+  if(!s)return 0;const end=e||new Date();
+  return Math.max(0,Math.round((end.getTime()-s.getTime())/1000));
+}
+function fmtDur(sec){if(sec<60)return sec+'s';if(sec<3600)return Math.floor(sec/60)+'m '+Math.round(sec%60)+'s';return Math.floor(sec/3600)+'h '+Math.floor((sec%3600)/60)+'m'}
+
+function isActive(doc){
+  if(gs(doc,'status')==='active')return true;
+  const la=gt(doc,'lastActivity');if(!la)return false;
   return(Date.now()-la.getTime())<5*60000;
 }
 
-function getDur(s){
-  const st=s.startTime;if(!st)return 0;
-  const end=s.lastActivity||new Date();
-  return Math.max(0,Math.round((end.getTime()-st.getTime())/1000));
-}
-function fmtDur(sec){if(sec<60)return sec+'s';if(sec<3600)return Math.round(sec/60)+'m';return Math.round(sec/3600)+'h '+Math.round((sec%3600)/60)+'m'}
-
-function getDevice(s){
-  if(s.device)return s.device;
-  const ua=(s.userAgent||'').toLowerCase();
-  if(ua.includes('mobile')||ua.includes('android')||ua.includes('iphone'))return'mobile';
-  if(ua.includes('tablet')||ua.includes('ipad'))return'tablet';
-  if(ua)return'desktop';
-  return'—';
+function srcColor(s){
+  const l=s.toLowerCase();
+  if(l.includes('facebook'))return{bg:'rgba(45,90,240,.12)',c:'#2d5af0'};
+  if(l.includes('google'))return{bg:'rgba(34,197,94,.12)',c:'#22c55e'};
+  if(l.includes('instagram'))return{bg:'rgba(139,92,246,.12)',c:'#8b5cf6'};
+  if(l.includes('direct'))return{bg:'rgba(136,136,160,.12)',c:'#8888a0'};
+  return{bg:'rgba(6,182,212,.12)',c:'#06b6d4'};
 }
 
-function intent(s){
-  if(s.purchased)return{l:'Buyer',c:'tg-g'};
-  if(s.cartValue>0&&s.checkoutStarted)return{l:'Checkout',c:'tg-c'};
-  if(s.cartValue>0)return{l:'Cart',c:'tg-a'};
-  if(s.pageCount>=4)return{l:'Researcher',c:'tg-p'};
-  if(s.pageCount>=2)return{l:'Browsing',c:'tg-b'};
-  return{l:'New',c:'tg-a'};
-}
-
-// ============================================================
+// ========================================
 // NAVIGATION
-// ============================================================
-const pgTitles={dashboard:['Dashboard','Real-time Intelligence'],live:['Live Visitors','All sessions'],deepdive:['Visitor Deep-Dive','Click visitor for journey'],funnel:['Conversion Funnel','Visitor → Purchase'],'cart-abandon':['Cart Abandonment','Added but didn\'t buy'],sources:['Traffic Sources','By source'],campaigns:['Campaigns','UTM campaigns'],products:['Top Pages','Most visited'],quality:['Data Quality','Collection stats'],webhooks:['Webhooks','Setup guide'],debug:['Debug','Firestore raw data inspector']};
+// ========================================
+const titles={dash:['Dashboard','CNC Electric Pakistan'],live:['Live Visitors','All tracked sessions'],deep:['Visitor Deep-Dive','Click any visitor for full journey'],sources:['Traffic Sources','Where visitors come from'],pages:['Top Pages','Most visited landing pages'],funnel:['Funnel','Session depth analysis'],devices:['Devices','Mobile vs desktop'],health:['Health','Tracking system status']};
 
-function nav(pgId){
-  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  const t=$('pg-'+pgId);if(t)t.classList.add('on');
+function nav(p){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  const t=$('pg-'+p);if(t)t.classList.add('on');
   $('ca').scrollTop=0;
-  document.querySelectorAll('.ni,.nsi').forEach(n=>n.classList.remove('on'));
-  document.querySelectorAll('.ngh').forEach(h=>h.classList.remove('ha'));
-  const el=document.querySelector(`[data-pg="${pgId}"]`);
-  if(el){el.classList.add('on');const g=el.closest('.ng');if(g){g.querySelector('.ngh').classList.add('ha');g.classList.add('exp')}}
-  const[tt,ss]=pgTitles[pgId]||['',''];$('pg-title').textContent=tt;$('pg-sub').textContent=ss;
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  const el=document.querySelector(`[data-p="${p}"]`);if(el)el.classList.add('on');
+  const[tt,ss]=titles[p]||['',''];$('pt').textContent=tt;$('ps').textContent=ss;
 }
-
-document.querySelector('.sb').addEventListener('click',function(e){
+document.querySelector('.sb').addEventListener('click',e=>{
   e.preventDefault();e.stopPropagation();
-  const ni=e.target.closest('.ni');if(ni&&ni.dataset.pg){nav(ni.dataset.pg);return}
-  const nsi=e.target.closest('.nsi');if(nsi&&nsi.dataset.pg){nav(nsi.dataset.pg);return}
-  const ngh=e.target.closest('.ngh');if(ngh){const g=ngh.closest('.ng');document.querySelectorAll('.ng').forEach(x=>{if(x!==g)x.classList.remove('exp')});g.classList.toggle('exp')}
+  const ni=e.target.closest('.ni');if(ni&&ni.dataset.p)nav(ni.dataset.p);
 });
-document.addEventListener('click',function(e){
-  const fb=e.target.closest('[data-flt]');
-  if(fb){e.preventDefault();document.querySelectorAll('[data-flt]').forEach(b=>b.classList.remove('pri'));fb.classList.add('pri');filterVL(fb.dataset.flt)}
-});
-document.addEventListener('input',function(e){if(e.target.id==='v-search')searchVL(e.target.value)});
 
-// ============================================================
-// DATA LOADING — reads actual Firestore, normalizes fields
-// ============================================================
-let allSessions=[];
+// ========================================
+// DATA
+// ========================================
+let ALL=[], RAW=[], EVT=[], PV=[];
+let curFilter='all', curSearch='';
 
-function loadAll(){
-  if(!fbOK)return;
-  // Load sessions — get recent ones, no field-specific query that might fail
-  db.collection('sessions').orderBy('lastActivity','desc').limit(200).get()
-    .then(s=>{RAW_SESSIONS=s.docs.map(d=>({id:d.id,...d.data()}));processData()})
-    .catch(()=>{
-      // lastActivity might not exist, try other orderings
-      db.collection('sessions').limit(200).get()
-        .then(s=>{RAW_SESSIONS=s.docs.map(d=>({id:d.id,...d.data()}));processData()})
-        .catch(e=>console.error('Sessions load fail:',e));
-    });
-
+function load(){
+  if(!ok)return;
+  // Load sessions
+  db.collection('sessions').orderBy('lastActivity','desc').limit(500).get().then(s=>{
+    RAW=s.docs.map(d=>({_id:d.id,...d.data()}));
+    ALL=RAW;
+    $('cnt').textContent=ALL.length;
+    render();
+  }).catch(e=>{
+    // Fallback without orderBy
+    db.collection('sessions').limit(500).get().then(s=>{
+      RAW=s.docs.map(d=>({_id:d.id,...d.data()}));ALL=RAW;$('cnt').textContent=ALL.length;render();
+    }).catch(()=>{});
+  });
   // Load events
-  db.collection('events').orderBy('timestamp','desc').limit(100).get()
-    .then(s=>{RAW_EVENTS=s.docs.map(d=>({id:d.id,...d.data()}))})
-    .catch(()=>{});
-
-  // Load pageviews
-  db.collection('pageviews').orderBy('timestamp','desc').limit(100).get()
-    .then(s=>{RAW_PV=s.docs.map(d=>({id:d.id,...d.data()}))})
-    .catch(()=>{});
-
-  // Count collections for data quality
-  ['sessions','events','pageviews','orders'].forEach((c,i)=>{
-    db.collection(c).limit(1).get().then(s=>{
-      const ids=['dq-ss','dq-ev','dq-pv','dq-or'];
-      if(s.empty)$(ids[i]).textContent='empty';
-      else{
-        // Get count — Firestore doesn't have count on free plan, so estimate
-        db.collection(c).get().then(all=>{$(ids[i]).textContent=all.size}).catch(()=>$(ids[i]).textContent='1+');
-      }
-    }).catch(()=>{const ids=['dq-ss','dq-ev','dq-pv','dq-or'];$(ids[i]).textContent='N/A'});
-  });
+  db.collection('events').orderBy('timestamp','desc').limit(100).get().then(s=>{EVT=s.docs.map(d=>d.data());renderFeed()}).catch(()=>{});
+  db.collection('pageviews').orderBy('timestamp','desc').limit(100).get().then(s=>{PV=s.docs.map(d=>d.data());renderFeed()}).catch(()=>{});
 }
 
-function processData(){
-  allSessions=RAW_SESSIONS.map(normSession).sort((a,b)=>{
-    const ta=a.lastActivity||a.startTime||new Date(0);
-    const tb=b.lastActivity||b.startTime||new Date(0);
-    return tb-ta;
-  });
-  renderAll();
-}
-
-function renderAll(){
-  const ss=allSessions;
-  const ac=ss.filter(isActive).length;
-  $('lv-cnt').textContent=ss.length;
+// ========================================
+// RENDER ALL
+// ========================================
+function render(){
+  const ss=ALL;const ac=ss.filter(isActive).length;
+  const avgPg=ss.length?Math.round(ss.reduce((a,d)=>a+gn(d,'pageCount'),0)/ss.length*10)/10:0;
+  const avgDur=ss.length?Math.round(ss.reduce((a,d)=>a+dur(d),0)/ss.length):0;
+  const fbCount=ss.filter(s=>src(s).toLowerCase().includes('facebook')).length;
 
   // Dashboard metrics
-  $('dash-m').innerHTML=`
-    <div class="mc"><div class="mc-l">Total Sessions</div><div class="mc-v" style="color:var(--green)">${ss.length}</div></div>
-    <div class="mc"><div class="mc-l">Active (5min)</div><div class="mc-v">${ac}</div></div>
-    <div class="mc"><div class="mc-l">From Facebook</div><div class="mc-v" style="color:var(--blue)">${ss.filter(s=>getSource(s).toLowerCase().includes('facebook')).length}</div></div>
-    <div class="mc"><div class="mc-l">With Cart</div><div class="mc-v" style="color:var(--amber)">${ss.filter(s=>s.cartValue>0).length}</div></div>`;
+  $('dm').innerHTML=mc('Total sessions',ss.length,'--gn')+mc('Active (5m)',ac,'--cy')+mc('Facebook',fbCount,'--bl')+mc('Avg pages',avgPg,'')+mc('Avg duration',fmtDur(avgDur),'');
 
   // Live metrics
-  $('lv-total').textContent=ss.length;
-  $('lv-active').textContent=ac;
-  $('lv-fb').textContent=ss.filter(s=>{const src=getSource(s).toLowerCase();return src.includes('facebook')||src.includes('fb.')}).length;
-  $('lv-other').textContent=ss.filter(s=>{const src=getSource(s).toLowerCase();return!src.includes('facebook')&&!src.includes('instagram')&&!src.includes('google')}).length;
+  const mobCount=ss.filter(s=>gs(s,'device')==='mobile').length;
+  $('lm').innerHTML=mc('Total',ss.length,'--gn')+mc('Active',ac,'--cy')+mc('Mobile',mobCount,'--pp')+mc('Desktop',ss.length-mobCount,'');
 
-  // Live table (max 10)
-  renderLiveTable(ss.slice(0,10));
-
-  // Visitor list
-  renderVL(ss);
-
-  // Source breakdown
-  renderSources(ss);
-
-  // Feed
-  renderFeed();
-
+  // Build source bar chart
+  renderSrcBar(ss);
+  // Live table
+  renderLiveFilters(ss);
+  renderLiveTable(applyFilters(ss));
+  // Deep dive list
+  renderDeepFilters(ss);
+  renderVList(applyFilters(ss));
+  // Sources page
+  renderSourcesTable(ss);
+  // Pages
+  renderPagesTable(ss);
   // Funnel
   renderFunnel(ss);
-
-  // Products/pages
-  renderProducts(ss);
-
-  // Layers
-  renderLayers();
+  // Devices
+  renderDevicesTable(ss);
+  // Health
+  renderHealth();
 }
 
+function mc(l,v,color){const c=color?`color:var(${color})`:'';return`<div class="mc"><div class="mc-l">${l}</div><div class="mc-v" style="${c}">${v}</div></div>`}
+
+// ========================================
+// FILTERS
+// ========================================
+function buildFilterBtns(containerId,ss){
+  const sources={};ss.forEach(s=>{const k=src(s);sources[k]=(sources[k]||0)+1});
+  const sorted=Object.entries(sources).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  $(containerId).innerHTML=`<div class="f-btn ${curFilter==='all'?'on':''}" onclick="setFilter('all')">All (${ss.length})</div>`+
+    `<div class="f-btn ${curFilter==='active'?'on':''}" onclick="setFilter('active')">Active (${ss.filter(isActive).length})</div>`+
+    sorted.map(([k,v])=>`<div class="f-btn ${curFilter===k?'on':''}" onclick="setFilter('${k.replace(/'/g,'\\\'')}')">${k} (${v})</div>`).join('');
+}
+function renderLiveFilters(ss){buildFilterBtns('lf',ss)}
+function renderDeepFilters(ss){buildFilterBtns('df',ss)}
+
+function setFilter(f){curFilter=f;const ss=applyFilters(ALL);renderLiveTable(ss);renderVList(ss);
+  document.querySelectorAll('.f-btn').forEach(b=>{b.classList.toggle('on',b.textContent.startsWith(f==='all'?'All':f==='active'?'Active':f))});
+}
+
+function applyFilters(ss){
+  let out=ss;
+  if(curFilter==='active')out=out.filter(isActive);
+  else if(curFilter!=='all')out=out.filter(s=>src(s)===curFilter);
+  if(curSearch){const q=curSearch.toLowerCase();out=out.filter(s=>(gs(s,'visitorId')+src(s)+gs(s,'landingPage')).toLowerCase().includes(q))}
+  return out;
+}
+
+$('vs')?.addEventListener('input',e=>{curSearch=e.target.value;renderVList(applyFilters(ALL))});
+
+// ========================================
+// LIVE TABLE (max 15)
+// ========================================
 function renderLiveTable(ss){
-  $('lv-tbl').innerHTML=ss.map(s=>{
-    const src=getSource(s),d=getDur(s),it=intent(s),dev=getDevice(s);
-    return`<tr><td class="mn-font">${(s.visitorId||s.id).slice(0,8)}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${src}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.currentPage||'/'}</td><td class="mn-font">${s.pageCount}</td><td class="mn-font">${fmtDur(d)}</td><td class="mn-font">${s.cartValue?'₨'+s.cartValue.toLocaleString():'—'}</td><td class="mn-font">${dev}</td><td><button class="btn" style="font-size:10px;padding:3px 8px" onclick="event.stopPropagation();viewVis('${s.id}')">View</button></td></tr>`}).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3)">No sessions found</td></tr>';
+  $('lt').innerHTML=ss.slice(0,15).map(s=>{
+    const vid=gs(s,'visitorId')||s._id||'?';const sh=vid.slice(0,8);
+    const sc=src(s);const col=srcColor(sc);
+    const pg=gn(s,'pageCount');const d=dur(s);const dev=gs(s,'device')||'—';
+    const act=isActive(s);const land=gs(s,'landingPage')||'/';
+    return`<tr><td class="m">${sh}</td><td><span class="tg" style="background:${col.bg};color:${col.c}">${sc}</span></td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px" title="${esc(land)}">${esc(shortPath(land))}</td><td class="m">${pg}</td><td class="m">${fmtDur(d)}</td><td class="m">${dev}</td><td><span class="tg" style="background:${act?'rgba(34,197,94,.12)':'rgba(136,136,160,.1)};color:${act?'#22c55e':'#55556a'}">${act?'active':'ended'}</span></td><td><button class="bt" style="font-size:9px;padding:2px 8px" onclick="event.stopPropagation();goDeep('${s._id}')">View</button></td></tr>`
+  }).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3)">No sessions</td></tr>';
 }
 
-function renderSources(ss){
-  const src={};ss.forEach(s=>{const k=getSource(s);src[k]=(src[k]||0)+1});
-  const sorted=Object.entries(src).sort((a,b)=>b[1]-a[1]);
+function shortPath(url){
+  try{const u=new URL(url);return u.pathname}catch(e){if(url.startsWith('/'))return url;if(url.startsWith('http'))try{return new URL(url).pathname}catch(e2){};return url.slice(0,40)}
+}
+
+// ========================================
+// SOURCE BAR
+// ========================================
+function renderSrcBar(ss){
+  const sources={};ss.forEach(s=>{const k=src(s);sources[k]=(sources[k]||0)+1});
+  const sorted=Object.entries(sources).sort((a,b)=>b[1]-a[1]).slice(0,8);
   const max=sorted[0]?sorted[0][1]:1;
-  $('src-bk').innerHTML=sorted.slice(0,8).map(([k,v])=>{
-    const pct=Math.round(v/ss.length*100);
-    const col=k.toLowerCase().includes('facebook')?'var(--blue)':k.toLowerCase().includes('google')?'var(--green)':k.toLowerCase().includes('instagram')?'var(--purple)':'var(--amber)';
-    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:11px;width:120px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k}</span><div style="flex:1;height:22px;background:var(--bg1);border-radius:3px;overflow:hidden"><div style="height:100%;width:${Math.round(v/max*100)}%;background:${col};border-radius:3px;opacity:.7"></div></div><span class="mn-font" style="width:50px;text-align:right">${v} (${pct}%)</span></div>`}).join('');
-
-  // Sources table
-  $('src-tbl').innerHTML=sorted.map(([k,v])=>`<tr><td>${k}</td><td class="mn-font">${v}</td><td class="mn-font">${Math.round(v/ss.length*100)}%</td></tr>`).join('');
-
-  // Campaigns table
-  const camps={};ss.forEach(s=>{if(s.utmCampaign){const key=s.utmCampaign;if(!camps[key])camps[key]={src:getSource(s),n:0};camps[key].n++}});
-  $('cmp-tbl').innerHTML=Object.entries(camps).sort((a,b)=>b[1].n-a[1].n).map(([k,v])=>`<tr><td>${k}</td><td>${v.src}</td><td class="mn-font">${v.n}</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--t3)">No UTM campaigns detected yet</td></tr>';
+  $('srcB').innerHTML=sorted.map(([k,v])=>{
+    const col=srcColor(k);const pct=Math.round(v/ss.length*100);
+    return`<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:10px;width:100px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(k)}</span><div style="flex:1;height:20px;background:var(--bg1);border-radius:3px;overflow:hidden"><div style="height:100%;width:${Math.round(v/max*100)}%;background:${col.c};border-radius:3px;opacity:.6"></div></div><span class="m" style="width:55px;text-align:right">${v} (${pct}%)</span></div>`
+  }).join('');
 }
 
+// ========================================
+// FEED
+// ========================================
 function renderFeed(){
-  const evts=[...RAW_EVENTS,...RAW_PV].sort((a,b)=>{
-    const ta=FTime(a,'timestamp')||new Date(0);const tb=FTime(b,'timestamp')||new Date(0);return tb-ta;
-  }).slice(0,30);
-  const icons={page_view:'📄',product_viewed:'👁️',product_added_to_cart:'🛒',checkout_started:'💳',purchase:'✅',search_submitted:'🔍',pageview:'📄'};
-  $('feed').innerHTML=evts.length?evts.map(e=>{
-    const name=FStr(e,'event_name','eventName','type','event')||'pageview';
-    const t=FTime(e,'timestamp','created_at');const ts=t?t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
-    const url=FStr(e,'page_url','url','page','path');const title=FStr(e,'product_title','title');
-    return`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="font-size:14px">${icons[name]||'📌'}</span><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:500">${name.replace(/_/g,' ')}</div><div style="font-size:10px;color:var(--t3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${url||title||''}</div></div><span style="font-size:9px;color:var(--t3);font-family:var(--fm)">${ts}</span></div>`}).join(''):'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">No events in events/pageviews collections</div>';
+  const all=[...EVT.map(e=>({...e,_src:'event'})),...PV.map(e=>({...e,_src:'pageview'}))].sort((a,b)=>{
+    const ta=toDate(a.timestamp),tb=toDate(b.timestamp);return(tb||0)-(ta||0)}).slice(0,25);
+  const icons={page_view:'\u{1F4C4}',product_viewed:'\u{1F441}',product_added_to_cart:'\u{1F6D2}',checkout_started:'\u{1F4B3}',purchase:'\u2705',search_submitted:'\u{1F50D}',pageview:'\u{1F4C4}'};
+  $('feed').innerHTML=all.length?all.map(e=>{
+    const name=e.event_name||e.eventName||e.type||'pageview';
+    const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
+    const url=e.page_url||e.url||e.page||e.path||'';const title=e.product_title||e.title||'';
+    return`<div style="display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03)"><span style="font-size:13px">${icons[name]||'\u{1F4CC}'}</span><div style="flex:1;min-width:0"><div style="font-size:10px;font-weight:500">${name.replace(/_/g,' ')}</div><div style="font-size:9px;color:var(--t3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(url||title)}</div></div><span style="font-size:9px;color:var(--t3);font-family:var(--fm)">${ts}</span></div>`
+  }).join(''):'<div style="padding:12px;text-align:center;color:var(--t3);font-size:11px">No events yet</div>';
 }
 
+function toDate(v){if(!v)return null;if(v.toDate)try{return v.toDate()}catch(e){return null};if(v.seconds)return new Date(v.seconds*1000);if(typeof v==='string')return new Date(v);if(typeof v==='number')return new Date(v);return null}
+
+// ========================================
+// SOURCES TABLE
+// ========================================
+function renderSourcesTable(ss){
+  const sources={};ss.forEach(s=>{const k=src(s);if(!sources[k])sources[k]={n:0,pg:0,dur:0};sources[k].n++;sources[k].pg+=gn(s,'pageCount');sources[k].dur+=dur(s)});
+  const sorted=Object.entries(sources).sort((a,b)=>b[1].n-a[1].n);
+  $('st').innerHTML=sorted.map(([k,v])=>{const col=srcColor(k);
+    return`<tr><td><span class="tg" style="background:${col.bg};color:${col.c}">${esc(k)}</span></td><td class="m">${v.n}</td><td class="m">${Math.round(v.n/ss.length*100)}%</td><td class="m">${(v.pg/v.n).toFixed(1)}</td><td class="m">${fmtDur(Math.round(v.dur/v.n))}</td></tr>`}).join('');
+}
+
+// ========================================
+// PAGES TABLE
+// ========================================
+function renderPagesTable(ss){
+  const pages={};ss.forEach(s=>{const p=gs(s,'landingPage');if(p)pages[p]=(pages[p]||0)+1});
+  const sorted=Object.entries(pages).sort((a,b)=>b[1]-a[1]).slice(0,20);
+  $('pgt').innerHTML=sorted.map(([p,n])=>`<tr><td style="max-width:350px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px" title="${esc(p)}">${esc(shortPath(p))}</td><td class="m">${n}</td><td class="m">${Math.round(n/ss.length*100)}%</td></tr>`).join('');
+}
+
+// ========================================
+// FUNNEL
+// ========================================
 function renderFunnel(ss){
-  const tot=ss.length;
-  const withPages=ss.filter(s=>s.pageCount>0).length;
-  const withCart=ss.filter(s=>s.cartValue>0).length;
-  const withCheckout=ss.filter(s=>s.checkoutStarted).length;
-  const purchased=ss.filter(s=>s.purchased).length;
-  $('fn-metrics').innerHTML=`
-    <div class="mc"><div class="mc-l">Sessions</div><div class="mc-v">${tot}</div></div>
-    <div class="mc"><div class="mc-l">Browsed Pages</div><div class="mc-v">${withPages}</div></div>
-    <div class="mc"><div class="mc-l">Added to Cart</div><div class="mc-v" style="color:var(--amber)">${withCart}</div></div>
-    <div class="mc"><div class="mc-l">Purchased</div><div class="mc-v" style="color:var(--green)">${purchased}</div></div>`;
-  const steps=[{l:'Sessions',n:tot,c:'var(--blue)'},{l:'Viewed Pages',n:withPages||tot,c:'var(--purple)'},{l:'Added to Cart',n:withCart,c:'var(--amber)'},{l:'Checkout',n:withCheckout,c:'var(--cyan)'},{l:'Purchase',n:purchased,c:'var(--green)'}];
+  const total=ss.length;
+  const viewed=ss.filter(s=>gn(s,'pageCount')>0).length;
+  const multi=ss.filter(s=>gn(s,'pageCount')>=2).length;
+  const deep=ss.filter(s=>gn(s,'pageCount')>=3).length;
+  const engaged=ss.filter(s=>gn(s,'pageCount')>=5).length;
+
+  $('fm').innerHTML=mc('Total sessions',total,'')+mc('Viewed 1+ page',viewed,'--gn')+mc('2+ pages',multi,'--bl')+mc('5+ pages (engaged)',engaged,'--pp');
+
+  const steps=[{l:'All sessions',n:total,c:'var(--bl)'},{l:'1+ page',n:viewed,c:'var(--gn)'},{l:'2+ pages',n:multi,c:'var(--cy)'},{l:'3+ pages',n:deep,c:'var(--pp)'},{l:'5+ pages',n:engaged,c:'var(--am)'}];
   const mx=steps[0].n||1;
-  $('fn-chart').innerHTML=steps.map((s,i)=>{const pct=Math.round(s.n/mx*100);return`<div class="fn-s"><div class="fn-lbl">${s.l}</div><div class="fn-bar" style="width:${Math.max(pct,5)}%;background:${s.c}">${s.n}</div><div class="fn-val">${pct}%</div></div>`}).join('');
+  $('fc').innerHTML=steps.map(s=>`<div class="fn-s"><div class="fn-l">${s.l}</div><div class="fn-b" style="width:${Math.max(Math.round(s.n/mx*100),5)}%;background:${s.c}">${s.n}</div><div class="fn-v">${Math.round(s.n/mx*100)}%</div></div>`).join('');
 }
 
-function renderProducts(ss){
-  const pages={};ss.forEach(s=>{const p=s.currentPage||s.landingPage;if(p&&p!=='/'){pages[p]=(pages[p]||0)+1}});
-  const sorted=Object.entries(pages).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  $('prod-tbl').innerHTML=sorted.map(([p,n])=>`<tr><td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p}</td><td class="mn-font">${n}</td><td class="mn-font">${Math.round(n/ss.length*100)}%</td></tr>`).join('')||'<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--t3)">No page data</td></tr>';
+// ========================================
+// DEVICES TABLE
+// ========================================
+function renderDevicesTable(ss){
+  const devs={};ss.forEach(s=>{const d=gs(s,'device')||'unknown';devs[d]=(devs[d]||{n:0,pg:0});devs[d].n++;devs[d].pg+=gn(s,'pageCount')});
+  const sorted=Object.entries(devs).sort((a,b)=>b[1].n-a[1].n);
+  $('dt').innerHTML=sorted.map(([k,v])=>`<tr><td>${k}</td><td class="m">${v.n}</td><td class="m">${Math.round(v.n/ss.length*100)}%</td><td class="m">${(v.pg/v.n).toFixed(1)}</td></tr>`).join('');
 }
 
-function renderLayers(){
-  $('layers').innerHTML=[
-    ['✅','Layer 1 — theme.liquid v2','Sessions flowing to Firestore'],
-    ['✅','Layer 2 — Web Pixel','Checkout events'],
-    [RAW_SESSIONS.some(s=>s.note_attributes||s.orderId)?'✅':'❌','Layer 3 — Webhooks','Order/purchase tracking'],
-    [allSessions.some(s=>s.purchased)?'✅':'⚠️','Layer 4 — Session Stitching','Visitor→Purchase linking'],
-  ].map(([i,t,d])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:5px"><span style="font-size:16px">${i}</span><span style="font-size:12px;font-weight:500">${t}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${d}</span></div>`).join('');
-}
-
-// ============================================================
-// VISITOR LIST + DEEP-DIVE
-// ============================================================
-let curFlt='all';
-function renderVL(vis){
-  const list=vis.slice(0,15);
-  $('vl-body').innerHTML=list.map(v=>{
-    const sh=(v.visitorId||v.id).slice(0,8),src=getSource(v),d=getDur(v),
-      cols=['#2d5af0','#8b5cf6','#06b6d4','#22c55e','#f59e0b','#ef4444'],col=cols[sh.charCodeAt(0)%cols.length],
-      act=isActive(v)?'ac':'en',sel=selId===v.id?'sel':'';
-    return`<div class="vr ${sel}" onclick="selVis('${v.id}')"><div class="vr-dot ${act}"></div><div class="vr-av" style="background:${col}20;color:${col}">${sh.slice(0,2).toUpperCase()}</div><div class="vr-info"><div class="vr-name">${sh}…</div><div class="vr-meta"><span>${src}</span><span>${v.pageCount}pg</span><span>${fmtDur(d)}</span>${v.cartValue>0?`<span style="color:var(--amber)">₨${v.cartValue.toLocaleString()}</span>`:''}</div></div></div>`
-  }).join('')+(vis.length>15?`<div style="padding:8px 14px;text-align:center;font-size:10px;color:var(--t3)">${vis.length-15} more…</div>`:'');
-}
-
-function searchVL(q){const f=allSessions.filter(v=>((v.visitorId||v.id)+getSource(v)+(v.currentPage||'')).toLowerCase().includes(q.toLowerCase()));renderVL(applyFlt(f))}
-function filterVL(flt){curFlt=flt;renderVL(applyFlt(allSessions))}
-function applyFlt(arr){
-  if(curFlt==='fb')return arr.filter(v=>getSource(v).toLowerCase().includes('facebook'));
-  if(curFlt==='cart')return arr.filter(v=>v.cartValue>0);
-  return arr;
-}
-
+// ========================================
+// DEEP DIVE
+// ========================================
 let selId=null;
-function viewVis(id){nav('deepdive');setTimeout(()=>selVis(id),50)}
 
-function selVis(sid){
-  selId=sid;renderVL(applyFlt(allSessions));
-  const s=allSessions.find(v=>v.id===sid);if(!s)return;
-  $('jp-h').style.display='flex';
-  const sh=(s.visitorId||s.id).slice(0,8),src=getSource(s),it=intent(s);
-  $('jp-name').textContent='Visitor '+sh+'…';
-  $('jp-meta').textContent=src+' • '+(s.startTime?s.startTime.toLocaleString():'—');
-  $('jp-badges').innerHTML=`<span class="tg ${it.c}">${it.l}</span><span class="tg tg-b">${s.pageCount} pages</span>${s.cartValue>0?`<span class="tg tg-a">₨${s.cartValue.toLocaleString()}</span>`:''}`;
+function renderVList(ss){
+  $('vb').innerHTML=ss.slice(0,20).map(s=>{
+    const vid=gs(s,'visitorId')||s._id||'?';const sh=vid.slice(0,8);
+    const sc=src(s);const pg=gn(s,'pageCount');const d=dur(s);const act=isActive(s);
+    const cols=['#2d5af0','#8b5cf6','#06b6d4','#22c55e','#f59e0b','#ef4444'];
+    const col=cols[sh.charCodeAt(0)%cols.length];const sel=selId===s._id?'sel':'';
+    return`<div class="vr ${sel}" onclick="selVis('${s._id}')"><div class="vr-d" style="background:${act?'var(--gn)':'var(--t3)'}${act?';box-shadow:0 0 4px var(--gn)':''}"></div><div class="vr-a" style="background:${col}18;color:${col}">${sh.slice(0,2).toUpperCase()}</div><div><div class="vr-n">${sh}…</div><div class="vr-m"><span>${sc}</span><span>${pg}pg</span><span>${fmtDur(d)}</span></div></div></div>`
+  }).join('')+(ss.length>20?`<div style="padding:8px;text-align:center;font-size:10px;color:var(--t3)">${ss.length-20} more…</div>`:'')
+  ||'<div class="empty"><h3>No visitors</h3></div>';
+}
 
-  // Show journey + RAW DATA
-  let h=`<div class="j-scores"><div class="sc"><div class="sv">${s.pageCount}</div><div class="sl">Pages</div></div><div class="sc"><div class="sv">${fmtDur(getDur(s))}</div><div class="sl">Duration</div></div><div class="sc"><div class="sv">${getDevice(s)}</div><div class="sl">Device</div></div><div class="sc"><div class="sv">${isActive(s)?'🟢':'⚪'}</div><div class="sl">Status</div></div></div>`;
+function goDeep(id){nav('deep');setTimeout(()=>selVis(id),50)}
 
-  // Timeline from session
-  h+=`<div style="font-size:10px;margin-bottom:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Journey</div><div class="tl">`;
-  h+=`<div class="tl-ev"><div class="tl-dot dpg"></div><div class="tl-time">${s.startTime?s.startTime.toLocaleTimeString():'—'}</div><div class="tl-title">Session Started</div><div class="tl-det">Source: <span>${src}</span> • Landing: <span>${s.landingPage||s.currentPage||'/'}</span>${s.utmCampaign?'<br>Campaign: <span>'+s.utmCampaign+'</span>':''}${s.fbclid?'<br>fbclid: <span>'+s.fbclid.slice(0,20)+'…</span>':''}</div></div>`;
-  if(s.pageCount>1)h+=`<div class="tl-ev"><div class="tl-dot dpg"></div><div class="tl-time">+</div><div class="tl-title">Browsed ${s.pageCount} pages</div><div class="tl-det">Last page: <span>${s.currentPage||'—'}</span></div></div>`;
-  if(s.cartValue>0)h+=`<div class="tl-ev"><div class="tl-dot dct"></div><div class="tl-time">+</div><div class="tl-title">Cart Active</div><div class="tl-det">Value: <span>₨${s.cartValue.toLocaleString()}</span></div></div>`;
-  if(s.checkoutStarted)h+=`<div class="tl-ev"><div class="tl-dot dck"></div><div class="tl-time">+</div><div class="tl-title">Checkout</div><div class="tl-det">In checkout flow</div></div>`;
-  if(s.purchased)h+=`<div class="tl-ev"><div class="tl-dot dpu"></div><div class="tl-time">+</div><div class="tl-title">🎉 Purchased!</div><div class="tl-det">₨${s.orderValue.toLocaleString()}</div></div>`;
-  h+=`</div>`;
+function selVis(id){
+  selId=id;renderVList(applyFilters(ALL));
+  const s=RAW.find(d=>d._id===id);if(!s)return;
+  $('jh').style.display='flex';
+  const vid=gs(s,'visitorId')||s._id;const sh=vid.slice(0,8);const sc=src(s);
+  const st=gt(s,'startTime');const pg=gn(s,'pageCount');const d=dur(s);const dev=gs(s,'device')||'—';
+  $('jn').textContent='Visitor '+sh+'…';
+  $('jm').textContent=sc+' • '+(st?st.toLocaleString():'—')+' • '+dev;
+  $('jb').innerHTML=`<span class="tg" style="background:${isActive(s)?'rgba(34,197,94,.12)':'rgba(136,136,160,.1)};color:${isActive(s)?'#22c55e':'#55556a'}">${isActive(s)?'active':'ended'}</span><span class="tg" style="background:rgba(45,90,240,.12);color:#2d5af0">${pg} pages</span>`;
 
-  // RAW DATA — this is key for debugging
-  h+=`<div style="font-size:10px;margin:16px 0 8px;color:var(--amber);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📦 Raw Firestore Data</div>`;
-  h+=`<div class="dbg">${JSON.stringify(s._raw,null,2)}</div>`;
+  let h=`<div class="sc-g"><div class="sc"><div class="sc-v">${pg}</div><div class="sc-l">Pages</div></div><div class="sc"><div class="sc-v">${fmtDur(d)}</div><div class="sc-l">Duration</div></div><div class="sc"><div class="sc-v">${dev}</div><div class="sc-l">Device</div></div><div class="sc"><div class="sc-v">${isActive(s)?'\u{1F7E2}':'\u26AA'}</div><div class="sc-l">Status</div></div></div>`;
 
-  $('jp-body').innerHTML=h;
+  // Timeline
+  h+=`<div style="font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:8px">Journey</div><div class="tl">`;
+  h+=`<div class="te"><div class="td" style="background:var(--bl)"></div><div class="tt">${st?st.toLocaleTimeString():''}</div><div class="tn">Session started</div><div class="tx">Source: <b>${esc(sc)}</b> • Landing: <b>${esc(shortPath(gs(s,'landingPage')))}</b>${gs(s,'utmCampaign')?'<br>Campaign: <b>'+esc(gs(s,'utmCampaign'))+'</b>':''}${gs(s,'fbclid')?'<br>fbclid: <b>'+esc(gs(s,'fbclid').slice(0,25))+'…</b>':''}</div></div>`;
+  if(pg>1)h+=`<div class="te"><div class="td" style="background:var(--pp)"></div><div class="tt">+</div><div class="tn">Browsed ${pg} pages</div><div class="tx">Last seen on: <b>${esc(shortPath(gs(s,'landingPage')))}</b></div></div>`;
 
-  // Also load events for this session
-  if(fbOK){
-    db.collection('events').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get()
-      .then(snap=>{if(snap.size>0){
-        let evH=`<div style="font-size:10px;margin:12px 0 8px;color:var(--cyan);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📋 Events for this session (${snap.size})</div><div class="dbg">`;
-        snap.docs.forEach(d=>{const e=d.data();evH+=JSON.stringify(e,null,2)+'\n---\n'});
-        evH+='</div>';$('jp-body').innerHTML+= evH;
-      }}).catch(()=>{});
-    db.collection('pageviews').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get()
-      .then(snap=>{if(snap.size>0){
-        let pvH=`<div style="font-size:10px;margin:12px 0 8px;color:var(--green);text-transform:uppercase;letter-spacing:.5px;font-weight:600">📄 Pageviews for this session (${snap.size})</div><div class="dbg">`;
-        snap.docs.forEach(d=>{const e=d.data();pvH+=JSON.stringify(e,null,2)+'\n---\n'});
-        pvH+='</div>';$('jp-body').innerHTML+= pvH;
-      }}).catch(()=>{});
+  const la=gt(s,'lastActivity');
+  if(la)h+=`<div class="te"><div class="td" style="background:var(--t3)"></div><div class="tt">${la.toLocaleTimeString()}</div><div class="tn">${isActive(s)?'Still active':'Session ended'}</div><div class="tx">Duration: <b>${fmtDur(d)}</b></div></div>`;
+  h+='</div>';
+
+  // Raw Firestore data
+  h+=`<div style="font-size:9px;color:var(--am);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Raw Firestore document</div>`;
+  const raw={...s};delete raw._id;
+  h+=`<div class="raw">${esc(JSON.stringify(raw,null,2))}</div>`;
+
+  $('jj').innerHTML=h;
+
+  // Load events for this session
+  if(ok){
+    const sid=s._id;
+    db.collection('events').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get().then(snap=>{
+      if(snap.size>0){
+        let eh=`<div style="font-size:9px;color:var(--cy);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Events (${snap.size})</div><div class="tl">`;
+        snap.docs.forEach(d=>{
+          const e=d.data();const name=e.event_name||e.type||'event';
+          const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString():'';
+          const url=e.page_url||e.url||'';const title=e.product_title||'';
+          const dotC=name.includes('product')?'var(--pp)':name.includes('cart')?'var(--am)':name.includes('checkout')?'var(--cy)':name.includes('purchase')?'var(--gn)':'var(--bl)';
+          eh+=`<div class="te"><div class="td" style="background:${dotC}"></div><div class="tt">${ts}</div><div class="tn">${name.replace(/_/g,' ')}</div><div class="tx">${esc(url||title)}</div></div>`;
+        });
+        eh+='</div>';$('jj').innerHTML+=eh;
+      }
+    }).catch(()=>{});
+    db.collection('pageviews').where('sessionId','==',sid).orderBy('timestamp','asc').limit(50).get().then(snap=>{
+      if(snap.size>0){
+        let ph=`<div style="font-size:9px;color:var(--gn);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Pageviews (${snap.size})</div><div class="tl">`;
+        snap.docs.forEach(d=>{
+          const e=d.data();const t=toDate(e.timestamp);const ts=t?t.toLocaleTimeString():'';
+          const url=e.url||e.page||e.path||'';
+          ph+=`<div class="te"><div class="td" style="background:var(--gn)"></div><div class="tt">${ts}</div><div class="tn">Page view</div><div class="tx"><b>${esc(url)}</b></div></div>`;
+        });
+        ph+='</div>';$('jj').innerHTML+=ph;
+      }
+    }).catch(()=>{});
   }
 }
 
-// ============================================================
-// DIAGNOSTIC
-// ============================================================
-function runDiag(){
-  if(!fbOK){$('diag-out').innerHTML='<div class="dbg">Firebase not connected</div>';return}
-  $('diag-out').innerHTML='<div class="spin"></div>';
-  let out='';
-
-  const collections=['sessions','events','pageviews','orders','webhook_events','cart_token_index','abandoned_checkouts','customer_ltv'];
-  let done=0;
-  const results={};
-
-  collections.forEach(coll=>{
-    db.collection(coll).limit(2).get().then(snap=>{
-      results[coll]={exists:!snap.empty,count:snap.size,docs:snap.docs.map(d=>({id:d.id,...d.data()}))};
-    }).catch(e=>{
-      results[coll]={exists:false,error:e.message};
-    }).finally(()=>{
-      done++;
-      if(done===collections.length){
-        let html='';
-        for(const[c,r]of Object.entries(results)){
-          html+=`<div class="dbg"><div class="dbg-title">Collection: ${c} ${r.exists?'✅':'❌'}</div>`;
-          if(r.error)html+=`Error: ${r.error}\n`;
-          else if(r.docs&&r.docs.length>0){
-            html+=`Documents found: ${r.count}\n\nSample doc fields:\n`;
-            const doc=r.docs[0];
-            const fields=Object.keys(doc).filter(k=>k!=='id');
-            fields.forEach(f=>{
-              const v=doc[f];
-              const type=v===null?'null':Array.isArray(v)?'array':typeof v==='object'&&v.seconds?'timestamp':typeof v;
-              const preview=type==='timestamp'?new Date(v.seconds*1000).toISOString():type==='object'?JSON.stringify(v).slice(0,80):String(v).slice(0,80);
-              html+=`  ${f}: (${type}) ${preview}\n`;
-            });
-            html+='\nFull JSON:\n'+JSON.stringify(doc,null,2);
-          }else html+='Collection is empty';
-          html+=`</div>`;
-        }
-        $('diag-out').innerHTML=html;
-
-        // Collection list
-        $('coll-list').innerHTML=Object.entries(results).map(([c,r])=>`<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg1);border-radius:5px;margin-bottom:5px"><span style="font-size:16px">${r.exists?'✅':'❌'}</span><span style="font-size:12px;font-weight:500">${c}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${r.exists?r.count+' docs sampled':(r.error||'empty')}</span></div>`).join('');
-      }
-    });
-  });
+// ========================================
+// HEALTH
+// ========================================
+function renderHealth(){
+  const checks=[
+    [RAW.length>0,'Sessions collection',''+RAW.length+' documents'],
+    [EVT.length>0,'Events collection',EVT.length?EVT.length+' events':'empty'],
+    [PV.length>0,'Pageviews collection',PV.length?PV.length+' pageviews':'empty'],
+    [RAW.some(s=>s[F.visitorId]),'Visitor IDs present','visitorId field'],
+    [RAW.some(s=>s[F.referrer]),'Referrer tracking','referrer field'],
+    [RAW.some(s=>s[F.utmSource]),'UTM source tracking','utm_source field'],
+    [RAW.some(s=>s[F.device]),'Device detection','device field'],
+    [RAW.some(s=>s[F.pageCount]>0),'Page count tracking','pagesViewed field'],
+    [RAW.some(s=>s[F.fbclid]),'Facebook click ID','fbclid field'],
+    [false,'Webhook purchase tracking','Not set up yet — see webhook guide'],
+    [false,'Cart value tracking','Needs webhook layer'],
+  ];
+  $('hc').innerHTML=checks.map(([ok,label,detail])=>`<div style="display:flex;align-items:center;gap:8px;padding:7px;background:var(--bg1);border-radius:5px;margin-bottom:4px"><span style="font-size:14px">${ok?'\u2705':'\u274C'}</span><span style="font-size:11px;font-weight:500">${label}</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">${detail}</span></div>`).join('');
 }
 
-function refreshAll(){if(fbOK)loadAll()}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 </script>
 </body>
 </html>
