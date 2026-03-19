@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Electric — Chatbot Monitor</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#f5f6f8;--card:#fff;--card2:#f8f9fb;--border:#e2e5ea;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--red:#e60012;--green:#16a34a;--blue:#2563eb;--amber:#d97706;--purple:#7c3aed;--cyan:#0891b2;--shadow:0 1px 4px rgba(0,0,0,.06);--r:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;-webkit-font-smoothing:antialiased}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:12px}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr img{height:32px;border-radius:6px}
+.hdr-title{font-size:16px;font-weight:800;color:var(--red)}
+.hdr-sub{font-size:11px;color:var(--text3)}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:5px;padding:5px 12px;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.2);border-radius:16px;font-size:11px;color:var(--green);font-weight:600}
+.live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;border:1px solid var(--border);background:#fff;color:var(--text2);cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--card2)}
+.fs{padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:12px;font-family:inherit;color:var(--text);background:#fff}
+.main{max-width:1400px;margin:0 auto;padding:20px 24px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.sc{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow)}
+.sc-l{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.sc-v{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:-.03em}
+.sc-s{font-size:11px;color:var(--text3);margin-top:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:768px){.g2,.g3{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:16px;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.pt{font-size:14px;font-weight:700}
+.pb{font-size:10px;padding:3px 8px;border-radius:12px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.pp{padding:16px 18px;max-height:500px;overflow-y:auto}
+.pp.ns{max-height:none}
+.chart-c{position:relative;height:220px}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px}
+.badge{font-size:10px;padding:3px 7px;border-radius:5px;font-weight:600;display:inline-block}
+.b-user{background:rgba(230,0,18,.08);color:var(--red)}
+.b-bot{background:rgba(37,99,235,.08);color:var(--blue)}
+.b-mob{background:rgba(124,58,237,.08);color:var(--purple)}
+.b-desk{background:rgba(37,99,235,.08);color:var(--blue)}
+
+/* Conversation card */
+.conv{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px}
+.conv-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.conv-vid{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)}
+.conv-page{font-size:11px;color:var(--text3);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.conv-time{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.conv-msg{padding:6px 0;border-bottom:1px solid rgba(0,0,0,.04)}
+.conv-msg:last-child{border:none}
+.conv-role{font-size:10px;font-weight:700;margin-bottom:2px}
+.conv-text{font-size:13px;line-height:1.5;color:var(--text)}
+
+/* Live bubble */
+.live-msg{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.live-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.live-text{font-size:13px;line-height:1.4}
+.live-meta{font-size:10px;color:var(--text3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+.empty{text-align:center;padding:32px;color:var(--text3)}
+.empty-i{font-size:32px;opacity:.3;margin-bottom:8px}
+dt{width:100%;border-collapse:collapse;font-size:13px}
+dt th{text-align:left;padding:8px 10px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border);background:var(--card2)}
+dt td{padding:8px 10px;border-bottom:1px solid var(--border)}
+dt tr:hover td{background:var(--card2)}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+<div class="hdr-left">
+<img src="https://raw.githubusercontent.com/muddasirwaheed2017-beep/dailyreport/main/CNC-Electric-Pakistan-Logo-PNG.png" alt="CNC" onerror="this.style.display='none'">
+<div><div class="hdr-title">Chatbot Monitor</div><div class="hdr-sub">CNC Electric · v1.0</div></div>
+</div>
+<div class="hdr-right">
+<select class="fs" id="fPeriod" onchange="processData()">
+<option value="1h">1 Hour</option><option value="3h">3 Hours</option><option value="6h">6 Hours</option>
+<option value="24h" selected>24 Hours</option><option value="7d">7 Days</option><option value="30d">30 Days</option><option value="all">All Time</option>
+</select>
+<div class="live"><div class="live-dot"></div><span id="statusText">Connecting...</span></div>
+<button class="btn" onclick="exportChatCSV()">📊 CSV</button>
+</div>
+</div>
+
+<div class="main">
+
+<!-- Stats -->
+<div class="stats">
+<div class="sc"><div class="sc-l">Total Conversations</div><div class="sc-v" style="color:var(--blue)" id="mConvs">0</div><div class="sc-s">Unique visitors who chatted</div></div>
+<div class="sc"><div class="sc-l">Messages</div><div class="sc-v" style="color:var(--purple)" id="mMsgs">0</div><div class="sc-s">Questions + Responses</div></div>
+<div class="sc"><div class="sc-l">Questions Asked</div><div class="sc-v" style="color:var(--red)" id="mQuestions">0</div><div class="sc-s">User messages only</div></div>
+<div class="sc"><div class="sc-l">Avg Turns</div><div class="sc-v" style="color:var(--amber)" id="mAvgTurns">0</div><div class="sc-s">Messages per conversation</div></div>
+<div class="sc"><div class="sc-l">Active Pages</div><div class="sc-v" style="color:var(--cyan)" id="mPages">0</div><div class="sc-s">Pages where chat was used</div></div>
+<div class="sc"><div class="sc-l">Mobile %</div><div class="sc-v" style="color:var(--purple)" id="mMobile">0%</div><div class="sc-s">Mobile chat usage</div></div>
+</div>
+
+<!-- Charts + Live Feed -->
+<div class="g3">
+<div class="panel"><div class="ph"><div class="pt">⚡ Live Chat Feed</div><div class="pb" style="background:rgba(22,163,74,.08);color:var(--green)">REAL-TIME</div></div>
+<div class="pp" style="max-height:450px" id="liveFeed"><div class="empty"><div class="empty-i">💬</div><div>Waiting for chat messages...</div></div></div></div>
+
+<div>
+<div class="panel"><div class="ph"><div class="pt">Hourly Chat Activity</div></div><div class="pp ns"><div class="chart-c"><canvas id="chHourly"></canvas></div></div></div>
+<div class="panel"><div class="ph"><div class="pt">Chat by Page</div></div><div class="pp ns"><div class="chart-c"><canvas id="chPages"></canvas></div></div></div>
+</div>
+</div>
+
+<!-- Conversations -->
+<div class="panel"><div class="ph"><div class="pt">All Conversations</div><div class="pb" style="background:rgba(37,99,235,.08);color:var(--blue)" id="convCount">0</div></div>
+<div class="pp" style="max-height:600px" id="convList"><div class="empty"><div class="empty-i">💬</div><div>No conversations yet</div></div></div></div>
+
+<!-- Top Questions -->
+<div class="g2">
+<div class="panel"><div class="ph"><div class="pt">Most Asked Questions</div></div>
+<div class="pp" style="max-height:350px" id="topQuestions"><div class="empty">Loading...</div></div></div>
+
+<div class="panel"><div class="ph"><div class="pt">Products Mentioned</div></div>
+<div class="pp" style="max-height:350px" id="productsMentioned"><div class="empty">Loading...</div></div></div>
+</div>
+
+<!-- Page Breakdown -->
+<div class="panel"><div class="ph"><div class="pt">Chat Usage by Page</div><button class="btn" onclick="exportChatCSV()">📊 CSV</button></div>
+<div class="pp"><table class="dt" style="width:100%;border-collapse:collapse"><thead><tr><th>Page</th><th>Conversations</th><th>Messages</th><th>Avg Turns</th><th>Top Question</th></tr></thead><tbody id="tbPages"></tbody></table></div></div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyB7zR2KAGyygQuZV1R23henUjFq9i6Uvfs",authDomain:"cnc-website-tracking.firebaseapp.com",projectId:"cnc-website-tracking",storageBucket:"cnc-website-tracking.firebasestorage.app",messagingSenderId:"510778332738",appId:"1:510778332738:web:0305d7fb678ee4042cffdb"});
+var db=firebase.firestore();
+var allEvents=[];
+var charts={};
+
+// Product keywords to detect
+var productKeywords=['breaker','mcb','mccb','ats','transfer switch','solar','bundle','fire extinguisher','spd','surge','wifi','smart','va ','voltage','dc ','ac ','ev charger','changeover','connector','mc4','timer','db box','distribution','fuse','energy meter','cable'];
+
+function getFilterDate(){
+var p=document.getElementById('fPeriod').value;var n=Date.now();
+var m={'1h':36e5,'3h':108e5,'6h':216e5,'24h':864e5,'7d':6048e5,'30d':2592e6,'all':n};
+return new Date(n-(m[p]||864e5));
+}
+
+function fmtTime(ts){
+if(!ts)return'--';
+var d;
+if(typeof ts==='string'){d=new Date(ts);}
+else if(ts.toDate){d=ts.toDate();}
+else{d=new Date(ts);}
+return d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+
+function fmtDate(ts){
+if(!ts)return'--';
+var d=typeof ts==='string'?new Date(ts):ts.toDate?ts.toDate():new Date(ts);
+return d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});
+}
+
+function tsToDate(ts){
+if(!ts)return new Date(0);
+if(typeof ts==='string')return new Date(ts);
+if(ts.toDate)return ts.toDate();
+return new Date(ts);
+}
+
+function detectProducts(text){
+var lower=text.toLowerCase();
+var found=[];
+productKeywords.forEach(function(kw){
+if(lower.indexOf(kw)!==-1)found.push(kw);
+});
+return found;
+}
+
+function processData(){
+var since=getFilterDate();
+var filtered=allEvents.filter(function(e){return tsToDate(e.timestamp)>=since;});
+
+// Group by visitor (conversation)
+var convos={};
+filtered.forEach(function(e){
+var vid=e.visitor_id||e.session_id||'unknown';
+if(!convos[vid])convos[vid]={visitor:vid,page:e.page||'/',page_title:e.page_title||'',device:e.device||'',messages:[],firstTime:e.timestamp};
+convos[vid].messages.push(e);
+});
+
+var convoList=Object.values(convos).sort(function(a,b){return tsToDate(b.firstTime)-tsToDate(a.firstTime);});
+var userMsgs=filtered.filter(function(e){return e.role==='user';});
+var botMsgs=filtered.filter(function(e){return e.role==='bot';});
+var uniquePages=new Set(filtered.map(function(e){return e.page||'/';}));
+var mobileCount=filtered.filter(function(e){return e.device==='mobile';}).length;
+
+// Stats
+document.getElementById('mConvs').textContent=convoList.length;
+document.getElementById('mMsgs').textContent=filtered.length;
+document.getElementById('mQuestions').textContent=userMsgs.length;
+document.getElementById('mAvgTurns').textContent=convoList.length>0?Math.round(filtered.length/convoList.length):0;
+document.getElementById('mPages').textContent=uniquePages.size;
+document.getElementById('mMobile').textContent=filtered.length>0?Math.round(mobileCount/filtered.length*100)+'%':'0%';
+document.getElementById('convCount').textContent=convoList.length;
+
+// Hourly chart
+var hours=new Array(24).fill(0);
+userMsgs.forEach(function(e){var d=tsToDate(e.timestamp);hours[d.getHours()]++;});
+if(charts.hourly)charts.hourly.destroy();
+charts.hourly=new Chart(document.getElementById('chHourly'),{type:'bar',data:{labels:hours.map(function(_,i){return i+'h';}),datasets:[{data:hours,backgroundColor:'rgba(230,0,18,.15)',borderColor:'#e60012',borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f1f3f5'},ticks:{color:'#94a3b8'}},x:{grid:{display:false},ticks:{color:'#94a3b8',font:{size:9}}}}}});
+
+// Pages chart
+var pageCounts={};filtered.forEach(function(e){var p=e.page||'/';pageCounts[p]=(pageCounts[p]||0)+1;});
+var pagesSorted=Object.entries(pageCounts).sort(function(a,b){return b[1]-a[1];}).slice(0,6);
+if(charts.pages)charts.pages.destroy();
+if(pagesSorted.length)charts.pages=new Chart(document.getElementById('chPages'),{type:'bar',data:{labels:pagesSorted.map(function(e){return e[0].substring(0,25);}),datasets:[{data:pagesSorted.map(function(e){return e[1];}),backgroundColor:'rgba(37,99,235,.15)',borderColor:'#2563eb',borderWidth:1,borderRadius:3}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'#f1f3f5'}},y:{grid:{display:false},ticks:{color:'#475569',font:{size:10}}}}}});
+
+// Conversation list
+document.getElementById('convList').innerHTML=convoList.length===0?'<div class="empty"><div class="empty-i">💬</div><div>No conversations yet. Chat data appears here when visitors use the chatbot.</div></div>':
+convoList.map(function(c){
+var userMsgsInConvo=c.messages.filter(function(m){return m.role==='user';});
+var botMsgsInConvo=c.messages.filter(function(m){return m.role==='bot';});
+return'<div class="conv">'+
+'<div class="conv-hdr">'+
+'<span class="conv-vid">👤 '+(c.visitor||'').substring(0,12)+'</span>'+
+'<span class="conv-page">📄 '+(c.page_title||c.page)+'</span>'+
+'<span class="badge '+(c.device==='mobile'?'b-mob':'b-desk')+'">'+(c.device||'desktop')+'</span>'+
+'<span class="conv-time">'+fmtDate(c.firstTime)+'</span>'+
+'</div>'+
+c.messages.map(function(m){
+return'<div class="conv-msg">'+
+'<div class="conv-role" style="color:'+(m.role==='user'?'var(--red)':'var(--blue)')+'">'+
+(m.role==='user'?'👤 Customer':'🤖 AI')+
+'</div>'+
+'<div class="conv-text">'+(m.message||'').substring(0,300)+(m.message&&m.message.length>300?'...':'')+'</div></div>';
+}).join('')+
+'</div>';
+}).join('');
+
+// Top questions
+var questions=userMsgs.map(function(e){return(e.message||'').toLowerCase().trim();}).filter(function(q){return q.length>3;});
+var qCounts={};questions.forEach(function(q){
+var short=q.substring(0,80);qCounts[short]=(qCounts[short]||0)+1;
+});
+var topQ=Object.entries(qCounts).sort(function(a,b){return b[1]-a[1];}).slice(0,15);
+document.getElementById('topQuestions').innerHTML=topQ.length===0?'<div class="empty">No questions yet</div>':
+topQ.map(function(e,i){
+return'<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">'+
+'<div style="width:22px;height:22px;border-radius:5px;background:rgba(230,0,18,.08);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--red);flex-shrink:0">'+(i+1)+'</div>'+
+'<div style="flex:1;font-size:13px">"'+e[0]+'"</div>'+
+'<div class="mono" style="color:var(--red);font-weight:600">'+e[1]+'</div></div>';
+}).join('');
+
+// Products mentioned
+var prodCounts={};
+filtered.forEach(function(e){
+var prods=detectProducts(e.message||'');
+prods.forEach(function(p){prodCounts[p]=(prodCounts[p]||0)+1;});
+});
+var topProds=Object.entries(prodCounts).sort(function(a,b){return b[1]-a[1];}).slice(0,12);
+document.getElementById('productsMentioned').innerHTML=topProds.length===0?'<div class="empty">No products mentioned yet</div>':
+topProds.map(function(e){
+return'<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)">'+
+'<span style="font-size:14px">📦</span>'+
+'<span style="flex:1;font-size:13px;text-transform:capitalize">'+e[0]+'</span>'+
+'<span class="mono" style="font-weight:600;color:var(--blue)">'+e[1]+' mentions</span></div>';
+}).join('');
+
+// Page breakdown table
+var pageData={};
+filtered.forEach(function(e){
+var p=e.page||'/';
+if(!pageData[p])pageData[p]={convos:new Set(),msgs:0,questions:[]};
+pageData[p].convos.add(e.visitor_id||e.session_id);
+pageData[p].msgs++;
+if(e.role==='user')pageData[p].questions.push(e.message||'');
+});
+var pdSorted=Object.entries(pageData).sort(function(a,b){return b[1].msgs-a[1].msgs;});
+document.getElementById('tbPages').innerHTML=pdSorted.length===0?'<tr><td colspan="5" class="empty">No data</td></tr>':
+pdSorted.map(function(e){
+var d=e[1];var topQ=d.questions[0]?('"'+d.questions[0].substring(0,40)+'..."'):'--';
+return'<tr><td style="font-size:12px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+e[0]+'</td>'+
+'<td class="mono" style="font-weight:600">'+d.convos.size+'</td>'+
+'<td class="mono">'+d.msgs+'</td>'+
+'<td class="mono">'+(d.convos.size>0?Math.round(d.msgs/d.convos.size):0)+'</td>'+
+'<td style="font-size:11px;color:var(--text2);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+topQ+'</td></tr>';
+}).join('');
+
+document.getElementById('statusText').textContent='Live · '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+
+// Live feed
+function addLiveFeed(e){
+var feed=document.getElementById('liveFeed');
+var empty=feed.querySelector('.empty');
+if(empty)empty.remove();
+var icon=e.role==='user'?'👤':'🤖';
+var bg=e.role==='user'?'rgba(230,0,18,.08)':'rgba(37,99,235,.08)';
+feed.insertAdjacentHTML('afterbegin',
+'<div class="live-msg">'+
+'<div class="live-icon" style="background:'+bg+'">'+icon+'</div>'+
+'<div style="flex:1">'+
+'<div class="live-text">'+(e.message||'').substring(0,200)+'</div>'+
+'<div class="live-meta">'+fmtTime(e.timestamp)+' · '+(e.page||'/')+(e.visitor_id?' · '+e.visitor_id.substring(0,8):'')+'</div>'+
+'</div></div>');
+while(feed.children.length>50)feed.removeChild(feed.lastChild);
+}
+
+// CSV
+function exportChatCSV(){
+var rows=[['Time','Role','Message','Page','Visitor','Device','Turns']];
+allEvents.forEach(function(e){
+rows.push([fmtDate(e.timestamp),e.role||'',(e.message||'').substring(0,200),e.page||'',
+(e.visitor_id||'').substring(0,12),e.device||'',e.conversation_turn||'']);
+});
+var csv=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+var blob=new Blob([csv],{type:'text/csv'});
+var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='cnc_chatbot_data.csv';a.click();
+}
+
+// Firebase listener
+db.collection('chatbot_events').orderBy('timestamp','desc').limit(500).onSnapshot(function(snap){
+allEvents=[];
+snap.forEach(function(doc){allEvents.push(doc.data());});
+snap.docChanges().forEach(function(change){
+if(change.type==='added')addLiveFeed(change.doc.data());
+});
+processData();
+},function(err){
+// Fallback without ordering
+db.collection('chatbot_events').limit(500).onSnapshot(function(snap){
+allEvents=[];
+snap.forEach(function(doc){allEvents.push(doc.data());});
+processData();
+},function(){});
+});
+</script>
+</body>
+</html>
