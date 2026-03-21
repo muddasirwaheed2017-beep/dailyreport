@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PayGate">
+<meta name="theme-color" content="#0f172a">
+<meta name="mobile-web-app-capable" content="yes">
+<title>CNC PayGate V16</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:#0c0f14;color:#e2e8f0;height:100%;overflow:hidden;position:fixed;width:100%;touch-action:manipulation}
+input,select,button,textarea{font-family:inherit;-webkit-appearance:none}
+
+/* Layout */
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+.header{background:linear-gradient(135deg,#0f172a,#1a0f2e);padding:max(env(safe-area-inset-top),8px) 16px 10px;border-bottom:1px solid #ffffff10;flex-shrink:0}
+.header-row{display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:17px;font-weight:800;color:#f8fafc;letter-spacing:-0.02em}
+.header .sub{font-size:10px;color:#8b5cf6;margin-top:1px}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}
+.status-dot.on{background:#4ade80;box-shadow:0 0 6px #4ade80}
+.status-dot.off{background:#f87171}
+.status-text{font-size:10px;color:#64748b}
+
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:70px}
+
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#0f172a;border-top:1px solid #1e293b;display:flex;padding:6px 0 max(env(safe-area-inset-bottom),6px);z-index:50}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;color:#475569;font-size:9px;font-weight:600;cursor:pointer;border:none;background:none}
+.nb.act{color:#8b5cf6}
+.nb svg{width:20px;height:20px}
+
+/* Cards */
+.card{margin:10px 14px;border-radius:12px;background:#1e293b;border:1px solid #334155;overflow:hidden}
+.sec{padding:12px 14px}
+.sec+.sec{border-top:1px solid #ffffff08}
+.lbl{font-size:10px;font-weight:700;color:#64748b;margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:0.06em}
+
+/* Inputs */
+.inp{width:100%;padding:11px 12px;border-radius:10px;border:2px solid #334155;background:#0f172a;color:#f8fafc;font-size:16px;outline:none;transition:border .2s}
+.inp:focus{border-color:#8b5cf6}
+.inp::placeholder{color:#475569}
+
+/* Autocomplete dropdown */
+.dd{position:absolute;top:100%;left:0;right:0;background:#1e293b;border:1px solid #475569;border-radius:10px;margin-top:3px;max-height:200px;overflow-y:auto;z-index:100;box-shadow:0 12px 30px rgba(0,0,0,.6)}
+.ddi{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #33415540}
+.ddi:last-child{border-bottom:none}
+.ddi:active{background:#334155}
+.ddi .nm{font-size:14px;font-weight:500;color:#f8fafc}
+.tag{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700}
+.tC{background:#ef444420;color:#f87171}
+.tS{background:#3b82f620;color:#60a5fa}
+.tP{background:#22c55e20;color:#4ade80}
+.tD{background:#f59e0b20;color:#fbbf24;margin-left:4px}
+
+/* Amount */
+.aw{position:relative}
+.ai{width:100%;padding:11px 12px 11px 40px;border-radius:10px;border:2px solid #334155;background:#0f172a;color:#f8fafc;font-size:22px;font-weight:700;font-family:'SF Mono',ui-monospace,monospace;outline:none;transition:border .2s}
+.ai:focus{border-color:#16a34a}
+.ap{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:#64748b;font-weight:600}
+
+/* Grid buttons */
+.gr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.gb{padding:11px 6px;border-radius:10px;border:2px solid #334155;background:#0f172a;color:#64748b;font-size:12px;font-weight:700;text-align:center;cursor:pointer;transition:all .15s}
+.gb:active{transform:scale(0.97)}
+.gb.aC{border-color:#ef4444;background:#ef444412;color:#f87171}
+.gb.aS{border-color:#3b82f6;background:#3b82f612;color:#60a5fa}
+.gb.aP{border-color:#22c55e;background:#22c55e12;color:#4ade80}
+.gb.at{border-color:#8b5cf6;background:#8b5cf612;color:#a78bfa}
+
+/* Photo */
+.photo-box{border:2px dashed #334155;border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.photo-box:active{border-color:#8b5cf6;background:#8b5cf608}
+.photo-box.has{border-style:solid;border-color:#16a34a;padding:4px}
+.photo-box .ph-icon{font-size:24px}
+.photo-box .ph-text{font-size:11px;color:#475569}
+.photo-box img{width:100%;max-height:160px;object-fit:cover;border-radius:8px}
+.photo-box .ph-remove{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#dc2626;color:white;border:none;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Submit */
+.sbtn{width:100%;padding:14px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.sbtn.rdy{background:linear-gradient(135deg,#16a34a,#059669);color:white;box-shadow:0 0 24px #16a34a30}
+.sbtn.rdy:active{transform:scale(0.98)}
+.sbtn.dis{background:#1e293b;color:#475569}
+
+/* Success overlay */
+.sov{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;z-index:200;animation:fi .25s}
+.scd{background:#0f172a;border:2px solid #16a34a;border-radius:18px;padding:32px 24px;text-align:center;max-width:300px;width:90%;animation:si .25s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+@keyframes si{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* History items */
+.hi{padding:10px 12px;background:#1e293b;border-radius:10px;margin:0 14px 6px;display:flex;align-items:center;gap:10px;border:1px solid #334155}
+.hi .thumb{width:40px;height:40px;border-radius:8px;background:#334155;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;color:#475569}
+.hi .thumb img{width:100%;height:100%;object-fit:cover}
+.hi .info{flex:1;min-width:0}
+.hi .info .cn{font-size:13px;font-weight:600;color:#f8fafc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hi .info .mt{font-size:10px;color:#64748b;margin-top:1px}
+.hi .am{font-size:15px;font-weight:800;font-family:'SF Mono',monospace;white-space:nowrap}
+.hi .am.in{color:#4ade80}
+.hi .am.out{color:#f87171}
+
+/* Summary cards */
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 14px}
+.scard{padding:12px;border-radius:10px;background:#1e293b;border:1px solid #334155}
+.scard .sv{font-size:20px;font-weight:800;color:#f8fafc;font-family:'SF Mono',monospace}
+.scard .sl{font-size:10px;color:#64748b;margin-top:2px;text-transform:uppercase;font-weight:600;letter-spacing:.04em}
+
+.empty-state{text-align:center;padding:50px 30px;color:#475569}
+.empty-state .ei{font-size:40px;margin-bottom:10px;display:block}
+
+.ftag{padding:5px 10px;border-radius:8px;font-size:10px;font-weight:600;color:#64748b;background:#1e293b;border:1px solid #334155;cursor:pointer;white-space:nowrap;transition:all .15s}
+.ftag:active{transform:scale(.96)}
+.ftag.factive{color:#a78bfa;border-color:#8b5cf6;background:#8b5cf612}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+
+<script>
+// ══════════════════════════════════════
+// CUSTOMER DATABASE (500 from CS Accounts + WhatsApp)
+// ══════════════════════════════════════
+</script>
+<script>
+const CUSTS=[{"n":"Engineering Mode\u00a0Cnc 809 / Husnain Dawood","e":"CNC","t":"L"},{"n":"Engineering Mode","e":"CNC","t":"L"},{"n":"Mubarik Electric","e":"CST","t":"L"},{"n":"I.H Traders","e":"CNC","t":"L"},{"n":"Datta Electric","e":"CST","t":"L"},{"n":"Electronic Solution","e":"CNC","t":"L"},{"n":"Mejor Enterprises","e":"CNC","t":"L"},{"n":"Dar Sons","e":"CST","t":"L"},{"n":"Lion Solar","e":"CNC","t":"L"},{"n":"Haseeb Geya","e":"CST","t":"L"},{"n":"Standerd Store","e":"CST","t":"L"},{"n":"Kashif Sab","e":"CNC","t":"L"},{"n":"M.S Electric","e":"CST","t":"L"},{"n":"Shafaqat Electric","e":"CST","t":"L"},{"n":"Al-Meeraj","e":"CST","t":"L"},{"n":"Decent Solar","e":"CNC","t":"L"},{"n":"Mashallah Db Box","e":"CST","t":"L"},{"n":"Sky Rise","e":"CST","t":"L"},{"n":"Al-Fareed Electric","e":"CST","t":"L"},{"n":"Waseem Trading","e":"CST","t":"L"},{"n":"Shareef Sab","e":"CST","t":"L"},{"n":"Abdul Sattar Electric","e":"CST","t":"L"},{"n":"Power Electric Store","e":"CNC","t":"L"},{"n":"Web Cod","e":"CNC","t":"L"},{"n":"Al-Haider Electric","e":"CST","t":"L"},{"n":"Al Madina","e":"CST","t":"L"},{"n":"Cash Sale Cnc 891","e":"CNC","t":"L"},{"n":"Al-Fazal Enginering","e":"CST","t":"L"},{"n":"Cash Sale Cst 510","e":"CST","t":"L"},{"n":"Ch&Sons Bull Rode","e":"CST","t":"L"},{"n":"Al-Meraj","e":"CNC","t":"L"},{"n":"Cash Sale In","e":"CST","t":"L"},{"n":"Hz Solution","e":"CNC","t":"L"},{"n":"Vivant Solution","e":"CNC","t":"L"},{"n":"Sultan Electric","e":"CST","t":"L"},{"n":"Kashif","e":"CST","t":"L"},{"n":"S.B Traders","e":"CST","t":"L"},{"n":"Power Electric Store In","e":"CST","t":"L"},{"n":"Quetta Cable","e":"CNC","t":"L"},{"n":"Blue Rise Solar","e":"CNC","t":"L"},{"n":"Dastgeer Solar","e":"CNC","t":"L"},{"n":"Fair Deal","e":"CST","t":"L"},{"n":"Zest Solar","e":"CNC","t":"L"},{"n":"Tanveer Solar","e":"CST","t":"L"},{"n":"Dastager Solar","e":"CNC","t":"L"},{"n":"Arshad Trading","e":"CST","t":"L"},{"n":"Haroon Electric","e":"CST","t":"L"},{"n":"Daiam Solar","e":"CST","t":"L"},{"n":"Al-Haider","e":"CST","t":"L"},{"n":"Bilal Tariq","e":"CST","t":"L"},{"n":"Mr.Usman Bashir","e":"CNC","t":"L"},{"n":"Electric Inn","e":"CST","t":"L"},{"n":"Green Ray","e":"CST","t":"L"},{"n":"Zahid & Co / Ali Haider / Solar","e":"","t":"L"},{"n":"Ishaq Engg","e":"CST","t":"L"},{"n":"Waqas Sb","e":"CNC","t":"L"},{"n":"Green E&I","e":"CST","t":"L"},{"n":"Allied Electric","e":"CST","t":"L"},{"n":"Haseeb Sb","e":"CNC","t":"L"},{"n":"Akram &Co","e":"CST","t":"L"},{"n":"Green Build Corporation","e":"CST","t":"L"},{"n":"Aghosh","e":"CST","t":"L"},{"n":"Ansari Traders","e":"CST","t":"L"},{"n":"Farhan Traders","e":"CST","t":"L"},{"n":"Zia Electric","e":"CNC","t":"L"},{"n":"Hs Traders","e":"CNC","t":"L"},{"n":"Ask Solar","e":"CNC","t":"L"},{"n":"Mr.Afzal","e":"CNC","t":"L"},{"n":"At Electric","e":"CST","t":"L"},{"n":"Mr.Shahid","e":"CST","t":"L"},{"n":"Cash Sale Khi","e":"CST","t":"L"},{"n":"Green Build","e":"CST","t":"L"},{"n":"Hassan Traders / Ali Haider / Solar","e":"","t":"L"},{"n":"Ab Enterprise","e":"CST","t":"L"},{"n":"Mansoor Sb -Cst 411 / Shan","e":"CST","t":"L"},{"n":"Source Tek Technology","e":"CNC","t":"L"},{"n":"Shazad","e":"CST","t":"L"},{"n":"Waseem Traders","e":"CST","t":"L"},{"n":"Iconic Electric","e":"CNC","t":"L"},{"n":"Unique Solar","e":"CNC","t":"L"},{"n":"Sartaj Electric","e":"CST","t":"L"},{"n":"Power Electric Store\u00a0Cnc Ali Haider","e":"CNC","t":"L"},{"n":"Qadri Group","e":"CST","t":"L"},{"n":"Sunlight Solar System","e":"CNC","t":"D"},{"n":"Ar Electric Switchgear In","e":"CST","t":"D"},{"n":"Synk Solar","e":"CNC","t":"D"},{"n":"Web","e":"CNC","t":"D"},{"n":"Delta Solar","e":"CNC","t":"D"},{"n":"Sumra Electric","e":"CNC","t":"D"},{"n":"Hi Power","e":"CNC","t":"D"},{"n":"Solar Fort","e":"CNC","t":"D"},{"n":"Hm Solar Energy","e":"CNC","t":"D"},{"n":"M.Ahmad","e":"CST","t":"D"},{"n":"Nazim","e":"CST","t":"D"},{"n":"Trade Hub","e":"CST","t":"D"},{"n":"Al Khair","e":"CST","t":"D"},{"n":"Farooq Brother","e":"CST","t":"D"},{"n":"Ch&Sons","e":"CST","t":"D"},{"n":"Wajahat Sultan","e":"CNC","t":"D"},{"n":"Talha Electric","e":"CST","t":"D"},{"n":"Perfect Electrificational","e":"CST","t":"D"},{"n":"Mansoor Shb","e":"CST","t":"D"},{"n":"Trade Hub Cst 2409","e":"CST","t":"D"},{"n":"Al-Saiqa","e":"CST","t":"D"},{"n":"System Energy Pvt Ltd","e":"CST","t":"D"},{"n":"Mejor Enterprises\u00a0Cnc 1201 / Hafiz Ali Haider","e":"CNC","t":"D"},{"n":"M.Ismail","e":"CST","t":"D"},{"n":"Cash Sale Khi -Cst 2424 / Shan","e":"CST","t":"D"},{"n":"Waqas Sab","e":"CNC","t":"D"},{"n":"Al-Sayiqa","e":"CST","t":"D"},{"n":"Fazi Electric","e":"CST","t":"D"},{"n":"Haseeb Ahmad","e":"CST","t":"D"},{"n":"Saleem Electric","e":"CST","t":"D"},{"n":"Iqrar Sab","e":"CNC","t":"D"},{"n":"Ishfaq Brother","e":"CST","t":"D"},{"n":"Ahsan Raza","e":"CNC","t":"D"},{"n":"Panel Purchase","e":"","t":"D"},{"n":"Naeem","e":"CST","t":"D"},{"n":"Al-Madina","e":"CST","t":"D"},{"n":"Business Equipment","e":"CST","t":"D"},{"n":"Humbel Textail","e":"CST","t":"D"},{"n":"Cofee","e":"","t":"D"},{"n":"Us Engineering","e":"CST","t":"D"},{"n":"Prime","e":"CST","t":"D"},{"n":"Ishaq Eng","e":"CST","t":"D"},{"n":"(Vendor # 5) Fico Electric In Cs Solar Payment","e":"","t":"D"},{"n":"Sattar Electric","e":"CST","t":"D"},{"n":"Rashid Traders","e":"CNC","t":"D"},{"n":"Mr.Naveed","e":"CST","t":"D"},{"n":"Hasam Arif","e":"CST","t":"D"},{"n":"Beyondgreen Pvt Ltd","e":"CNC","t":"D"},{"n":"Sky Solar Powered By Fazal Engineering","e":"CNC","t":"D"},{"n":"Pleasant Solar","e":"CNC","t":"D"},{"n":"Mughal Solar","e":"CNC","t":"D"},{"n":"Marvel Technology","e":"CNC","t":"D"},{"n":"4S Energy","e":"CNC","t":"D"},{"n":"Ppi / Muzaffar / Solar","e":"","t":"D"},{"n":"Standard Store","e":"CST","t":"D"},{"n":"Hafiz Ali Haider / Muzaffar","e":"","t":"D"},{"n":"Ab Enterprises","e":"CST","t":"D"},{"n":"Lumen Solution","e":"CNC","t":"D"},{"n":"Ali Jawad","e":"CST","t":"D"},{"n":"Al-Meraj Cnc 1760","e":"CNC","t":"D"},{"n":"Standerd Store Cst 13","e":"CST","t":"D"},{"n":"Mi Steel Impex / Solar / Ali Haider","e":"","t":"D"},{"n":"Al-Haram Interprise","e":"CST","t":"D"},{"n":"Lodhi Eneterprise","e":"CST","t":"D"},{"n":"M-Tech Cst 324","e":"CST","t":"D"},{"n":"Saprai","e":"CST","t":"D"},{"n":"Irfan Butt","e":"CNC","t":"D"},{"n":"Haider Ansari","e":"CNC","t":"D"},{"n":"Waseem","e":"CNC","t":"D"},{"n":"Hassan Traders / Solar / Ali Haider","e":"","t":"D"},{"n":"Green Up","e":"CNC","t":"D"},{"n":"M.K Enterprise","e":"CNC","t":"D"},{"n":"Zam Zam International","e":"CNC","t":"D"},{"n":"Cash To Usman Bhai / Sm Cash","e":"","t":"D"},{"n":"Umer Farooq","e":"CNC","t":"D"},{"n":"Mr.Nadeem","e":"CNC","t":"D"},{"n":"Akhtar&Sons","e":"CST","t":"D"},{"n":"Al Sayiqa","e":"CST","t":"D"},{"n":"M.Afzal","e":"CNC","t":"D"},{"n":"Mudassir Hussain","e":"CNC","t":"D"},{"n":"Mr.Rehan","e":"CST","t":"D"},{"n":"Chand Electric","e":"CST","t":"D"},{"n":"Abdul Sattar Ghee Whole Sale Dealer","e":"","t":"D"},{"n":"Akbar","e":"CST","t":"D"},{"n":"Ali Haider","e":"CNC","t":"D"},{"n":"United Solar -Cst 2859 / Shan","e":"CST","t":"D"},{"n":"Sajid Penal Cst 1365","e":"CST","t":"D"},{"n":"Multi Power Solution","e":"CNC","t":"D"},{"n":"Ag Electric Store","e":"CST","t":"D"},{"n":"Jameel Sab","e":"CST","t":"D"},{"n":"Jilani Automation","e":"CST","t":"D"},{"n":"Roman Javed","e":"CNC","t":"D"},{"n":"Golden Traders","e":"CST","t":"D"},{"n":"Mr.Adil","e":"CNC","t":"D"},{"n":"Mubashir Electric","e":"CST","t":"D"},{"n":"Haseeb Sab Geya","e":"CNC","t":"D"},{"n":"Mr. Mehboob","e":"CNC","t":"D"},{"n":"Mak Engg","e":"CST","t":"D"},{"n":"Mansoor Sb","e":"CST","t":"D"},{"n":"Iftikhar Sab","e":"CNC","t":"D"},{"n":"United Link","e":"CNC","t":"D"},{"n":"Sineng In","e":"CST","t":"D"},{"n":"Ha Rouf","e":"CST","t":"D"},{"n":"Bilal Anjum","e":"CST","t":"D"},{"n":"Mr.Afaq","e":"CST","t":"D"},{"n":"Bilal Tariq Electric Co","e":"CST","t":"D"},{"n":"New Mian Khalil Electric Store","e":"CNC","t":"D"},{"n":"Olympia Site Ashraf Welder Panel Labour","e":"","t":"D"},{"n":"To Fico Electric","e":"","t":"D"},{"n":"Invertor Sale","e":"","t":"D"},{"n":"Fico Builty","e":"","t":"D"},{"n":"Fico Elec Payment Done By Awais Sab","e":"","t":"D"},{"n":"Olympia Solar Commission","e":"","t":"D"},{"n":"Arshad Traders","e":"CST","t":"D"},{"n":"Mr Qamar","e":"CNC","t":"D"},{"n":"Micron Energy Kohat","e":"CNC","t":"D"},{"n":"Chaudhry Corporation","e":"CNC","t":"D"},{"n":"Beco Energy","e":"CST","t":"D"},{"n":"Insaf Electric Store","e":"CNC","t":"D"},{"n":"Hi-Tec Solutions","e":"CNC","t":"D"},{"n":"Ijaz Enterprise","e":"CNC","t":"D"},{"n":"Global Energy","e":"CNC","t":"D"},{"n":"Farhan Sale","e":"CNC","t":"D"},{"n":"Ittefaq Light House","e":"CNC","t":"D"},{"n":"Pak Solar Sargodha","e":"CNC","t":"D"},{"n":"Fobrose Technology","e":"CNC","t":"D"},{"n":"Multitech Cash In","e":"CST","t":"D"},{"n":"Energy Live In","e":"CST","t":"D"},{"n":"Awais Solar Energy","e":"CST","t":"D"},{"n":"M.Kashif","e":"CST","t":"D"},{"n":"Advance Solar","e":"CNC","t":"D"},{"n":"Shazad Ishaq","e":"CNC","t":"D"},{"n":"Al-Nafay Solar","e":"CNC","t":"D"},{"n":"Sun Rays Renewables","e":"CNC","t":"D"},{"n":"Power Sun Energy","e":"CNC","t":"D"},{"n":"Q Energy","e":"CNC","t":"D"},{"n":"Mateen Arif","e":"CNC","t":"D"},{"n":"Chaudhry Solar","e":"CNC","t":"D"},{"n":"Jameel Sab In","e":"CST","t":"D"},{"n":"Think Solar","e":"CNC","t":"D"},{"n":"Client: Web Cod","e":"CNC","t":"D"},{"n":"Hfr Cable","e":"CNC","t":"D"},{"n":"Hub Engr In","e":"CST","t":"D"},{"n":"Technob","e":"CST","t":"D"},{"n":"Al Dossari","e":"CNC","t":"D"},{"n":"Sagher Penal","e":"CST","t":"D"},{"n":"Ramzan","e":"CNC","t":"D"},{"n":"Elite Solution","e":"CNC","t":"D"},{"n":"Sahi Solar","e":"CNC","t":"D"},{"n":"Cash Sale [Mr Ashraf]","e":"CNC","t":"D"},{"n":"Soft Wood","e":"CST","t":"D"},{"n":"Mobasco","e":"CST","t":"D"},{"n":"Cresent","e":"CST","t":"D"},{"n":"Apower Solar For Inverter / Ali Haider / Muzaffar","e":"","t":"D"},{"n":"Mi Steel Impex / Ali Haider / Solar","e":"","t":"D"},{"n":"Kassim Pvt Ltd -Cst 2070 / Shan","e":"CST","t":"D"},{"n":"Mr.Hamza","e":"CNC","t":"D"},{"n":"Mr Usman","e":"CNC","t":"D"},{"n":"Decent Solar Cnc 2184","e":"CNC","t":"D"},{"n":"Tayyab Solar Client To Muzaffar Account","e":"","t":"D"},{"n":"Ed Solar","e":"CNC","t":"D"},{"n":"Rayan Engg Cst 1927","e":"CST","t":"D"},{"n":"Al-Fazal Engineering -Cst 283 / Shan","e":"CST","t":"D"},{"n":"Pro Electric","e":"CNC","t":"D"},{"n":"To Ali Haider Cash / Sm Cash Acount","e":"","t":"D"},{"n":"Zest Solar Cnc 1483","e":"CNC","t":"D"},{"n":"Haseeb Sb Geya","e":"CNC","t":"D"},{"n":"Nouman Rasheed","e":"CNC","t":"D"},{"n":"Delta Solar Power - Mr.\u00a0Adil","e":"CNC","t":"D"},{"n":"Datta Electric Cst 54","e":"CST","t":"D"},{"n":"To Rr Enterprises - Fico Electric Cs Vendor 5","e":"","t":"D"},{"n":"Fico Industries Vendor\u00a0Ledger","e":"CST","t":"D"},{"n":"Fazi Electric Cst 2505","e":"CST","t":"D"},{"n":"As International / Solar / Muzaffar","e":"","t":"D"},{"n":"Rayan Engg","e":"CST","t":"D"},{"n":"Mr.Haris Cnc 1266","e":"CNC","t":"D"},{"n":"Mr.Shahid Cnc 1899","e":"CNC","t":"D"},{"n":"Lesco Bill Fico Electric Cs V-5","e":"","t":"D"},{"n":"Chaudary & Sons","e":"CNC","t":"D"},{"n":"I.H Trader","e":"CNC","t":"D"},{"n":"Mr.Danish","e":"CNC","t":"D"},{"n":"Electro Power","e":"CST","t":"D"},{"n":"Khuram","e":"CNC","t":"D"},{"n":"Yuwatech Engineering Cs 250 / Saqib Jamil","e":"","t":"D"},{"n":"Cash Sale Return","e":"CNC","t":"D"},{"n":"Indus Clean Energy","e":"CST","t":"D"},{"n":"Max Power","e":"CNC","t":"D"},{"n":"Makha Electric Store","e":"CST","t":"D"},{"n":"Shan Sb","e":"CNC","t":"D"},{"n":"Saeed Mughal Electric","e":"CNC","t":"D"},{"n":"Solar Payment / Cash Sm","e":"","t":"D"},{"n":"Skyblue Builders","e":"CNC","t":"D"},{"n":"Cash Bahl Aop","e":"","t":"D"},{"n":"Sb Solar","e":"CNC","t":"D"},{"n":"M.Mudasir","e":"CNC","t":"D"},{"n":"Ramzan Ali","e":"CNC","t":"D"},{"n":"Fareed Engineering","e":"CST","t":"D"},{"n":"Al Noor Traders","e":"CST","t":"D"},{"n":"Sajjid Sab Cst 1668","e":"CST","t":"D"},{"n":"Mr Saddam Solar Client To Meezan Bank","e":"","t":"D"},{"n":"Mansha Traders","e":"CST","t":"D"},{"n":"Punjab Industrial State","e":"CST","t":"D"},{"n":"Smart Tech Solution","e":"CNC","t":"D"},{"n":"Mr.Mohsin Amin","e":"CNC","t":"D"},{"n":"Electronic Solutions","e":"CNC","t":"D"},{"n":"Dar Sons Cst 130","e":"CST","t":"D"},{"n":"Muneer","e":"CNC","t":"D"},{"n":"Ishaq Sab","e":"CST","t":"D"},{"n":"Shoukat Electric","e":"CST","t":"D"},{"n":"Cash Sale Payment Return","e":"CST","t":"D"},{"n":"Lodhi Enetrprise","e":"CST","t":"D"},{"n":"Faizan Protection","e":"CST","t":"D"},{"n":"Yaseen Electric","e":"CST","t":"D"},{"n":"Mohsin Amin","e":"CNC","t":"D"},{"n":"Javed Bhatti","e":"CNC","t":"D"},{"n":"Zahid Trading","e":"CST","t":"D"},{"n":"Pari Electric -Cst 341 / Shan","e":"CST","t":"D"},{"n":"Diwan International -Cst 2016 / Shan","e":"CST","t":"D"},{"n":"Ahsan Cst 2906","e":"CST","t":"D"},{"n":"H-Tech Engineering","e":"CST","t":"D"},{"n":"Shan To Muzaffar Petty Cash","e":"","t":"D"},{"n":"Circuit City","e":"CST","t":"D"},{"n":"Times Electric Vendor Payment / Shan","e":"","t":"D"},{"n":"Asad Ideal 1189 / Muzaffar","e":"","t":"D"},{"n":"Engineering Mode\u00a0Cnc / Husnain Dawood","e":"CNC","t":"D"},{"n":"Karachi Project Structure Payment / Saqib Jamil","e":"","t":"D"},{"n":"Pak Electric","e":"CST","t":"D"},{"n":"Farhan Trader","e":"CST","t":"D"},{"n":"Direct Energy","e":"CST","t":"D"},{"n":"Awais Electric","e":"CST","t":"D"},{"n":"Abdullah Electric","e":"CST","t":"D"},{"n":"R.S Electric","e":"CST","t":"D"},{"n":"Usman","e":"CST","t":"D"},{"n":"Aa Solar Energy","e":"CNC","t":"D"},{"n":"Salman Sab","e":"CST","t":"D"},{"n":"Mr. Nasir","e":"CNC","t":"D"},{"n":"Mr.Asgher Penal","e":"CST","t":"D"},{"n":"Cutshort Solution","e":"CST","t":"D"},{"n":"Dastager Solar Center","e":"CNC","t":"D"},{"n":"Asad Trading Co / Ali Haider For Batteries","e":"","t":"D"},{"n":"Mr. Zain Structure Payemt. / Ali Haider","e":"","t":"D"},{"n":"Bilal Center","e":"CNC","t":"D"},{"n":"Abdul Rehman / Solar / Ali Haider","e":"","t":"D"},{"n":"System Energy Pvt\u00a0Ltd","e":"CST","t":"D"},{"n":"Mr.Rashid","e":"CNC","t":"D"},{"n":"Adnan","e":"CNC","t":"D"},{"n":"Zain Electric","e":"CST","t":"D"},{"n":"Allah Rakha","e":"CST","t":"D"},{"n":"National Traders","e":"CST","t":"D"},{"n":"Bright Technology","e":"CNC","t":"D"},{"n":"Nexwell Energy","e":"CST","t":"D"},{"n":"Ss Technologies","e":"CNC","t":"D"},{"n":"Hassan Sab","e":"CST","t":"D"},{"n":"Hub Ray Solution","e":"CST","t":"D"},{"n":"Solectric Energy","e":"CST","t":"D"},{"n":"Mohsin","e":"CST","t":"D"},{"n":"Syed Rehan Ahmad","e":"CST","t":"D"},{"n":"Usman Electric","e":"CST","t":"D"},{"n":"Rayan Eng","e":"CST","t":"D"},{"n":"Ishtiaq Sab","e":"CNC","t":"D"},{"n":"Green Up Energy","e":"CNC","t":"D"},{"n":"Hassam Arif","e":"CST","t":"D"},{"n":"Nadeem Sab","e":"CNC","t":"D"},{"n":"Majur Yahya","e":"CNC","t":"D"},{"n":"Jei Cash","e":"CST","t":"D"},{"n":"Sigma Shazad","e":"CST","t":"D"},{"n":"National Electric","e":"CST","t":"D"},{"n":"Sunrise Enterprises","e":"CNC","t":"D"},{"n":"Bijli Bachao","e":"CNC","t":"D"},{"n":"Ishaq","e":"CST","t":"D"},{"n":"Ch&Sons Bull Rod","e":"CST","t":"D"},{"n":"Source Teck Technology","e":"CNC","t":"D"},{"n":"Mak Eng In","e":"CST","t":"D"},{"n":"Cnc Sale Care Of Sameer Abdul Qayoom","e":"CNC","t":"D"},{"n":"Mansoor Sb -Cst","e":"CST","t":"D"},{"n":"Mr Suhail","e":"CST","t":"D"},{"n":"Olympia Site Civil Work Purchase","e":"","t":"D"},{"n":"Moin","e":"CST","t":"D"},{"n":"Ayoub Electric","e":"CST","t":"D"},{"n":"Haseeb Ahamd","e":"CST","t":"D"},{"n":"Mr.Iqrar","e":"CST","t":"D"},{"n":"Munir Sab Solar","e":"","t":"D"},{"n":"Olympia Site Paint Materail +Oil","e":"","t":"D"},{"n":"Bilal Sb","e":"CNC","t":"D"},{"n":"Shani","e":"CST","t":"D"},{"n":"Sm Electric","e":"CST","t":"D"},{"n":"Waqas","e":"CST","t":"D"},{"n":"I.H Electric","e":"CST","t":"D"},{"n":"Zain Solar Client","e":"","t":"D"},{"n":"Chishti Solar","e":"CNC","t":"D"},{"n":"Inventive Solutions Pvt Ltd","e":"CST","t":"D"},{"n":"From Bahl Aop","e":"","t":"D"},{"n":"Sol-Up Technology","e":"CNC","t":"D"},{"n":"Stander Store","e":"CST","t":"D"},{"n":"Axon Pakistan","e":"CNC","t":"D"},{"n":"Razaq Sab","e":"CST","t":"D"},{"n":"Abu Bakkar","e":"CNC","t":"D"},{"n":"Al Saiqa","e":"CST","t":"D"},{"n":"Ico Industries Vendor Payment 15/10 Shan Ali","e":"","t":"D"},{"n":"Mr.Haseeb Geya Cnc","e":"CNC","t":"D"},{"n":"Rehman Electric","e":"CNC","t":"D"},{"n":"Cnc Sales Cut To Consultant","e":"CNC","t":"D"},{"n":"Asad Mughal","e":"CST","t":"D"},{"n":"Luman Solution","e":"CNC","t":"D"},{"n":"Laeeq Solar Client","e":"","t":"D"},{"n":"Return To Customer","e":"CNC","t":"D"},{"n":"Hadi Traders","e":"CST","t":"D"},{"n":"Electric In","e":"CST","t":"D"},{"n":"Atta Metal","e":"CST","t":"D"},{"n":"Naveed Electric","e":"CST","t":"D"},{"n":"Multitech Cash Omer","e":"CST","t":"D"},{"n":"Us Enginering","e":"CST","t":"D"},{"n":"Apalo Electric","e":"CST","t":"D"},{"n":"Ahmad Ali Shah","e":"CNC","t":"D"},{"n":"Daniyal Traders Solar Payment To To Fico Elec","e":"","t":"D"},{"n":"Imran Electric","e":"CST","t":"D"},{"n":"System Energy Adjustment (Newage + Solar)","e":"","t":"D"},{"n":"Sk Enginering","e":"CNC","t":"D"},{"n":"Think Tech Engineering","e":"CST","t":"D"},{"n":"Hi-Power Electric","e":"CNC","t":"D"},{"n":"Badar Nawaz","e":"CST","t":"D"},{"n":"Ali Zeshan","e":"CNC","t":"D"},{"n":"Abdul Wahab","e":"CNC","t":"D"},{"n":"Rezon Energy Solar Plates","e":"","t":"D"},{"n":"Nadeem Solar Payment","e":"","t":"D"},{"n":"Bahl Aop","e":"","t":"D"},{"n":"Meezan Pvt","e":"","t":"D"},{"n":"Mr.Tariq Gujranwal","e":"CNC","t":"D"},{"n":"From Al Madina In","e":"CST","t":"D"},{"n":"Master Electric To Solar Max","e":"","t":"D"},{"n":"Sun Power Engineering","e":"CNC","t":"D"},{"n":"Yousaf Electric Jhung","e":"CNC","t":"D"},{"n":"Mac Pumps","e":"CSPL","t":"D"},{"n":"Ex Solar Power","e":"CNC","t":"D"},{"n":"Naveed Electronics","e":"CNC","t":"D"},{"n":"Ae Power Alternative","e":"CSPL","t":"D"},{"n":"Ah Power Sadiqabad","e":"CNC","t":"D"},{"n":"Rana Brother Light Hosue","e":"CNC","t":"D"},{"n":"Bx Associate","e":"CST","t":"D"},{"n":"Nazeer Electric","e":"CNC","t":"D"},{"n":"Innovative Solar","e":"CNC","t":"D"},{"n":"Photonix Power","e":"CNC","t":"D"},{"n":"Zohaib Electric Store & Works","e":"CNC","t":"D"},{"n":"Bright Brothers In","e":"CST","t":"D"},{"n":"Zgl Fsd In","e":"CST","t":"D"},{"n":"Mr.Haseeb Geya","e":"CNC","t":"D"},{"n":"Pivot Engineering Tech","e":"CSPL","t":"D"},{"n":"Bin Wahid Energy","e":"CNC","t":"D"},{"n":"Soltrical","e":"CNC","t":"D"},{"n":"Force V In","e":"CST","t":"D"},{"n":"Haroon Electric In","e":"CST","t":"D"},{"n":"Pak Energy Solution","e":"CST","t":"D"},{"n":"Faraz Bhai","e":"CNC","t":"D"},{"n":"United Electronics","e":"CNC","t":"D"},{"n":"Power Tex","e":"CNC","t":"D"},{"n":"Ideal Group In","e":"CST","t":"D"},{"n":"Mr Amjad Saleem","e":"CNC","t":"D"},{"n":"Solar 365","e":"CNC","t":"D"},{"n":"Engineering Mechanism In","e":"CSPL","t":"D"},{"n":"Greenwaves Enterprises","e":"CNC","t":"D"},{"n":"Suhail Electric Works","e":"CNC","t":"D"},{"n":"Five Star Trader'S","e":"CNC","t":"D"},{"n":"Al-Noor Solar","e":"CNC","t":"D"},{"n":"Mr. Talha Dsg In","e":"CST","t":"D"},{"n":"Muhammad Mavia","e":"CNC","t":"D"},{"n":"Mr. Luqman","e":"CNC","t":"D"},{"n":"Hardon Solar In","e":"CST","t":"D"},{"n":"Cp Group In","e":"CST","t":"D"},{"n":"Cash Sale [ Mr Jahangir]","e":"CNC","t":"D"},{"n":"Ad Solar","e":"CNC","t":"D"},{"n":"Masood Farewd Malik","e":"CNC","t":"D"},{"n":"Zgl In","e":"CSPL","t":"D"},{"n":"Abdul Wali Electric Store","e":"CNC","t":"D"},{"n":"Hoorain Trader","e":"CSPL","t":"D"},{"n":"Mr Haseeb Sb","e":"CNC","t":"D"},{"n":"Khawaja Umair","e":"CNC","t":"D"},{"n":"Mian Electric Sialkot","e":"CNC","t":"D"},{"n":"Aladin.Pk In","e":"CST","t":"D"},{"n":"M.D Eng And Solar","e":"CST","t":"D"},{"n":"Ceco Energy","e":"CNC","t":"D"},{"n":"Rj Solar Energy","e":"CNC","t":"D"},{"n":"Dream Empowerment Energy","e":"CNC","t":"D"},{"n":"Youme Multi Trading Corporation","e":"CST","t":"D"},{"n":"E Cube Pvt Ltd","e":"CNC","t":"D"},{"n":"Tamseel Engineering","e":"CNC","t":"D"},{"n":"Tsk Engineering","e":"CSPL","t":"D"},{"n":"Netline Group Of Companies","e":"CNC","t":"D"},{"n":"Suntronic Solar Solution","e":"CNC","t":"D"},{"n":"Hadron Solar In","e":"CST","t":"D"},{"n":"Elegant-Lux Engr In","e":"CST","t":"D"},{"n":"Zia Sb","e":"CNC","t":"D"},{"n":"Ui Engineering","e":"CNC","t":"D"},{"n":"Shawaq Trader","e":"CNC","t":"D"},{"n":"Buraq Power In","e":"CSPL","t":"D"},{"n":"Modern Electric","e":"CNC","t":"D"},{"n":"Beyondgreen","e":"CNC","t":"D"},{"n":"Ah Electronics","e":"CST","t":"D"},{"n":"Punjab Engineering","e":"CNC","t":"D"},{"n":"Shaheen Solar","e":"CNC","t":"D"},{"n":"Cash Sale [Iftiqar Ahmad]","e":"CNC","t":"D"},{"n":"Askari Electric","e":"CNC","t":"D"},{"n":"Unicorn Electric","e":"CSPL","t":"D"},{"n":"Yousaf Electric Gujrat","e":"CNC","t":"D"},{"n":"Naeem Butt Ups And Battery Service","e":"CNC","t":"D"},{"n":"Green Fuel In","e":"CSPL","t":"D"},{"n":"Al-Mudassir Solar","e":"CNC","t":"D"},{"n":"Mak Pump","e":"CSPL","t":"D"},{"n":"Suntech Solar","e":"CNC","t":"D"},{"n":"Kakar Engineering","e":"CNC","t":"D"},{"n":"Tariq Electric In","e":"CSPL","t":"D"},{"n":"Rachna Electric Store","e":"CNC","t":"D"},{"n":"Zoom Solar","e":"CNC","t":"D"},{"n":"Zaraat Dost","e":"CNC","t":"D"},{"n":"Insource Pakistan In","e":"CST","t":"D"},{"n":"Japston Energy","e":"CNC","t":"D"},{"n":"Habib Engineering","e":"CST","t":"D"},{"n":"Big Tech Solar","e":"CNC","t":"D"}];
+</script>
+<script>
+// ══════════════════════════════════════
+// PAYGATE APP ENGINE
+// ══════════════════════════════════════
+
+const S = {
+  scr: 'entry',
+  cust: '', cEnt: '', cType: 'D',
+  amt: '',
+  ent: '',
+  typ: 'ledger',
+  note: '', bankMsg: '', bankMsg: '',
+  dd: false, fl: [],
+  photo: null, photoThumb: null,
+  entries: [],
+  hFiltEnt: null, hFiltTyp: null, hFiltDate: null, hSearch: '',
+  detailEntry: null,
+  suc: null,
+};
+
+// Detail viewer
+function showDetail(id) {
+  const e = S.entries.find(x => x.id === id);
+  if (!e) return;
+  S.detailEntry = e;
+  render();
+}
+
+function closeDetail() {
+  S.detailEntry = null;
+  render();
+}
+
+function renderDetail() {
+  const e = S.detailEntry;
+  if (!e) return '';
+  const entColor = e.ent==='CNC'?'#f87171':e.ent==='CST'?'#60a5fa':'#4ade80';
+  const typLabel = e.typ==='ledger'?'📒 Ledger Credit':e.typ==='dispatch'?'📦 For Dispatch':'💵 Cash Sale';
+  return `
+    <div class="sov" onclick="closeDetail()">
+      <div class="scd" onclick="event.stopPropagation()" style="max-width:340px;width:92%;padding:20px 16px;max-height:85vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:700;color:#f8fafc">${esc(e.cust)}</div>
+          <button onclick="closeDetail()" style="background:none;border:none;color:#64748b;font-size:18px;cursor:pointer;padding:4px">✕</button>
+        </div>
+        ${e.photo ? `<div style="margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid #334155"><img src="${e.photo}" style="width:100%;display:block"></div>` : ''}
+        <div style="font-size:24px;font-weight:800;color:#4ade80;text-align:center;font-family:monospace;margin:8px 0">${PKR(e.amt)}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+          <div style="padding:8px;border-radius:8px;background:#0f172a;text-align:center">
+            <div style="font-size:10px;color:#64748b">Entity</div>
+            <div style="font-size:13px;font-weight:700;color:${entColor};margin-top:2px">${e.ent}</div>
+          </div>
+          <div style="padding:8px;border-radius:8px;background:#0f172a;text-align:center">
+            <div style="font-size:10px;color:#64748b">Type</div>
+            <div style="font-size:12px;font-weight:600;color:#a78bfa;margin-top:2px">${typLabel}</div>
+          </div>
+          <div style="padding:8px;border-radius:8px;background:#0f172a;text-align:center">
+            <div style="font-size:10px;color:#64748b">Date</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;margin-top:2px">${e.date}</div>
+          </div>
+          <div style="padding:8px;border-radius:8px;background:#0f172a;text-align:center">
+            <div style="font-size:10px;color:#64748b">Time</div>
+            <div style="font-size:12px;font-weight:600;color:#e2e8f0;margin-top:2px">${e.time}</div>
+          </div>
+        </div>
+        ${e.note ? `<div style="margin-top:10px;padding:8px 10px;border-radius:8px;background:#0f172a;font-size:12px;color:#94a3b8"><span style="color:#64748b">Note:</span> ${esc(e.note)}</div>` : ''}
+        <div style="margin-top:10px;padding:6px 10px;border-radius:6px;background:#f59e0b10;border:1px solid #f59e0b25;font-size:10px;color:#fbbf24;text-align:center">
+          ⏳ Status: Pending bank confirmation
+        </div>
+        <div style="font-size:9px;color:#334155;text-align:center;margin-top:8px">${e.id}</div>
+      </div>
+    </div>
+  `;
+}
+
+function init() {
+  try { S.entries = JSON.parse(localStorage.getItem('pg_e') || '[]'); } catch(e) { S.entries = []; }
+  render();
+}
+
+function set(u) { 
+  // Preserve input values before re-render
+  const ci = document.getElementById('ci');
+  const ai = document.getElementById('ai');
+  const ni = document.getElementById('ni');
+  if (ci) S.cust = ci.value;
+  if (ai) S.amt = ai.value;
+  if (ni) S.note = ni.value;
+  var bm = document.getElementById('bankMsg');
+  if (bm) S.bankMsg = bm.value;
+  Object.assign(S, u); 
+  render(); 
+}
+
+function PKR(v) { return v ? 'PKR ' + Number(v).toLocaleString('en-PK') : '—'; }
+
+function filt(q) {
+  if (!q || q.length < 1) return [];
+  const l = q.toLowerCase();
+  return CUSTS.filter(c => c.n.toLowerCase().includes(l)).slice(0, 10);
+}
+
+function selCust(c) {
+  set({ cust: c.n, cEnt: c.e, cType: c.t, ent: c.e || S.ent, typ: c.t === 'L' ? 'ledger' : 'dispatch', dd: false, fl: [] });
+}
+
+// ── Photo handling ──
+function triggerPhoto() {
+  const inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = 'image/*,.jpg,.jpeg,.png,.heic,.heif,.webp';
+  // No capture attribute = shows choice: Camera OR Photo Library on iPhone
+  inp.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    // Compress image
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX = 800;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = h * MAX / w; w = MAX; }
+          else { w = w * MAX / h; h = MAX; }
+        }
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL('image/jpeg', 0.6);
+        set({ photo: compressed, photoThumb: compressed });
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+function removePhoto() { set({ photo: null, photoThumb: null }); }
+
+// ── Submit ──
+function submit() {
+  // Grab latest values from DOM in case state is stale
+  const ciEl = document.getElementById('ci');
+  const aiEl = document.getElementById('ai');
+  const niEl = document.getElementById('ni');
+  if (ciEl) S.cust = ciEl.value;
+  if (aiEl) S.amt = aiEl.value;
+  if (niEl) S.note = niEl.value;
+  if (!S.cust || !S.amt || !S.ent) return;
+  const now = new Date();
+  const entry = {
+    id: 'PG-' + Date.now(),
+    cust: S.cust,
+    amt: parseFloat(S.amt),
+    ent: S.ent,
+    typ: S.typ,
+    note: S.note,
+    source_text: S.bankMsg || '',
+    bankMsg: S.bankMsg || '',
+    photo: S.photoThumb,
+    ts: now.toISOString(),
+    date: now.toLocaleDateString('en-GB', {day:'2-digit',month:'short'}),
+    time: now.toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit',hour12:true}),
+    sync: false,
+  };
+  S.entries.unshift(entry);
+  try { localStorage.setItem('pg_e', JSON.stringify(S.entries.slice(0, 500))); } catch(e) {}
+  
+  // TODO: Firebase push here
+  // firebase.database().ref('payments').push(entry);
+  
+  set({
+    suc: entry,
+    cust: '', cEnt: '', cType: 'D', amt: '', note: '', bankMsg: '', bankMsg: '', typ: 'ledger',
+    photo: null, photoThumb: null,
+  });
+  setTimeout(() => set({ suc: null }), 2200);
+}
+
+// ══════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════
+function render() {
+  const app = document.getElementById('app');
+  let html = '';
+  
+  // Header
+  html += `
+    <div class="header">
+      <div class="header-row">
+        <div>
+          <h1>⚡ PayGate</h1>
+          <div class="sub">CNC · CST · C-Solar</div>
+        </div>
+        <div style="text-align:right">
+          <span class="status-dot on"></span>
+          <span class="status-text">Local Mode</span>
+        </div>
+      </div>
+    </div>`;
+  
+  // Content
+  html += '<div class="content">';
+  
+  if (S.scr === 'entry') html += renderEntry();
+  else if (S.scr === 'history') html += renderHistory();
+  else if (S.scr === 'setup') html += renderSetup();
+  
+  html += '</div>';
+  
+  // Bottom nav
+  html += `
+    <div class="bnav">
+      <div class="nb ${S.scr==='entry'?'act':''}" onclick="set({scr:'entry'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Entry
+      </div>
+      <div class="nb ${S.scr==='history'?'act':''}" onclick="set({scr:'history'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V16z"/><polyline points="14 2 14 8 20 8"/></svg>
+        History
+      </div>
+      <div class="nb ${S.scr==='setup'?'act':''}" onclick="set({scr:'setup'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V16a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Setup
+      </div>
+    </div>`;
+  
+  // Detail overlay
+  if (S.detailEntry) html += renderDetail();
+  // Success overlay
+  if (S.suc) html += renderSuccess();
+  
+  app.innerHTML = html;
+  setTimeout(attachEvents, 10);
+}
+
+function renderEntry() {
+  const ok = S.cust && S.amt && S.ent;
+  
+  const ddHtml = S.dd && S.fl.length > 0 ? `<div class="dd">${S.fl.map((c,i) => `
+    <div class="ddi" data-ci="${i}">
+      <div><span class="nm">${highlight(c.n, S.cust)}</span>${c.t==='L'?'<span class="tag tD">DEALER</span>':''}</div>
+      ${c.e?`<span class="tag t${c.e[0]}">${c.e}</span>`:''}
+    </div>`).join('')}</div>` : '';
+  
+  return `
+    <div class="card">
+      <div class="sec">
+        <label class="lbl">Customer</label>
+        <div style="position:relative">
+          <input class="inp" id="ci" type="text" placeholder="Type name..." value="${esc(S.cust)}" autocomplete="off" autocorrect="off" autocapitalize="words">
+          ${ddHtml}
+        </div>
+      </div>
+      <div class="sec">
+        <label class="lbl">Amount (PKR)</label>
+        <div class="aw">
+          <span class="ap">₨</span>
+          <input class="ai" id="ai" type="number" inputmode="numeric" placeholder="0" value="${S.amt}">
+        </div>
+        <div style="font-size:11px;color:#64748b;margin-top:4px;text-align:right;${S.amt?'':'display:none'}">${S.amt?PKR(S.amt):''}</div>
+      </div>
+      <div class="sec">
+        <label class="lbl">Entity</label>
+        <div class="gr3">
+          <div class="gb ${S.ent==='CNC'?'aC':''}" onclick="set({ent:'CNC'})">CNC</div>
+          <div class="gb ${S.ent==='CST'?'aS':''}" onclick="set({ent:'CST'})">CS Traders</div>
+          <div class="gb ${S.ent==='CSPL'?'aP':''}" onclick="set({ent:'CSPL'})">C-Solar</div>
+        </div>
+      </div>
+      <div class="sec">
+        <label class="lbl">Type</label>
+        <div class="gr3">
+          <div class="gb ${S.typ==='ledger'?'at':''}" onclick="set({typ:'ledger'})">📒 Ledger</div>
+          <div class="gb ${S.typ==='dispatch'?'at':''}" onclick="set({typ:'dispatch'})">📦 Dispatch</div>
+          <div class="gb ${S.typ==='cash'?'at':''}" onclick="set({typ:'cash'})">💵 Cash</div>
+        </div>
+      </div>
+      <div class="sec">
+        <label class="lbl">Receipt Photo</label>
+        <div class="photo-box ${S.photo?'has':''}" id="pbox">
+          ${S.photo 
+            ? `<img src="${S.photo}" alt="receipt"><button class="ph-remove" id="prm">✕</button>`
+            : `<span class="ph-icon">📸</span><span class="ph-text">Tap to take photo or choose from gallery</span>`
+          }
+        </div>
+      </div>
+      <div class="sec">
+        <span class="lbl">Paste Bank Transaction Message (optional)</span>
+        <textarea class="inp" id="bankMsg" placeholder="Paste bank SMS, WhatsApp message, or depositor's message here..." style="font-size:13px;padding:10px 12px;min-height:70px;resize:vertical;font-family:inherit">${esc(S.bankMsg||'')}</textarea>
+      </div>
+      <div class="sec">
+        <input class="inp" id="ni" type="text" placeholder="Note (optional)" value="${esc(S.note)}" style="font-size:14px;padding:10px 12px">
+      </div>
+      <div class="sec">
+        <button class="sbtn ${ok?'rdy':'dis'}" id="sb" ${ok?'':'disabled'}>
+          ${ok ? '✓  Submit Payment' : 'Fill customer, amount & entity'}
+        </button>
+      </div>
+    </div>
+
+    ${S.entries.length > 0 ? `
+      <div style="padding:0 14px;margin-top:2px">
+        <div style="font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Latest</div>
+      </div>
+      ${S.entries.slice(0,2).map(renderHistoryItem).join('')}
+    ` : ''}
+  `;
+}
+
+function renderHistory() {
+  const ee = S.entries;
+  const tIn = ee.filter(e=>e.typ!=='outward').reduce((s,e)=>s+e.amt,0);
+  const tLedger = ee.filter(e=>e.typ==='ledger').reduce((s,e)=>s+e.amt,0);
+  const tDispatch = ee.filter(e=>e.typ==='dispatch').reduce((s,e)=>s+e.amt,0);
+  const tCash = ee.filter(e=>e.typ==='cash').reduce((s,e)=>s+e.amt,0);
+  
+  return `
+    <div class="srow">
+      <div class="scard">
+        <div class="sv">${ee.length}</div>
+        <div class="sl">Total Entries</div>
+      </div>
+      <div class="scard">
+        <div class="sv" style="color:#4ade80">${PKR(tIn)}</div>
+        <div class="sl">Total Value</div>
+      </div>
+    </div>
+    <div class="srow">
+      <div class="scard">
+        <div class="sv" style="color:#a78bfa;font-size:16px">${PKR(tLedger)}</div>
+        <div class="sl">📒 Ledger Credits</div>
+      </div>
+      <div class="scard">
+        <div class="sv" style="color:#60a5fa;font-size:16px">${PKR(tDispatch)}</div>
+        <div class="sl">📦 For Dispatch</div>
+      </div>
+    </div>
+    
+    <div style="padding:4px 14px 6px">
+      <div style="font-size:10px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em">All Entries</div>
+    </div>
+    
+    ${ee.length === 0 ? '<div class="empty-state"><span class="ei">📋</span>No entries yet<br><span style="font-size:12px">Go to Entry tab to record payments</span></div>' : ''}
+    ${ee.map(renderHistoryItem).join('')}
+  `;
+}
+
+function renderHistoryItem(e) {
+  const entColor = e.ent==='CNC'?'#f87171':e.ent==='CST'?'#60a5fa':'#4ade80';
+  const typIcon = e.typ==='ledger'?'📒':e.typ==='dispatch'?'📦':'💵';
+  return `
+    <div class="hi" onclick="showDetail('${e.id}')">
+      <div class="thumb">${e.photo ? `<img src="${e.photo}">` : typIcon}</div>
+      <div class="info">
+        <div class="cn">${esc(e.cust)}</div>
+        <div class="mt"><span style="color:${entColor};font-weight:700">${e.ent}</span> · ${e.typ} · ${e.time}</div>
+        ${e.note ? `<div class="mt" style="color:#94a3b8">${esc(e.note)}</div>` : ''}
+      </div>
+      <div class="am in">${PKR(e.amt)}</div>
+    </div>
+  `;
+}
+
+function renderSetup() {
+  return `
+    <div class="card">
+      <div class="sec" style="text-align:center;padding:20px">
+        <div style="font-size:36px;margin-bottom:8px">⚡</div>
+        <div style="font-size:16px;font-weight:700;color:#f8fafc">CNC PayGate</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:4px">Version 1.0 — Local Mode</div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="sec">
+        <div class="lbl">Current Mode</div>
+        <div style="padding:10px;border-radius:8px;background:#f59e0b12;border:1px solid #f59e0b30">
+          <div style="font-size:13px;font-weight:600;color:#fbbf24">📱 Local Storage</div>
+          <div style="font-size:11px;color:#94a3b8;margin-top:4px">Entries saved on this device only. To sync across devices and enable bank auto-capture, Firebase connection is needed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="lbl">Install as App (iPhone)</div>
+        <div style="font-size:12px;color:#94a3b8;line-height:1.6">
+          1. Open this page in <strong style="color:#f8fafc">Safari</strong><br>
+          2. Tap <strong style="color:#f8fafc">Share</strong> button (square + arrow)<br>
+          3. Tap <strong style="color:#f8fafc">"Add to Home Screen"</strong><br>
+          4. Name it <strong style="color:#f8fafc">PayGate</strong> → Add<br>
+          5. Open from home screen — full screen, no browser bar
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="lbl">Install as App (Android)</div>
+        <div style="font-size:12px;color:#94a3b8;line-height:1.6">
+          1. Open in <strong style="color:#f8fafc">Chrome</strong><br>
+          2. Tap <strong style="color:#f8fafc">⋮</strong> menu → <strong style="color:#f8fafc">"Add to Home screen"</strong><br>
+          3. Done — works like a native app
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="sec">
+        <div class="lbl">Production Upgrade Path</div>
+        <div style="font-size:12px;color:#94a3b8;line-height:1.6">
+          <strong style="color:#4ade80">Step 1:</strong> Connect Firebase → entries sync across all phones<br>
+          <strong style="color:#60a5fa">Step 2:</strong> Add email parser → bank credits auto-captured<br>
+          <strong style="color:#a78bfa">Step 3:</strong> Auto-matching → orders matched to bank credits<br>
+          <strong style="color:#f87171">Step 4:</strong> Dispatch gate → warehouse only sees confirmed orders
+        </div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="sec">
+        <div class="lbl">Data</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:12px;color:#94a3b8">${S.entries.length} entries stored locally</span>
+          <button onclick="if(confirm('Clear all local entries?')){S.entries=[];localStorage.removeItem('pg_e');render()}" style="padding:6px 12px;border-radius:8px;border:1px solid #dc262640;background:#dc262612;color:#f87171;font-size:11px;font-weight:600;cursor:pointer">Clear Data</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSuccess() {
+  const e = S.suc;
+  return `
+    <div class="sov" onclick="set({suc:null})">
+      <div class="scd">
+        <div style="font-size:44px;margin-bottom:8px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:#4ade80">Recorded!</div>
+        <div style="font-size:14px;color:#f8fafc;font-weight:600;margin-top:8px">${esc(e.cust)}</div>
+        <div style="font-size:26px;font-weight:800;color:#f8fafc;margin:6px 0;font-family:'SF Mono',monospace">${PKR(e.amt)}</div>
+        <div style="font-size:11px;color:#94a3b8">${e.ent} · ${e.typ} · ${e.time}</div>
+        ${e.photo ? '<div style="margin-top:8px;font-size:10px;color:#4ade80">📸 Photo attached</div>' : ''}
+        <div style="margin-top:12px;padding:6px 12px;border-radius:6px;background:#16a34a12;border:1px solid #16a34a30;font-size:10px;color:#4ade80">
+          ${e.typ === 'dispatch' ? '📦 Queued for dispatch' : e.typ === 'ledger' ? '📒 Ledger credit recorded' : '💵 Cash sale logged'}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── Helpers ──
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function highlight(name, query) {
+  if (!query) return esc(name);
+  const idx = name.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return esc(name);
+  return esc(name.slice(0,idx)) + '<strong style="color:#fbbf24">' + esc(name.slice(idx, idx+query.length)) + '</strong>' + esc(name.slice(idx+query.length));
+}
+
+// ── Event Binding ──
+function attachEvents() {
+  const ci = document.getElementById('ci');
+  if (ci) {
+    ci.addEventListener('input', (e) => {
+      const v = e.target.value;
+      S.cust = v;
+      S.fl = filt(v);
+      S.dd = S.fl.length > 0 && v.length >= 1;
+      // Update dropdown without full re-render
+      const oldDd = ci.parentElement.querySelector('.dd');
+      if (oldDd) oldDd.remove();
+      if (S.dd) {
+        const ddEl = document.createElement('div');
+        ddEl.className = 'dd';
+        ddEl.innerHTML = S.fl.map((c,i) => '<div class="ddi" data-ci="'+i+'"><div><span class="nm">'+highlight(c.n,S.cust)+'</span>'+(c.t==='L'?'<span class="tag tD">DEALER</span>':'')+'</div>'+(c.e?'<span class="tag t'+c.e[0]+'">'+c.e+'</span>':'')+'</div>').join('');
+        ci.parentElement.appendChild(ddEl);
+        ddEl.querySelectorAll('[data-ci]').forEach(el => {
+          el.addEventListener('mousedown', (ev) => { ev.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); });
+          el.addEventListener('touchstart', (ev) => { ev.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); }, {passive:false});
+        });
+      }
+    });
+    ci.addEventListener('focus', () => {
+      if (S.cust.length >= 1) { 
+        S.fl = filt(S.cust); 
+        S.dd = S.fl.length > 0;
+        // Show dropdown without re-render
+        const oldDd = ci.parentElement.querySelector('.dd');
+        if (oldDd) oldDd.remove();
+        if (S.dd) {
+          const ddEl = document.createElement('div');
+          ddEl.className = 'dd';
+          ddEl.innerHTML = S.fl.map((c,i) => '<div class="ddi" data-ci="'+i+'"><div><span class="nm">'+highlight(c.n,S.cust)+'</span>'+(c.t==='L'?'<span class="tag tD">DEALER</span>':'')+'</div>'+(c.e?'<span class="tag t'+c.e[0]+'">'+c.e+'</span>':'')+'</div>').join('');
+          ci.parentElement.appendChild(ddEl);
+          ddEl.querySelectorAll('[data-ci]').forEach(el => {
+            el.addEventListener('mousedown', (ev) => { ev.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); });
+            el.addEventListener('touchstart', (ev) => { ev.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); }, {passive:false});
+          });
+        }
+      }
+    });
+    ci.addEventListener('blur', () => { setTimeout(() => { S.dd = false; const dd = document.querySelector('.dd'); if (dd) dd.remove(); }, 150); });
+  }
+  
+  // Dropdown items
+  document.querySelectorAll('[data-ci]').forEach(el => {
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); });
+    el.addEventListener('touchstart', (e) => { e.preventDefault(); selCust(S.fl[parseInt(el.dataset.ci)]); }, {passive:false});
+  });
+  
+  const ai = document.getElementById('ai');
+  if (ai) ai.addEventListener('input', (e) => { 
+    S.amt = e.target.value;
+    // Update PKR display without re-render
+    const pkrDiv = ai.parentElement.nextElementSibling;
+    if (pkrDiv && pkrDiv.style) {
+      if (S.amt) { pkrDiv.textContent = PKR(S.amt); pkrDiv.style.display = ''; }
+      else { pkrDiv.style.display = 'none'; }
+    }
+  });
+  
+  const ni = document.getElementById('ni');
+  if (ni) ni.addEventListener('input', (e) => { S.note = e.target.value; /* no re-render for note */ });
+  
+  const sb = document.getElementById('sb');
+  if (sb) sb.addEventListener('click', submit);
+  
+  // History search
+  const hs = document.getElementById('hsearch');
+  if (hs) {
+    hs.addEventListener('input', (e) => { S.hSearch = e.target.value; render(); setTimeout(() => { const el = document.getElementById('hsearch'); if(el){el.focus();el.setSelectionRange(S.hSearch.length,S.hSearch.length)} },20); });
+  }
+  
+  // Photo
+  const pb = document.getElementById('pbox');
+  if (pb && !S.photo) pb.addEventListener('click', triggerPhoto);
+  const pr = document.getElementById('prm');
+  if (pr) pr.addEventListener('click', (e) => { e.stopPropagation(); removePhoto(); });
+}
+
+// ── Start ──
+init();
+</script>
+<div id="version-bar" style="position:fixed;bottom:56px;left:0;right:0;background:#0f172a;border-top:1px solid #1e293b;padding:3px 14px;display:flex;justify-content:space-between;font-size:9px;color:#475569;z-index:40"><span>paygate-v16.html</span><span>V16 &middot; 20 Mar 2026</span></div>
+</body>
+</html>
