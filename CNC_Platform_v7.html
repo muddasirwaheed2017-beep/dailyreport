@@ -165,36 +165,50 @@ function nav(p){document.querySelectorAll('.pg').forEach(function(x){x.classList
 document.querySelector('.sb').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var ni=e.target.closest('.ni');if(ni&&ni.dataset.p)nav(ni.dataset.p)});
 
 async function load(){
-  $('fbt').textContent='Loading...';log('Fetching all pages...');
+  $('fbt').textContent='Loading...';log('Fetching sessions...');
   ALL=[];var nextPage=null;var page=0;
   do{
     page++;var url=B+'/sessions?key='+K+'&pageSize=300';
     if(nextPage)url+='&pageToken='+encodeURIComponent(nextPage);
     try{
-      var r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status);
+      var r=await fetchRetry(url);
       var data=await r.json();
       var docs=(data.documents||[]).map(pD);
       ALL=ALL.concat(docs);
       nextPage=data.nextPageToken||null;
-      $('fbt').textContent='Loading page '+page+'... ('+ALL.length+' sessions)';
-    }catch(e){log('ERROR page '+page+': '+e.message);$('fbt').textContent='Error: '+e.message;break}
+      $('fbt').textContent='Page '+page+'... ('+ALL.length+')';
+    }catch(e){log('ERROR: '+e.message);$('fbt').textContent='Error: '+e.message;break}
   }while(nextPage);
   ALL.sort(function(a,b){var ta=gt(a,'lastActivity')||new Date(0),tb=gt(b,'lastActivity')||new Date(0);return tb-ta});
-  $('cnt').textContent=ALL.length;$('fbt').textContent=ALL.length+' sessions \u2022 '+new Date().toLocaleTimeString();
-  log('Total: '+ALL.length+' sessions ('+page+' pages)');if(ALL.length>0)$('dbg').style.display='none';
-  // Load extra collections in parallel
-  await Promise.all([
-    fetch(B+'/events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){EVTS=(d.documents||[]).map(pD)}).catch(function(){EVTS=[]}),
-    fetch(B+'/trigger_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){TRGEVTS=(d.documents||[]).map(pD)}).catch(function(){TRGEVTS=[]}),
-    fetch(B+'/va_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){VAEVTS=(d.documents||[]).map(pD)}).catch(function(){VAEVTS=[]}),
-    fetch(B+'/shopify_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){SPEVTS=(d.documents||[]).map(pD)}).catch(function(){SPEVTS=[]}),
-    fetch(B+'/pageviews?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){PVEVTS=(d.documents||[]).map(pD)}).catch(function(){PVEVTS=[]})
-  ]);
-  log('Events:'+EVTS.length+' Triggers:'+TRGEVTS.length+' VA:'+VAEVTS.length+' Shopify:'+SPEVTS.length+' PV:'+PVEVTS.length);
+  $('cnt').textContent=ALL.length;
+  log(ALL.length+' sessions loaded');if(ALL.length>0)$('dbg').style.display='none';
+  // Load extra collections with longer delays to avoid 429
+  $('fbt').textContent=ALL.length+' sessions. Loading events...';
+  await delay(1500);
+  EVTS=await fetchColl('events');await delay(1000);
+  TRGEVTS=await fetchColl('trigger_events');await delay(1000);
+  VAEVTS=await fetchColl('va_events');await delay(1000);
+  SPEVTS=await fetchColl('shopify_events');await delay(1000);
+  PVEVTS=await fetchColl('pageviews');
+  $('fbt').textContent=ALL.length+' sessions \u2022 '+new Date().toLocaleTimeString();
+  log('Ev:'+EVTS.length+' Trg:'+TRGEVTS.length+' VA:'+VAEVTS.length+' SP:'+SPEVTS.length+' PV:'+PVEVTS.length);
   render();
 }
-// Auto-refresh every 45 seconds
-setInterval(function(){load()},45000);
+function delay(ms){return new Promise(function(r){setTimeout(r,ms)})}
+async function fetchRetry(url,retries){
+  retries=retries||3;
+  for(var i=0;i<retries;i++){
+    var r=await fetch(url);
+    if(r.ok)return r;
+    if(r.status===429){log('Rate limited, waiting '+(i+1)*5+'s...');await delay((i+1)*5000);continue}
+    throw new Error('HTTP '+r.status);
+  }
+  throw new Error('Rate limited after '+retries+' retries');
+}
+async function fetchColl(name){
+  try{var r=await fetchRetry(B+'/'+name+'?key='+K+'&pageSize=200');var d=await r.json();return(d.documents||[]).map(pD)}catch(e){log(name+': '+e.message);return[]}
+}
+// NO auto-refresh — manual only via Refresh button (avoids 429 rate limiting)
 function mc(l,v,c){var st=c?c.indexOf('color:')===0?c:'color:var('+c+')':'';return'<div class="mc"><div class="mc-l">'+l+'</div><div class="mc-v"'+(st?' style="'+st+'"':'')+'">'+v+'</div></div>'}
 function render(){
   var ss=ALL,ac=ss.filter(isA).length,vaC=ss.filter(isVA).length,fbC=ss.filter(function(s){return src(s)==='Facebook'}).length;
