@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#fff;--bg1:#f8f9fb;--bg2:#f1f3f6;--bg3:#e8ebf0;--bd:#e2e5ea;--t1:#111827;--t2:#4b5563;--t3:#9ca3af;--bl:#2563eb;--blS:rgba(37,99,235,.08);--gn:#16a34a;--gnS:rgba(22,163,74,.08);--rd:#dc2626;--am:#d97706;--amS:rgba(217,119,6,.08);--pp:#7c3aed;--cy:#0891b2;--r:10px;--sw:240px;--f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace}
+:root{--bg:#fff;--bg1:#f8f9fb;--bg2:#f1f3f6;--bg3:#e8ebf0;--bd:#e2e5ea;--t1:#111827;--t2:#4b5563;--t3:#9ca3af;--bl:#2563eb;--blS:rgba(37,99,235,.08);--gn:#16a34a;--gnS:rgba(22,163,74,.08);--rd:#dc2626;--am:#d97706;--amS:rgba(217,119,6,.08);--pp:#7c3aed;--ppS:rgba(124,58,237,.08);--cy:#0891b2;--cyS:rgba(8,145,178,.08);--r:10px;--sw:240px;--f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace}
 body{font-family:var(--f);background:var(--bg1);color:var(--t1);overflow:hidden;height:100vh}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:10px}
 .sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bg);border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
@@ -86,6 +86,8 @@ body{font-family:var(--f);background:var(--bg1);color:var(--t1);overflow:hidden;
   </div>
   <div class="sb-sec"><div class="sb-lbl">Analysis</div>
     <div class="ni" data-p="deep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>Deep-Dive</div>
+    <div class="ni" data-p="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>Add to Cart<span class="bdg" id="cart-cnt" style="background:rgba(217,119,6,.1);color:#d97706">0</span></div>
+    <div class="ni" data-p="checkout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Checkout<span class="bdg" id="chk-cnt" style="background:rgba(8,145,178,.1);color:#0891b2">0</span></div>
     <div class="ni" data-p="src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 012 2v7"/></svg>Sources</div>
     <div class="ni" data-p="pages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>Pages</div>
     <div class="ni" data-p="funnel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Funnel</div>
@@ -93,6 +95,7 @@ body{font-family:var(--f);background:var(--bg1);color:var(--t1);overflow:hidden;
   </div>
   <div class="sb-sec"><div class="sb-lbl">Tools</div>
     <div class="ni" data-p="va"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>VA Selector<span class="va-badge" style="margin-left:auto">NEW</span></div>
+    <div class="ni" data-p="triggers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Triggers<span class="bdg" id="trg-cnt" style="background:rgba(124,58,237,.1);color:#7c3aed">0</span></div>
   </div>
   <div class="sb-sec"><div class="sb-lbl">System</div>
     <div class="ni" data-p="health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health</div>
@@ -109,11 +112,20 @@ body{font-family:var(--f);background:var(--bg1);color:var(--t1);overflow:hidden;
 <div class="pg" id="pg-funnel"><div class="mg" id="fnm"></div><div class="cd"><div class="cd-t" style="margin-bottom:12px">Session depth</div><div id="fc"></div></div></div>
 <div class="pg" id="pg-dev"><div class="cd"><div class="cd-t" style="margin-bottom:12px">Devices</div><div class="tw"><table class="tb"><thead><tr><th>Device</th><th>Sessions</th><th>%</th><th>Avg pages</th></tr></thead><tbody id="dvt"></tbody></table></div></div></div>
 <div class="pg" id="pg-va"><div class="mg" id="vam"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="cd"><div class="cd-h"><div class="cd-t">VA selector sessions</div></div><div id="va-list" style="max-height:350px;overflow-y:auto"></div></div><div class="cd"><div class="cd-h"><div class="cd-t">VA journeys</div></div><div id="va-stories" style="max-height:350px;overflow-y:auto"></div></div></div><div class="cd"><div class="cd-h"><div class="cd-t">VA selector vs rest</div></div><div class="tw"><table class="tb"><thead><tr><th>Metric</th><th>Used VA</th><th>Didn't use</th><th>Diff</th></tr></thead><tbody id="va-cmp"></tbody></table></div></div></div>
+
+<!-- CART -->
+<div class="pg" id="pg-cart"><div class="mg" id="cartM"></div><div class="cd"><div class="cd-h"><div><div class="cd-t">Add to cart events</div><div style="font-size:10px;color:var(--t3);margin-top:2px">From events & shopify_events collections</div></div></div><div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Visitor</th><th>Product</th><th>Source</th><th>Page</th><th></th></tr></thead><tbody id="cartTb"></tbody></table></div></div><div class="cd"><div class="cd-h"><div class="cd-t">Cart behavior analysis</div></div><div id="cartAnalysis"></div></div></div>
+
+<!-- CHECKOUT -->
+<div class="pg" id="pg-checkout"><div class="mg" id="chkM"></div><div class="cd"><div class="cd-h"><div><div class="cd-t">Checkout events</div><div style="font-size:10px;color:var(--t3);margin-top:2px">From Web Pixel & shopify_events</div></div></div><div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Visitor</th><th>Step</th><th>Value</th><th>Source</th><th></th></tr></thead><tbody id="chkTb"></tbody></table></div></div><div class="cd"><div class="cd-h"><div class="cd-t">Checkout funnel</div></div><div id="chkFunnel"></div></div></div>
+
+<!-- TRIGGERS -->
+<div class="pg" id="pg-triggers"><div class="mg" id="trgM"></div><div class="cd"><div class="cd-h"><div><div class="cd-t">Trigger events fired</div><div style="font-size:10px;color:var(--t3);margin-top:2px">From cnc-triggers.js behavioral messages</div></div></div><div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Trigger</th><th>Page</th><th>Visitor</th><th>Engaged?</th></tr></thead><tbody id="trgTb"></tbody></table></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="cd"><div class="cd-h"><div class="cd-t">Trigger performance</div></div><div id="trgPerf"></div></div><div class="cd"><div class="cd-h"><div class="cd-t">Installation status</div></div><div id="trgStatus"></div></div></div></div>
 <div class="pg" id="pg-health"><div class="cd"><div class="cd-t" style="margin-bottom:12px">Health</div><div id="hc"></div></div></div>
 </div></div>
 <script>
 var P='cnc-website-tracking',K='AIzaSyC8YS69F2QLiiPVsHkS_gna7brKVPY4eh4',B='https://firestore.googleapis.com/v1/projects/'+P+'/databases/(default)/documents';
-var ALL=[],curFlt='all',selId=null;
+var ALL=[],EVTS=[],TRGEVTS=[],VAEVTS=[],SPEVTS=[],PVEVTS=[],curFlt='all',selId=null;
 function $(i){return document.getElementById(i)}
 function log(m){var e=$('dbg');if(e)e.textContent+='\n'+new Date().toLocaleTimeString()+' '+m}
 function pV(v){if(!v)return null;if('stringValue' in v)return v.stringValue;if('integerValue' in v)return parseInt(v.integerValue,10);if('doubleValue' in v)return parseFloat(v.doubleValue);if('booleanValue' in v)return v.booleanValue;if('timestampValue' in v)return new Date(v.timestampValue);if('nullValue' in v)return null;if('mapValue' in v){var o={};if(v.mapValue.fields)Object.keys(v.mapValue.fields).forEach(function(k){o[k]=pV(v.mapValue.fields[k])});return o}if('arrayValue' in v)return(v.arrayValue.values||[]).map(pV);return null}
@@ -148,7 +160,7 @@ function bStory(d){
   return'<div class="story'+(va?' story-va':'')+'"><div class="story-head"><span class="story-vid">'+sh+'</span><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(sc)+'</span>'+(va?'<span class="va-badge">VA</span>':'')+'<span class="story-time">'+tm+'</span></div><div class="story-body">'+p.join(' \u2192 ')+'.</div></div>';
 }
 
-var titles={dash:['Dashboard','CNC Electric Pakistan'],live:['Sessions','All tracked'],stories:['Behavior Stories','Plain language descriptions'],deep:['Deep-Dive','Journey detail'],src:['Traffic Sources','By source'],pages:['Top Pages','Landings'],funnel:['Funnel','Session depth'],dev:['Devices','Breakdown'],va:['VA Selector','Voltage protection selector analytics'],health:['Health','Status']};
+var titles={dash:['Dashboard','CNC Electric Pakistan'],live:['Sessions','All tracked'],stories:['Behavior Stories','Plain language descriptions'],deep:['Deep-Dive','Journey detail'],cart:['Add to Cart','Cart events & analysis'],checkout:['Checkout','Checkout events & funnel'],src:['Traffic Sources','By source'],pages:['Top Pages','Landings'],funnel:['Funnel','Session depth'],dev:['Devices','Breakdown'],va:['VA Selector','Selector analytics'],triggers:['Triggers','Behavioral message status'],health:['Health','Status']};
 function nav(p){document.querySelectorAll('.pg').forEach(function(x){x.classList.remove('on')});var t=$('pg-'+p);if(t)t.classList.add('on');$('ca').scrollTop=0;document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});var el=document.querySelector('[data-p="'+p+'"]');if(el)el.classList.add('on');var tt=titles[p]||['',''];$('pt').textContent=tt[0];$('ps').textContent=tt[1]}
 document.querySelector('.sb').addEventListener('click',function(e){e.preventDefault();e.stopPropagation();var ni=e.target.closest('.ni');if(ni&&ni.dataset.p)nav(ni.dataset.p)});
 
@@ -169,7 +181,17 @@ async function load(){
   }while(nextPage);
   ALL.sort(function(a,b){var ta=gt(a,'lastActivity')||new Date(0),tb=gt(b,'lastActivity')||new Date(0);return tb-ta});
   $('cnt').textContent=ALL.length;$('fbt').textContent=ALL.length+' sessions \u2022 '+new Date().toLocaleTimeString();
-  log('Total: '+ALL.length+' sessions ('+page+' pages)');if(ALL.length>0)$('dbg').style.display='none';render();
+  log('Total: '+ALL.length+' sessions ('+page+' pages)');if(ALL.length>0)$('dbg').style.display='none';
+  // Load extra collections in parallel
+  await Promise.all([
+    fetch(B+'/events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){EVTS=(d.documents||[]).map(pD)}).catch(function(){EVTS=[]}),
+    fetch(B+'/trigger_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){TRGEVTS=(d.documents||[]).map(pD)}).catch(function(){TRGEVTS=[]}),
+    fetch(B+'/va_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){VAEVTS=(d.documents||[]).map(pD)}).catch(function(){VAEVTS=[]}),
+    fetch(B+'/shopify_events?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){SPEVTS=(d.documents||[]).map(pD)}).catch(function(){SPEVTS=[]}),
+    fetch(B+'/pageviews?key='+K+'&pageSize=300').then(function(r){return r.json()}).then(function(d){PVEVTS=(d.documents||[]).map(pD)}).catch(function(){PVEVTS=[]})
+  ]);
+  log('Events:'+EVTS.length+' Triggers:'+TRGEVTS.length+' VA:'+VAEVTS.length+' Shopify:'+SPEVTS.length+' PV:'+PVEVTS.length);
+  render();
 }
 // Auto-refresh every 45 seconds
 setInterval(function(){load()},45000);
@@ -180,7 +202,7 @@ function render(){
   var aD=ss.length?Math.round(ss.reduce(function(a,d){return a+dur(d)},0)/ss.length):0;
   $('dm').innerHTML=mc('Sessions',ss.length,'--gn')+mc('Active',ac,'--cy')+mc('Facebook',fbC,'--bl')+mc('VA selector',vaC,'color:#dc2626')+mc('Avg pages',aP,'')+mc('Avg duration',fD(aD),'');
   $('lm').innerHTML=mc('Total',ss.length,'--gn')+mc('Active',ac,'--cy')+mc('Mobile',ss.filter(function(s){return getDev(s)==='mobile'}).length,'--pp')+mc('Desktop',ss.filter(function(s){return getDev(s)!=='mobile'}).length,'');
-  rSB(ss);rFl('lf',ss);rFl('df',ss);rFl('sf',ss);rTb(apF(ss));rVL();rSTb(ss);rPTb(ss);rFn(ss);rDTb(ss);rH(ss);rFd(ss);rSt(ss);rVA(ss)
+  rSB(ss);rFl('lf',ss);rFl('df',ss);rFl('sf',ss);rTb(apF(ss));rVL();rSTb(ss);rPTb(ss);rFn(ss);rDTb(ss);rH(ss);rFd(ss);rSt(ss);rVA(ss);rCart();rChk();rTrg()
 }
 function rSB(ss){var s={};ss.forEach(function(d){var k=src(d);s[k]=(s[k]||0)+1});var st=Object.entries(s).sort(function(a,b){return b[1]-a[1]}).slice(0,8);var mx=st[0]?st[0][1]:1;$('srcB').innerHTML=st.map(function(e){var c=sC(e[0]);return'<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><span style="font-size:10px;width:100px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(e[0])+'</span><div style="flex:1;height:18px;background:var(--bg2);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+Math.round(e[1]/mx*100)+'%;background:'+c.c+';border-radius:3px;opacity:.45"></div></div><span class="m" style="width:55px;text-align:right;color:var(--t2)">'+e[1]+' ('+Math.round(e[1]/ss.length*100)+'%)</span></div>'}).join('')}
 function rFl(id,ss){var s={};ss.forEach(function(d){var k=src(d);s[k]=(s[k]||0)+1});var st=Object.entries(s).sort(function(a,b){return b[1]-a[1]}).slice(0,5);$(id).innerHTML='<div class="fb'+(curFlt==='all'?' on':'')+'" onclick="sF(\'all\')">All ('+ss.length+')</div><div class="fb'+(curFlt==='active'?' on':'')+'" onclick="sF(\'active\')">Active</div><div class="fb'+(curFlt==='va'?' on':'')+'" onclick="sF(\'va\')" style="border-color:rgba(220,38,38,.3)">VA Selector</div>'+st.map(function(e){return'<div class="fb'+(curFlt===e[0]?' on':'')+'" onclick="sF(\''+E(e[0])+'\')">'+E(e[0])+'</div>'}).join('')}
@@ -206,7 +228,7 @@ function rSTb(ss){var s={};ss.forEach(function(d){var k=src(d);if(!s[k])s[k]={n:
 function rPTb(ss){var p={};ss.forEach(function(d){var l=gs(d,'landingPage');if(l)p[l]=(p[l]||0)+1});$('pgt').innerHTML=Object.entries(p).sort(function(a,b){return b[1]-a[1]}).slice(0,20).map(function(e){return'<tr><td style="max-width:350px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(sP(e[0]))+'</td><td class="m">'+e[1]+'</td><td class="m">'+Math.round(e[1]/ss.length*100)+'%</td></tr>'}).join('')}
 function rFn(ss){var t=ss.length,v1=ss.filter(function(d){return gn(d,'pageCount')>0}).length,v2=ss.filter(function(d){return gn(d,'pageCount')>=2}).length,v3=ss.filter(function(d){return gn(d,'pageCount')>=3}).length,v5=ss.filter(function(d){return gn(d,'pageCount')>=5}).length;$('fnm').innerHTML=mc('Sessions',t,'')+mc('1+ pages',v1,'--gn')+mc('2+ pages',v2,'--bl')+mc('5+ engaged',v5,'--pp');var steps=[{l:'All',n:t,c:'#2563eb'},{l:'1+ page',n:v1||t,c:'#16a34a'},{l:'2+ pages',n:v2,c:'#0891b2'},{l:'3+',n:v3,c:'#7c3aed'},{l:'5+',n:v5,c:'#d97706'}];var mx=steps[0].n||1;$('fc').innerHTML=steps.map(function(s){return'<div class="fn-s"><div class="fn-l">'+s.l+'</div><div class="fn-b" style="width:'+Math.max(Math.round(s.n/mx*100),4)+'%;background:'+s.c+'">'+s.n+'</div><div class="fn-v">'+Math.round(s.n/mx*100)+'%</div></div>'}).join('')}
 function rDTb(ss){var d={};ss.forEach(function(s){var k=getDev(s)||'unknown';if(!d[k])d[k]={n:0,pg:0};d[k].n++;d[k].pg+=gn(s,'pageCount')});$('dvt').innerHTML=Object.entries(d).sort(function(a,b){return b[1].n-a[1].n}).map(function(e){return'<tr><td>'+e[0]+'</td><td class="m">'+e[1].n+'</td><td class="m">'+Math.round(e[1].n/ss.length*100)+'%</td><td class="m">'+(e[1].pg/e[1].n).toFixed(1)+'</td></tr>'}).join('')}
-function rH(ss){$('hc').innerHTML=[[ss.length>0,'Sessions',ss.length],[ss.some(function(d){return d.visitorId}),'Visitor IDs','\u2705'],[ss.some(function(d){return d.referrer}),'Referrer','\u2705'],[ss.some(function(d){return d.utm_source}),'UTM source','\u2705'],[ss.some(function(d){return d.device}),'Device','\u2705'],[ss.some(function(d){return d.pagesViewed>0}),'Page count','\u2705'],[ss.some(isVA),'VA sessions',ss.filter(isVA).length||'\u274C'],[false,'Webhooks','Not set up']].map(function(c){return'<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg1);border-radius:6px;margin-bottom:4px"><span style="font-size:14px">'+(c[0]?'\u2705':'\u274C')+'</span><span style="font-size:11px;font-weight:500">'+c[1]+'</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">'+c[2]+'</span></div>'}).join('')}
+function rH(ss){$('hc').innerHTML=[[ss.length>0,'Sessions collection',ss.length+' docs'],[ss.some(function(d){return d.visitorId}),'Visitor IDs','\u2705'],[ss.some(function(d){return d.referrer}),'Referrer tracking','\u2705'],[ss.some(function(d){return d.utm_source}),'UTM source','\u2705'],[ss.some(function(d){return d.device}),'Device detection','\u2705'],[EVTS.length>0,'Events collection',EVTS.length+' events'],[PVEVTS.length>0,'Pageviews collection',PVEVTS.length+' pageviews'],[SPEVTS.length>0,'Shopify events (Web Pixel)',SPEVTS.length+' events'],[TRGEVTS.length>0,'Trigger events (cnc-triggers.js)',TRGEVTS.length+' events'],[VAEVTS.length>0,'VA events (cnc-va-tracker.js)',VAEVTS.length+' events'],[ss.some(isVA),'VA selector sessions',ss.filter(isVA).length],[false,'Webhooks (Layer 3)','Needs Firebase Blaze upgrade'],[false,'Purchase tracking','Needs webhooks']].map(function(c){return'<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg1);border-radius:6px;margin-bottom:4px"><span style="font-size:14px">'+(c[0]?'\u2705':'\u274C')+'</span><span style="font-size:11px;font-weight:500">'+c[1]+'</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">'+c[2]+'</span></div>'}).join('')}
 function rVL(){var ss=apF(ALL).slice(0,20);$('vb').innerHTML=ss.map(function(d){var vid=gs(d,'visitorId')||d._id,sh=vid.slice(0,8),sc=src(d),pg=gn(d,'pageCount'),dd=dur(d),act=isA(d),va=isVA(d),cols=['#2563eb','#7c3aed','#0891b2','#16a34a','#d97706','#dc2626'],col=cols[sh.charCodeAt(0)%cols.length],sel=selId===d._id?' sel':'';return'<div class="vr'+sel+'" onclick="selV(\''+d._id+'\')"><div style="width:6px;height:6px;border-radius:50%;background:'+(act?'var(--gn)':'var(--t3)')+';flex-shrink:0;margin-top:2px"></div><div class="vr-a" style="background:'+col+'10;color:'+col+'">'+sh.slice(0,2).toUpperCase()+'</div><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600">'+sh+'\u2026'+(va?' <span class="va-badge">VA</span>':'')+'</div><div style="font-size:9px;color:var(--t3);display:flex;gap:6px;margin-top:1px"><span>'+E(sc)+'</span><span>'+pg+'pg</span><span>'+fD(dd)+'</span></div></div></div>'}).join('')||'<div style="padding:20px;text-align:center;color:var(--t3)">No visitors</div>'}
 function goD(id){nav('deep');setTimeout(function(){selV(id)},50)}
 function selV(id){
@@ -222,8 +244,110 @@ function selV(id){
   if(va)h+='<div class="te"><div class="tdot" style="background:#dc2626"></div><div style="font-size:11px;font-weight:600;color:#dc2626">Used VA Protection Selector</div></div>';
   var la=gt(d,'lastActivity');if(la)h+='<div class="te"><div class="tdot" style="background:var(--t3)"></div><div style="font-size:9px;color:var(--t3);font-family:var(--fm)">'+la.toLocaleTimeString()+'</div><div style="font-size:11px;font-weight:600">'+(act?'Still active':'Ended')+'</div><div style="font-size:10px;color:var(--t2)">Duration: <b>'+fD(dd)+'</b></div></div>';
   h+='</div>';var raw=Object.assign({},d);delete raw._id;h+='<div style="font-size:10px;color:var(--am);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 6px">Raw data</div><div class="raw">'+E(JSON.stringify(raw,null,2))+'</div>';
+  // Load events for this visitor
+  var sid=d._id;var vEvents=EVTS.filter(function(e){return e.sessionId===sid||e.session_id===sid});
+  var vPV=PVEVTS.filter(function(e){return e.sessionId===sid||e.session_id===sid});
+  var vTrig=TRGEVTS.filter(function(e){return e.sessionId===sid||e.session_id===sid||e.visitor_id===vid});
+  if(vEvents.length>0||vPV.length>0||vTrig.length>0){
+    h+='<div style="font-size:10px;color:var(--bl);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin:14px 0 8px">Detailed event log ('+( vEvents.length+vPV.length+vTrig.length)+' events)</div><div class="tl">';
+    var allEv=[].concat(vPV.map(function(e){return{t:e.timestamp||e.created_at,type:'pageview',url:e.url||e.page||e.path||'',d:e}}),vEvents.map(function(e){return{t:e.timestamp,type:e.event_name||e.type||'event',url:e.page_url||e.url||'',title:e.product_title||e.title||'',price:e.price,qty:e.quantity,d:e}}),vTrig.map(function(e){return{t:e.timestamp,type:'trigger:'+( e.trigger_id||''),url:e.page_url||e.page_path||'',d:e}}));
+    allEv.sort(function(a,b){var ta=a.t instanceof Date?a.t:new Date(a.t||0);var tb=b.t instanceof Date?b.t:new Date(b.t||0);return ta-tb});
+    allEv.forEach(function(ev){
+      var tm=ev.t instanceof Date?ev.t.toLocaleTimeString():typeof ev.t==='string'?new Date(ev.t).toLocaleTimeString():'';
+      var col=ev.type==='pageview'?'var(--bl)':ev.type.indexOf('cart')>=0?'var(--am)':ev.type.indexOf('checkout')>=0?'var(--cy)':ev.type.indexOf('trigger')>=0?'var(--pp)':ev.type.indexOf('purchase')>=0?'var(--gn)':'var(--t3)';
+      var label=ev.type.replace(/_/g,' ');
+      var detail=ev.url?E(sP(ev.url)):'';if(ev.title)detail+=' <b>'+E(ev.title)+'</b>';if(ev.price)detail+=' Rs.'+ev.price;
+      h+='<div class="te"><div class="tdot" style="background:'+col+'"></div><div style="font-size:9px;color:var(--t3);font-family:var(--fm)">'+tm+'</div><div style="font-size:11px;font-weight:600;margin:2px 0">'+label+'</div>'+(detail?'<div style="font-size:10px;color:var(--t2)">'+detail+'</div>':'')+'</div>';
+    });
+    h+='</div>';
+  }
   $('jj').innerHTML=h;
 }
+
+// ========== CART TAB ==========
+function rCart(){
+  var cartEvts=EVTS.filter(function(e){var n=(e.event_name||e.type||'').toLowerCase();return n.indexOf('cart')>=0||n.indexOf('add')>=0});
+  var spCart=SPEVTS.filter(function(e){var n=(e.event_name||'').toLowerCase();return n.indexOf('cart')>=0});
+  var all=cartEvts.concat(spCart).sort(function(a,b){var ta=new Date(a.timestamp||0),tb=new Date(b.timestamp||0);return tb-ta});
+  $('cart-cnt').textContent=all.length;
+  $('cartM').innerHTML=mc('Cart events',all.length,'--am')+mc('Unique visitors',new Set(all.map(function(e){return e.visitorId||e.visitor_id||e.sessionId||'?'})).size,'--bl')+mc('From events',cartEvts.length,'')+mc('From Web Pixel',spCart.length,'--cy');
+  $('cartTb').innerHTML=all.length?all.slice(0,20).map(function(e){
+    var tm=e.timestamp?new Date(e.timestamp instanceof Date?e.timestamp:e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
+    var vid=(e.visitorId||e.visitor_id||e.sessionId||e.session_id||'?').slice(0,8);
+    var prod=e.product_title||e.title||e.product||'';
+    var page=e.page_url||e.url||'';
+    var s=findSession(e.sessionId||e.session_id||e.visitorId);
+    var sc=s?src(s):'?';var col=sC(sc);
+    return'<tr><td class="m">'+tm+'</td><td class="m">'+vid+'</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(prod||sP(page))+'</td><td><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(sc)+'</span></td><td class="m" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(sP(page))+'</td><td>'+(s?'<button class="bt" style="font-size:9px;padding:2px 7px" onclick="goD(\''+s._id+'\')">View</button>':'')+'</td></tr>'
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)"><div style="font-size:14px;margin-bottom:6px">No cart events found yet</div><div style="font-size:11px">Cart events come from: events collection (product_added_to_cart) and shopify_events (Web Pixel). If your Web Pixel is connected, cart events should appear as visitors add products.</div></td></tr>';
+  // Analysis
+  if(all.length>0){
+    var prods={};all.forEach(function(e){var p=e.product_title||e.title||'unknown';prods[p]=(prods[p]||0)+1});
+    var sorted=Object.entries(prods).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+    $('cartAnalysis').innerHTML='<div style="font-size:11px;font-weight:600;margin-bottom:8px">Most added products</div>'+sorted.map(function(e){return'<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--bg2)"><span style="flex:1;font-size:11px">'+E(e[0])+'</span><span class="m" style="color:var(--am)">'+e[1]+'x</span></div>'}).join('');
+  }else{$('cartAnalysis').innerHTML='<div style="color:var(--t3);font-size:11px;text-align:center;padding:16px">Analysis will appear once cart events are tracked</div>'}
+}
+
+// ========== CHECKOUT TAB ==========
+function rChk(){
+  var chkEvts=EVTS.filter(function(e){var n=(e.event_name||e.type||'').toLowerCase();return n.indexOf('checkout')>=0||n.indexOf('payment')>=0||n.indexOf('purchase')>=0});
+  var spChk=SPEVTS.filter(function(e){var n=(e.event_name||'').toLowerCase();return n.indexOf('checkout')>=0||n.indexOf('payment')>=0||n.indexOf('purchase')>=0});
+  var all=chkEvts.concat(spChk).sort(function(a,b){var ta=new Date(a.timestamp||0),tb=new Date(b.timestamp||0);return tb-ta});
+  $('chk-cnt').textContent=all.length;
+  var started=all.filter(function(e){return(e.event_name||'').indexOf('started')>=0}).length;
+  var completed=all.filter(function(e){return(e.event_name||'').indexOf('completed')>=0||(e.event_name||'').indexOf('purchase')>=0}).length;
+  $('chkM').innerHTML=mc('Checkout events',all.length,'--cy')+mc('Started',started,'--am')+mc('Completed',completed,'--gn')+mc('Drop-off',started>0?Math.round((1-completed/started)*100)+'%':'--','--rd');
+  $('chkTb').innerHTML=all.length?all.slice(0,20).map(function(e){
+    var tm=e.timestamp?new Date(e.timestamp instanceof Date?e.timestamp:e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
+    var vid=(e.visitorId||e.visitor_id||e.client_id||e.sessionId||'?').slice(0,8);
+    var step=e.event_name||e.type||'?';
+    var val=e.total_price||e.totalPrice||e.value||'';
+    var s=findSession(e.sessionId||e.session_id||e.visitorId);
+    var sc=s?src(s):'?';var col=sC(sc);
+    var stepCol=step.indexOf('completed')>=0||step.indexOf('purchase')>=0?'var(--gn)':step.indexOf('started')>=0?'var(--cy)':'var(--am)';
+    return'<tr><td class="m">'+tm+'</td><td class="m">'+vid+'</td><td><span class="tg" style="background:rgba(0,0,0,.05);color:'+stepCol+'">'+E(step.replace(/_/g,' '))+'</span></td><td class="m">'+(val?'Rs.'+val:'')+'</td><td><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(sc)+'</span></td><td>'+(s?'<button class="bt" style="font-size:9px;padding:2px 7px" onclick="goD(\''+s._id+'\')">View</button>':'')+'</td></tr>'
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)"><div style="font-size:14px;margin-bottom:6px">No checkout events yet</div><div style="font-size:11px">Checkout events come from the Web Pixel (Settings \u2192 Customer Events). Verify "CNC Firebase Tracker" pixel is connected and active in your Shopify admin.</div></td></tr>';
+  // Funnel
+  if(all.length>0){
+    var steps={};all.forEach(function(e){var n=(e.event_name||'').replace('checkout_','').replace('_submitted','');steps[n]=(steps[n]||0)+1});
+    var sorted=Object.entries(steps).sort(function(a,b){return b[1]-a[1]});
+    var mx=sorted[0]?sorted[0][1]:1;
+    $('chkFunnel').innerHTML=sorted.map(function(e){var pct=Math.round(e[1]/mx*100);return'<div class="fn-s"><div class="fn-l">'+e[0]+'</div><div class="fn-b" style="width:'+Math.max(pct,4)+'%;background:var(--cy)">'+e[1]+'</div><div class="fn-v">'+pct+'%</div></div>'}).join('');
+  }else{$('chkFunnel').innerHTML='<div style="color:var(--t3);font-size:11px;text-align:center;padding:16px">Funnel appears with checkout data</div>'}
+}
+
+// ========== TRIGGERS TAB ==========
+function rTrg(){
+  var all=TRGEVTS.sort(function(a,b){var ta=new Date(a.timestamp||0),tb=new Date(b.timestamp||0);return tb-ta});
+  var fired=all.filter(function(e){return(e.event||e.event_name)==='trigger_fired'});
+  var engaged=all.filter(function(e){return(e.event||e.event_name)==='trigger_engaged'});
+  $('trg-cnt').textContent=fired.length;
+  $('trgM').innerHTML=mc('Triggers fired',fired.length,'--pp')+mc('Engaged (clicked)',engaged.length,'--gn')+mc('Engagement rate',fired.length?Math.round(engaged.length/fired.length*100)+'%':'0%','--bl')+mc('Unique visitors',new Set(fired.map(function(e){return e.visitor_id||e.visitorId||'?'})).size,'');
+  $('trgTb').innerHTML=all.length?all.slice(0,20).map(function(e){
+    var tm=e.timestamp?new Date(typeof e.timestamp==='string'?e.timestamp:e.timestamp).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):'';
+    var trigger=e.trigger_id||'?';
+    var page=e.page_path||e.page_url||'';
+    var vid=(e.visitor_id||e.visitorId||'?').slice(0,8);
+    var isEngaged=(e.event||e.event_name)==='trigger_engaged';
+    return'<tr><td class="m">'+tm+'</td><td><span class="tg" style="background:var(--ppS);color:var(--pp)">'+E(trigger.replace(/_/g,' '))+'</span></td><td class="m" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(sP(page))+'</td><td class="m">'+vid+'</td><td>'+(isEngaged?'<span class="tg" style="background:var(--gnS);color:var(--gn)">\u2705 Yes</span>':'<span style="color:var(--t3)">No</span>')+'</td></tr>'
+  }).join(''):'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)"><div style="font-size:14px;margin-bottom:6px">No trigger events yet</div><div style="font-size:11px">cnc-triggers.js is installed on your theme. Triggers fire based on visitor behavior (hesitation, exit intent, etc). Events will appear here as visitors interact with your site. This may take a few hours to accumulate data.</div></td></tr>';
+  // Performance breakdown by trigger type
+  if(fired.length>0){
+    var byType={};fired.forEach(function(e){var t=e.trigger_id||'unknown';if(!byType[t])byType[t]={fired:0,engaged:0};byType[t].fired++});
+    engaged.forEach(function(e){var t=e.trigger_id||'unknown';if(byType[t])byType[t].engaged++});
+    $('trgPerf').innerHTML=Object.entries(byType).sort(function(a,b){return b[1].fired-a[1].fired}).map(function(e){var rate=e[1].fired?Math.round(e[1].engaged/e[1].fired*100):0;return'<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bg2)"><span style="flex:1;font-size:11px;font-weight:500">'+E(e[0].replace(/_/g,' '))+'</span><span class="m">'+e[1].fired+' fired</span><span class="m" style="color:var(--gn)">'+e[1].engaged+' engaged</span><span class="m" style="color:var(--bl)">'+rate+'%</span></div>'}).join('');
+  }else{$('trgPerf').innerHTML='<div style="color:var(--t3);font-size:11px;text-align:center;padding:16px">Waiting for trigger data</div>'}
+  // Installation status
+  $('trgStatus').innerHTML=[
+    [true,'cnc-triggers.js uploaded to Shopify assets','Installed'],
+    [true,'Script tag added to theme.liquid','Active'],
+    [TRGEVTS.length>0,'Trigger events in Firebase','Found '+TRGEVTS.length+' events'],
+    [fired.length>0,'Triggers firing on visitor behavior',fired.length+' triggered'],
+    [engaged.length>0,'Visitors engaging with messages',engaged.length+' engaged'],
+  ].map(function(c){return'<div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg1);border-radius:6px;margin-bottom:4px"><span style="font-size:14px">'+(c[0]?'\u2705':'\u274C')+'</span><span style="font-size:11px;font-weight:500">'+c[1]+'</span><span style="margin-left:auto;font-size:10px;color:var(--t3)">'+c[2]+'</span></div>'}).join('');
+}
+
+function findSession(id){if(!id)return null;return ALL.find(function(s){return s._id===id||s.visitorId===id||s.session_id===id})||null}
 load();
 </script>
 </body>
