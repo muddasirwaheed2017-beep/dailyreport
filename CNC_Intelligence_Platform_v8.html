@@ -1,1 +1,889 @@
-<!-- File too large for inline push - see repository -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Intelligence Platform v8</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8f9fb;--bg1:#fff;--bg2:#f1f3f6;--bg3:#e8ebf0;
+  --bd:#e2e5ea;--bd2:#d1d5db;
+  --t1:#111827;--t2:#4b5563;--t3:#9ca3af;
+  --red:#dc2626;--redS:rgba(220,38,38,.08);
+  --bl:#2563eb;--blS:rgba(37,99,235,.08);
+  --gn:#16a34a;--gnS:rgba(22,163,74,.08);
+  --am:#d97706;--amS:rgba(217,119,6,.08);
+  --pp:#7c3aed;--ppS:rgba(124,58,237,.08);
+  --cy:#0891b2;--cyS:rgba(8,145,178,.08);
+  --r:10px;--sw:220px;
+  --f:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace
+}
+body{font-family:var(--f);background:var(--bg);color:var(--t1);overflow:hidden;height:100vh;font-size:13px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:10px}
+
+/* SIDEBAR */
+.sb{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--bg1);border-right:1px solid var(--bd);display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+.sb-top{padding:14px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.sb-ico{width:28px;height:28px;background:var(--red);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:9px;color:#fff;letter-spacing:.5px}
+.sb-txt{font-weight:700;font-size:13px}.sb-ver{font-size:9px;color:var(--t3);margin-left:auto;font-family:var(--fm)}
+.sb-sec{padding:8px 8px 2px}.sb-lbl{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:0 8px;margin-bottom:4px}
+.ni{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:7px;cursor:pointer;color:var(--t2);font-size:11.5px;font-weight:500;transition:all .15s;user-select:none}
+.ni:hover{background:var(--bg2);color:var(--t1)}.ni.on{background:var(--blS);color:var(--bl)}
+.ni svg{width:14px;height:14px;flex-shrink:0;opacity:.5}.ni.on svg{opacity:1}
+.ni .bdg{margin-left:auto;font-size:9px;font-family:var(--fm);padding:1px 6px;border-radius:8px;font-weight:600}
+.bdg-gn{background:var(--gnS);color:var(--gn)}.bdg-am{background:var(--amS);color:var(--am)}.bdg-pp{background:var(--ppS);color:var(--pp)}.bdg-cy{background:var(--cyS);color:var(--cy)}.bdg-rd{background:var(--redS);color:var(--red)}
+
+/* MAIN */
+.mn{margin-left:var(--sw);height:100vh;display:flex;flex-direction:column}
+.tp{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--bd);background:var(--bg1);flex-shrink:0}
+.tp-t{font-size:14px;font-weight:700}.tp-s{font-size:10px;color:var(--t3);margin-top:1px}
+.tp-r{display:flex;align-items:center;gap:8px}
+.live{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gn);font-weight:600}
+.live-dot{width:7px;height:7px;background:var(--gn);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.bt{padding:5px 12px;border-radius:6px;border:1px solid var(--bd);background:var(--bg1);color:var(--t2);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s}
+.bt:hover{border-color:var(--bl);color:var(--bl)}
+select.bt{padding-right:8px}
+
+/* TIME FILTER BAR */
+.tfb{display:flex;align-items:center;gap:6px;padding:8px 20px;border-bottom:1px solid var(--bd);background:var(--bg1);flex-shrink:0;overflow-x:auto}
+.tf{padding:4px 10px;border-radius:5px;border:1px solid transparent;background:transparent;color:var(--t3);font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f);white-space:nowrap}
+.tf:hover{color:var(--t2);background:var(--bg2)}
+.tf.on{background:var(--blS);border-color:var(--bl);color:var(--bl)}
+.tf-sep{width:1px;height:16px;background:var(--bd);flex-shrink:0}
+
+/* CONTENT */
+.ca{flex:1;overflow-y:auto;padding:16px 20px;background:var(--bg)}
+.pg{display:none}.pg.on{display:block}
+
+/* CARDS */
+.cd{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.cd-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cd-t{font-size:13px;font-weight:700}
+.cd-sub{font-size:10px;color:var(--t3);margin-top:1px}
+
+/* METRIC GRID */
+.mg{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:14px}
+.mc{background:var(--bg1);border:1px solid var(--bd);border-radius:8px;padding:12px}
+.mc-l{font-size:9px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.mc-v{font-size:22px;font-weight:700;margin-top:3px;font-family:var(--fm);letter-spacing:-.02em}
+.mc-c{font-size:9px;margin-top:2px;font-weight:600}
+
+/* TABLES */
+.tw{max-height:420px;overflow-y:auto;border:1px solid var(--bd);border-radius:8px}
+.tb{width:100%;border-collapse:collapse}
+.tb th{text-align:left;padding:7px 10px;font-size:9px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);background:var(--bg2);position:sticky;top:0;z-index:1}
+.tb td{padding:7px 10px;font-size:11px;border-bottom:1px solid var(--bg2);color:var(--t2)}
+.tb tr:hover{background:var(--bg2)}
+.m{font-family:var(--fm);font-size:10px}
+.tg{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:600}
+
+/* BEHAVIOR STORIES */
+.story{background:var(--bg2);border-radius:8px;padding:11px 14px;margin-bottom:6px;border-left:3px solid var(--bd)}
+.story-head{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.story-vid{font-family:var(--fm);font-size:10px;color:var(--bl);font-weight:600}
+.story-time{font-size:9px;color:var(--t3);font-family:var(--fm);margin-left:auto}
+.story-body{font-size:11px;color:var(--t2);line-height:1.7}
+.story-body b{color:var(--t1);font-weight:600}
+.story-va{border-left-color:var(--red)}
+.va-badge{background:var(--red);color:#fff;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:600}
+
+/* DEEP DIVE */
+.dd{display:grid;grid-template-columns:300px 1fr;gap:12px;height:calc(100vh - 140px)}
+.vl{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.vl-b{flex:1;overflow-y:auto}
+.vr{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--bg2);cursor:pointer}
+.vr:hover{background:var(--bg2)}.vr.sel{background:var(--blS);border-left:3px solid var(--bl)}
+.vr-a{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:9px;flex-shrink:0}
+.jp{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.jp-h{padding:12px 16px;border-bottom:1px solid var(--bd)}
+.jp-b{flex:1;overflow-y:auto;padding:16px}
+
+/* FUNNEL */
+.fn-s{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.fn-l{font-size:11px;color:var(--t2);width:120px;flex-shrink:0}
+.fn-b{height:28px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:10px;font-weight:600;color:#fff;min-width:40px;transition:width .5s}
+.fn-v{font-size:10px;font-family:var(--fm);color:var(--t3);width:50px;text-align:right;flex-shrink:0}
+
+/* SEARCH */
+.srch{width:100%;padding:7px 10px;background:var(--bg2);border:1px solid var(--bd);border-radius:6px;color:var(--t1);font-size:11px;font-family:var(--f);outline:none}
+.srch:focus{border-color:var(--bl)}
+
+/* FILTERS */
+.fl{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.fb{padding:3px 8px;border-radius:5px;border:1px solid var(--bd);background:var(--bg1);color:var(--t3);font-size:10px;font-weight:500;cursor:pointer}
+.fb:hover{border-color:var(--bl);color:var(--bl)}.fb.on{background:var(--blS);border-color:var(--bl);color:var(--bl)}
+
+/* STATUS */
+.status-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);border-radius:6px;margin-bottom:4px}
+.status-ico{font-size:14px}
+.status-txt{font-size:11px;font-weight:500;flex:1}
+.status-val{font-size:10px;color:var(--t3);font-family:var(--fm)}
+
+/* RAW DATA */
+.raw{font-family:var(--fm);font-size:10px;color:var(--cy);background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:10px;max-height:200px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin-top:10px}
+
+/* GRID LAYOUTS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+@media(max-width:900px){.g2,.g3,.dd{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sb">
+  <div class="sb-top"><div class="sb-ico">CNC</div><div class="sb-txt">Intelligence</div><span class="sb-ver">v8.0</span></div>
+  
+  <div class="sb-sec"><div class="sb-lbl">Core</div>
+    <div class="ni on" data-p="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+    <div class="ni" data-p="sessions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2"/></svg>Sessions<span class="bdg bdg-gn" id="cnt-sessions">0</span></div>
+    <div class="ni" data-p="stories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Stories</div>
+    <div class="ni" data-p="deep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/></svg>Deep-Dive</div>
+  </div>
+
+  <div class="sb-sec"><div class="sb-lbl">Commerce</div>
+    <div class="ni" data-p="cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>Cart<span class="bdg bdg-am" id="cnt-cart">0</span></div>
+    <div class="ni" data-p="checkout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Checkout<span class="bdg bdg-cy" id="cnt-chk">0</span></div>
+    <div class="ni" data-p="products"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>Products</div>
+  </div>
+
+  <div class="sb-sec"><div class="sb-lbl">Analysis</div>
+    <div class="ni" data-p="sources"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 012 2v7"/></svg>Sources</div>
+    <div class="ni" data-p="pages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>Pages</div>
+    <div class="ni" data-p="funnel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>Funnel</div>
+    <div class="ni" data-p="devices"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/></svg>Devices</div>
+  </div>
+
+  <div class="sb-sec"><div class="sb-lbl">Tools</div>
+    <div class="ni" data-p="va"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>VA Selector<span class="bdg bdg-rd">NEW</span></div>
+    <div class="ni" data-p="triggers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Triggers<span class="bdg bdg-pp" id="cnt-trg">0</span></div>
+    <div class="ni" data-p="chatbot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>Chatbot<span class="bdg bdg-rd" id="cnt-chat">0</span></div>
+  </div>
+
+  <div class="sb-sec"><div class="sb-lbl">System</div>
+    <div class="ni" data-p="health"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Health</div>
+  </div>
+</nav>
+
+<!-- MAIN AREA -->
+<div class="mn">
+  <!-- TOP BAR -->
+  <div class="tp">
+    <div><div class="tp-t" id="pt">Dashboard</div><div class="tp-s" id="ps">CNC Electric Pakistan · Real-time</div></div>
+    <div class="tp-r">
+      <div class="live"><div class="live-dot"></div><span id="status">Connecting...</span></div>
+      <span class="m" id="lastUpdate" style="color:var(--t3)"></span>
+      <button class="bt" onclick="location.reload()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <!-- TIME FILTER BAR -->
+  <div class="tfb">
+    <div class="tf" data-t="1h">1H</div>
+    <div class="tf" data-t="3h">3H</div>
+    <div class="tf" data-t="6h">6H</div>
+    <div class="tf on" data-t="24h">24H</div>
+    <div class="tf" data-t="7d">7D</div>
+    <div class="tf" data-t="30d">30D</div>
+    <div class="tf-sep"></div>
+    <div class="tf" data-t="all">All Time</div>
+  </div>
+
+  <!-- CONTENT AREA -->
+  <div class="ca" id="ca">
+
+    <!-- DASHBOARD -->
+    <div class="pg on" id="pg-dash">
+      <div class="mg" id="dashMetrics"></div>
+      <div class="g2">
+        <div class="cd"><div class="cd-h"><div class="cd-t">Recent Activity</div></div><div id="dashFeed" style="max-height:400px;overflow-y:auto"></div></div>
+        <div class="cd"><div class="cd-h"><div class="cd-t">Traffic Sources</div></div><div id="dashSources"></div></div>
+      </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div class="pg" id="pg-sessions">
+      <div class="mg" id="sessMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">All Sessions</div></div>
+        <div class="fl" id="sessFilters"></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Visitor</th><th>Source</th><th>Landing</th><th>Pages</th><th>Duration</th><th>Device</th><th>Status</th><th></th></tr></thead><tbody id="sessTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- BEHAVIOR STORIES -->
+    <div class="pg" id="pg-stories">
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">Behavior Stories</div><div class="cd-sub">What each visitor did, in plain language</div></div></div>
+        <div class="fl" id="storyFilters"></div>
+        <div id="storiesList" style="max-height:calc(100vh - 240px);overflow-y:auto"></div>
+      </div>
+    </div>
+
+    <!-- DEEP DIVE -->
+    <div class="pg" id="pg-deep">
+      <div class="dd">
+        <div class="vl">
+          <div style="padding:10px 12px;border-bottom:1px solid var(--bd)">
+            <input type="text" class="srch" placeholder="Search visitors..." id="deepSearch" oninput="renderDeepList()">
+          </div>
+          <div class="vl-b" id="deepList"></div>
+        </div>
+        <div class="jp">
+          <div class="jp-h" id="deepHeader" style="display:none"></div>
+          <div class="jp-b" id="deepBody"><div style="padding:40px;text-align:center;color:var(--t3)">Select a visitor to see their full journey</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART -->
+    <div class="pg" id="pg-cart">
+      <div class="mg" id="cartMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">Add to Cart Events</div><div class="cd-sub">From events + shopify_events collections</div></div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Visitor</th><th>Product</th><th>Source</th><th>Page</th><th></th></tr></thead><tbody id="cartTb"></tbody></table></div>
+      </div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Most Added Products</div></div><div id="cartAnalysis"></div></div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="pg" id="pg-checkout">
+      <div class="mg" id="chkMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">Checkout Events</div><div class="cd-sub">From Web Pixel + shopify_events</div></div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Visitor</th><th>Step</th><th>Value</th><th>Source</th><th></th></tr></thead><tbody id="chkTb"></tbody></table></div>
+      </div>
+      <div class="cd"><div class="cd-h"><div class="cd-t">Checkout Funnel</div></div><div id="chkFunnel"></div></div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="pg" id="pg-products">
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Top Viewed Products</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Product</th><th>Views</th><th>Cart Adds</th><th>Conversion</th></tr></thead><tbody id="prodTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="pg" id="pg-sources">
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Traffic Sources</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Source</th><th>Sessions</th><th>%</th><th>Avg Pages</th><th>Avg Duration</th></tr></thead><tbody id="srcTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="pg" id="pg-pages">
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Top Landing Pages</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Page</th><th>Sessions</th><th>%</th><th>Avg Duration</th></tr></thead><tbody id="pgTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- FUNNEL -->
+    <div class="pg" id="pg-funnel">
+      <div class="mg" id="fnMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Session Depth Distribution</div></div>
+        <div id="fnChart"></div>
+      </div>
+    </div>
+
+    <!-- DEVICES -->
+    <div class="pg" id="pg-devices">
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Device Breakdown</div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Device</th><th>Sessions</th><th>%</th><th>Avg Pages</th></tr></thead><tbody id="devTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- VA SELECTOR -->
+    <div class="pg" id="pg-va">
+      <div class="mg" id="vaMetrics"></div>
+      <div class="g2">
+        <div class="cd"><div class="cd-h"><div class="cd-t">VA Selector Sessions</div></div><div id="vaList" style="max-height:350px;overflow-y:auto"></div></div>
+        <div class="cd"><div class="cd-h"><div class="cd-t">VA Journeys</div></div><div id="vaStories" style="max-height:350px;overflow-y:auto"></div></div>
+      </div>
+    </div>
+
+    <!-- TRIGGERS -->
+    <div class="pg" id="pg-triggers">
+      <div class="mg" id="trgMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">Trigger Events</div><div class="cd-sub">From cnc-triggers.js behavioral messages</div></div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Trigger</th><th>Page</th><th>Visitor</th><th>Engaged?</th></tr></thead><tbody id="trgTb"></tbody></table></div>
+      </div>
+      <div class="g2">
+        <div class="cd"><div class="cd-h"><div class="cd-t">Trigger Performance</div></div><div id="trgPerf"></div></div>
+        <div class="cd"><div class="cd-h"><div class="cd-t">Installation Status</div></div><div id="trgStatus"></div></div>
+      </div>
+    </div>
+
+    <!-- CHATBOT -->
+    <div class="pg" id="pg-chatbot">
+      <div class="mg" id="chatMetrics"></div>
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">Chat Sessions</div><div class="cd-sub">From chatbot_events collection</div></div></div>
+        <div class="tw"><table class="tb"><thead><tr><th>Time</th><th>Visitor</th><th>Messages</th><th>Topics</th><th>Lead Score</th><th>Status</th></tr></thead><tbody id="chatTb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- HEALTH -->
+    <div class="pg" id="pg-health">
+      <div class="cd">
+        <div class="cd-h"><div><div class="cd-t">System Health</div><div class="cd-sub">Data pipeline status</div></div></div>
+        <div id="healthChecks"></div>
+      </div>
+      <div class="cd">
+        <div class="cd-h"><div class="cd-t">Firebase Configuration</div></div>
+        <div class="raw" id="fbConfig"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// FIREBASE SETUP — Single SDK, Single Config
+// ═══════════════════════════════════════════════════
+firebase.initializeApp({
+  apiKey:"AIzaSyB7zR2KAGyygQuZV1R23henUjFq9i6Uvfs",
+  authDomain:"cnc-website-tracking.firebaseapp.com",
+  projectId:"cnc-website-tracking",
+  storageBucket:"cnc-website-tracking.firebasestorage.app",
+  messagingSenderId:"510778332738",
+  appId:"1:510778332738:web:0305d7fb678ee4042cffdb"
+});
+var db = firebase.firestore();
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+var ALL=[], EVTS=[], PVS=[], SPEVTS=[], TRGEVTS=[], VAEVTS=[], CARTEVTS=[], CHATEVTS=[];
+var timeFilter='24h', curPage='dash', selVisitor=null;
+
+// ═══════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════
+function $(id){return document.getElementById(id)}
+function E(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function ts(d){if(!d)return null;if(d.toDate)return d.toDate();if(d instanceof Date)return d;if(typeof d==='string')return new Date(d);if(typeof d==='number')return new Date(d);return null}
+function fmtTime(d){var dt=ts(d);return dt?dt.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}):''}
+function fmtDate(d){var dt=ts(d);return dt?dt.toLocaleDateString('en-US',{month:'short',day:'numeric'}):''}
+function fmtDur(s){if(!s||s<0)return '0s';if(s<60)return Math.round(s)+'s';if(s<3600)return Math.round(s/60)+'m';return Math.round(s/3600*10)/10+'h'}
+
+function cutoff(){
+  var now=Date.now();
+  var map={'1h':3600e3,'3h':10800e3,'6h':21600e3,'12h':43200e3,'24h':86400e3,'7d':604800e3,'30d':2592e6};
+  return timeFilter==='all'?0:now-(map[timeFilter]||86400e3);
+}
+
+function filterByTime(arr,field){
+  var c=cutoff();
+  if(c===0)return arr;
+  return arr.filter(function(d){var t=ts(d[field]||d.timestamp||d.lastActivity||d.startTime);return t&&t.getTime()>c});
+}
+
+function gs(d,k){return d[k]||d[k.replace(/([A-Z])/g,'_$1').toLowerCase()]||''}
+function gn(d,k){var v=gs(d,k);return typeof v==='number'?v:parseInt(v)||0}
+function gt(d,k){return ts(gs(d,k))}
+
+function getSrc(d){
+  var u=gs(d,'utmSource')||gs(d,'utm_source')||'';
+  var r=gs(d,'referrer')||'';
+  if(gs(d,'fbclid'))return 'Facebook';
+  if(u)return u.charAt(0).toUpperCase()+u.slice(1);
+  if(!r||r==='')return 'Direct';
+  try{var h=new URL(r).hostname.replace('www.','');
+    if(h.includes('google'))return'Google';if(h.includes('facebook')||h.includes('fb.'))return'Facebook';
+    if(h.includes('instagram'))return'Instagram';if(h.includes('youtube'))return'YouTube';
+    if(h.includes('tiktok'))return'TikTok';if(h.includes('twitter')||h.includes('x.com'))return'X';
+    return h.split('.')[0].charAt(0).toUpperCase()+h.split('.')[0].slice(1);
+  }catch(e){return r.slice(0,20)}
+}
+
+function srcColor(s){
+  var m={'Google':{b:'rgba(66,133,244,.1)',c:'#4285f4'},'Facebook':{b:'rgba(24,119,242,.1)',c:'#1877f2'},'Instagram':{b:'rgba(225,48,108,.1)',c:'#e1306c'},'Direct':{b:'rgba(107,114,128,.1)',c:'#6b7280'},'YouTube':{b:'rgba(255,0,0,.1)',c:'#f00'},'TikTok':{b:'rgba(0,0,0,.08)',c:'#000'}};
+  return m[s]||{b:'rgba(37,99,235,.08)',c:'#2563eb'};
+}
+
+function shortPath(u){try{return new URL(u).pathname}catch(e){return u&&u.charAt(0)==='/'?u:u?u.slice(0,40):'/'}}
+function getDev(d){var v=gs(d,'userAgent')||gs(d,'device')||'';if(typeof v==='object')return v.type||'unknown';if(/mobile|android|iphone/i.test(v))return'Mobile';if(/tablet|ipad/i.test(v))return'Tablet';return'Desktop'}
+function isActive(d){var t=gt(d,'lastActivity');return t&&(Date.now()-t.getTime())<300000}
+function isVA(d){var l=(gs(d,'landingPage')||'').toLowerCase();return l.includes('/pages/v-a')||l.includes('va-protection')}
+function dur(d){var s=gt(d,'startTime'),e=gt(d,'lastActivity');return s&&e?(e.getTime()-s.getTime())/1000:0}
+
+function mc(label,value,color){
+  return '<div class="mc"><div class="mc-l">'+E(label)+'</div><div class="mc-v" style="color:var('+color+')">'+E(String(value))+'</div></div>';
+}
+
+// ═══════════════════════════════════════════════════
+// BEHAVIOR STORY BUILDER
+// ═══════════════════════════════════════════════════
+function buildStory(d){
+  var vid=(gs(d,'visitorId')||d.id||'?').slice(0,8),sc=getSrc(d),col=srcColor(sc);
+  var pg=gn(d,'pageCount'),dd=dur(d),dv=getDev(d),lp=gs(d,'landingPage')||'/';
+  var act=isActive(d),st=gt(d,'startTime'),va=isVA(d);
+  var p=[];
+  if(sc==='Facebook'&&gs(d,'fbclid'))p.push('Clicked a <b>Facebook ad</b>'+(gs(d,'utmCampaign')?' ('+E(gs(d,'utmCampaign'))+')':''));
+  else if(sc==='Google')p.push('Found via <b>Google</b>');
+  else if(sc==='Direct')p.push('Visited <b>directly</b>');
+  else p.push('From <b>'+E(sc)+'</b>');
+  var pn=shortPath(lp);
+  if(pn.includes('/products/'))p.push('landed on product <b>'+E(pn.replace('/products/',''))+'</b>');
+  else if(pn.includes('/collections/'))p.push('landed on category <b>'+E(pn.replace('/collections/',''))+'</b>');
+  else if(pn.includes('/pages/v-a'))p.push('landed on <b style="color:var(--red)">VA Selector</b>');
+  else if(pn==='/')p.push('on <b>homepage</b>');
+  else p.push('on <b>'+E(pn)+'</b>');
+  if(pg<=1)p.push('<b>1 page</b> (bounce)');else if(pg<=3)p.push('browsed <b>'+pg+' pages</b>');else p.push('deeply engaged — <b>'+pg+' pages</b>');
+  if(dd<10)p.push('left in <b>'+fmtDur(dd)+'</b>');else if(dd<120)p.push('spent <b>'+fmtDur(dd)+'</b>');else p.push('long session: <b>'+fmtDur(dd)+'</b>');
+  if(va)p.push('used <b style="color:var(--red)">VA Selector</b>');
+  if(act)p.push('<b style="color:var(--gn)">still on site</b>');
+  p.push('on <b>'+dv+'</b>');
+  var tm=st?fmtTime(st):'';
+  return '<div class="story'+(va?' story-va':'')+'"><div class="story-head"><span class="story-vid">'+vid+'</span><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(sc)+'</span>'+(va?'<span class="va-badge">VA</span>':'')+'<span class="story-time">'+tm+'</span></div><div class="story-body">'+p.join(' → ')+'.</div></div>';
+}
+
+// ═══════════════════════════════════════════════════
+// RENDERING
+// ═══════════════════════════════════════════════════
+function render(){
+  var ss=filterByTime(ALL,'lastActivity');
+  var ev=filterByTime(EVTS,'timestamp');
+  var pv=filterByTime(PVS,'timestamp');
+  var sp=filterByTime(SPEVTS,'timestamp');
+  var trg=filterByTime(TRGEVTS,'timestamp');
+  var va=filterByTime(VAEVTS,'timestamp');
+  var cart=filterByTime(CARTEVTS,'timestamp');
+  var chat=filterByTime(CHATEVTS,'timestamp');
+
+  // Sidebar badges
+  $('cnt-sessions').textContent=ss.length;
+  $('cnt-cart').textContent=cart.length+sp.filter(function(e){return(e.event_name||'').toLowerCase().includes('cart')}).length;
+  $('cnt-chk').textContent=sp.filter(function(e){var n=(e.event_name||'').toLowerCase();return n.includes('checkout')||n.includes('purchase')}).length;
+  $('cnt-trg').textContent=trg.length;
+  $('cnt-chat').textContent=chat.length;
+
+  renderDash(ss,ev,pv,sp,cart);
+  renderSessions(ss);
+  renderStories(ss);
+  renderCart(ev,sp);
+  renderCheckout(ev,sp);
+  renderProducts(pv,ev);
+  renderSources(ss);
+  renderPages(ss);
+  renderFunnel(ss,ev,sp);
+  renderDevices(ss);
+  renderVA(ss,va);
+  renderTriggers(trg);
+  renderChatbot(chat);
+  renderHealth(ss,ev,pv,sp,trg,va,cart,chat);
+
+  $('lastUpdate').textContent=new Date().toLocaleTimeString();
+  $('status').textContent='Live · '+ALL.length+' total sessions';
+}
+
+// ── DASHBOARD ──
+function renderDash(ss,ev,pv,sp,cart){
+  var active=ss.filter(isActive).length;
+  var bounces=ss.filter(function(d){return gn(d,'pageCount')<=1}).length;
+  var br=ss.length?Math.round(bounces/ss.length*100):0;
+  var avgPg=ss.length?Math.round(ss.reduce(function(a,d){return a+gn(d,'pageCount')},0)/ss.length*10)/10:0;
+  var avgDur=ss.length?Math.round(ss.reduce(function(a,d){return a+dur(d)},0)/ss.length):0;
+  var cartAll=cart.length+ev.filter(function(e){return(e.event_name||e.type||'').toLowerCase().includes('cart')}).length;
+
+  $('dashMetrics').innerHTML=mc('Sessions',ss.length,'--bl')+mc('Active Now',active,'--gn')+mc('Bounce Rate',br+'%','--am')+mc('Avg Pages',avgPg,'--pp')+mc('Avg Duration',fmtDur(avgDur),'--cy')+mc('Cart Events',cartAll,'--red');
+
+  // Recent feed
+  var feed=ss.slice(0,15).map(buildStory).join('');
+  $('dashFeed').innerHTML=feed||'<div style="text-align:center;padding:20px;color:var(--t3)">No sessions in selected time range</div>';
+
+  // Sources breakdown
+  var srcs={};ss.forEach(function(d){var s=getSrc(d);srcs[s]=(srcs[s]||0)+1});
+  var sorted=Object.entries(srcs).sort(function(a,b){return b[1]-a[1]});
+  var mx=sorted[0]?sorted[0][1]:1;
+  $('dashSources').innerHTML=sorted.map(function(e){
+    var pct=Math.round(e[1]/ss.length*100),col=srcColor(e[0]);
+    return '<div class="fn-s"><div class="fn-l">'+E(e[0])+'</div><div class="fn-b" style="width:'+Math.max(pct,5)+'%;background:'+col.c+'">'+e[1]+'</div><div class="fn-v">'+pct+'%</div></div>';
+  }).join('')||'<div style="color:var(--t3);text-align:center;padding:16px">No source data</div>';
+}
+
+// ── SESSIONS TABLE ──
+function renderSessions(ss){
+  var active=ss.filter(isActive).length;
+  var mob=ss.filter(function(d){return getDev(d)==='Mobile'}).length;
+  $('sessMetrics').innerHTML=mc('Total',ss.length,'--bl')+mc('Active',active,'--gn')+mc('Mobile',mob,'--pp')+mc('Desktop',ss.length-mob,'--cy');
+
+  $('sessTb').innerHTML=ss.slice(0,100).map(function(d){
+    var vid=(gs(d,'visitorId')||d.id||'?').slice(0,8);
+    var sc=getSrc(d),col=srcColor(sc),lp=shortPath(gs(d,'landingPage')||'/');
+    var pg=gn(d,'pageCount'),dd=dur(d),dv=getDev(d),act=isActive(d);
+    return '<tr><td class="m" style="color:var(--bl)">'+vid+'</td><td><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(sc)+'</span></td><td class="m" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(lp)+'</td><td class="m">'+pg+'</td><td class="m">'+fmtDur(dd)+'</td><td>'+dv+'</td><td>'+(act?'<span class="tg" style="background:var(--gnS);color:var(--gn)">Active</span>':'<span style="color:var(--t3)">Left</span>')+'</td><td><button class="bt" style="font-size:9px;padding:2px 6px" onclick="goDeep(\''+E(gs(d,'visitorId')||d.id||'')+'\')">View</button></td></tr>';
+  }).join('')||'<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--t3)">No sessions</td></tr>';
+}
+
+// ── STORIES ──
+function renderStories(ss){
+  $('storiesList').innerHTML=ss.slice(0,50).map(buildStory).join('')||'<div style="text-align:center;padding:20px;color:var(--t3)">No sessions in range</div>';
+}
+
+// ── CART ──
+function renderCart(ev,sp){
+  var cartEv=ev.filter(function(e){var n=(e.event_name||e.type||'').toLowerCase();return n.includes('cart')||n.includes('add_to_cart')});
+  var spCart=sp.filter(function(e){return(e.event_name||'').toLowerCase().includes('cart')});
+  var all=cartEv.concat(spCart).sort(function(a,b){var ta=ts(a.timestamp)||new Date(0),tb=ts(b.timestamp)||new Date(0);return tb-ta});
+
+  $('cartMetrics').innerHTML=mc('Total Cart Events',all.length,'--am')+mc('From Tracker',cartEv.length,'--bl')+mc('From Web Pixel',spCart.length,'--cy')+mc('Unique Products',new Set(all.map(function(e){return e.product_title||e.title||'?'})).size,'--pp');
+
+  $('cartTb').innerHTML=all.length?all.slice(0,30).map(function(e){
+    var tm=fmtTime(e.timestamp);
+    var vid=(e.visitorId||e.visitor_id||e.client_id||'?').slice(0,8);
+    var prod=e.product_title||e.title||e.product_name||'Unknown';
+    var page=shortPath(e.page_url||e.page_path||e.url||'/');
+    return '<tr><td class="m">'+tm+'</td><td class="m">'+vid+'</td><td>'+E(prod.slice(0,40))+'</td><td class="m">'+E(page.slice(0,30))+'</td><td></td><td></td></tr>';
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">No cart events yet. Cart events come from events collection and shopify_events (Web Pixel).</td></tr>';
+
+  // Product analysis
+  if(all.length>0){
+    var prods={};all.forEach(function(e){var p=e.product_title||e.title||'unknown';prods[p]=(prods[p]||0)+1});
+    var sorted=Object.entries(prods).sort(function(a,b){return b[1]-a[1]}).slice(0,10);
+    $('cartAnalysis').innerHTML=sorted.map(function(e){return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg2)"><span style="flex:1;font-size:11px">'+E(e[0])+'</span><span class="m" style="color:var(--am)">'+e[1]+'×</span></div>'}).join('');
+  }else{$('cartAnalysis').innerHTML='<div style="color:var(--t3);text-align:center;padding:16px">Analysis appears with cart data</div>'}
+}
+
+// ── CHECKOUT ──
+function renderCheckout(ev,sp){
+  var chkEv=ev.filter(function(e){var n=(e.event_name||e.type||'').toLowerCase();return n.includes('checkout')||n.includes('payment')||n.includes('purchase')});
+  var spChk=sp.filter(function(e){var n=(e.event_name||'').toLowerCase();return n.includes('checkout')||n.includes('payment')||n.includes('purchase')});
+  var all=chkEv.concat(spChk).sort(function(a,b){return(ts(b.timestamp)||0)-(ts(a.timestamp)||0)});
+  var started=all.filter(function(e){return(e.event_name||'').includes('started')}).length;
+  var completed=all.filter(function(e){return(e.event_name||'').includes('completed')||(e.event_name||'').includes('purchase')}).length;
+
+  $('chkMetrics').innerHTML=mc('Checkout Events',all.length,'--cy')+mc('Started',started,'--am')+mc('Completed',completed,'--gn')+mc('Drop-off',started>0?Math.round((1-completed/started)*100)+'%':'—','--red');
+
+  $('chkTb').innerHTML=all.length?all.slice(0,20).map(function(e){
+    var tm=fmtTime(e.timestamp);var vid=(e.visitorId||e.visitor_id||e.client_id||'?').slice(0,8);
+    var step=e.event_name||e.type||'?';var val=e.total_price||e.totalPrice||e.value||'';
+    var stepCol=step.includes('completed')||step.includes('purchase')?'var(--gn)':step.includes('started')?'var(--cy)':'var(--am)';
+    return '<tr><td class="m">'+tm+'</td><td class="m">'+vid+'</td><td><span class="tg" style="background:rgba(0,0,0,.04);color:'+stepCol+'">'+E(step.replace(/_/g,' '))+'</span></td><td class="m">'+(val?'Rs.'+val:'')+'</td><td></td><td></td></tr>';
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">No checkout events yet. Verify "CNC Firebase Tracker" Web Pixel is active in Shopify admin.</td></tr>';
+
+  // Funnel
+  if(all.length>0){
+    var steps={};all.forEach(function(e){var n=(e.event_name||'').replace('checkout_','').replace('_submitted','');steps[n]=(steps[n]||0)+1});
+    var sorted=Object.entries(steps).sort(function(a,b){return b[1]-a[1]});
+    var mx=sorted[0]?sorted[0][1]:1;
+    $('chkFunnel').innerHTML=sorted.map(function(e){var pct=Math.round(e[1]/mx*100);return '<div class="fn-s"><div class="fn-l">'+e[0]+'</div><div class="fn-b" style="width:'+Math.max(pct,4)+'%;background:var(--cy)">'+e[1]+'</div><div class="fn-v">'+pct+'%</div></div>'}).join('');
+  }else{$('chkFunnel').innerHTML='<div style="color:var(--t3);text-align:center;padding:16px">Funnel appears with checkout data</div>'}
+}
+
+// ── PRODUCTS ──
+function renderProducts(pv,ev){
+  var prods={};
+  pv.forEach(function(p){var u=p.page_url||p.url||'';if(u.includes('/products/')){var name=u.split('/products/')[1]||'';if(name){if(!prods[name])prods[name]={views:0,carts:0};prods[name].views++}}});
+  ev.forEach(function(e){var n=(e.event_name||'').toLowerCase();if(n.includes('cart')){var t=e.product_title||e.title||'';if(t){var h=t.toLowerCase().replace(/\s+/g,'-');Object.keys(prods).forEach(function(k){if(k.includes(h)||h.includes(k)){prods[k].carts++}})}}});
+  var sorted=Object.entries(prods).sort(function(a,b){return b[1].views-a[1].views}).slice(0,30);
+  $('prodTb').innerHTML=sorted.length?sorted.map(function(e){
+    var cvr=e[1].views?Math.round(e[1].carts/e[1].views*100):0;
+    return '<tr><td>'+E(e[0].replace(/-/g,' '))+'</td><td class="m">'+e[1].views+'</td><td class="m">'+e[1].carts+'</td><td class="m">'+(cvr?cvr+'%':'—')+'</td></tr>';
+  }).join(''):'<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--t3)">Product data builds from pageviews on /products/ pages</td></tr>';
+}
+
+// ── SOURCES ──
+function renderSources(ss){
+  var srcs={};
+  ss.forEach(function(d){var s=getSrc(d);if(!srcs[s])srcs[s]={count:0,pages:0,dur:0};srcs[s].count++;srcs[s].pages+=gn(d,'pageCount');srcs[s].dur+=dur(d)});
+  var sorted=Object.entries(srcs).sort(function(a,b){return b[1].count-a[1].count});
+  $('srcTb').innerHTML=sorted.map(function(e){
+    var pct=Math.round(e[1].count/ss.length*100);
+    var avgP=Math.round(e[1].pages/e[1].count*10)/10;
+    var avgD=fmtDur(e[1].dur/e[1].count);
+    var col=srcColor(e[0]);
+    return '<tr><td><span class="tg" style="background:'+col.b+';color:'+col.c+'">'+E(e[0])+'</span></td><td class="m">'+e[1].count+'</td><td class="m">'+pct+'%</td><td class="m">'+avgP+'</td><td class="m">'+avgD+'</td></tr>';
+  }).join('');
+}
+
+// ── PAGES ──
+function renderPages(ss){
+  var pages={};
+  ss.forEach(function(d){var lp=shortPath(gs(d,'landingPage')||'/');if(!pages[lp])pages[lp]={count:0,dur:0};pages[lp].count++;pages[lp].dur+=dur(d)});
+  var sorted=Object.entries(pages).sort(function(a,b){return b[1].count-a[1].count}).slice(0,30);
+  $('pgTb').innerHTML=sorted.map(function(e){
+    var pct=Math.round(e[1].count/ss.length*100);
+    return '<tr><td class="m" style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(e[0])+'</td><td class="m">'+e[1].count+'</td><td class="m">'+pct+'%</td><td class="m">'+fmtDur(e[1].dur/e[1].count)+'</td></tr>';
+  }).join('');
+}
+
+// ── FUNNEL ──
+function renderFunnel(ss,ev,sp){
+  var visited=ss.length;
+  var viewed=ss.filter(function(d){return gn(d,'pageCount')>1}).length;
+  var carted=ev.filter(function(e){return(e.event_name||'').toLowerCase().includes('cart')}).length+sp.filter(function(e){return(e.event_name||'').toLowerCase().includes('cart')}).length;
+  var checked=sp.filter(function(e){return(e.event_name||'').toLowerCase().includes('checkout')}).length;
+  var purchased=sp.filter(function(e){return(e.event_name||'').toLowerCase().includes('purchase')}).length;
+
+  $('fnMetrics').innerHTML=mc('Visited',visited,'--bl')+mc('Browsed 2+',viewed,'--pp')+mc('Added to Cart',carted,'--am')+mc('Checkout',checked,'--cy')+mc('Purchased',purchased,'--gn');
+
+  var steps=[['Visited',visited,'--bl'],['Browsed (2+ pages)',viewed,'--pp'],['Added to Cart',carted,'--am'],['Checkout',checked,'--cy'],['Purchased',purchased,'--gn']];
+  var mx=steps[0][1]||1;
+  $('fnChart').innerHTML=steps.map(function(s){
+    var pct=Math.round(s[1]/mx*100);
+    return '<div class="fn-s"><div class="fn-l">'+s[0]+'</div><div class="fn-b" style="width:'+Math.max(pct,3)+'%;background:var('+s[2]+')">'+s[1]+'</div><div class="fn-v">'+pct+'%</div></div>';
+  }).join('');
+}
+
+// ── DEVICES ──
+function renderDevices(ss){
+  var devs={};
+  ss.forEach(function(d){var dv=getDev(d);if(!devs[dv])devs[dv]={count:0,pages:0};devs[dv].count++;devs[dv].pages+=gn(d,'pageCount')});
+  var sorted=Object.entries(devs).sort(function(a,b){return b[1].count-a[1].count});
+  $('devTb').innerHTML=sorted.map(function(e){
+    return '<tr><td>'+e[0]+'</td><td class="m">'+e[1].count+'</td><td class="m">'+Math.round(e[1].count/ss.length*100)+'%</td><td class="m">'+(Math.round(e[1].pages/e[1].count*10)/10)+'</td></tr>';
+  }).join('');
+}
+
+// ── VA SELECTOR ──
+function renderVA(ss,va){
+  var vaSessions=ss.filter(isVA);
+  var nonVA=ss.filter(function(d){return!isVA(d)});
+  $('vaMetrics').innerHTML=mc('VA Sessions',vaSessions.length,'--red')+mc('VA Events',va.length,'--am')+mc('VA Avg Pages',vaSessions.length?Math.round(vaSessions.reduce(function(a,d){return a+gn(d,'pageCount')},0)/vaSessions.length*10)/10:0,'--pp')+mc('Non-VA Avg Pages',nonVA.length?Math.round(nonVA.reduce(function(a,d){return a+gn(d,'pageCount')},0)/nonVA.length*10)/10:0,'--cy');
+  $('vaList').innerHTML=vaSessions.slice(0,20).map(function(d){
+    var vid=(gs(d,'visitorId')||d.id||'?').slice(0,8);
+    return '<div style="padding:6px 0;border-bottom:1px solid var(--bg2);font-size:11px"><span class="m" style="color:var(--bl)">'+vid+'</span> · '+gn(d,'pageCount')+' pages · '+fmtDur(dur(d))+'</div>';
+  }).join('')||'<div style="color:var(--t3);text-align:center;padding:16px">No VA sessions yet</div>';
+  $('vaStories').innerHTML=vaSessions.slice(0,10).map(buildStory).join('')||'<div style="color:var(--t3);text-align:center;padding:16px">VA stories appear with sessions</div>';
+}
+
+// ── TRIGGERS ──
+function renderTriggers(trg){
+  var fired=trg.filter(function(e){return(e.event||e.event_name)==='trigger_fired'});
+  var engaged=trg.filter(function(e){return(e.event||e.event_name)==='trigger_engaged'});
+  $('trgMetrics').innerHTML=mc('Triggers Fired',fired.length,'--pp')+mc('Engaged',engaged.length,'--gn')+mc('Engagement Rate',fired.length?Math.round(engaged.length/fired.length*100)+'%':'0%','--bl')+mc('Unique Visitors',new Set(fired.map(function(e){return e.visitor_id||e.visitorId||'?'})).size,'--cy');
+
+  $('trgTb').innerHTML=trg.length?trg.slice(0,25).map(function(e){
+    var tm=fmtTime(e.timestamp);var trigger=e.trigger_id||'?';
+    var page=shortPath(e.page_path||e.page_url||'');
+    var vid=(e.visitor_id||e.visitorId||'?').slice(0,8);
+    var isEng=(e.event||e.event_name)==='trigger_engaged';
+    return '<tr><td class="m">'+tm+'</td><td><span class="tg" style="background:var(--ppS);color:var(--pp)">'+E(trigger.replace(/_/g,' '))+'</span></td><td class="m" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+E(page)+'</td><td class="m">'+vid+'</td><td>'+(isEng?'<span class="tg" style="background:var(--gnS);color:var(--gn)">✓ Yes</span>':'<span style="color:var(--t3)">No</span>')+'</td></tr>';
+  }).join(''):'<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">No trigger events yet. cnc-triggers.js fires based on visitor behavior.</td></tr>';
+
+  // Performance by type
+  if(fired.length>0){
+    var byType={};fired.forEach(function(e){var t=e.trigger_id||'unknown';if(!byType[t])byType[t]={fired:0,engaged:0};byType[t].fired++});
+    engaged.forEach(function(e){var t=e.trigger_id||'unknown';if(byType[t])byType[t].engaged++});
+    $('trgPerf').innerHTML=Object.entries(byType).sort(function(a,b){return b[1].fired-a[1].fired}).map(function(e){
+      var rate=e[1].fired?Math.round(e[1].engaged/e[1].fired*100):0;
+      return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--bg2)"><span style="flex:1;font-size:11px;font-weight:500">'+E(e[0].replace(/_/g,' '))+'</span><span class="m">'+e[1].fired+' fired</span><span class="m" style="color:var(--gn)">'+e[1].engaged+' engaged</span><span class="m" style="color:var(--bl)">'+rate+'%</span></div>';
+    }).join('');
+  }else{$('trgPerf').innerHTML='<div style="color:var(--t3);text-align:center;padding:16px">Waiting for trigger data</div>'}
+
+  // Status
+  $('trgStatus').innerHTML=[
+    [true,'cnc-triggers.js uploaded to Shopify','Installed'],
+    [true,'Script tag in theme.liquid','Active'],
+    [trg.length>0,'Trigger events in Firebase',trg.length+' events'],
+    [fired.length>0,'Triggers firing',fired.length+' fired'],
+    [engaged.length>0,'Visitors engaging',engaged.length+' engaged']
+  ].map(function(c){return '<div class="status-row"><span class="status-ico">'+(c[0]?'✅':'❌')+'</span><span class="status-txt">'+c[1]+'</span><span class="status-val">'+c[2]+'</span></div>'}).join('');
+}
+
+// ── CHATBOT ──
+function renderChatbot(chat){
+  $('chatMetrics').innerHTML=mc('Chat Events',chat.length,'--red')+mc('Unique Sessions',new Set(chat.map(function(e){return e.sessionId||e.session_id||'?'})).size,'--bl')+mc('Questions',chat.filter(function(e){return e.role==='user'||e.type==='user_message'}).length,'--am')+mc('Responses',chat.filter(function(e){return e.role==='assistant'||e.type==='bot_response'}).length,'--gn');
+
+  $('chatTb').innerHTML=chat.length?chat.slice(0,30).map(function(e){
+    var tm=fmtTime(e.timestamp);
+    var vid=(e.visitorId||e.visitor_id||e.sessionId||'?').slice(0,8);
+    var msgs=e.totalMessages||e.message_count||1;
+    var topics=(e.topics||[]).join(', ')||'—';
+    var score=e.leadScore||e.lead_score||0;
+    var status=e.status||'active';
+    return '<tr><td class="m">'+tm+'</td><td class="m" style="color:var(--bl)">'+vid+'</td><td class="m">'+msgs+'</td><td style="font-size:10px">'+E(topics)+'</td><td class="m" style="color:'+(score>=5?'var(--gn)':score>=3?'var(--am)':'var(--t3)')+'">'+score+'</td><td><span class="tg" style="background:'+(status==='active'?'var(--gnS)':'rgba(0,0,0,.04)')+';color:'+(status==='active'?'var(--gn)':'var(--t3)')+'">'+status+'</span></td></tr>';
+  }).join(''):'<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">No chatbot events yet. Chat events appear in chatbot_events collection.</td></tr>';
+}
+
+// ── HEALTH ──
+function renderHealth(ss,ev,pv,sp,trg,va,cart,chat){
+  var checks=[
+    [ss.length>0,'Sessions collection (cnc-tracker.js)',ss.length+' docs'],
+    [ev.length>0,'Events collection',ev.length+' events'],
+    [pv.length>0,'Pageviews collection',pv.length+' pageviews'],
+    [sp.length>0,'Shopify events (Web Pixel)',sp.length+' events'],
+    [trg.length>0,'Trigger events (cnc-triggers.js)',trg.length+' events'],
+    [va.length>0,'VA events',va.length+' events'],
+    [cart.length>0,'Cart events',cart.length+' events'],
+    [chat.length>0,'Chatbot events',chat.length+' events'],
+    [ss.some(function(d){return d.visitorId||d.visitor_id}),'Visitor ID tracking','✅'],
+    [ss.some(function(d){return d.referrer}),'Referrer tracking','✅'],
+    [ss.some(function(d){return d.utm_source||d.utmSource}),'UTM source capture','✅'],
+    [ss.some(function(d){return d.device||d.userAgent}),'Device detection','✅'],
+    [false,'Microsoft Clarity','Not installed — add to theme.liquid'],
+    [false,'Google Analytics 4','Not installed — add to theme.liquid'],
+    [false,'Meta Pixel','Not installed — add to theme.liquid'],
+    [false,'Shopify Webhooks (server-side)','Needs Firebase Blaze upgrade'],
+    [false,'Server-side chatbot proxy','Needs Cloud Functions'],
+    [false,'Meta Conversions API (CAPI)','Needs server-side setup'],
+  ];
+
+  $('healthChecks').innerHTML=checks.map(function(c){
+    return '<div class="status-row"><span class="status-ico">'+(c[0]?'✅':'❌')+'</span><span class="status-txt">'+c[1]+'</span><span class="status-val">'+c[2]+'</span></div>';
+  }).join('');
+
+  $('fbConfig').textContent='Project: cnc-website-tracking\nRegion: asia-south1\nPlan: Spark (upgrade to Blaze needed)\nSDK: Firebase JS v10.12.2\nAPI Key: AIzaSyB7zR2K...h4\nCollections: sessions, events, pageviews, shopify_events, trigger_events, va_events, cart_events, chatbot_events\n\nTime filter: '+timeFilter+'\nSessions loaded: '+ALL.length+'\nEvents: '+EVTS.length+' | PVs: '+PVS.length+' | SP: '+SPEVTS.length+'\nTriggers: '+TRGEVTS.length+' | VA: '+VAEVTS.length+' | Cart: '+CARTEVTS.length+' | Chat: '+CHATEVTS.length;
+}
+
+// ── DEEP DIVE ──
+function goDeep(vid){
+  nav('deep');selVisitor=vid;
+  renderDeepList();
+  loadVisitorDetail(vid);
+}
+
+function renderDeepList(){
+  var q=($('deepSearch').value||'').toLowerCase();
+  var ss=filterByTime(ALL,'lastActivity');
+  if(q)ss=ss.filter(function(d){var vid=(gs(d,'visitorId')||d.id||'').toLowerCase();var src=getSrc(d).toLowerCase();return vid.includes(q)||src.includes(q)});
+  $('deepList').innerHTML=ss.slice(0,80).map(function(d){
+    var vid=(gs(d,'visitorId')||d.id||'?').slice(0,8);
+    var sc=getSrc(d),col=srcColor(sc);
+    var sel=(gs(d,'visitorId')||d.id)===selVisitor;
+    return '<div class="vr'+(sel?' sel':'')+'" onclick="loadVisitorDetail(\''+E(gs(d,'visitorId')||d.id||'')+'\')">'
+      +'<div class="vr-a" style="background:'+col.b+';color:'+col.c+'">'+vid.slice(0,2).toUpperCase()+'</div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:600">'+vid+'</div>'
+      +'<div style="font-size:9px;color:var(--t3)">'+sc+' · '+gn(d,'pageCount')+'pg · '+fmtDur(dur(d))+'</div></div>'
+      +'</div>';
+  }).join('')||'<div style="padding:20px;text-align:center;color:var(--t3)">No visitors match</div>';
+}
+
+function loadVisitorDetail(vid){
+  selVisitor=vid;
+  var d=ALL.find(function(s){return(gs(s,'visitorId')||s.id)===vid});
+  if(!d){$('deepBody').innerHTML='<div style="padding:20px;color:var(--t3)">Visitor not found</div>';return}
+
+  $('deepHeader').style.display='block';
+  $('deepHeader').innerHTML='<div><div style="font-size:14px;font-weight:700">'+(gs(d,'visitorId')||d.id||'?').slice(0,8)+'</div><div style="font-size:10px;color:var(--t3);margin-top:2px">'+getSrc(d)+' · '+getDev(d)+' · '+gn(d,'pageCount')+' pages · '+fmtDur(dur(d))+'</div></div>';
+
+  // Load events for this session
+  var sid=gs(d,'visitorId')||d.id||'';
+  var sessEvents=EVTS.filter(function(e){return e.sessionId===sid||e.session_id===sid||e.visitorId===sid});
+  var sessPVs=PVS.filter(function(e){return e.sessionId===sid||e.session_id===sid||e.visitorId===sid});
+  var allEvents=sessEvents.concat(sessPVs).sort(function(a,b){return(ts(a.timestamp)||0)-(ts(b.timestamp)||0)});
+
+  var html='<div style="margin-bottom:12px">'+buildStory(d)+'</div>';
+  if(allEvents.length>0){
+    html+='<div style="font-size:12px;font-weight:600;margin-bottom:8px">Timeline ('+allEvents.length+' events)</div>';
+    html+=allEvents.map(function(e){
+      var tm=fmtTime(e.timestamp);
+      var name=e.event_name||e.type||'page_view';
+      var url=shortPath(e.page_url||e.url||'/');
+      return '<div style="padding:6px 0;border-bottom:1px solid var(--bg2);font-size:11px"><span class="m" style="color:var(--t3)">'+tm+'</span> <span style="font-weight:600">'+E(name)+'</span> <span style="color:var(--t2)">'+E(url)+'</span></div>';
+    }).join('');
+  }else{
+    html+='<div style="color:var(--t3);font-size:11px;margin-top:12px">No individual events found for this session. Events are matched by sessionId/visitorId.</div>';
+  }
+  html+='<div class="raw">'+E(JSON.stringify(d,null,2))+'</div>';
+  $('deepBody').innerHTML=html;
+  renderDeepList();
+}
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+var titles={dash:['Dashboard','Real-time overview'],sessions:['Sessions','All tracked visitors'],stories:['Behavior Stories','Plain language descriptions'],deep:['Deep-Dive','Individual visitor journeys'],cart:['Add to Cart','Cart events & analysis'],checkout:['Checkout','Checkout events & funnel'],products:['Products','Product view & conversion data'],sources:['Traffic Sources','By source/medium'],pages:['Top Pages','Landing pages'],funnel:['Funnel','Visit → Browse → Cart → Checkout → Purchase'],devices:['Devices','Mobile / Desktop / Tablet'],va:['VA Selector','VA Protection selector analytics'],triggers:['Triggers','Behavioral message performance'],chatbot:['Chatbot','AI chatbot events & lead scoring'],health:['System Health','Data pipeline status']};
+
+function nav(p){
+  curPage=p;
+  document.querySelectorAll('.pg').forEach(function(x){x.classList.remove('on')});
+  var t=$('pg-'+p);if(t)t.classList.add('on');
+  $('ca').scrollTop=0;
+  document.querySelectorAll('.ni').forEach(function(n){n.classList.remove('on')});
+  var el=document.querySelector('[data-p="'+p+'"]');if(el)el.classList.add('on');
+  var tt=titles[p]||['',''];$('pt').textContent=tt[0];$('ps').textContent='CNC Electric · '+tt[1];
+}
+
+document.querySelector('.sb').addEventListener('click',function(e){
+  var ni=e.target.closest('.ni');if(ni&&ni.dataset.p)nav(ni.dataset.p);
+});
+
+// ═══════════════════════════════════════════════════
+// TIME FILTER
+// ═══════════════════════════════════════════════════
+document.querySelector('.tfb').addEventListener('click',function(e){
+  var tf=e.target.closest('.tf');
+  if(tf&&tf.dataset.t){
+    document.querySelectorAll('.tf').forEach(function(x){x.classList.remove('on')});
+    tf.classList.add('on');
+    timeFilter=tf.dataset.t;
+    render();
+  }
+});
+
+// ═══════════════════════════════════════════════════
+// FIREBASE REAL-TIME LISTENERS (onSnapshot)
+// ═══════════════════════════════════════════════════
+function startListeners(){
+  $('status').textContent='Connecting...';
+
+  // Sessions — most important, load up to 500
+  db.collection('sessions').orderBy('lastActivity','desc').limit(500).onSnapshot(function(snap){
+    ALL=[];snap.forEach(function(doc){ALL.push(Object.assign({id:doc.id},doc.data()))});
+    $('status').textContent='Live · '+ALL.length+' sessions';
+    render();
+  },function(err){
+    console.error('Sessions error:',err);
+    // Fallback without orderBy
+    db.collection('sessions').limit(500).onSnapshot(function(snap){
+      ALL=[];snap.forEach(function(doc){ALL.push(Object.assign({id:doc.id},doc.data()))});
+      ALL.sort(function(a,b){return(ts(b.lastActivity)||0)-(ts(a.lastActivity)||0)});
+      render();
+    });
+  });
+
+  // Events
+  db.collection('events').orderBy('timestamp','desc').limit(500).onSnapshot(function(snap){
+    EVTS=[];snap.forEach(function(doc){EVTS.push(doc.data())});render();
+  },function(){db.collection('events').limit(500).onSnapshot(function(snap){EVTS=[];snap.forEach(function(doc){EVTS.push(doc.data())});render()})});
+
+  // Pageviews
+  db.collection('pageviews').orderBy('timestamp','desc').limit(500).onSnapshot(function(snap){
+    PVS=[];snap.forEach(function(doc){PVS.push(doc.data())});render();
+  },function(){db.collection('pageviews').limit(500).onSnapshot(function(snap){PVS=[];snap.forEach(function(doc){PVS.push(doc.data())});render()})});
+
+  // Shopify events
+  db.collection('shopify_events').orderBy('timestamp','desc').limit(300).onSnapshot(function(snap){
+    SPEVTS=[];snap.forEach(function(doc){SPEVTS.push(doc.data())});render();
+  },function(){db.collection('shopify_events').limit(300).onSnapshot(function(snap){SPEVTS=[];snap.forEach(function(doc){SPEVTS.push(doc.data())});render()})});
+
+  // Trigger events
+  db.collection('trigger_events').orderBy('timestamp','desc').limit(300).onSnapshot(function(snap){
+    TRGEVTS=[];snap.forEach(function(doc){TRGEVTS.push(doc.data())});render();
+  },function(){db.collection('trigger_events').limit(300).onSnapshot(function(snap){TRGEVTS=[];snap.forEach(function(doc){TRGEVTS.push(doc.data())});render()})});
+
+  // VA events
+  db.collection('va_events').orderBy('timestamp','desc').limit(200).onSnapshot(function(snap){
+    VAEVTS=[];snap.forEach(function(doc){VAEVTS.push(doc.data())});render();
+  },function(){db.collection('va_events').limit(200).onSnapshot(function(snap){VAEVTS=[];snap.forEach(function(doc){VAEVTS.push(doc.data())});render()})});
+
+  // Cart events
+  db.collection('cart_events').orderBy('timestamp','desc').limit(200).onSnapshot(function(snap){
+    CARTEVTS=[];snap.forEach(function(doc){CARTEVTS.push(doc.data())});render();
+  },function(){db.collection('cart_events').limit(200).onSnapshot(function(snap){CARTEVTS=[];snap.forEach(function(doc){CARTEVTS.push(doc.data())});render()})});
+
+  // Chatbot events
+  db.collection('chatbot_events').orderBy('timestamp','desc').limit(200).onSnapshot(function(snap){
+    CHATEVTS=[];snap.forEach(function(doc){CHATEVTS.push(doc.data())});render();
+  },function(){db.collection('chatbot_events').limit(200).onSnapshot(function(snap){CHATEVTS=[];snap.forEach(function(doc){CHATEVTS.push(doc.data())});render()})});
+}
+
+// START
+startListeners();
+</script>
+</body>
+</html>
