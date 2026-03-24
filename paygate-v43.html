@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2563eb">
+<title>PayGate — Field Staff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',system-ui,sans-serif;background:#f8fafc;color:#1e293b;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Top Bar */
+.topbar{background:#fff;border-bottom:2px solid #e2e8f0;padding:12px 16px;position:sticky;top:0;z-index:50;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.topbar-inner{max-width:600px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.user-info{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:15px}
+.user-name{font-weight:700;font-size:14px;color:#0f172a}
+.user-meta{font-size:10px;color:#94a3b8}
+.topbar-actions{display:flex;align-items:center;gap:6px}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:none;background:#f1f5f9;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:all .15s}
+.icon-btn:hover{background:#e2e8f0}
+.icon-btn svg{width:18px;height:18px;color:#64748b}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:#ef4444;border:2px solid white;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.logout-btn{padding:6px 12px;border-radius:8px;border:1px solid #fecaca;background:#fff;color:#dc2626;font-size:11px;font-weight:600;cursor:pointer}
+
+/* Stats Row */
+.stats{max-width:600px;margin:16px auto 0;padding:0 16px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.stat{background:#fff;border-radius:12px;padding:12px;text-align:center;border:1.5px solid #cbd5e1;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.stat-val{font-size:22px;font-weight:800;color:#0f172a;font-variant-numeric:tabular-nums}
+.stat-lbl{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.stat.pending .stat-val{color:#f59e0b}
+.stat.verified .stat-val{color:#16a34a}
+.stat.rejected .stat-val{color:#dc2626}
+
+/* Nav tabs */
+.nav{max-width:600px;margin:16px auto 0;padding:0 16px;display:flex;gap:4px}
+.nav-btn{flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;transition:all .15s;}
+.nav-btn.active{background:#2563eb;color:white;border-color:#2563eb;box-shadow:0 2px 8px rgba(37,99,235,.3)}
+
+/* Main Content */
+.main{max-width:600px;margin:16px auto;padding:0 16px 100px}
+
+/* Cards */
+.card{background:#fff;border-radius:14px;border:1px solid #cbd5e1;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.card-h{padding:14px 16px;font-size:14px;font-weight:700;color:#0f172a;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+.card-b{padding:16px}
+
+/* Form */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:600;color:#64748b;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.field input,.field select,.field textarea{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;transition:border .15s;color:#0f172a}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#2563eb;outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.field textarea{min-height:70px;resize:vertical}
+.amount-input{font-size:24px!important;font-weight:700!important;text-align:center;letter-spacing:1px}
+.entity-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ent-btn{padding:10px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.ent-btn.sel{border-color:#2563eb;background:#eff6ff;color:#2563eb}
+.type-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.type-btn{padding:8px;border:1.5px solid #e2e8f0;border-radius:10px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.type-btn.sel{border-color:#2563eb;background:#eff6ff;color:#2563eb}
+
+/* Photo upload */
+.photo-area{border:2px dashed #e2e8f0;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:border .15s}
+.photo-area:hover{border-color:#2563eb}
+.photo-area img{max-width:100%;border-radius:8px;margin-top:8px}
+
+/* Submit button */
+.submit-btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:all .15s;font-family:inherit}
+.submit-btn.ready{background:#16a34a;color:white;box-shadow:0 4px 12px rgba(22,163,74,.3)}
+.submit-btn.ready:hover{background:#15803d}
+.submit-btn.disabled{background:#e2e8f0;color:#94a3b8;cursor:not-allowed}
+
+/* Payment cards */
+.pay-card{padding:14px;border-radius:12px;border:1px solid #cbd5e1;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;background:#fff;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.pay-card:hover{border-color:#93c5fd;box-shadow:0 3px 10px rgba(37,99,235,.1)}
+.pay-card .left{display:flex;align-items:center;gap:10px}
+.pay-card .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pay-card .status-dot.pending{background:#f59e0b}
+.pay-card .status-dot.verified{background:#16a34a}
+.pay-card .status-dot.posted{background:#2563eb}
+.pay-card .status-dot.rejected{background:#dc2626}
+.pay-card .cust-name{font-weight:600;font-size:13px;color:#0f172a}
+.pay-card .pay-meta{font-size:10px;color:#94a3b8}
+.pay-card .amount{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:#0f172a}
+.pay-card .ent-badge{padding:2px 6px;border-radius:5px;font-size:9px;font-weight:700;color:white}
+.pay-card .ent-badge.CNC{background:#2563eb}.ent-badge.CST{background:#7c3aed}.ent-badge.CSPL{background:#0891b2}
+
+/* Messages */
+.msg-thread{margin-top:10px;border-top:1px solid #f1f5f9;padding-top:10px}
+.msg{padding:8px 12px;border-radius:10px;margin-bottom:4px;font-size:12px;max-width:80%;line-height:1.5}
+.msg.mine{background:#eff6ff;color:#1e40af;margin-left:auto;border-bottom-right-radius:4px}
+.msg.theirs{background:#f1f5f9;color:#334155;border-bottom-left-radius:4px}
+.msg .msg-who{font-size:9px;font-weight:600;color:#94a3b8;margin-bottom:2px}
+.msg .msg-time{font-size:9px;color:#cbd5e1;margin-top:2px}
+.msg-input-row{display:flex;gap:6px;margin-top:8px}
+.msg-input-row input{flex:1;padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:12px}
+.msg-input-row button{padding:8px 14px;border:none;border-radius:8px;background:#2563eb;color:white;font-size:12px;font-weight:600;cursor:pointer}
+
+/* Notification panel */
+.notif-panel{max-width:600px;margin:0 auto}
+.notif-item{padding:12px 16px;border-bottom:1px solid #f8fafc;display:flex;gap:10px;align-items:flex-start}
+.notif-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.notif-icon.approve{background:#dcfce7}.notif-icon.reject{background:#fef2f2}.notif-icon.msg{background:#eff6ff}.notif-icon.sys{background:#f1f5f9}
+.notif-text{font-size:12px;color:#334155;line-height:1.5}
+.notif-text b{color:#0f172a}
+.notif-time{font-size:10px;color:#cbd5e1;margin-top:2px}
+
+/* Empty states */
+.empty{text-align:center;padding:40px 20px;color:#94a3b8}
+.empty-icon{font-size:40px;margin-bottom:10px}
+.empty-text{font-size:14px;font-weight:500}
+.empty-sub{font-size:11px;margin-top:4px}
+
+/* Detail modal */
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:200;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:85vh;overflow-y:auto;padding:20px 16px 40px;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;border-radius:2px;background:#e2e8f0;margin:0 auto 16px}
+
+/* Login */
+.login-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#f0f4ff,#dbeafe);z-index:500;display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.login-box{background:#fff;border-radius:20px;padding:28px 24px;width:340px;max-width:94vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-box .logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:white;font-weight:800}
+.login-box h1{text-align:center;font-size:20px;font-weight:800;color:#0f172a;margin-bottom:4px}
+.login-box .sub{text-align:center;font-size:11px;color:#94a3b8;margin-bottom:24px}
+.login-box label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;display:block;margin-top:12px}
+.login-box input{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;font-family:inherit}
+.login-box input:focus{border-color:#2563eb;outline:none}
+.login-box .remember{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:#64748b}
+.login-box .remember input{width:auto}
+.lbtn{width:100%;padding:12px;border:none;border-radius:10px;background:#2563eb;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit}
+.lbtn:hover{background:#1d4ed8}
+.lerr{color:#dc2626;font-size:12px;text-align:center;margin-top:8px;min-height:16px}
+.register-link{text-align:center;margin-top:14px;font-size:12px;color:#64748b}
+.register-link a{color:#2563eb;font-weight:600;cursor:pointer;text-decoration:none}
+
+/* Customer autocomplete */
+/* Version bar */
+.vbar{position:fixed;bottom:0;left:0;right:0;background:#f8fafc;border-top:1px solid #e2e8f0;padding:4px 14px;display:flex;justify-content:space-between;font-size:9px;color:#64748b;z-index:40}
+
+@media(min-width:640px){
+  .stats{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div id="loginScreen" class="login-bg">
+  <div class="login-box">
+    <div class="logo">PG</div>
+    <h1>PayGate</h1>
+    <div class="sub">CNC Electric &middot; CS Traders &middot; CSPL</div>
+    <div id="loginForm">
+      <label>Username or Email</label>
+      <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="remember"><input type="checkbox" id="rememberMe" checked> Remember me on this device</div>
+      <button class="lbtn" onclick="doLogin()">Sign In</button>
+      <div class="lerr" id="loginErr"></div>
+      <div style="font-size:11px;color:#94a3b8;text-align:center;margin-top:8px">Use: <b>coo</b>, <b>ceo</b>, <b>accounts</b> or <b>test/test</b></div>
+      <div class="register-link">New user? <button onclick="showRegister()" style="background:none;border:none;color:#2563eb;font-weight:600;font-size:12px;cursor:pointer;padding:0;font-family:inherit">Request Access</button></div>
+    </div>
+    <div id="registerForm" style="display:none">
+      <label>Full Name</label>
+      <input type="text" id="regName" placeholder="Your full name">
+      <label>Phone Number</label>
+      <input type="tel" id="regPhone" placeholder="03XX-XXXXXXX">
+      <label>Choose Username</label>
+      <input type="text" id="regUser" placeholder="Choose a username">
+      <label>Choose Password</label>
+      <input type="password" id="regPass1" placeholder="Min 8 characters">
+      <label>Confirm Password</label>
+      <input type="password" id="regPass2" placeholder="Confirm password">
+      <button class="lbtn" onclick="doRegister()">Request Access</button>
+      <div class="lerr" id="regErr"></div>
+      <div class="register-link"><button onclick="showLogin()" style="background:none;border:none;color:#2563eb;font-weight:600;font-size:12px;cursor:pointer;padding:0;font-family:inherit">Back to Sign In</button></div>
+    </div>
+  </div>
+</div>
+
+<div id="app"></div>
+
+<div class="vbar"><span>paygate-v41.html</span><span>V41 &middot; 24 Mar 2026</span></div>
+
+<script>
+const DEALERS=[{"n":"Cash Sale","e":"CST","c":173,"t":"dealer"},{"n":"Cash Sale Cnc 891","e":"CNC","c":85,"t":"dealer"},{"n":"Cash Sale Cst 510","e":"CST","c":75,"t":"dealer"},{"n":"Power Electric Store","e":"CNC","c":57,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Husnain Dawood","e":"CNC","c":55,"t":"dealer"},{"n":"Inverter Sale","e":"CNC","c":48,"t":"dealer"},{"n":"Dar Sons","e":"CST","c":44,"t":"dealer"},{"n":"Haseeb Ahmad","e":"CST","c":42,"t":"dealer"},{"n":"Fair Deal","e":"CST","c":41,"t":"dealer"},{"n":"System Energy","e":"CNC","c":30,"t":"dealer"},{"n":"Panel Sale","e":"CNC","c":29,"t":"dealer"},{"n":"Prime","e":"CST","c":24,"t":"dealer"},{"n":"Mubarik Electric","e":"CST","c":24,"t":"dealer"},{"n":"Waqas Sb Cnc 1356","e":"CNC","c":24,"t":"dealer"},{"n":"Standard Store","e":"CNC","c":23,"t":"dealer"},{"n":"Al-Haider Cnc 1182","e":"CNC","c":23,"t":"dealer"},{"n":"Fair Deal Cst 70","e":"CST","c":23,"t":"dealer"},{"n":"Inverter Purchase","e":"CNC","c":22,"t":"dealer"},{"n":"Dar Sons Cst 130","e":"CST","c":22,"t":"dealer"},{"n":"Sumra Electric","e":"CNC","c":21,"t":"dealer"},{"n":"Talha Electric","e":"CST","c":21,"t":"dealer"},{"n":"Kareem Cable","e":"CNC","c":21,"t":"dealer"},{"n":"Chand Electric","e":"CST","c":20,"t":"dealer"},{"n":"Datta Electric Cst 54","e":"CST","c":20,"t":"dealer"},{"n":"Al Madina","e":"CST","c":19,"t":"dealer"},{"n":"Fico Electric","e":"CNC","c":19,"t":"dealer"},{"n":"From Bilal Account For Ali Haider","e":"CNC","c":19,"t":"dealer"},{"n":"Al-Haider","e":"CNC","c":19,"t":"dealer"},{"n":"Al-Meeraj Cnc 1760","e":"CNC","c":19,"t":"dealer"},{"n":"Engineering Mode","e":"CNC","c":17,"t":"dealer"},{"n":"Mejor Enterprises","e":"CNC","c":17,"t":"dealer"},{"n":"Waqas Sb","e":"CNC","c":17,"t":"dealer"},{"n":"Panel Purchase","e":"CNC","c":17,"t":"dealer"},{"n":"Mubarik Electric Cst 290","e":"CST","c":17,"t":"dealer"},{"n":"Mubashir Electric","e":"CST","c":16,"t":"dealer"},{"n":"Shoukat Electric","e":"CNC","c":16,"t":"dealer"},{"n":"Vivant Solution Cnc 1330","e":"CNC","c":16,"t":"dealer"},{"n":"I Am Xolar","e":"CNC","c":15,"t":"dealer"},{"n":"Al-Meeraj","e":"CST","c":15,"t":"dealer"},{"n":"Cash Sale Fico","e":"CNC","c":15,"t":"dealer"},{"n":"Faran Traders Cnc - 1090","e":"CNC","c":15,"t":"dealer"},{"n":"Chand Electric Cst 2","e":"CST","c":15,"t":"dealer"},{"n":"To Fico Hitech","e":"CNC","c":14,"t":"dealer"},{"n":"Lion Solar","e":"CNC","c":13,"t":"dealer"},{"n":"Haroon Electric","e":"CST","c":13,"t":"dealer"},{"n":"Sultan Electric","e":"CST","c":13,"t":"dealer"},{"n":"To Fico Electric","e":"CNC","c":13,"t":"dealer"},{"n":"Abdul Sattar Electric","e":"CST","c":13,"t":"dealer"},{"n":"Naveed Electric","e":"CST","c":13,"t":"dealer"},{"n":"Standard Store Cnc 1705","e":"CNC","c":13,"t":"dealer"},{"n":"Waseem Trading","e":"CST","c":12,"t":"dealer"},{"n":"Waseem Traders","e":"CST","c":11,"t":"dealer"},{"n":"Faizan Traders","e":"CST","c":11,"t":"dealer"},{"n":"From Bilal Account For Net Metering Purchase","e":"CNC","c":11,"t":"dealer"},{"n":"Cash Sale Cnc - 891","e":"CNC","c":11,"t":"dealer"},{"n":"Inverter Payment","e":"CNC","c":11,"t":"dealer"},{"n":"Haseeb Geya Cnc 1303","e":"CNC","c":11,"t":"dealer"},{"n":"Zest Solar Cnc 1483","e":"CNC","c":11,"t":"dealer"},{"n":"Decent Solar Cnc 2184","e":"CNC","c":11,"t":"dealer"},{"n":"I.H Traders Cnc 2375","e":"CNC","c":11,"t":"dealer"},{"n":"From Cspl Account","e":"CSPL","c":10,"t":"dealer"},{"n":"Datta Electric","e":"CST","c":10,"t":"dealer"},{"n":"Mi Trader","e":"CNC","c":10,"t":"dealer"},{"n":"Dynasol","e":"CNC","c":10,"t":"dealer"},{"n":"From Bilal Account For Ashraf","e":"CNC","c":10,"t":"dealer"},{"n":"Umair Solar","e":"CNC","c":10,"t":"dealer"},{"n":"Standard Store Cst - 13","e":"CST","c":10,"t":"dealer"},{"n":"Dastgeer Solar Cnc 1429","e":"CNC","c":10,"t":"dealer"},{"n":"Mr.Shahid Cnc 1899","e":"CNC","c":10,"t":"dealer"},{"n":"Abdul Sattar Electric Cst 53","e":"CST","c":10,"t":"dealer"},{"n":"Waseem Traders Cst 110","e":"CST","c":10,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Muzaffar","e":"CNC","c":10,"t":"dealer"},{"n":"Milk","e":"CNC","c":10,"t":"dealer"},{"n":"Al-Haider Electric","e":"CST","c":9,"t":"dealer"},{"n":"Technob","e":"CST","c":9,"t":"dealer"},{"n":"Gain Control","e":"CST","c":9,"t":"dealer"},{"n":"Haseeb Geya","e":"CST","c":9,"t":"dealer"},{"n":"C.A Traders","e":"CNC","c":9,"t":"dealer"},{"n":"Al Jazil","e":"CNC","c":9,"t":"dealer"},{"n":"Jilani International","e":"CNC","c":9,"t":"dealer"},{"n":"At Electric","e":"CST","c":9,"t":"dealer"},{"n":"Cnc Payment","e":"CNC","c":9,"t":"dealer"},{"n":"Xolar","e":"CNC","c":9,"t":"dealer"},{"n":"Allied Electric","e":"CST","c":9,"t":"dealer"},{"n":"System Energy Pvt Ltd","e":"CNC","c":9,"t":"dealer"},{"n":"Structure Payment To Steel Linkers","e":"CNC","c":9,"t":"dealer"},{"n":"Al-Meraj","e":"CNC","c":9,"t":"dealer"},{"n":"Haseeb Sb Geya Cnc 1303","e":"CNC","c":9,"t":"dealer"},{"n":"M.S Electric Cst 1976","e":"CST","c":9,"t":"dealer"},{"n":"Hamza Solar","e":"CNC","c":9,"t":"dealer"},{"n":"Electrich Cst 164","e":"CST","c":9,"t":"dealer"},{"n":"Al-Fareed Electric Cst 453","e":"CST","c":9,"t":"dealer"},{"n":"Ch&Sons Bull Rode Cst 2770","e":"CST","c":9,"t":"dealer"},{"n":"Lunch","e":"CNC","c":9,"t":"dealer"},{"n":"Cash Sale In","e":"CST","c":9,"t":"dealer"},{"n":"M.S Electric","e":"CST","c":8,"t":"dealer"},{"n":"Blue Rise Solar","e":"CNC","c":8,"t":"customer"},{"n":"Business Equipment","e":"CST","c":8,"t":"dealer"},{"n":"S.N.B","e":"CNC","c":8,"t":"dealer"},{"n":"Solar Tech","e":"CNC","c":8,"t":"dealer"},{"n":"Sattar Electric","e":"CST","c":8,"t":"dealer"},{"n":"From Bilal Account For Usman Sb","e":"CNC","c":8,"t":"dealer"},{"n":"Structure Payment","e":"CNC","c":8,"t":"dealer"},{"n":"Hi Power","e":"CNC","c":8,"t":"dealer"},{"n":"Prime Switchgear","e":"CNC","c":8,"t":"dealer"},{"n":"Dar Sons Cnc 1714","e":"CNC","c":8,"t":"dealer"},{"n":"Hi Power Cnc 1017","e":"CNC","c":8,"t":"dealer"},{"n":"Waseem Trading Cst 110","e":"CST","c":8,"t":"dealer"},{"n":"System Energy (Mansoor Sb) / Shan Cst 411","e":"CST","c":8,"t":"dealer"},{"n":"Coffee","e":"CNC","c":8,"t":"dealer"},{"n":"Shafaqat Electric Cst 207","e":"CST","c":8,"t":"dealer"},{"n":"Standerd Store Cst 13","e":"CST","c":8,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Hassnain Dawood","e":"CNC","c":8,"t":"dealer"},{"n":"S.B Traders","e":"CST","c":8,"t":"dealer"},{"n":"Mr.Haseeb Geya","e":"CNC","c":7,"t":"dealer"},{"n":"Hub Engg","e":"CNC","c":7,"t":"dealer"},{"n":"Pari Elec","e":"CNC","c":7,"t":"dealer"},{"n":"Fico Industries","e":"CNC","c":7,"t":"dealer"},{"n":"Green Light Traders","e":"CNC","c":7,"t":"dealer"},{"n":"Farhan Traders","e":"CST","c":7,"t":"dealer"},{"n":"Yaseen Electric","e":"CNC","c":7,"t":"dealer"},{"n":"Cnc Payment To Yaqoob Sb","e":"CNC","c":7,"t":"dealer"},{"n":"Panel Payment","e":"CNC","c":7,"t":"dealer"},{"n":"Steel Linkers / Shan","e":"CNC","c":7,"t":"dealer"},{"n":"Fair Deal Fico Cst - 70","e":"CST","c":7,"t":"dealer"},{"n":"Penal Sale","e":"CNC","c":7,"t":"dealer"},{"n":"Akram &Co Cst 378","e":"CST","c":7,"t":"dealer"},{"n":"Akram & Co Cst 378","e":"CST","c":7,"t":"dealer"},{"n":"At Electrical -Cst 581 / Muzaffar","e":"CST","c":7,"t":"dealer"},{"n":"Sultan Electric Cst 261","e":"CST","c":7,"t":"dealer"},{"n":"Electric Inn Cst 2240","e":"CST","c":7,"t":"dealer"},{"n":"Trade Hub Cst 2409","e":"CST","c":7,"t":"dealer"},{"n":"Green Build Corporation Cst 1238","e":"CST","c":7,"t":"dealer"},{"n":"Electronic Solution Cnc 2373","e":"CNC","c":7,"t":"dealer"},{"n":"Green Ray Cst 2447  / Muzaffar","e":"CST","c":7,"t":"dealer"},{"n":"Kashif Sab Cnc 1653","e":"CNC","c":7,"t":"dealer"},{"n":"Electronic Solution","e":"CNC","c":7,"t":"dealer"},{"n":"Mashallah Db Box","e":"CST","c":7,"t":"dealer"},{"n":"Zia Electric","e":"CNC","c":6,"t":"customer"},{"n":"Ijaz Enterprise","e":"CNC","c":6,"t":"dealer"},{"n":"Beyondgreen Pvt Ltd","e":"CNC","c":6,"t":"customer"},{"n":"Sky Solar Powered By Fazal Engineering","e":"CNC","c":6,"t":"customer"},{"n":"Delta Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Solar Fort","e":"CNC","c":6,"t":"dealer"},{"n":"Shah Din Electric","e":"CNC","c":6,"t":"dealer"},{"n":"Punjab Trading","e":"CNC","c":6,"t":"dealer"},{"n":"Fico Electric Lesco Bill","e":"CNC","c":6,"t":"dealer"},{"n":"Alfareed Electric","e":"CNC","c":6,"t":"dealer"},{"n":"From Cspl For Fico Hitech","e":"CSPL","c":6,"t":"dealer"},{"n":"Arshad Trading","e":"CST","c":6,"t":"dealer"},{"n":"Pari Electric","e":"CNC","c":6,"t":"dealer"},{"n":"Al-Saiqa","e":"CST","c":6,"t":"dealer"},{"n":"Sb Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Asad Sb","e":"CNC","c":6,"t":"dealer"},{"n":"Al-Madina","e":"CST","c":6,"t":"dealer"},{"n":"Panels Sale By Malik Awais Sb","e":"CNC","c":6,"t":"dealer"},{"n":"Simka Engineering","e":"CNC","c":6,"t":"dealer"},{"n":"Haseeb Sb Geya","e":"CNC","c":6,"t":"dealer"},{"n":"Cash Sale Fico Cst - 510","e":"CST","c":6,"t":"dealer"},{"n":"Waqas Sb Cnc - 1356","e":"CNC","c":6,"t":"dealer"},{"n":"Gain Control Cst 463","e":"CST","c":6,"t":"dealer"},{"n":"Haseeb Ahmad Cst 851","e":"CST","c":6,"t":"dealer"},{"n":"Ishaq Engg Cst 291","e":"CST","c":6,"t":"dealer"},{"n":"Standard Store Cst 13","e":"CST","c":6,"t":"dealer"},{"n":"Ppi / Muzaffar / Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Zahid & Co / Ali Haider / Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Haseeb Sb Cnc 1303","e":"CNC","c":6,"t":"dealer"},{"n":"Sky Rise Cst 2775","e":"CST","c":6,"t":"dealer"},{"n":"Cofee","e":"CNC","c":6,"t":"dealer"},{"n":"Shareef Sab","e":"CST","c":6,"t":"dealer"},{"n":"Standerd Store","e":"CST","c":6,"t":"dealer"},{"n":"Kashif","e":"CST","c":6,"t":"dealer"},{"n":"I.H Traders","e":"CNC","c":6,"t":"dealer"},{"n":"Sky Rise","e":"CNC","c":5,"t":"dealer"},{"n":"Dastgeer Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Mr.Afzal","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fareed Electric","e":"CST","c":5,"t":"dealer"},{"n":"Almeeraj","e":"CNC","c":5,"t":"dealer"},{"n":"Ch & Sons","e":"CST","c":5,"t":"dealer"},{"n":"Data Electric","e":"CST","c":5,"t":"dealer"},{"n":"Al Fareed","e":"CNC","c":5,"t":"dealer"},{"n":"Ajmal Trading","e":"CNC","c":5,"t":"dealer"},{"n":"Mi Traders","e":"CST","c":5,"t":"dealer"},{"n":"Khyber Electric","e":"CNC","c":5,"t":"dealer"},{"n":"Green T&D","e":"CST","c":5,"t":"dealer"},{"n":"Ashfaq Brothers","e":"CNC","c":5,"t":"dealer"},{"n":"Prime Electric Fsd","e":"CNC","c":5,"t":"dealer"},{"n":"Ramzan Solar","e":"CST","c":5,"t":"dealer"},{"n":"Bilal Account For Ali Haider","e":"CNC","c":5,"t":"dealer"},{"n":"From Bilal Account For Cable Purchase","e":"CNC","c":5,"t":"dealer"},{"n":"Waqas","e":"CST","c":5,"t":"dealer"},{"n":"Arete Energy","e":"CNC","c":5,"t":"dealer"},{"n":"Haseeb Electric Store","e":"CNC","c":5,"t":"dealer"},{"n":"Faran Traders","e":"CNC","c":5,"t":"dealer"},{"n":"Abdullah Electric","e":"CST","c":5,"t":"dealer"},{"n":"To Bilal Account","e":"CNC","c":5,"t":"dealer"},{"n":"Noor Energy","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fareed Brandreth Road Fico","e":"CNC","c":5,"t":"dealer"},{"n":"Mohsin Islamabad","e":"CNC","c":5,"t":"dealer"},{"n":"M.Ismail & Sons","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Madina Banu","e":"CNC","c":5,"t":"dealer"},{"n":"Panel Sale By Malik Awais Sb","e":"CNC","c":5,"t":"dealer"},{"n":"Panels Sale","e":"CNC","c":5,"t":"dealer"},{"n":"Halifax","e":"CNC","c":5,"t":"dealer"},{"n":"Dar Sons Fico","e":"CNC","c":5,"t":"dealer"},{"n":"Power Electric Store\u00a0Cnc 814","e":"CNC","c":5,"t":"dealer"},{"n":"Mr.Waqas Enterprise Cnc 1818","e":"CNC","c":5,"t":"dealer"},{"n":"Source Tek Technology Cnc 1469","e":"CNC","c":5,"t":"dealer"},{"n":"Pari Electric Cst 341","e":"CST","c":5,"t":"dealer"},{"n":"Talha Electric Cst 1314","e":"CST","c":5,"t":"dealer"},{"n":"Kashif Cst 362","e":"CST","c":5,"t":"dealer"},{"n":"Ramzan Electric Cst 9","e":"CST","c":5,"t":"dealer"},{"n":"Al Madina Cst 8","e":"CST","c":5,"t":"dealer"},{"n":"Green Built Corporation Cst 2115","e":"CST","c":5,"t":"dealer"},{"n":"Al Sayiqa Cst 169","e":"CST","c":5,"t":"dealer"},{"n":"Perfect Electrificational Cst 273","e":"CST","c":5,"t":"dealer"},{"n":"Ansari Traders Cst 2262","e":"CST","c":5,"t":"dealer"},{"n":"Haroon Electric Cst 1015","e":"CST","c":5,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809","e":"CNC","c":5,"t":"dealer"},{"n":"Bilal Tariq Cst 260","e":"CST","c":5,"t":"dealer"},{"n":"Al-Meraj Cnc 1760","e":"CNC","c":5,"t":"dealer"},{"n":"Dastager Solar Cnc 1429","e":"CNC","c":5,"t":"dealer"},{"n":"Hina Rana","e":"CNC","c":5,"t":"dealer"},{"n":"Hassan Traders / Ali Haider / Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Mansoor Sb -Cst 411 / Shan","e":"CST","c":5,"t":"dealer"},{"n":"Power Electric Store\u00a0Cnc Ali Haider","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fazal Enginering","e":"CST","c":5,"t":"dealer"},{"n":"Decent Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Qadri Group","e":"CST","c":5,"t":"dealer"},{"n":"Rashid Traders","e":"CNC","c":4,"t":"customer"},{"n":"Sunlight Solar System","e":"CNC","c":4,"t":"customer"},{"n":"Quetta Cable","e":"CNC","c":4,"t":"customer"},{"n":"Ar Electric Switchgear","e":"CST","c":4,"t":"customer"},{"n":"Micron Energy Kohat","e":"CNC","c":4,"t":"customer"},{"n":"Chaudhry Corporation","e":"CNC","c":4,"t":"customer"},{"n":"Mr.Naveed","e":"CST","c":4,"t":"dealer"},{"n":"Insaf Electric Store","e":"CNC","c":4,"t":"customer"},{"n":"Hs Traders","e":"CNC","c":4,"t":"customer"},{"n":"Pak Solar Sargodha","e":"CNC","c":4,"t":"customer"},{"n":"Multitech Cash","e":"CST","c":4,"t":"cash_sale"},{"n":"Energy Live","e":"CST","c":4,"t":"customer"},{"n":"Ask Solar","e":"CNC","c":4,"t":"customer"},{"n":"Awais Solar Energy","e":"CST","c":4,"t":"customer"},{"n":"Pleasant Solar","e":"CNC","c":4,"t":"customer"},{"n":"Shazad Ishaq","e":"CNC","c":4,"t":"customer"},{"n":"Q Energy","e":"CNC","c":4,"t":"customer"},{"n":"Mateen Arif","e":"CNC","c":4,"t":"customer"},{"n":"Tariq Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Ramzan","e":"CNC","c":4,"t":"customer"},{"n":"Cash Sale [Mr Ashraf]","e":"CNC","c":4,"t":"cash_sale"},{"n":"National Electric","e":"CST","c":4,"t":"dealer"},{"n":"Rahat Electric","e":"CST","c":4,"t":"dealer"},{"n":"Farooq Brothers","e":"CNC","c":4,"t":"dealer"},{"n":"Bilal Tariq","e":"CST","c":4,"t":"dealer"},{"n":"Al Meeraj","e":"CNC","c":4,"t":"dealer"},{"n":"Electrech","e":"CST","c":4,"t":"dealer"},{"n":"To Fico Industries","e":"CNC","c":4,"t":"dealer"},{"n":"Mansoor Sb","e":"CST","c":4,"t":"dealer"},{"n":"Jawad Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Ksb Cash","e":"CNC","c":4,"t":"dealer"},{"n":"Solar Payment","e":"CNC","c":4,"t":"dealer"},{"n":"Perfect Electrificationar","e":"CNC","c":4,"t":"dealer"},{"n":"Arf Engineering","e":"CNC","c":4,"t":"dealer"},{"n":"H.A Rouf","e":"CST","c":4,"t":"dealer"},{"n":"Regal Solar Solutions","e":"CNC","c":4,"t":"dealer"},{"n":"Tesla","e":"CNC","c":4,"t":"dealer"},{"n":"Ideal Power Solutions","e":"CNC","c":4,"t":"dealer"},{"n":"From Cspl For Malik Sb","e":"CSPL","c":4,"t":"dealer"},{"n":"Ai Switchgear","e":"CNC","c":4,"t":"dealer"},{"n":"Pempak","e":"CNC","c":4,"t":"dealer"},{"n":"Prince Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Hub Engenering","e":"CNC","c":4,"t":"dealer"},{"n":"Tauqeer Electric","e":"CST","c":4,"t":"dealer"},{"n":"Cable Sale","e":"CNC","c":4,"t":"dealer"},{"n":"Structure Sale","e":"CNC","c":4,"t":"dealer"},{"n":"Burq Electric","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Malik Energy","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Bilal Salary","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Ptcl Bill","e":"CNC","c":4,"t":"dealer"},{"n":"To Power Next Trading","e":"CNC","c":4,"t":"dealer"},{"n":"Steel Linkers","e":"CNC","c":4,"t":"dealer"},{"n":"Asad Trading Co.","e":"CNC","c":4,"t":"dealer"},{"n":"Rafaqat Ali","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Fareed Brandreth Road","e":"CNC","c":4,"t":"dealer"},{"n":"Gain Control Fico","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Jazil","e":"CNC","c":4,"t":"dealer"},{"n":"Ishaaq Engineering Fico","e":"CNC","c":4,"t":"dealer"},{"n":"Abdullah","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account To Ali Haider","e":"CNC","c":4,"t":"dealer"},{"n":"Mr.Abdullah","e":"CST","c":4,"t":"dealer"},{"n":"Max Power","e":"CNC","c":4,"t":"dealer"},{"n":"Creative Engineering","e":"CNC","c":4,"t":"dealer"},{"n":"Atif Sb Solar","e":"CNC","c":4,"t":"dealer"},{"n":"Cnc Builty Paid To Amrah Traders","e":"CNC","c":4,"t":"dealer"},{"n":"Mts","e":"CNC","c":4,"t":"dealer"},{"n":"National Cable","e":"CNC","c":4,"t":"dealer"},{"n":"H.A Rauf","e":"CNC","c":4,"t":"dealer"},{"n":"Smart Tech","e":"CNC","c":4,"t":"dealer"},{"n":"Saleemi Sb Solar Payment","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Fazal Engineering Fico","e":"CNC","c":4,"t":"dealer"}];
+
+// ═══ USERS & AUTH ═══
+var USERS={
+  "accounts":{pass:"Shahbaz@2100%",role:"accounts",name:"Shahbaz Lodhi",title:"Accounts Head"},
+  "ceo":{pass:"Awais@2200%",role:"ceo",name:"Awais Malik",title:"CEO"},
+  "coo":{pass:"Muddasir@1100%",role:"coo",name:"Muddasir Waheed",title:"COO"},
+  "test":{pass:"test",role:"accounts",name:"Test User",title:"Test"},
+};
+var loggedIn=false,CU=null,tab="new",failedAttempts=0,lockoutUntil=0;
+var pendingRegistrations=[];
+try{pendingRegistrations=JSON.parse(localStorage.getItem("pg_pending_reg")||"[]")}catch(e){}
+// Load saved users (admin-added)
+try{var saved=JSON.parse(localStorage.getItem("pg_users")||"{}");for(var k in saved)USERS[k]=saved[k]}catch(e){}
+
+// Login check moved to bottom — runs after render() is defined
+
+function showRegister(){
+  var lf=document.getElementById("loginForm");
+  var rf=document.getElementById("registerForm");
+  if(lf)lf.style.display="none";
+  if(rf)rf.style.display="block";
+}
+function showLogin(){
+  var lf=document.getElementById("loginForm");
+  var rf=document.getElementById("registerForm");
+  if(lf)lf.style.display="block";
+  if(rf)rf.style.display="none";
+}
+
+function doLogin(){
+  if(Date.now()<lockoutUntil){document.getElementById("loginErr").textContent="Too many attempts. Wait "+(Math.ceil((lockoutUntil-Date.now())/60000))+" min";return}
+  var u=document.getElementById("loginUser").value.trim().toLowerCase();
+  var p=document.getElementById("loginPass").value;
+  if(!u||!p){document.getElementById("loginErr").textContent="Enter username and password";return}
+  
+  var found=null;
+  for(var key in USERS){
+    var usr=USERS[key];
+    if((key===u||usr.name.toLowerCase()===u||usr.name.toLowerCase().split(" ")[0]===u||usr.title.toLowerCase()===u)&&usr.pass===p){
+      if(usr.blocked){document.getElementById("loginErr").textContent="Account blocked. Contact admin.";return}
+      found={user:key,role:usr.role,name:usr.name,title:usr.title};break;
+    }
+  }
+  if(!found){
+    failedAttempts++;
+    if(failedAttempts>=3){lockoutUntil=Date.now()+300000;document.getElementById("loginErr").textContent="3 failed attempts. Locked for 5 minutes."}
+    else document.getElementById("loginErr").textContent="Invalid credentials ("+(3-failedAttempts)+" attempts left)";
+    return;
+  }
+  failedAttempts=0;loggedIn=true;CU=found;
+  CU.lastLogin=new Date().toLocaleString();CU.device=navigator.userAgent.slice(0,50);
+  
+  // Log activity
+  logActivity("login","Signed in");
+  
+  // Remember
+  if(document.getElementById("rememberMe").checked){try{localStorage.setItem("pg_remember",JSON.stringify(CU))}catch(e){}}
+  try{sessionStorage.setItem("pg_session",JSON.stringify(CU))}catch(e){}
+  
+  document.getElementById("loginScreen").style.display="none";
+  render();
+}
+
+function doLogout(){
+  logActivity("logout","Signed out");
+  loggedIn=false;CU=null;
+  try{sessionStorage.removeItem("pg_session");localStorage.removeItem("pg_remember")}catch(e){}
+  document.getElementById("loginScreen").style.display="flex";
+  document.getElementById("loginPass").value="";
+  document.getElementById("loginErr").textContent="";
+}
+
+function doRegister(){
+  var name=document.getElementById("regName").value.trim();
+  var phone=document.getElementById("regPhone").value.trim();
+  var user=document.getElementById("regUser").value.trim().toLowerCase();
+  var p1=document.getElementById("regPass1").value;
+  var p2=document.getElementById("regPass2").value;
+  var err=document.getElementById("regErr");
+  
+  if(!name||!user||!p1){err.textContent="Fill all fields";return}
+  if(p1.length<8){err.textContent="Password must be 8+ characters";return}
+  if(p1!==p2){err.textContent="Passwords don't match";return}
+  if(USERS[user]){err.textContent="Username taken";return}
+  
+  pendingRegistrations.push({name:name,phone:phone,user:user,pass:p1,date:new Date().toISOString(),status:"pending"});
+  try{localStorage.setItem("pg_pending_reg",JSON.stringify(pendingRegistrations))}catch(e){}
+  
+  err.style.color="#16a34a";
+  err.textContent="✓ Request sent! COO will review and approve your access.";
+  document.getElementById("regName").value="";
+  document.getElementById("regPhone").value="";
+  document.getElementById("regUser").value="";
+  document.getElementById("regPass1").value="";
+  document.getElementById("regPass2").value="";
+  setTimeout(showLogin,3000);
+}
+
+// ═══ ACTIVITY LOG ═══
+var activityLog=[];
+try{activityLog=JSON.parse(localStorage.getItem("pg_activity")||"[]")}catch(e){}
+function logActivity(action,detail){
+  activityLog.unshift({ts:new Date().toISOString(),user:CU?CU.name:"?",role:CU?CU.role:"?",action:action,detail:detail});
+  try{localStorage.setItem("pg_activity",JSON.stringify(activityLog.slice(0,1000)))}catch(e){}
+}
+
+// ═══ MESSAGES ═══
+var messages=[];
+try{messages=JSON.parse(localStorage.getItem("pg_messages")||"[]")}catch(e){}
+function addMessage(paymentId,text){
+  messages.push({id:"MSG-"+Date.now(),paymentId:paymentId,from:CU?CU.name:"?",role:CU?CU.role:"?",text:text,ts:new Date().toISOString(),read:false});
+  try{localStorage.setItem("pg_messages",JSON.stringify(messages.slice(0,2000)))}catch(e){}
+}
+function getMessages(paymentId){return messages.filter(function(m){return m.paymentId===paymentId})}
+function getUnreadCount(){if(!CU)return 0;return messages.filter(function(m){return!m.read&&m.from!==CU.name}).length}
+
+// ═══ NOTIFICATIONS ═══
+function getNotifications(){
+  var pg=getMyPayments();var notifs=[];
+  pg.forEach(function(e){
+    if(e.journaled)notifs.push({type:"approve",text:"<b>"+e.cust+"</b> PKR "+Number(e.amt||0).toLocaleString()+" posted",time:e.approved_at||e.ts});
+    if(e.rejected)notifs.push({type:"reject",text:"<b>"+e.cust+"</b> rejected: "+(e.rejection_reason||""),time:e.rejected_at||e.ts});
+  });
+  var myMsgs=messages.filter(function(m){return m.from!==(CU?CU.name:"")});
+  myMsgs.slice(0,10).forEach(function(m){notifs.push({type:"msg",text:"<b>"+m.from+"</b>: "+m.text.slice(0,60),time:m.ts})});
+  return notifs.sort(function(a,b){return(b.time||"")>(a.time||"")?1:-1}).slice(0,20);
+}
+
+// ═══ DATA ═══
+function getMyPayments(){
+  var all=[];try{all=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  if(!CU)return[];
+  if(CU.role==="ceo"||CU.role==="coo"||CU.role==="accounts")return all;
+  return all.filter(function(e){return e.submitted_by===CU.name||e.submitted_by===CU.user});
+}
+function PKR(v){return v?"PKR "+Number(v).toLocaleString("en-PK"):"—"}
+
+// ═══ STATE ═══
+var S={cust:"",amt:"",ent:"CNC",typ:"dispatch",note:"",bankMsg:"",photo:null,phone:"",invoice:"",custType:""};
+var selectedPayment=null;
+
+// ═══ RENDER ═══
+function render(){
+  if(!loggedIn)return;
+  var app=document.getElementById("app");
+  var pg=getMyPayments();
+  var today=new Date().toISOString().slice(0,10);
+  var todayCount=pg.filter(function(e){return(e.ts||"").slice(0,10)===today}).length;
+  var pendingCount=pg.filter(function(e){return!e.journaled&&!e.rejected}).length;
+  var verifiedCount=pg.filter(function(e){return e.bank_verified||e.journaled}).length;
+  var rejectedCount=pg.filter(function(e){return e.rejected}).length;
+  var unread=getUnreadCount();
+  
+  var h='';
+  
+  // Top bar
+  h+='<div class="topbar"><div class="topbar-inner"><div class="user-info"><div class="avatar">'+CU.name.charAt(0)+'</div><div><div class="user-name">'+CU.name+'</div><div class="user-meta">'+CU.title+(CU.lastLogin?' &middot; Last: '+CU.lastLogin:'')+'</div></div></div>';
+  h+='<div class="topbar-actions">';
+  h+='<button class="icon-btn" onclick="tab=\'notif\';render()" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>'+(unread>0?'<span class="notif-dot"></span>':'')+'</button>';
+  h+='<button class="icon-btn" onclick="tab=\'msgs\';render()" title="Messages"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+(unread>0?'<span class="notif-dot"></span>':'')+'</button>';
+  h+='<button class="logout-btn" onclick="doLogout()">Logout</button>';
+  h+='</div></div></div>';
+  
+  // Stats
+  h+='<div class="stats">';
+  h+='<div class="stat"><div class="stat-val">'+todayCount+'</div><div class="stat-lbl">Today</div></div>';
+  h+='<div class="stat pending"><div class="stat-val">'+pendingCount+'</div><div class="stat-lbl">Pending</div></div>';
+  h+='<div class="stat verified"><div class="stat-val">'+verifiedCount+'</div><div class="stat-lbl">Verified</div></div>';
+  h+='<div class="stat rejected"><div class="stat-val">'+rejectedCount+'</div><div class="stat-lbl">Rejected</div></div>';
+  h+='</div>';
+  
+  // Nav
+  h+='<div class="nav">';
+  h+='<button class="nav-btn'+(tab==="new"?" active":"")+'" onclick="tab=\'new\';render()">+ New</button>';
+  h+='<button class="nav-btn'+(tab==="my"?" active":"")+'" onclick="tab=\'my\';render()">My Payments</button>';
+  h+='<button class="nav-btn'+(tab==="notif"?" active":"")+'" onclick="tab=\'notif\';render()">Alerts'+(unread>0?' ('+unread+')':'')+'</button>';
+  h+='</div>';
+  
+  h+='<div class="main">';
+  
+  // ═══ NEW PAYMENT TAB ═══
+  if(tab==="new"){
+    h+='<div class="card"><div class="card-h">New Payment</div><div class="card-b">';
+            // Dealer autocomplete
+    var _q=S.cust?S.cust.toLowerCase():"";
+    var _sugg=_q.length>1?DEALERS.filter(function(d){return d.n.toLowerCase().indexOf(_q)>=0}).slice(0,8):[];
+    h+='<div class="field"><label>Customer / Dealer Name *</label>';
+    h+='<input type="text" id="custInput" value="'+esc(S.cust)+'" placeholder="Search 300+ dealers..." autocomplete="off" oninput="S.cust=this.value;S.showDrop=true;render()" onfocus="S.showDrop=true;render()" style="border-radius:'+( S.showDrop&&_sugg.length?"10px 10px 0 0":"10px")+'">';
+    if(S.showDrop&&_sugg.length){
+      h+='<div style="position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #2563eb;border-top:none;border-radius:0 0 10px 10px;max-height:220px;overflow-y:auto;z-index:100;box-shadow:0 4px 12px rgba(0,0,0,.1)">';
+      _sugg.forEach(function(d,di){
+        window['_dp'+di]=d.n;
+        window['_de'+di]=d.e;
+        window['_dt'+di]=d.t;
+        h+='<div style="padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center" onclick="S.cust=window[\'_dp'+di+'\'];S.ent=window[\'_de'+di+'\'];S.custType=window[\'_dt'+di+'\'];S.showDrop=false;if(window[\'_dt'+di+'\']===\'dealer\')S.typ=\'ledger\';render()">';
+        h+='<div><div>'+d.n+'</div><div style="font-size:10px;color:#94a3b8">'+d.c+' transactions · '+d.t+'</div></div>';
+        h+='<span style="padding:2px 6px;border-radius:4px;font-size:10px;font-weight:600;background:'+( d.e==="CNC"?"#eff6ff":d.e==="CST"?"#f0fdf4":"#faf5ff")+';color:'+( d.e==="CNC"?"#2563eb":d.e==="CST"?"#16a34a":"#7c3aed")+'">'+d.e+'</span>';
+        h+='</div>';
+      });
+      h+='</div>';
+    }
+    h+='</div>';
+        h+='<div class="field"><label>Amount (PKR)</label><input type="number" id="amtInput" class="amount-input" value="'+(S.amt||"")+'" placeholder="0" oninput="S.amt=this.value"></div>';
+    h+='<div class="field"><label>Entity</label><div class="entity-row">';
+    ["CNC","CST","CSPL"].forEach(function(e){h+='<div class="ent-btn'+(S.ent===e?" sel":"")+'" onclick="S.ent=\''+e+'\';render()">'+e+'</div>'});
+    h+='</div></div>';
+        // Bank routing guide based on entity
+    var _bankMap={"CNC":"BAH AOP or Meezan Pvt","CST":"BAFL AOP (705) or BAH AOP","CSPL":"BAFL 989 or BAH Pvt"};
+    h+='<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:#1d4ed8"><b>&#127970; Bank Routing for '+S.ent+':</b> Deposit to '+(_bankMap[S.ent]||"any bank")+'</div>';
+    h+='<div class="field"><label>Payment Type *</label><div class="type-row">';
+    h+='<div class="type-btn'+(S.typ==="dispatch"?" sel":"")+'" onclick="S.typ=\'dispatch\';render()">For Dispatch</div>';
+    h+='<div class="type-btn'+(S.typ==="ledger"?" sel":"")+'" onclick="S.typ=\'ledger\';render()">Ledger Credit</div>';
+    h+='<div class="type-btn'+(S.typ==="outward"?" sel":"")+'" onclick="S.typ=\'outward\';render()">Outward Pay</div>';
+    h+='</div></div>';
+    h+='<div class="field"><label>Phone Number'+(S.typ==="dispatch"?" *":"")+'</label><input type="tel" id="phoneInput" value="'+esc(S.phone||"")+'" placeholder="03XX-XXXXXXX" oninput="S.phone=this.value"></div>';
+    if(S.typ==="dispatch"){h+='<div class="field"><label>Invoice / Order Ref *</label><input type="text" id="invoiceInput" value="'+esc(S.invoice||"")+'" placeholder="INV-XXXX or order ref" oninput="S.invoice=this.value"></div>';}
+    h+='<div class="field"><label>Receipt Photo</label><div class="photo-area" onclick="document.getElementById(\'photoInput\').click()"><input type="file" id="photoInput" accept="image/*" style="display:none" onchange="handlePhoto(event)">';
+    if(S.photo)h+='<img src="'+S.photo+'">';
+    else h+='<div style="color:#94a3b8;font-size:13px">📸 Tap to take photo</div>';
+    h+='</div></div>';
+    h+='<div class="field"><label>Paste Bank Message (optional)</label><textarea id="bankMsgInput" placeholder="Paste depositor SMS or WhatsApp message..." oninput="S.bankMsg=this.value">'+esc(S.bankMsg)+'</textarea></div>';
+    h+='<div class="field"><label>Note</label><input type="text" id="noteInput" value="'+esc(S.note)+'" placeholder="Optional note..." oninput="S.note=this.value"></div>';
+    var ok=S.cust&&S.amt&&Number(S.amt)>0;
+    // Dispatch requires invoice; walk-in requires phone
+    if(ok&&S.typ==="dispatch"&&!S.invoice){ok=false;}
+    h+='<button class="submit-btn '+(ok?"ready":"disabled")+'" onclick="'+(ok?"submitPayment()":"")+'">Submit Payment</button>';
+    h+='</div></div>';
+  }
+  
+  // ═══ MY PAYMENTS TAB ═══
+  if(tab==="my"){
+    if(!pg.length){
+      h+='<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">No payments yet</div><div class="empty-sub">Submit your first payment from the New tab</div></div>';
+    } else {
+      pg.forEach(function(e,i){
+        var st=e.journaled?"posted":e.rejected?"rejected":e.bank_verified?"verified":"pending";
+        var msgs=getMessages(e.id);
+        h+='<div class="pay-card" onclick="showPayDetail('+i+')">';
+        h+='<div class="left"><div class="status-dot '+st+'"></div><div><div class="cust-name">'+esc(e.cust||"?")+'</div>';
+        h+='<div class="pay-meta">'+(e.date||"")+" "+(e.time||"")+" &middot; "+(e.typ||"")+(msgs.length?" &middot; 💬"+msgs.length:"")+'</div></div></div>';
+        h+='<div style="text-align:right"><div class="amount">'+PKR(e.amt)+'</div><span class="ent-badge '+(e.ent||"CST")+'">'+(e.ent||"?")+'</span></div>';
+        h+='</div>';
+      });
+    }
+  }
+  
+  // ═══ NOTIFICATIONS TAB ═══
+  if(tab==="notif"){
+    var notifs=getNotifications();
+    if(!notifs.length){
+      h+='<div class="empty"><div class="empty-icon">🔔</div><div class="empty-text">No notifications</div><div class="empty-sub">Updates about your payments will appear here</div></div>';
+    } else {
+      h+='<div class="card"><div class="card-h">Notifications</div>';
+      notifs.forEach(function(n){
+        h+='<div class="notif-item"><div class="notif-icon '+n.type+'">'+(n.type==="approve"?"✅":n.type==="reject"?"❌":"💬")+'</div><div><div class="notif-text">'+n.text+'</div><div class="notif-time">'+(n.time?new Date(n.time).toLocaleString():"")+'</div></div></div>';
+      });
+      h+='</div>';
+    }
+  }
+  
+  h+='</div>';
+  app.innerHTML=h;
+}
+
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+function handlePhoto(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){S.photo=ev.target.result;render()};
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener("click",function(e){if(!e.target.id||e.target.id!=="custInput"){S.showDrop=false;}});
+
+function submitPayment(){
+  if(!S.cust||!S.amt||!Number(S.amt))return;
+  var pg=[];try{pg=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var now=new Date();
+  var entry={
+    id:"PG-"+Date.now(),
+    cust:S.cust.trim(),
+    amt:Number(S.amt),
+    ent:S.ent,
+    typ:S.typ,
+    note:S.note,
+    source_text:S.bankMsg||"",
+    photo:S.photo||"",
+    submitted_by:CU?CU.name:"",
+    ts:now.toISOString(),
+    date:now.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}),
+    time:now.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",hour12:true}),
+    sync:false,journaled:false,bank_verified:false,rejected:false
+  };
+  pg.unshift(entry);
+  try{localStorage.setItem("pg_e",JSON.stringify(pg.slice(0,2000)))}catch(e){}
+  logActivity("submit","Submitted "+entry.cust+" PKR "+entry.amt);
+  addMessage(entry.id,"Payment submitted: "+entry.cust+" PKR "+Number(entry.amt).toLocaleString());
+  
+  S={cust:"",amt:"",ent:"CNC",typ:"bank_transfer",note:"",bankMsg:"",photo:null};
+  tab="my";render();
+}
+
+function showPayDetail(idx){
+  var pg=getMyPayments();var e=pg[idx];if(!e)return;
+  var st=e.journaled?"Posted ✅":e.rejected?"Rejected ❌":e.bank_verified?"Bank Verified 🔵":"Pending ⏳";
+  var msgs=getMessages(e.id);
+  
+  var h='<div class="modal-bg" onclick="if(event.target===this)closeDetail()"><div class="modal"><div class="modal-handle"></div>';
+  h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><h2 style="font-size:16px;font-weight:700">'+esc(e.cust)+'</h2><span class="ent-badge '+(e.ent||"CST")+'" style="font-size:11px;padding:3px 10px">'+e.ent+'</span></div>';
+  h+='<div style="font-size:28px;font-weight:800;color:#0f172a;margin-bottom:4px">'+PKR(e.amt)+'</div>';
+  h+='<div style="font-size:12px;color:#64748b;margin-bottom:14px">'+(e.date||"")+" "+(e.time||"")+" &middot; "+(e.typ||"")+'</div>';
+  h+='<div style="padding:8px 12px;border-radius:8px;background:'+(e.journaled?"#dcfce7":e.rejected?"#fef2f2":"#fffbeb")+';font-size:13px;font-weight:600;color:'+(e.journaled?"#16a34a":e.rejected?"#dc2626":"#d97706")+';margin-bottom:14px">'+st+'</div>';
+  
+  if(e.rejected&&e.rejection_reason){
+    h+='<div style="padding:10px;border-radius:8px;background:#fef2f2;border:1px solid #fecaca;font-size:12px;color:#dc2626;margin-bottom:14px"><b>Reason:</b> '+esc(e.rejection_reason)+'</div>';
+  }
+  if(e.photo){h+='<img src="'+e.photo+'" style="width:100%;border-radius:10px;margin-bottom:14px">';}
+  if(e.source_text){h+='<div style="padding:10px;background:#f8fafc;border-radius:8px;font-size:11px;font-family:monospace;margin-bottom:14px;color:#475569">'+esc(e.source_text)+'</div>';}
+  
+  // Message thread
+  h+='<div style="font-size:13px;font-weight:700;margin-bottom:8px">Messages</div>';
+  if(msgs.length){
+    msgs.forEach(function(m){
+      var mine=CU&&m.from===CU.name;
+      h+='<div class="msg '+(mine?"mine":"theirs")+'"><div class="msg-who">'+(mine?"You":m.from)+'</div>'+esc(m.text)+'<div class="msg-time">'+new Date(m.ts).toLocaleString()+'</div></div>';
+    });
+  } else {
+    h+='<div style="font-size:12px;color:#94a3b8;margin-bottom:8px">No messages yet</div>';
+  }
+  h+='<div class="msg-input-row"><input id="msgInput" placeholder="Type a message..."><button onclick="sendMsg(\''+e.id+'\')">Send</button></div>';
+  
+  h+='</div></div>';
+  
+  var d=document.createElement("div");d.id="detailModal";d.innerHTML=h;document.body.appendChild(d);
+}
+
+function closeDetail(){var m=document.getElementById("detailModal");if(m)m.remove()}
+function sendMsg(payId){
+  var inp=document.getElementById("msgInput");if(!inp||!inp.value.trim())return;
+  addMessage(payId,inp.value.trim());
+  logActivity("message","Message on "+payId);
+  closeDetail();
+  render();
+}
+
+// Auto-login: runs after render() is fully defined
+(function(){
+  try{var rem=JSON.parse(localStorage.getItem("pg_remember")||"null");if(rem&&rem.user&&USERS[rem.user]){loggedIn=true;CU=rem;document.getElementById("loginScreen").style.display="none";}}catch(e){}
+  if(!loggedIn)try{var sess=JSON.parse(sessionStorage.getItem("pg_session")||"null");if(sess&&sess.user&&USERS[sess.user]){loggedIn=true;CU=sess;document.getElementById("loginScreen").style.display="none";}}catch(e){}
+  if(loggedIn){
+    try{
+      render();
+      // If app is still empty after render, something crashed - show login
+      setTimeout(function(){
+        var app=document.getElementById("app");
+        if(app&&!app.innerHTML.trim()){
+          loggedIn=false;CU=null;
+          try{localStorage.removeItem("pg_remember");sessionStorage.removeItem("pg_session");}catch(e){}
+          document.getElementById("loginScreen").style.display="flex";
+        }
+      },500);
+    }catch(err){
+      loggedIn=false;CU=null;
+      try{localStorage.removeItem("pg_remember");sessionStorage.removeItem("pg_session");}catch(e){}
+      document.getElementById("loginScreen").style.display="flex";
+    }
+  }
+})();
+</script>
+</body>
+</html>

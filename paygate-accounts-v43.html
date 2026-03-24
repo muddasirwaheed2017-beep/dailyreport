@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PayGate Accounts V43</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:#111;font-size:13px}
+.hdr{background:#ffffff;border-bottom:1px solid #e5e7eb;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:50}
+.hdr h1{font-size:15px;font-weight:700;display:inline}
+.hdr .sub{font-size:10px;color:#888}
+.hdr .right{float:right;display:flex;gap:8px;align-items:center}
+.tabs{display:flex;background:#ffffff;border-bottom:1px solid #e5e7eb;border-bottom:1px solid #e2e8f0;overflow-x:auto}
+.tab{padding:8px 16px;background:none;border:none;border-bottom:2px solid transparent;color:#888;font-size:12px;cursor:pointer;white-space:nowrap}
+.tab.act{color:#2563eb;border-bottom-color:#2563eb;font-weight:600}
+.main{max-width:1100px;margin:0 auto;padding:14px}
+.grid{display:grid;gap:10px;margin-bottom:12px}
+.g2{grid-template-columns:1fr 1fr}.g5{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:10px}
+.card-h{padding:10px 14px;border-bottom:1px solid #f3f4f6;font-weight:600;display:flex;justify-content:space-between}
+.card-h .s{font-size:10px;color:#999;font-weight:400}
+.card-b{padding:10px 14px}
+.kpi{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
+.kpi .bar{position:absolute;top:0;left:0;right:0;height:3px}
+.kpi .l{font-size:10px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.kpi .v{font-size:19px;font-weight:700;margin-top:2px;font-family:monospace}
+.kpi .ss{font-size:10px;color:#999;margin-top:1px}
+table{width:100%;border-collapse:collapse}
+th{padding:6px 10px;text-align:left;font-weight:600;color:#888;font-size:11px;border-bottom:2px solid #e5e7eb;background:#f9fafb}
+td{padding:5px 10px;border-bottom:1px solid #f5f5f5}
+.mono{font-family:monospace}.r{text-align:right}
+.grn{color:#16a34a}.red{color:#dc2626}.gry{color:#999}.fw6{font-weight:600}.fw7{font-weight:700}
+.totrow{background:#f8fafc;color:#111;border-top:2px solid #374151}.totrow td{padding:8px 10px;font-weight:700}
+.badge{display:inline-block;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:600}
+.b-posted{background:#dcfce7;color:#16a34a}.b-pending{background:#fef3c7;color:#d97706}
+.b-CNC{background:#fef2f2;color:#dc2626}.b-CST{background:#eff6ff;color:#2563eb}.b-CSPL{background:#f0fdf4;color:#16a34a}.b-ALL{background:#f5f5f5;color:#666}
+.detail{background:#f0fdf4;padding:10px 14px;border-bottom:2px solid #86efac}
+.btn{padding:5px 12px;border-radius:6px;border:none;font-size:11px;font-weight:600;cursor:pointer}
+.btn-g{background:#16a34a;color:#fff}.btn-o{background:none;border:1px solid #ddd;color:#555}
+.btn-s{padding:3px 8px;font-size:10px}.btn:disabled{opacity:.4;cursor:default}
+.frow{display:grid;gap:8px;margin-bottom:12px;grid-template-columns:1fr 2fr 1fr}
+.flbl{font-size:10px;color:#888;margin-bottom:2px}
+.finp{width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:12px;box-sizing:border-box}
+.fsel{width:100%;padding:7px 10px;border:1px solid #ddd;border-radius:6px;font-size:11px}
+.warn-r{padding:6px;border-radius:6px;background:#fef2f2;border:1px solid #fca5a5;color:#dc2626;font-size:11px;margin-top:8px}
+.warn-y{padding:6px;border-radius:6px;background:#fffbeb;border:1px solid #fcd34d;color:#d97706;font-size:11px;margin-top:8px}
+.tpl{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.tpl button{padding:3px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;font-size:11px;cursor:pointer}
+.clickrow{cursor:pointer}.clickrow:hover{background:#f9fafb}
+.sect{padding:6px 10px;font-weight:700}
+.sect-a{background:#eff6ff;color:#2563eb}.sect-l{background:#fef2f2;color:#dc2626}.sect-e{background:#f0fdf4;color:#16a34a}
+.sect-r{background:#f0fdf4;color:#16a34a}.sect-c{background:#fef2f2;color:#dc2626}.sect-x{background:#fffbeb;color:#f59e0b}
+@media(max-width:700px){.g2{grid-template-columns:1fr}.g5{grid-template-columns:1fr 1fr}.frow{grid-template-columns:1fr}}
+.person-link{cursor:pointer;transition:background .15s}.person-link:hover{background:#f0f0f0;border-radius:4px}
+.person-link span{text-decoration:underline;text-decoration-style:dotted}
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:200;display:flex;align-items:center;justify-content:center}
+.modal{background:#fff;border-radius:14px;width:94%;max-width:750px;max-height:88vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-h{padding:14px 18px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center}
+.modal-h h2{font-size:15px;font-weight:700;margin:0}
+.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:#f3f4f6;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:14px 18px;overflow-y:auto;max-height:calc(88vh - 60px)}
+.alert-toast{position:fixed;top:20px;right:20px;background:#16a34a;color:white;padding:14px 20px;border-radius:12px;z-index:300;box-shadow:0 8px 30px rgba(0,0,0,.3);max-width:380px;animation:slideIn .3s}
+.alert-toast .at-title{font-weight:700;font-size:14px;margin-bottom:2px}
+.alert-toast .at-body{font-size:12px;opacity:.9}
+.alert-toast .at-close{position:absolute;top:8px;right:10px;background:none;border:none;color:white;font-size:16px;cursor:pointer}
+@keyframes slideIn{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
+.ai-box{background:linear-gradient(135deg,#eff6ff,#faf5ff);border:1px solid #c7d2fe;border-radius:10px;padding:14px;margin:10px 0}
+.ai-tag{display:inline-block;background:#7c3aed;color:white;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;margin-right:4px}
+.extract-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:12px}
+.extract-grid .ek{color:#888;font-size:10px}.extract-grid .ev{font-weight:600;font-family:monospace}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;margin:1px}
+.pill-g{background:#dcfce7;color:#16a34a}.pill-r{background:#fef2f2;color:#dc2626}.pill-y{background:#fef3c7;color:#d97706}.pill-b{background:#dbeafe;color:#2563eb}.pill-p{background:#f3e8ff;color:#7c3aed}
+.review-card{border:2px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:10px;transition:border-color .2s}
+.review-card:hover{border-color:#2563eb}
+.review-card.verified{border-color:#16a34a;background:#f0fdf420}
+.review-card.unverified{border-color:#f59e0b;background:#fffbeb20}
+.review-card.rejected{border-color:#dc2626;background:#fef2f220}
+.review-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.review-col{padding:10px;border-radius:8px}
+.review-col.claim{background:#eff6ff;border:1px solid #bfdbfe}
+.review-col.bank{background:#f0fdf4;border:1px solid #bbf7d0}
+.review-col.nobank{background:#fef2f2;border:1px solid #fecaca}
+.ftxt{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:6px;font-size:12px;min-height:80px;resize:vertical;box-sizing:border-box;font-family:inherit}
+.btn-p{background:#7c3aed;color:#fff}
+.btn-r{background:#dc2626;color:#fff}
+@media(max-width:700px){.review-split{grid-template-columns:1fr}.extract-grid{grid-template-columns:1fr}}
+@media print{.hdr,.tabs,.btn,.alert-toast,#version-bar{display:none}.main{padding:0;max-width:100%}}
+
+.chat-fab{position:fixed;bottom:50px;right:20px;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#2563eb);color:white;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(99,102,241,.4);z-index:100;display:flex;align-items:center;justify-content:center;font-size:22px}
+.chat-panel{position:fixed;bottom:110px;right:20px;width:380px;max-height:500px;background:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.2);z-index:100;display:flex;flex-direction:column;overflow:hidden;border:1px solid #e5e7eb}
+.chat-header{padding:12px 16px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:white;display:flex;justify-content:space-between;align-items:center}
+.chat-header h3{margin:0;font-size:14px}
+.chat-body{flex:1;overflow-y:auto;padding:12px;max-height:350px;display:flex;flex-direction:column;gap:8px}
+.chat-msg{max-width:85%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.5}
+.chat-msg.bot{background:#f3f4f6;color:#111;align-self:flex-start}
+.chat-msg.user{background:#2563eb;color:white;align-self:flex-end}
+.chat-msg.thinking{background:#f3f4f6;color:#888;font-style:italic}
+.chat-input{display:flex;border-top:1px solid #e5e7eb;padding:8px}
+.chat-input input{flex:1;border:none;padding:8px;font-size:12px;outline:none}
+.chat-input button{background:#2563eb;color:white;border:none;padding:8px 14px;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer}
+@media(max-width:500px){.chat-panel{width:calc(100% - 20px);right:10px}}
+
+.login-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#f0f4ff,#e8f0fe);z-index:500;display:flex;align-items:center;justify-content:center}
+.login-box{background:white;border-radius:16px;padding:40px 36px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-box h1{font-size:22px;font-weight:800;color:#111;margin:0 0 4px;text-align:center}
+.login-box .sub{font-size:12px;color:#888;text-align:center;margin-bottom:24px}
+.login-box .logo{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;font-weight:800}
+.login-box label{display:block;font-size:11px;font-weight:600;color:#555;margin-bottom:4px;margin-top:14px}
+.login-box input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box}
+.login-box input:focus{border-color:#2563eb;outline:none;box-shadow:0 0 0 3px #2563eb20}
+.login-box .lbtn{width:100%;padding:12px;border:none;border-radius:8px;background:#2563eb;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-top:20px}
+.login-box .lbtn:hover{background:#1d4ed8}
+.login-box .lerr{color:#dc2626;font-size:12px;text-align:center;margin-top:10px;min-height:18px}
+.login-box .role-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="loginScreen" class="login-bg">
+  <div class="login-box">
+    <div class="logo">PG</div>
+    <h1>PayGate Accounts</h1>
+    <div class="sub">CNC Electric &middot; CS Traders &middot; CSPL</div>
+    <label>Username</label>
+    <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
+    <label>Password</label>
+    <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <div style="display:flex;align-items:center;gap:8px;margin-top:14px"><input type="checkbox" id="rememberMe" style="width:auto;margin:0;cursor:pointer"><label for="rememberMe" style="font-size:12px;color:#64748b;cursor:pointer;margin:0;font-weight:400">Remember me on this device</label></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:14px"><input type="checkbox" id="rememberMe" style="width:auto;margin:0;cursor:pointer" checked><label for="rememberMe" style="font-size:12px;color:#555;cursor:pointer;margin:0;font-weight:400">Remember me on this device</label></div>
+    <button class="lbtn" onclick="doLogin()">Sign In</button>
+    <div class="lerr" id="loginErr"></div>
+  </div>
+</div>
+<script>
+var USERS={
+  "accounts":{pass:"Shahbaz@2100%",role:"accounts",name:"Shahbaz Lodhi",title:"Accounts Head"},
+  "ceo":{pass:"Awais@2200%",role:"ceo",name:"Awais Malik",title:"CEO"},
+  "coo":{pass:"Muddasir@1100%",role:"coo",name:"Muddasir Waheed",title:"COO / CFO"}
+};
+var loggedIn=false;
+var currentUser=null;
+
+// Check remembered login (persistent)
+try{
+  var rem=JSON.parse(localStorage.getItem("pg_remember")||"null");
+  if(rem&&rem.user&&USERS[rem.user]){loggedIn=true;currentUser=rem;document.getElementById("loginScreen").style.display="none"}
+}catch(e){}
+// Check session login (tab-level)
+if(!loggedIn)try{
+  var sess=JSON.parse(sessionStorage.getItem("pg_session")||"null");
+  if(sess&&sess.user&&USERS[sess.user]){loggedIn=true;currentUser=sess;document.getElementById("loginScreen").style.display="none"}
+}catch(e){}
+
+function doLogin(){
+  var u=document.getElementById("loginUser").value.trim().toLowerCase();
+  var p=document.getElementById("loginPass").value;
+  var err=document.getElementById("loginErr");
+  
+  if(!u||!p){err.textContent="Enter username and password";return}
+  
+  var found=null;
+  for(var key in USERS){
+    if(key===u||USERS[key].name.toLowerCase()===u||USERS[key].title.toLowerCase()===u){
+      if(USERS[key].pass===p){
+        found={user:key,role:USERS[key].role,name:USERS[key].name,title:USERS[key].title};
+        break;
+      }
+    }
+  }
+  
+  if(!found){
+    err.textContent="Invalid username or password";
+    document.getElementById("loginPass").value="";
+    return;
+  }
+  
+  loggedIn=true;
+  currentUser=found;
+  found.lastLogin=new Date().toLocaleString("en-PK",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  
+  // Set role in localStorage for permission checks
+  localStorage.setItem("pg_role",found.role);
+  userRole=found.role;
+  
+  // Remember Me
+  var remember=document.getElementById("rememberMe");
+  if(remember&&remember.checked){
+    try{localStorage.setItem("pg_remember",JSON.stringify(found))}catch(e){}
+  }
+  found.lastLogin=new Date().toLocaleString("en-PK",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  localStorage.setItem("pg_role",found.role);
+  userRole=found.role;
+  var remCb=document.getElementById("rememberMe");
+  if(remCb&&remCb.checked){try{localStorage.setItem("pg_remember",JSON.stringify(found))}catch(e){}}
+  try{sessionStorage.setItem("pg_session",JSON.stringify(found))}catch(e){}
+  document.getElementById("loginScreen").style.display="none";
+  render();
+}
+
+function doLogout(){
+  loggedIn=false;
+  currentUser=null;
+  try{sessionStorage.removeItem("pg_session");localStorage.removeItem("pg_remember")}catch(e){}
+  document.getElementById("loginScreen").style.display="flex";
+  document.getElementById("loginUser").value="";
+  document.getElementById("loginPass").value="";
+  document.getElementById("loginErr").textContent="";
+}
+</script>
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" async></script>
+<script>
+
+var _C=[["1000","Assets","header","","debit"],["1100","Bank Accounts","header","1000","debit"],["1101","BAH AOP","bank","1100","debit"],["1102","BAH Pvt Ltd","bank","1100","debit"],["1103","BAH CNC","bank","1100","debit"],["1104","BAFL CSPL 989","bank","1100","debit"],["1105","BAFL AOP 705","bank","1100","debit"],["1106","Meezan Pvt","bank","1100","debit"],["1107","JS Bank 517","bank","1100","debit"],["1150","Cash","header","1000","debit"],["1151","Cash - Shop","cash","1150","debit"],["1152","Cash - Office","cash","1150","debit"],["1200","Receivables","header","1000","debit"],["1201","Trade Recv CNC","receivable","1200","debit"],["1202","Trade Recv CST","receivable","1200","debit"],["1203","Trade Recv CSPL","receivable","1200","debit"],["1211","Mudassir Sb","receivable","1200","debit"],["1212","Shan Ali Khan","receivable","1200","debit"],["1213","Ali Haider","receivable","1200","debit"],["1214","Usman Bhai NM","receivable","1200","debit"],["1215","Hassnain Dawood","receivable","1200","debit"],["1216","Usman Bhai Loan","receivable","1200","debit"],["1221","C-Farm","receivable","1200","debit"],["1222","CDR PU Tender","receivable","1200","debit"],["1400","Fixed Assets","header","1000","debit"],["1401","C-Solar Equip","asset","1400","debit"],["1501","Gold Investment","asset","1000","debit"],["2000","Liabilities","header","","credit"],["2100","Payables","header","2000","credit"],["2101","Trade Payables","payable","2100","credit"],["2102","Fico Electric","payable","2100","credit"],["2201","Shahid Bhai Loan","payable","2000","credit"],["2202","Dir Loan M.Awais","payable","2000","credit"],["3000","Equity","header","","credit"],["3001","Owner Capital","equity","3000","credit"],["3002","Retained Earnings","equity","3000","credit"],["4000","Revenue","header","","credit"],["4001","Sales CNC","revenue","4000","credit"],["4002","Sales CST","revenue","4000","credit"],["4003","Sales CSPL","revenue","4000","credit"],["4010","Other Income","revenue","4000","credit"],["5000","Cost of Sales","header","","debit"],["5001","Purchases CNC","expense","5000","debit"],["5002","Purchases CST","expense","5000","debit"],["5003","Purchases CSPL","expense","5000","debit"],["6000","Expenses","header","","debit"],["6101","Salaries","expense","6000","debit"],["6102","Director Salary","expense","6000","debit"],["6201","Rent","expense","6000","debit"],["6202","Utilities","expense","6000","debit"],["6203","Staff Food","expense","6000","debit"],["6301","Freight","expense","6000","debit"],["6401","C-Solar Site","expense","6000","debit"],["6402","C-Solar Labour","expense","6000","debit"],["6501","Bank Charges","expense","6000","debit"],["6504","Returns","expense","6000","debit"]];
+var _JI=[["JV-0001","2026-03-18","OB","Opening Balances from CS Accounts","ALL","posted","sys",[["1101",21960381,0,"BAH AOP"],["1102",4005434,0,"BAH Pvt"],["1103",133960,0,"BAH CNC"],["1104",485397,0,"BAFL CSPL"],["1105",941,0,"BAFL AOP"],["1106",7419650,0,"Meezan"],["1107",133703,0,"JS Bank"],["1151",25711,0,"Cash"],["1211",409505,0,"Mudassir"],["1212",314009,0,"Shan Ali"],["1213",746600,0,"Ali Haider"],["1214",1167694,0,"Usman NM"],["1215",283098,0,"Hassnain"],["1221",8000000,0,"C-Farm"],["1222",5430000,0,"CDR"],["1216",75270,0,"Usman Loan"],["2201",0,13866500,"Shahid Bhai"],["2202",0,792010,"M.Awais"],["3002",0,35932843,"Retained"]]],["JV-0002","2026-03-19","PG-1001","Hoorain Trader pmt BAFL 705","CSPL","posted","shahbaz",[["1105",222940,0,"BAFL"],["1203",0,222940,"Hoorain"]]],["JV-0003","2026-03-19","PG-1002","System Energy via BAFL CSPL","CST","posted","shahbaz",[["1104",150000,0,"BAFL"],["1202",0,150000,"Sys Energy"]]],["JV-0004","2026-03-19","EXP-001","Shop rent March","CST","posted","shahbaz",[["6201",70000,0,"Rent"],["1151",0,70000,"Cash"]]],["JV-0005","2026-03-19","SAL-001","Shahbaz salary March","ALL","posted","admin",[["6101",150000,0,"Salary"],["1101",0,150000,"BAH AOP"]]],["JV-0006","2026-03-19","PG-1003","Fico Electric vendor pmt","CSPL","pending","shahbaz",[["2102",750000,0,"Fico"],["1106",0,750000,"Meezan"]]]];
+const DEALERS=[{"n":"Cash Sale","e":"CST","c":173,"t":"dealer"},{"n":"Cash Sale Cnc 891","e":"CNC","c":85,"t":"dealer"},{"n":"Cash Sale Cst 510","e":"CST","c":75,"t":"dealer"},{"n":"Power Electric Store","e":"CNC","c":57,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Husnain Dawood","e":"CNC","c":55,"t":"dealer"},{"n":"Inverter Sale","e":"CNC","c":48,"t":"dealer"},{"n":"Dar Sons","e":"CST","c":44,"t":"dealer"},{"n":"Haseeb Ahmad","e":"CST","c":42,"t":"dealer"},{"n":"Fair Deal","e":"CST","c":41,"t":"dealer"},{"n":"System Energy","e":"CNC","c":30,"t":"dealer"},{"n":"Panel Sale","e":"CNC","c":29,"t":"dealer"},{"n":"Prime","e":"CST","c":24,"t":"dealer"},{"n":"Mubarik Electric","e":"CST","c":24,"t":"dealer"},{"n":"Waqas Sb Cnc 1356","e":"CNC","c":24,"t":"dealer"},{"n":"Standard Store","e":"CNC","c":23,"t":"dealer"},{"n":"Al-Haider Cnc 1182","e":"CNC","c":23,"t":"dealer"},{"n":"Fair Deal Cst 70","e":"CST","c":23,"t":"dealer"},{"n":"Inverter Purchase","e":"CNC","c":22,"t":"dealer"},{"n":"Dar Sons Cst 130","e":"CST","c":22,"t":"dealer"},{"n":"Sumra Electric","e":"CNC","c":21,"t":"dealer"},{"n":"Talha Electric","e":"CST","c":21,"t":"dealer"},{"n":"Kareem Cable","e":"CNC","c":21,"t":"dealer"},{"n":"Chand Electric","e":"CST","c":20,"t":"dealer"},{"n":"Datta Electric Cst 54","e":"CST","c":20,"t":"dealer"},{"n":"Al Madina","e":"CST","c":19,"t":"dealer"},{"n":"Fico Electric","e":"CNC","c":19,"t":"dealer"},{"n":"From Bilal Account For Ali Haider","e":"CNC","c":19,"t":"dealer"},{"n":"Al-Haider","e":"CNC","c":19,"t":"dealer"},{"n":"Al-Meeraj Cnc 1760","e":"CNC","c":19,"t":"dealer"},{"n":"Engineering Mode","e":"CNC","c":17,"t":"dealer"},{"n":"Mejor Enterprises","e":"CNC","c":17,"t":"dealer"},{"n":"Waqas Sb","e":"CNC","c":17,"t":"dealer"},{"n":"Panel Purchase","e":"CNC","c":17,"t":"dealer"},{"n":"Mubarik Electric Cst 290","e":"CST","c":17,"t":"dealer"},{"n":"Mubashir Electric","e":"CST","c":16,"t":"dealer"},{"n":"Shoukat Electric","e":"CNC","c":16,"t":"dealer"},{"n":"Vivant Solution Cnc 1330","e":"CNC","c":16,"t":"dealer"},{"n":"I Am Xolar","e":"CNC","c":15,"t":"dealer"},{"n":"Al-Meeraj","e":"CST","c":15,"t":"dealer"},{"n":"Cash Sale Fico","e":"CNC","c":15,"t":"dealer"},{"n":"Faran Traders Cnc - 1090","e":"CNC","c":15,"t":"dealer"},{"n":"Chand Electric Cst 2","e":"CST","c":15,"t":"dealer"},{"n":"To Fico Hitech","e":"CNC","c":14,"t":"dealer"},{"n":"Lion Solar","e":"CNC","c":13,"t":"dealer"},{"n":"Haroon Electric","e":"CST","c":13,"t":"dealer"},{"n":"Sultan Electric","e":"CST","c":13,"t":"dealer"},{"n":"To Fico Electric","e":"CNC","c":13,"t":"dealer"},{"n":"Abdul Sattar Electric","e":"CST","c":13,"t":"dealer"},{"n":"Naveed Electric","e":"CST","c":13,"t":"dealer"},{"n":"Standard Store Cnc 1705","e":"CNC","c":13,"t":"dealer"},{"n":"Waseem Trading","e":"CST","c":12,"t":"dealer"},{"n":"Waseem Traders","e":"CST","c":11,"t":"dealer"},{"n":"Faizan Traders","e":"CST","c":11,"t":"dealer"},{"n":"From Bilal Account For Net Metering Purchase","e":"CNC","c":11,"t":"dealer"},{"n":"Cash Sale Cnc - 891","e":"CNC","c":11,"t":"dealer"},{"n":"Inverter Payment","e":"CNC","c":11,"t":"dealer"},{"n":"Haseeb Geya Cnc 1303","e":"CNC","c":11,"t":"dealer"},{"n":"Zest Solar Cnc 1483","e":"CNC","c":11,"t":"dealer"},{"n":"Decent Solar Cnc 2184","e":"CNC","c":11,"t":"dealer"},{"n":"I.H Traders Cnc 2375","e":"CNC","c":11,"t":"dealer"},{"n":"From Cspl Account","e":"CSPL","c":10,"t":"dealer"},{"n":"Datta Electric","e":"CST","c":10,"t":"dealer"},{"n":"Mi Trader","e":"CNC","c":10,"t":"dealer"},{"n":"Dynasol","e":"CNC","c":10,"t":"dealer"},{"n":"From Bilal Account For Ashraf","e":"CNC","c":10,"t":"dealer"},{"n":"Umair Solar","e":"CNC","c":10,"t":"dealer"},{"n":"Standard Store Cst - 13","e":"CST","c":10,"t":"dealer"},{"n":"Dastgeer Solar Cnc 1429","e":"CNC","c":10,"t":"dealer"},{"n":"Mr.Shahid Cnc 1899","e":"CNC","c":10,"t":"dealer"},{"n":"Abdul Sattar Electric Cst 53","e":"CST","c":10,"t":"dealer"},{"n":"Waseem Traders Cst 110","e":"CST","c":10,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Muzaffar","e":"CNC","c":10,"t":"dealer"},{"n":"Milk","e":"CNC","c":10,"t":"dealer"},{"n":"Al-Haider Electric","e":"CST","c":9,"t":"dealer"},{"n":"Technob","e":"CST","c":9,"t":"dealer"},{"n":"Gain Control","e":"CST","c":9,"t":"dealer"},{"n":"Haseeb Geya","e":"CST","c":9,"t":"dealer"},{"n":"C.A Traders","e":"CNC","c":9,"t":"dealer"},{"n":"Al Jazil","e":"CNC","c":9,"t":"dealer"},{"n":"Jilani International","e":"CNC","c":9,"t":"dealer"},{"n":"At Electric","e":"CST","c":9,"t":"dealer"},{"n":"Cnc Payment","e":"CNC","c":9,"t":"dealer"},{"n":"Xolar","e":"CNC","c":9,"t":"dealer"},{"n":"Allied Electric","e":"CST","c":9,"t":"dealer"},{"n":"System Energy Pvt Ltd","e":"CNC","c":9,"t":"dealer"},{"n":"Structure Payment To Steel Linkers","e":"CNC","c":9,"t":"dealer"},{"n":"Al-Meraj","e":"CNC","c":9,"t":"dealer"},{"n":"Haseeb Sb Geya Cnc 1303","e":"CNC","c":9,"t":"dealer"},{"n":"M.S Electric Cst 1976","e":"CST","c":9,"t":"dealer"},{"n":"Hamza Solar","e":"CNC","c":9,"t":"dealer"},{"n":"Electrich Cst 164","e":"CST","c":9,"t":"dealer"},{"n":"Al-Fareed Electric Cst 453","e":"CST","c":9,"t":"dealer"},{"n":"Ch&Sons Bull Rode Cst 2770","e":"CST","c":9,"t":"dealer"},{"n":"Lunch","e":"CNC","c":9,"t":"dealer"},{"n":"Cash Sale In","e":"CST","c":9,"t":"dealer"},{"n":"M.S Electric","e":"CST","c":8,"t":"dealer"},{"n":"Blue Rise Solar","e":"CNC","c":8,"t":"customer"},{"n":"Business Equipment","e":"CST","c":8,"t":"dealer"},{"n":"S.N.B","e":"CNC","c":8,"t":"dealer"},{"n":"Solar Tech","e":"CNC","c":8,"t":"dealer"},{"n":"Sattar Electric","e":"CST","c":8,"t":"dealer"},{"n":"From Bilal Account For Usman Sb","e":"CNC","c":8,"t":"dealer"},{"n":"Structure Payment","e":"CNC","c":8,"t":"dealer"},{"n":"Hi Power","e":"CNC","c":8,"t":"dealer"},{"n":"Prime Switchgear","e":"CNC","c":8,"t":"dealer"},{"n":"Dar Sons Cnc 1714","e":"CNC","c":8,"t":"dealer"},{"n":"Hi Power Cnc 1017","e":"CNC","c":8,"t":"dealer"},{"n":"Waseem Trading Cst 110","e":"CST","c":8,"t":"dealer"},{"n":"System Energy (Mansoor Sb) / Shan Cst 411","e":"CST","c":8,"t":"dealer"},{"n":"Coffee","e":"CNC","c":8,"t":"dealer"},{"n":"Shafaqat Electric Cst 207","e":"CST","c":8,"t":"dealer"},{"n":"Standerd Store Cst 13","e":"CST","c":8,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809 / Hassnain Dawood","e":"CNC","c":8,"t":"dealer"},{"n":"S.B Traders","e":"CST","c":8,"t":"dealer"},{"n":"Mr.Haseeb Geya","e":"CNC","c":7,"t":"dealer"},{"n":"Hub Engg","e":"CNC","c":7,"t":"dealer"},{"n":"Pari Elec","e":"CNC","c":7,"t":"dealer"},{"n":"Fico Industries","e":"CNC","c":7,"t":"dealer"},{"n":"Green Light Traders","e":"CNC","c":7,"t":"dealer"},{"n":"Farhan Traders","e":"CST","c":7,"t":"dealer"},{"n":"Yaseen Electric","e":"CNC","c":7,"t":"dealer"},{"n":"Cnc Payment To Yaqoob Sb","e":"CNC","c":7,"t":"dealer"},{"n":"Panel Payment","e":"CNC","c":7,"t":"dealer"},{"n":"Steel Linkers / Shan","e":"CNC","c":7,"t":"dealer"},{"n":"Fair Deal Fico Cst - 70","e":"CST","c":7,"t":"dealer"},{"n":"Penal Sale","e":"CNC","c":7,"t":"dealer"},{"n":"Akram &Co Cst 378","e":"CST","c":7,"t":"dealer"},{"n":"Akram & Co Cst 378","e":"CST","c":7,"t":"dealer"},{"n":"At Electrical -Cst 581 / Muzaffar","e":"CST","c":7,"t":"dealer"},{"n":"Sultan Electric Cst 261","e":"CST","c":7,"t":"dealer"},{"n":"Electric Inn Cst 2240","e":"CST","c":7,"t":"dealer"},{"n":"Trade Hub Cst 2409","e":"CST","c":7,"t":"dealer"},{"n":"Green Build Corporation Cst 1238","e":"CST","c":7,"t":"dealer"},{"n":"Electronic Solution Cnc 2373","e":"CNC","c":7,"t":"dealer"},{"n":"Green Ray Cst 2447  / Muzaffar","e":"CST","c":7,"t":"dealer"},{"n":"Kashif Sab Cnc 1653","e":"CNC","c":7,"t":"dealer"},{"n":"Electronic Solution","e":"CNC","c":7,"t":"dealer"},{"n":"Mashallah Db Box","e":"CST","c":7,"t":"dealer"},{"n":"Zia Electric","e":"CNC","c":6,"t":"customer"},{"n":"Ijaz Enterprise","e":"CNC","c":6,"t":"dealer"},{"n":"Beyondgreen Pvt Ltd","e":"CNC","c":6,"t":"customer"},{"n":"Sky Solar Powered By Fazal Engineering","e":"CNC","c":6,"t":"customer"},{"n":"Delta Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Solar Fort","e":"CNC","c":6,"t":"dealer"},{"n":"Shah Din Electric","e":"CNC","c":6,"t":"dealer"},{"n":"Punjab Trading","e":"CNC","c":6,"t":"dealer"},{"n":"Fico Electric Lesco Bill","e":"CNC","c":6,"t":"dealer"},{"n":"Alfareed Electric","e":"CNC","c":6,"t":"dealer"},{"n":"From Cspl For Fico Hitech","e":"CSPL","c":6,"t":"dealer"},{"n":"Arshad Trading","e":"CST","c":6,"t":"dealer"},{"n":"Pari Electric","e":"CNC","c":6,"t":"dealer"},{"n":"Al-Saiqa","e":"CST","c":6,"t":"dealer"},{"n":"Sb Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Asad Sb","e":"CNC","c":6,"t":"dealer"},{"n":"Al-Madina","e":"CST","c":6,"t":"dealer"},{"n":"Panels Sale By Malik Awais Sb","e":"CNC","c":6,"t":"dealer"},{"n":"Simka Engineering","e":"CNC","c":6,"t":"dealer"},{"n":"Haseeb Sb Geya","e":"CNC","c":6,"t":"dealer"},{"n":"Cash Sale Fico Cst - 510","e":"CST","c":6,"t":"dealer"},{"n":"Waqas Sb Cnc - 1356","e":"CNC","c":6,"t":"dealer"},{"n":"Gain Control Cst 463","e":"CST","c":6,"t":"dealer"},{"n":"Haseeb Ahmad Cst 851","e":"CST","c":6,"t":"dealer"},{"n":"Ishaq Engg Cst 291","e":"CST","c":6,"t":"dealer"},{"n":"Standard Store Cst 13","e":"CST","c":6,"t":"dealer"},{"n":"Ppi / Muzaffar / Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Zahid & Co / Ali Haider / Solar","e":"CNC","c":6,"t":"dealer"},{"n":"Haseeb Sb Cnc 1303","e":"CNC","c":6,"t":"dealer"},{"n":"Sky Rise Cst 2775","e":"CST","c":6,"t":"dealer"},{"n":"Cofee","e":"CNC","c":6,"t":"dealer"},{"n":"Shareef Sab","e":"CST","c":6,"t":"dealer"},{"n":"Standerd Store","e":"CST","c":6,"t":"dealer"},{"n":"Kashif","e":"CST","c":6,"t":"dealer"},{"n":"I.H Traders","e":"CNC","c":6,"t":"dealer"},{"n":"Sky Rise","e":"CNC","c":5,"t":"dealer"},{"n":"Dastgeer Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Mr.Afzal","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fareed Electric","e":"CST","c":5,"t":"dealer"},{"n":"Almeeraj","e":"CNC","c":5,"t":"dealer"},{"n":"Ch & Sons","e":"CST","c":5,"t":"dealer"},{"n":"Data Electric","e":"CST","c":5,"t":"dealer"},{"n":"Al Fareed","e":"CNC","c":5,"t":"dealer"},{"n":"Ajmal Trading","e":"CNC","c":5,"t":"dealer"},{"n":"Mi Traders","e":"CST","c":5,"t":"dealer"},{"n":"Khyber Electric","e":"CNC","c":5,"t":"dealer"},{"n":"Green T&D","e":"CST","c":5,"t":"dealer"},{"n":"Ashfaq Brothers","e":"CNC","c":5,"t":"dealer"},{"n":"Prime Electric Fsd","e":"CNC","c":5,"t":"dealer"},{"n":"Ramzan Solar","e":"CST","c":5,"t":"dealer"},{"n":"Bilal Account For Ali Haider","e":"CNC","c":5,"t":"dealer"},{"n":"From Bilal Account For Cable Purchase","e":"CNC","c":5,"t":"dealer"},{"n":"Waqas","e":"CST","c":5,"t":"dealer"},{"n":"Arete Energy","e":"CNC","c":5,"t":"dealer"},{"n":"Haseeb Electric Store","e":"CNC","c":5,"t":"dealer"},{"n":"Faran Traders","e":"CNC","c":5,"t":"dealer"},{"n":"Abdullah Electric","e":"CST","c":5,"t":"dealer"},{"n":"To Bilal Account","e":"CNC","c":5,"t":"dealer"},{"n":"Noor Energy","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fareed Brandreth Road Fico","e":"CNC","c":5,"t":"dealer"},{"n":"Mohsin Islamabad","e":"CNC","c":5,"t":"dealer"},{"n":"M.Ismail & Sons","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Madina Banu","e":"CNC","c":5,"t":"dealer"},{"n":"Panel Sale By Malik Awais Sb","e":"CNC","c":5,"t":"dealer"},{"n":"Panels Sale","e":"CNC","c":5,"t":"dealer"},{"n":"Halifax","e":"CNC","c":5,"t":"dealer"},{"n":"Dar Sons Fico","e":"CNC","c":5,"t":"dealer"},{"n":"Power Electric Store\u00a0Cnc 814","e":"CNC","c":5,"t":"dealer"},{"n":"Mr.Waqas Enterprise Cnc 1818","e":"CNC","c":5,"t":"dealer"},{"n":"Source Tek Technology Cnc 1469","e":"CNC","c":5,"t":"dealer"},{"n":"Pari Electric Cst 341","e":"CST","c":5,"t":"dealer"},{"n":"Talha Electric Cst 1314","e":"CST","c":5,"t":"dealer"},{"n":"Kashif Cst 362","e":"CST","c":5,"t":"dealer"},{"n":"Ramzan Electric Cst 9","e":"CST","c":5,"t":"dealer"},{"n":"Al Madina Cst 8","e":"CST","c":5,"t":"dealer"},{"n":"Green Built Corporation Cst 2115","e":"CST","c":5,"t":"dealer"},{"n":"Al Sayiqa Cst 169","e":"CST","c":5,"t":"dealer"},{"n":"Perfect Electrificational Cst 273","e":"CST","c":5,"t":"dealer"},{"n":"Ansari Traders Cst 2262","e":"CST","c":5,"t":"dealer"},{"n":"Haroon Electric Cst 1015","e":"CST","c":5,"t":"dealer"},{"n":"Engineering Mode\u00a0Cnc 809","e":"CNC","c":5,"t":"dealer"},{"n":"Bilal Tariq Cst 260","e":"CST","c":5,"t":"dealer"},{"n":"Al-Meraj Cnc 1760","e":"CNC","c":5,"t":"dealer"},{"n":"Dastager Solar Cnc 1429","e":"CNC","c":5,"t":"dealer"},{"n":"Hina Rana","e":"CNC","c":5,"t":"dealer"},{"n":"Hassan Traders / Ali Haider / Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Mansoor Sb -Cst 411 / Shan","e":"CST","c":5,"t":"dealer"},{"n":"Power Electric Store\u00a0Cnc Ali Haider","e":"CNC","c":5,"t":"dealer"},{"n":"Al-Fazal Enginering","e":"CST","c":5,"t":"dealer"},{"n":"Decent Solar","e":"CNC","c":5,"t":"dealer"},{"n":"Qadri Group","e":"CST","c":5,"t":"dealer"},{"n":"Rashid Traders","e":"CNC","c":4,"t":"customer"},{"n":"Sunlight Solar System","e":"CNC","c":4,"t":"customer"},{"n":"Quetta Cable","e":"CNC","c":4,"t":"customer"},{"n":"Ar Electric Switchgear","e":"CST","c":4,"t":"customer"},{"n":"Micron Energy Kohat","e":"CNC","c":4,"t":"customer"},{"n":"Chaudhry Corporation","e":"CNC","c":4,"t":"customer"},{"n":"Mr.Naveed","e":"CST","c":4,"t":"dealer"},{"n":"Insaf Electric Store","e":"CNC","c":4,"t":"customer"},{"n":"Hs Traders","e":"CNC","c":4,"t":"customer"},{"n":"Pak Solar Sargodha","e":"CNC","c":4,"t":"customer"},{"n":"Multitech Cash","e":"CST","c":4,"t":"cash_sale"},{"n":"Energy Live","e":"CST","c":4,"t":"customer"},{"n":"Ask Solar","e":"CNC","c":4,"t":"customer"},{"n":"Awais Solar Energy","e":"CST","c":4,"t":"customer"},{"n":"Pleasant Solar","e":"CNC","c":4,"t":"customer"},{"n":"Shazad Ishaq","e":"CNC","c":4,"t":"customer"},{"n":"Q Energy","e":"CNC","c":4,"t":"customer"},{"n":"Mateen Arif","e":"CNC","c":4,"t":"customer"},{"n":"Tariq Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Ramzan","e":"CNC","c":4,"t":"customer"},{"n":"Cash Sale [Mr Ashraf]","e":"CNC","c":4,"t":"cash_sale"},{"n":"National Electric","e":"CST","c":4,"t":"dealer"},{"n":"Rahat Electric","e":"CST","c":4,"t":"dealer"},{"n":"Farooq Brothers","e":"CNC","c":4,"t":"dealer"},{"n":"Bilal Tariq","e":"CST","c":4,"t":"dealer"},{"n":"Al Meeraj","e":"CNC","c":4,"t":"dealer"},{"n":"Electrech","e":"CST","c":4,"t":"dealer"},{"n":"To Fico Industries","e":"CNC","c":4,"t":"dealer"},{"n":"Mansoor Sb","e":"CST","c":4,"t":"dealer"},{"n":"Jawad Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Ksb Cash","e":"CNC","c":4,"t":"dealer"},{"n":"Solar Payment","e":"CNC","c":4,"t":"dealer"},{"n":"Perfect Electrificationar","e":"CNC","c":4,"t":"dealer"},{"n":"Arf Engineering","e":"CNC","c":4,"t":"dealer"},{"n":"H.A Rouf","e":"CST","c":4,"t":"dealer"},{"n":"Regal Solar Solutions","e":"CNC","c":4,"t":"dealer"},{"n":"Tesla","e":"CNC","c":4,"t":"dealer"},{"n":"Ideal Power Solutions","e":"CNC","c":4,"t":"dealer"},{"n":"From Cspl For Malik Sb","e":"CSPL","c":4,"t":"dealer"},{"n":"Ai Switchgear","e":"CNC","c":4,"t":"dealer"},{"n":"Pempak","e":"CNC","c":4,"t":"dealer"},{"n":"Prince Electric","e":"CNC","c":4,"t":"dealer"},{"n":"Hub Engenering","e":"CNC","c":4,"t":"dealer"},{"n":"Tauqeer Electric","e":"CST","c":4,"t":"dealer"},{"n":"Cable Sale","e":"CNC","c":4,"t":"dealer"},{"n":"Structure Sale","e":"CNC","c":4,"t":"dealer"},{"n":"Burq Electric","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Malik Energy","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Bilal Salary","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account For Ptcl Bill","e":"CNC","c":4,"t":"dealer"},{"n":"To Power Next Trading","e":"CNC","c":4,"t":"dealer"},{"n":"Steel Linkers","e":"CNC","c":4,"t":"dealer"},{"n":"Asad Trading Co.","e":"CNC","c":4,"t":"dealer"},{"n":"Rafaqat Ali","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Fareed Brandreth Road","e":"CNC","c":4,"t":"dealer"},{"n":"Gain Control Fico","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Jazil","e":"CNC","c":4,"t":"dealer"},{"n":"Ishaaq Engineering Fico","e":"CNC","c":4,"t":"dealer"},{"n":"Abdullah","e":"CNC","c":4,"t":"dealer"},{"n":"From Bilal Account To Ali Haider","e":"CNC","c":4,"t":"dealer"},{"n":"Mr.Abdullah","e":"CST","c":4,"t":"dealer"},{"n":"Max Power","e":"CNC","c":4,"t":"dealer"},{"n":"Creative Engineering","e":"CNC","c":4,"t":"dealer"},{"n":"Atif Sb Solar","e":"CNC","c":4,"t":"dealer"},{"n":"Cnc Builty Paid To Amrah Traders","e":"CNC","c":4,"t":"dealer"},{"n":"Mts","e":"CNC","c":4,"t":"dealer"},{"n":"National Cable","e":"CNC","c":4,"t":"dealer"},{"n":"H.A Rauf","e":"CNC","c":4,"t":"dealer"},{"n":"Smart Tech","e":"CNC","c":4,"t":"dealer"},{"n":"Saleemi Sb Solar Payment","e":"CNC","c":4,"t":"dealer"},{"n":"Al-Fazal Engineering Fico","e":"CNC","c":4,"t":"dealer"}];
+
+var COA=_C.map(function(r){return{code:r[0],name:r[1],type:r[2],parent:r[3],normal:r[4]}});
+var ACCTS=COA.filter(function(a){return a.type!=="header"});
+var journals=_JI.map(function(r){return{id:r[0],date:r[1],ref:r[2],nar:r[3],ent:r[4],status:r[5],by:r[6],lines:r[7].map(function(l){return{a:l[0],d:l[1],c:l[2],m:l[3]}})}});
+var tab="dash",jnlExp=null,jnlFilt="all";
+var nf={date:new Date().toISOString().slice(0,10),nar:"",ent:"CST",lines:[{a:"",d:"",c:"",m:""},{a:"",d:"",c:"",m:""}]};
+
+function PKR(v){return v?"PKR "+Math.round(v).toLocaleString():"--"}
+function SH(v){if(!v)return"--";var a=Math.abs(v);return a>=1e7?(v/1e7).toFixed(1)+"Cr":a>=1e5?(v/1e5).toFixed(1)+"L":a>=1e3?(v/1e3).toFixed(0)+"K":v.toLocaleString()}
+function AN(c){var f=COA.find(function(a){return a.code===c});return f?f.name:c}
+
+function calc(){
+  var b={};COA.forEach(function(a){b[a.code]={code:a.code,name:a.name,type:a.type,parent:a.parent,normal:a.normal,dr:0,cr:0,bal:0}});
+  journals.filter(function(j){return j.status==="posted"}).forEach(function(j){j.lines.forEach(function(l){if(b[l.a]){b[l.a].dr+=l.d;b[l.a].cr+=l.c}})});
+  var keys=Object.keys(b);for(var i=0;i<keys.length;i++){var a=b[keys[i]];a.bal=a.normal==="debit"?a.dr-a.cr:a.normal==="credit"?a.cr-a.dr:0}
+  return b;
+}
+
+// EVENT DELEGATION - handles ALL clicks via data attributes
+document.addEventListener("click",function(e){
+  var el=e.target.closest("[data-act]");
+  if(!el)return;
+  var act=el.getAttribute("data-act");
+  var val=el.getAttribute("data-val")||"";
+  if(act==="tab"){tab=val;render()}
+  else if(act==="filt"){jnlFilt=val;render()}
+  else if(act==="apv"){for(var i=0;i<journals.length;i++){if(journals[i].id===val){journals[i].status="posted";journals[i].by="admin"}}e.stopPropagation();render()}
+  else if(act==="jexp"){jnlExp=jnlExp===val?null:val;render()}
+  else if(act==="tpl"){var TPLS=[["1101","1201"],["1151","1201"],["2101","1101"],["6201","1151"],["6101","1101"]];var idx=parseInt(val);nf.lines=[{a:TPLS[idx][0],d:"",c:"",m:""},{a:TPLS[idx][1],d:"",c:"",m:""}];render()}
+  else if(act==="addline"){nf.lines.push({a:"",d:"",c:"",m:""});render()}
+  else if(act==="rmline"){nf.lines.splice(parseInt(val),1);render()}
+  else if(act==="submit"){subN()}
+  else if(act==="csv"){dlCSV()}else if(act==="logout"){doLogout()}else if(act==="excel"){dlExcel()}else if(act==="upload"){document.getElementById("excelUpload").click()}
+});
+document.addEventListener("change",function(e){
+  var el=e.target;var bind=el.getAttribute("data-bind");if(!bind)return;
+  if(bind==="nf.date")nf.date=el.value;
+  else if(bind==="nf.nar")nf.nar=el.value;
+  else if(bind==="nf.ent")nf.ent=el.value;
+  else if(bind.indexOf("nf.lines.")===0){
+    var parts=bind.split(".");var idx=parseInt(parts[2]);var key=parts[3];
+    nf.lines[idx][key]=el.value;
+    if(key==="d"||key==="c")render();
+  }
+});
+
+function subN(){var f=nf;var ls=[];for(var i=0;i<f.lines.length;i++){ls.push({a:f.lines[i].a,d:Number(f.lines[i].d||0),c:Number(f.lines[i].c||0),m:f.lines[i].m||""})}var tD=0,tC=0;ls.forEach(function(l){tD+=l.d;tC+=l.c});if(Math.abs(tD-tC)>0.5||!f.nar||ls.length<2){alert("Entry must balance and have a narration");return}journals.push({id:"JV-"+String(journals.length+1).padStart(4,"0"),date:f.date,ref:"",nar:f.nar,ent:f.ent,status:tD>100000?"pending":"posted",by:tD>100000?"":"auto",lines:ls});nf={date:new Date().toISOString().slice(0,10),nar:"",ent:"CST",lines:[{a:"",d:"",c:"",m:""},{a:"",d:"",c:"",m:""}]};tab="jnl";render()}
+function dlCSV(){var nl=String.fromCharCode(10);var c="Date,Ref,Narration,Entity,Account,Name,Debit,Credit,Status"+nl;journals.forEach(function(j){j.lines.forEach(function(l,i){c+=(i?"":j.date)+","+(i?"":j.ref)+","+(i?"":j.nar)+","+(i?"":j.ent)+","+l.a+","+AN(l.a)+","+(l.d||"")+","+(l.c||"")+","+(i?"":j.status)+nl})});var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="PayGate_"+new Date().toISOString().slice(0,10)+".csv";a.click()}
+
+
+// ═══ USER ROLE (stored in localStorage) ═══
+var userRole="cfo"; // Default: cfo has all access. Change in Settings.
+try{userRole=localStorage.getItem("pg_role")||"cfo"}catch(e){}
+
+// ═══ SETTINGS ═══
+var pgSettings={};
+try{pgSettings=JSON.parse(localStorage.getItem("pg_settings")||"{}")}catch(e){}
+
+// ═══ COMPANY BANKS ═══
+var COMPANY_BANKS=[
+  {code:"BAH_AOP",name:"BAH AOP (***01-9)",acct:"1101"},
+  {code:"BAH_PVT",name:"BAH Pvt Ltd",acct:"1102"},
+  {code:"BAH_CNC",name:"BAH CNC (65-01-9)",acct:"1103"},
+  {code:"BAFL_989",name:"BAFL CSPL (989)",acct:"1104"},
+  {code:"BAFL_705",name:"BAFL AOP (705)",acct:"1105"},
+  {code:"MEEZAN",name:"Meezan Pvt",acct:"1106"},
+  {code:"JS_517",name:"JS Bank (517)",acct:"1107"}
+];
+
+// ═══ MUDASSIR LEDGER ═══
+var MUDASSIR_LEDGER=[
+{d:"19 Feb",desc:"Dana MS Ghar 20KG",dr:2350,cr:0,bal:439397},
+{d:"19 Feb",desc:"Libra 19/2",dr:18980,cr:0,bal:458377},
+{d:"26 Feb",desc:"Libra PKG Paid by Shan Ali",dr:113850,cr:0,bal:572227},
+{d:"27 Feb",desc:"Vape Refil + Coil",dr:3600,cr:0,bal:575827},
+{d:"28 Feb",desc:"Salary FMO Feb",dr:0,cr:285000,bal:290827},
+{d:"01 Mar",desc:"MS Medicine",dr:21973,cr:0,bal:312800},
+{d:"04 Mar",desc:"MS Children School Fee",dr:77100,cr:0,bal:389900},
+{d:"04 Mar",desc:"MS Fruits",dr:1810,cr:0,bal:391710},
+{d:"05 Mar",desc:"MS AC Repairing",dr:10000,cr:0,bal:401710},
+{d:"06 Mar",desc:"MS Gaming Chair",dr:30000,cr:0,bal:431710},
+{d:"06 Mar",desc:"Birds Mudassir Sb Home",dr:1950,cr:0,bal:433660},
+{d:"07 Mar",desc:"To Awais Sab",dr:0,cr:24755,bal:408905},
+{d:"08 Mar",desc:"Wire Lock",dr:600,cr:0,bal:409505}
+];
+var PERSON_LEDGERS={"1211":MUDASSIR_LEDGER};
+var lastPgCount=0;
+try{lastPgCount=(JSON.parse(localStorage.getItem("pg_e")||"[]")).length}catch(e){}
+
+function render(){
+  if(!loggedIn){return}
+  var b=calc();
+  var banks=[],recv=[],pays=[];
+  var keys=Object.keys(b);
+  for(var i=0;i<keys.length;i++){var a=b[keys[i]];if(a.type==="bank"&&a.bal)banks.push(a);if(a.type==="receivable"&&a.bal>0)recv.push(a);if(a.type==="payable"&&a.bal>0)pays.push(a)}
+  banks.sort(function(x,y){return y.bal-x.bal});recv.sort(function(x,y){return y.bal-x.bal});pays.sort(function(x,y){return y.bal-x.bal});
+  var tBk=0,tRc=0,tPy=0;banks.forEach(function(a){tBk+=a.bal});recv.forEach(function(a){tRc+=a.bal});pays.forEach(function(a){tPy+=a.bal});
+  var rev=0,cos=0,exp=0,reva=[],cosa=[],expa=[];
+  for(i=0;i<keys.length;i++){a=b[keys[i]];if(a.code[0]==="4"&&a.type!=="header"){rev+=a.bal;if(a.bal)reva.push(a)}if(a.code[0]==="5"&&a.type!=="header"){cos+=a.bal;if(a.bal)cosa.push(a)}if(a.code[0]==="6"&&a.type!=="header"){exp+=a.bal;if(a.bal)expa.push(a)}}
+  var pnl={rev:rev,cos:cos,gross:rev-cos,exp:exp,net:rev-cos-exp};
+  var posted=journals.filter(function(j){return j.status==="posted"}).length;
+  var pend=journals.filter(function(j){return j.status==="pending"});
+  var tb=[];for(i=0;i<keys.length;i++){a=b[keys[i]];if(a.type!=="header"&&(a.dr||a.cr)){tb.push({code:a.code,name:a.name,dB:a.normal==="debit"&&a.bal>0?a.bal:a.normal==="credit"&&a.bal<0?-a.bal:0,cB:a.normal==="credit"&&a.bal>0?a.bal:a.normal==="debit"&&a.bal<0?-a.bal:0})}}
+  tb.sort(function(x,y){return x.code<y.code?-1:1});
+  var tDr=0,tCr=0;tb.forEach(function(r){tDr+=r.dB;tCr+=r.cB});
+  var ok=Math.abs(tDr-tCr)<1;
+
+  var Q='"';var h="";
+  var cu=currentUser||{};
+    var _cu=currentUser||{};
+  var _sub=(_cu.name||"")+(_cu.title?" · "+_cu.title:"")+(_cu.lastLogin?" · Last: "+_cu.lastLogin:"");
+  h+='<div class='+Q+'hdr'+Q+'><div class='+Q+'right'+Q+'><span style='+Q+'font-size:10px;color:'+(ok?"#16a34a":"#f87171")+Q+'>'+(ok?"&#10003; Balanced":"&#9888; Unbalanced")+'</span> <button class='+Q+'btn btn-o btn-s'+Q+' data-act='+Q+'csv'+Q+'>CSV</button> <button class='+Q+'btn btn-o btn-s'+Q+' data-act='+Q+'excel'+Q+'>&#11015; Excel</button> <button class='+Q+'btn btn-o btn-s'+Q+' data-act='+Q+'upload'+Q+'>&#11014; Upload</button> <button class='+Q+'btn btn-o btn-s'+Q+' data-act='+Q+'logout'+Q+'>Logout</button></div><h1>PayGate Accounts</h1><div class='+Q+'sub'+Q+'>'+_sub+'</div></div>';
+
+  h+='<div class='+Q+'tabs'+Q+'>';
+  var tabList=[["dash","Dashboard"],["incoming","Incoming"],["dealers","Dealers"],["reports","Reports"],["admin","Admin"],["activity","Activity"],["archive","Archive"],["jnl","Journal"],["new","+ New Entry"],["tb","Trial Balance"],["coa","Accounts"],["pnl","P&amp;L"],["bs","Balance Sheet"],["emails","Bank Emails"]];
+  for(i=0;i<tabList.length;i++){h+='<button class='+Q+'tab'+(tab===tabList[i][0]?" act":"")+Q+' data-act='+Q+'tab'+Q+' data-val='+Q+tabList[i][0]+Q+'>'+tabList[i][1]+'</button>'}
+  h+='</div><div class='+Q+'main'+Q+'>';
+
+  // ══ DASHBOARD ══
+  if(tab==="dash"){
+    // Version info banner
+    h+='<div style='+Q+'background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center'+Q+'>';
+    h+='<div style='+Q+'font-size:11px;font-weight:700;color:#374151'+Q+'>&#128196; PayGate Accounts <span style="background:#111827;color:#fff;border-radius:4px;padding:1px 7px;font-size:10px;margin-left:4px">v29</span></div>';
+    h+='<div style='+Q+'font-size:10px;color:#9ca3af'+Q+'>&#128197; Updated: 24 Mar 2026</div>';
+    h+='</div>';
+    h+='<div class='+Q+'grid g5'+Q+'>';
+    var kpis=[["Bank Balances",SH(tBk),banks.length+" accts","#111827"],["Receivables",SH(tRc),"Owed to co","#111827"],["Payables",SH(tPy),"Co owes","#dc2626"],["Net Profit",SH(pnl.net),"Period",pnl.net>=0?"#111827":"#dc2626"],["Entries",""+posted,pend.length+" pending","#666666"]];
+    for(i=0;i<kpis.length;i++){var k=kpis[i];h+='<div class='+Q+'kpi'+Q+'><div class='+Q+'bar'+Q+' style='+Q+'background:'+k[3]+Q+'></div><div class='+Q+'l'+Q+'>'+k[0]+'</div><div class='+Q+'v'+Q+'>'+k[1]+'</div><div class='+Q+'ss'+Q+'>'+k[2]+'</div></div>'}
+    h+='</div><div class='+Q+'grid g2'+Q+'><div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Bank Positions</div><div class='+Q+'card-b'+Q+'>';
+    for(i=0;i<banks.length;i++){h+='<div style='+Q+'display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #f5f5f5'+Q+'><span>'+banks[i].name+'</span><span class='+Q+'mono fw6'+Q+' style='+Q+'color:'+(banks[i].bal>5000?"#111":"#dc2626")+Q+'>'+SH(banks[i].bal)+'</span></div>'}
+    h+='<div style='+Q+'display:flex;justify-content:space-between;padding:6px 0 0;border-top:2px solid #111;margin-top:4px'+Q+' class='+Q+'fw7'+Q+'><span>Total</span><span class='+Q+'mono'+Q+'>'+PKR(tBk)+'</span></div></div></div>';
+    h+='<div><div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Receivables</div><div class='+Q+'card-b'+Q+'>';
+    for(i=0;i<Math.min(recv.length,7);i++){h+='<div style='+Q+'display:flex;justify-content:space-between;padding:3px 0'+Q+' data-pcode='+Q+recv[i].code+Q+' data-pname='+Q+recv[i].name+Q+' data-pbal='+Q+recv[i].bal+Q+' class='+Q+'person-link'+Q+'><span>'+recv[i].name+'</span><span class='+Q+'mono fw6 grn'+Q+'>'+SH(recv[i].bal)+'</span></div>'}
+    h+='</div></div><div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Payables</div><div class='+Q+'card-b'+Q+'>';
+    for(i=0;i<pays.length;i++){h+='<div style='+Q+'display:flex;justify-content:space-between;padding:3px 0'+Q+' data-pcode='+Q+pays[i].code+Q+' data-pname='+Q+pays[i].name+Q+' data-pbal='+Q+(-pays[i].bal)+Q+' class='+Q+'person-link'+Q+'><span>'+pays[i].name+'</span><span class='+Q+'mono fw6 red'+Q+'>'+SH(pays[i].bal)+'</span></div>'}
+    h+='</div></div></div></div>';
+    if(pend.length){h+='<div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Pending <span class='+Q+'badge b-pending'+Q+'>'+pend.length+'</span></div><div class='+Q+'card-b'+Q+'>';for(i=0;i<pend.length;i++){var j=pend[i];var amt=0;j.lines.forEach(function(l){amt+=l.d});h+='<div style='+Q+'padding:8px;background:#fffbeb;border-radius:8px;border:1px solid #fef3c7;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center'+Q+'><div><b>'+j.nar+'</b><div class='+Q+'gry'+Q+' style='+Q+'font-size:10px'+Q+'>'+j.date+' | '+j.ent+' | '+PKR(amt)+'</div></div><button class='+Q+'btn btn-g btn-s'+Q+' data-act='+Q+'apv'+Q+' data-val='+Q+j.id+Q+'>Post</button></div>'}h+='</div></div>'}
+  }
+
+  // ══ JOURNAL ══
+  else if(tab==="jnl"){
+    var list=jnlFilt==="all"?journals:journals.filter(function(j){return j.status===(jnlFilt==="posted"?"posted":"pending")});
+    h+='<div style='+Q+'display:flex;gap:6px;margin-bottom:10px'+Q+'>';
+    ["all","posted","pending"].forEach(function(f){var c=f==="all"?journals.length:journals.filter(function(j){return j.status===(f==="posted"?"posted":"pending")}).length;h+='<button class='+Q+'btn '+(jnlFilt===f?"btn-g":"btn-o")+Q+' data-act='+Q+'filt'+Q+' data-val='+Q+f+Q+'>'+f+' ('+c+')</button>'});
+    h+='</div><div class='+Q+'card'+Q+'><table><thead><tr><th>Ref</th><th>Date</th><th>Narration</th><th>Entity</th><th class='+Q+'r'+Q+'>Debit</th><th class='+Q+'r'+Q+'>Credit</th><th>Status</th></tr></thead><tbody>';
+    var rev2=[].concat(list).reverse();
+    for(i=0;i<rev2.length;i++){var j=rev2[i];var dr=0,cr=0;j.lines.forEach(function(l){dr+=l.d;cr+=l.c});var op=jnlExp===j.id;
+      h+='<tr class='+Q+'clickrow'+Q+' data-act='+Q+'jexp'+Q+' data-val='+Q+j.id+Q+' style='+Q+(op?"background:#f0fdf4":"")+Q+'><td class='+Q+'mono gry'+Q+' style='+Q+'font-size:10px'+Q+'>'+(j.ref||j.id)+'</td><td>'+j.date+'</td><td class='+Q+'fw6'+Q+'>'+j.nar+'</td><td><span class='+Q+'badge b-'+j.ent+Q+'>'+j.ent+'</span></td><td class='+Q+'r mono fw6'+Q+'>'+dr.toLocaleString()+'</td><td class='+Q+'r mono fw6'+Q+'>'+cr.toLocaleString()+'</td><td><span class='+Q+'badge b-'+(j.status==="posted"?"posted":"pending")+Q+'>'+(j.status==="posted"?"POSTED":"PENDING")+'</span>'+(j.status==="pending"?' <button class='+Q+'btn btn-g btn-s'+Q+' data-act='+Q+'apv'+Q+' data-val='+Q+j.id+Q+'>Post</button>':"")+'</td></tr>';
+      if(op){h+='<tr><td colspan='+Q+'7'+Q+' class='+Q+'detail'+Q+'><table><thead><tr><th>Account</th><th>Memo</th><th class='+Q+'r grn'+Q+'>Debit</th><th class='+Q+'r red'+Q+'>Credit</th></tr></thead><tbody>';for(var li=0;li<j.lines.length;li++){var l=j.lines[li];h+='<tr><td><span class='+Q+'gry mono'+Q+'>'+l.a+'</span> '+AN(l.a)+'</td><td class='+Q+'gry'+Q+'>'+l.m+'</td><td class='+Q+'r mono grn'+Q+'>'+(l.d?l.d.toLocaleString():"")+'</td><td class='+Q+'r mono red'+Q+'>'+(l.c?l.c.toLocaleString():"")+'</td></tr>'}h+='</tbody></table><div class='+Q+'gry'+Q+' style='+Q+'font-size:10px;margin-top:4px'+Q+'>By: '+(j.by||"--")+'</div></td></tr>'}}
+    h+='</tbody></table></div>';
+  }
+
+  // ══ NEW ENTRY ══
+  else if(tab==="new"){
+    var f=nf;var tD=0,tC=0;f.lines.forEach(function(l){tD+=Number(l.d||0);tC+=Number(l.c||0)});var vld=tD>0&&Math.abs(tD-tC)<1&&f.nar;
+    h+='<div class='+Q+'tpl'+Q+'><span style='+Q+'font-size:11px;color:#888;line-height:26px'+Q+'>Quick: </span>';
+    ["Cust Bank","Cash In","Pay Vendor","Expense","Salary"].forEach(function(t,i){h+='<button data-act='+Q+'tpl'+Q+' data-val='+Q+i+Q+'>'+t+'</button>'});
+    h+='</div><div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>New Journal Entry <span class='+Q+'s'+Q+'>'+(vld?"&#10003; Balanced":"DR must = CR")+'</span></div><div class='+Q+'card-b'+Q+'>';
+    h+='<div class='+Q+'frow'+Q+'><div><div class='+Q+'flbl'+Q+'>Date</div><input class='+Q+'finp'+Q+' type='+Q+'date'+Q+' value='+Q+f.date+Q+' data-bind='+Q+'nf.date'+Q+'></div><div><div class='+Q+'flbl'+Q+'>Narration</div><input class='+Q+'finp'+Q+' value='+Q+f.nar.replace(/"/g,"&quot;")+Q+' placeholder='+Q+'Description...'+Q+' data-bind='+Q+'nf.nar'+Q+'></div><div><div class='+Q+'flbl'+Q+'>Entity</div><select class='+Q+'fsel'+Q+' data-bind='+Q+'nf.ent'+Q+'>';
+    ["CNC","CST","CSPL","ALL"].forEach(function(e){h+='<option'+(f.ent===e?" selected":"")+'>'+e+'</option>'});
+    h+='</select></div></div>';
+    h+='<table><thead><tr><th>Account</th><th style='+Q+'width:70px'+Q+'>Memo</th><th class='+Q+'r grn'+Q+' style='+Q+'width:95px'+Q+'>Debit</th><th class='+Q+'r red'+Q+' style='+Q+'width:95px'+Q+'>Credit</th><th style='+Q+'width:20px'+Q+'></th></tr></thead><tbody>';
+    for(i=0;i<f.lines.length;i++){var l=f.lines[i];h+='<tr><td><select class='+Q+'fsel'+Q+' data-bind='+Q+'nf.lines.'+i+'.a'+Q+'><option value='+Q+Q+'>Select...</option>';for(var ai=0;ai<ACCTS.length;ai++){h+='<option value='+Q+ACCTS[ai].code+Q+(l.a===ACCTS[ai].code?" selected":"")+'>'+ACCTS[ai].code+' '+ACCTS[ai].name+'</option>'}h+='</select></td><td><input class='+Q+'finp'+Q+' value='+Q+(l.m||"").replace(/"/g,"&quot;")+Q+' data-bind='+Q+'nf.lines.'+i+'.m'+Q+' style='+Q+'font-size:11px'+Q+'></td><td><input class='+Q+'finp mono r'+Q+' type='+Q+'number'+Q+' value='+Q+(l.d||"")+Q+' placeholder='+Q+'0'+Q+' data-bind='+Q+'nf.lines.'+i+'.d'+Q+' style='+Q+'font-size:11px'+Q+'></td><td><input class='+Q+'finp mono r'+Q+' type='+Q+'number'+Q+' value='+Q+(l.c||"")+Q+' placeholder='+Q+'0'+Q+' data-bind='+Q+'nf.lines.'+i+'.c'+Q+' style='+Q+'font-size:11px'+Q+'></td><td>'+(f.lines.length>2?'<button data-act='+Q+'rmline'+Q+' data-val='+Q+i+Q+' style='+Q+'background:none;border:none;color:#dc2626;cursor:pointer;font-size:14px'+Q+'>x</button>':"")+'</td></tr>'}
+    h+='<tr style='+Q+'border-top:2px solid #e5e7eb;background:#f9fafb'+Q+'><td><button class='+Q+'btn btn-o btn-s'+Q+' data-act='+Q+'addline'+Q+'>+ Line</button></td><td class='+Q+'r fw7'+Q+' style='+Q+'font-size:11px'+Q+'>TOTAL</td><td class='+Q+'r mono fw7 grn'+Q+' style='+Q+'font-size:14px'+Q+'>'+tD.toLocaleString()+'</td><td class='+Q+'r mono fw7 red'+Q+' style='+Q+'font-size:14px'+Q+'>'+tC.toLocaleString()+'</td><td></td></tr></tbody></table>';
+    if(tD>0&&!vld)h+='<div class='+Q+'warn-r'+Q+'>Difference: '+PKR(Math.abs(tD-tC))+'</div>';
+    if(tD>100000)h+='<div class='+Q+'warn-y'+Q+'>Over PKR 100K -- requires approval</div>';
+    h+='<div style='+Q+'margin-top:10px'+Q+'><button class='+Q+'btn btn-g'+Q+' '+(vld?"":"disabled")+' data-act='+Q+'submit'+Q+'>'+(tD>100000?"Submit for Approval":"Post Entry")+'</button></div></div></div>';
+  }
+
+  // ══ TRIAL BALANCE ══
+  else if(tab==="tb"){
+    h+='<div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Trial Balance <span class='+Q+'s'+Q+'>'+(ok?"&#10003; Balanced":"&#9888; Diff: "+PKR(tDr-tCr))+'</span></div><table><thead><tr><th>Code</th><th>Account</th><th class='+Q+'r grn'+Q+'>Debit</th><th class='+Q+'r red'+Q+'>Credit</th></tr></thead><tbody>';
+    for(i=0;i<tb.length;i++){var r=tb[i];h+='<tr><td class='+Q+'mono gry'+Q+' style='+Q+'font-size:11px'+Q+'>'+r.code+'</td><td data-pcode='+Q+r.code+Q+' data-pname='+Q+r.name+Q+' data-pbal='+Q+(r.dB-r.cB)+Q+' class='+Q+'person-link'+Q+' style='+Q+'cursor:pointer'+Q+'>'+r.name+'</td><td class='+Q+'r mono '+(r.dB?"grn fw6":"")+Q+'>'+(r.dB?r.dB.toLocaleString():"")+'</td><td class='+Q+'r mono '+(r.cB?"red fw6":"")+Q+'>'+(r.cB?r.cB.toLocaleString():"")+'</td></tr>'}
+    h+='<tr class='+Q+'totrow'+Q+'><td colspan='+Q+'2'+Q+'>TOTAL</td><td class='+Q+'r mono'+Q+'>'+tDr.toLocaleString()+'</td><td class='+Q+'r mono'+Q+'>'+tCr.toLocaleString()+'</td></tr></tbody></table></div>';
+  }
+
+  // ══ CHART OF ACCOUNTS ══
+  else if(tab==="coa"){
+    h+='<div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Chart of Accounts ('+COA.length+')</div><table><thead><tr><th>Code</th><th>Name</th><th>Type</th><th class='+Q+'r'+Q+'>Balance</th></tr></thead><tbody>';
+    for(i=0;i<COA.length;i++){var a=COA[i];var v=b[a.code];var hd=a.type==="header";h+='<tr style='+Q+(hd?"background:#f9fafb":"")+Q+'><td class='+Q+'mono gry'+Q+' style='+Q+'font-size:11px;'+(hd?"font-weight:700":"")+Q+'>'+a.code+'</td><td style='+Q+'padding-left:'+(hd?8:a.parent?24:8)+'px;'+(hd?"font-weight:700":"")+Q+'>'+a.name+'</td><td data-pcode='+Q+a.code+Q+' data-pname='+Q+a.name+Q+' data-pbal='+Q+(v&&v.bal?v.bal:0)+Q+' class='+Q+'person-link'+Q+'>'+a.type+'</td><td class='+Q+'r mono '+(v&&v.bal>0?"grn fw6":v&&v.bal<0?"red fw6":"gry")+Q+'>'+(v&&v.bal?SH(v.bal):"")+'</td></tr>'}
+    h+='</tbody></table></div>';
+  }
+
+  // ══ P&L ══
+  else if(tab==="pnl"){
+    h+='<div class='+Q+'grid'+Q+' style='+Q+'grid-template-columns:repeat(4,1fr)'+Q+'>';
+    [["Revenue",SH(pnl.rev),"#111827"],["COGS",SH(pnl.cos),"#dc2626"],["Gross",SH(pnl.gross),"#111827"],["Net",SH(pnl.net),pnl.net>=0?"#111827":"#dc2626"]].forEach(function(k){h+='<div class='+Q+'kpi'+Q+'><div class='+Q+'bar'+Q+' style='+Q+'background:'+k[2]+Q+'></div><div class='+Q+'l'+Q+'>'+k[0]+'</div><div class='+Q+'v'+Q+'>'+k[1]+'</div></div>'});
+    h+='</div><div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Profit &amp; Loss</div><table><tbody><tr class='+Q+'sect sect-r'+Q+'><td colspan='+Q+'2'+Q+'>Revenue</td></tr>';
+    reva.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+' data-pcode='+Q+a.code+Q+' data-pname='+Q+a.name+Q+' data-pbal='+Q+a.bal+Q+' class='+Q+'person-link'+Q+'>'+a.bal.toLocaleString()+'</td></tr>'});
+    h+='<tr style='+Q+'border-top:2px solid #16a34a'+Q+'><td class='+Q+'fw7'+Q+'>Total Revenue</td><td class='+Q+'r mono fw7'+Q+'>'+pnl.rev.toLocaleString()+'</td></tr>';
+    if(cosa.length){h+='<tr class='+Q+'sect sect-x'+Q+'><td colspan='+Q+'2'+Q+'>Cost of Sales</td></tr>';cosa.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+'>('+a.bal.toLocaleString()+')</td></tr>'})}
+    h+='<tr class='+Q+'sect sect-c'+Q+'><td colspan='+Q+'2'+Q+'>Expenses</td></tr>';
+    expa.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+'>('+a.bal.toLocaleString()+')</td></tr>'});
+    h+='<tr class='+Q+'totrow'+Q+'><td style='+Q+'font-size:14px'+Q+'>NET PROFIT</td><td class='+Q+'r mono'+Q+' style='+Q+'font-size:16px;color:'+(pnl.net>=0?"#4ade80":"#f87171")+Q+'>'+(pnl.net>=0?"":"(")+Math.abs(pnl.net).toLocaleString()+(pnl.net>=0?"":")")+'</td></tr></tbody></table></div>';
+  }
+
+  // ══ BALANCE SHEET ══
+  
+  else if(tab==="incoming"){
+    var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+    var pgTotal=0;pgRaw.forEach(function(e){pgTotal+=Number(e.amt||0)});
+    var pending=pgRaw.filter(function(e){return!e.journaled&&!e.rejected});
+    var verified=pgRaw.filter(function(e){return e.bank_verified&&!e.journaled});
+    
+    h+='<div class="grid g5">';
+    h+='<div class="kpi"><div class="bar" style="background:#8b5cf6"></div><div class="l">Total</div><div class="v">'+pgRaw.length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#16a34a"></div><div class="l">Amount</div><div class="v">'+SH(pgTotal)+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#f59e0b"></div><div class="l">Pending</div><div class="v">'+pending.length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#2563eb"></div><div class="l">Bank OK</div><div class="v">'+verified.length+'</div></div>';
+    h+='</div>';
+    
+    // AI Input
+    h+='<div class="card"><div class="card-h">Paste Message or Screenshot <span class="s"><span class="ai-tag">AI</span> Extracts details</span></div><div class="card-b">';
+    h+='<textarea class="ftxt" id="pasteMsg" placeholder="Paste bank SMS, WhatsApp message, or any text about a payment..."></textarea>';
+    h+='<div style="display:flex;gap:6px;margin-top:8px"><button class="btn btn-p" onclick="doExtract()">Extract</button><button class="btn btn-o" onclick="testAlert()">Test Alert</button>';
+    h+='<label class="btn btn-o" style="cursor:pointer"><input type="file" accept="image/*" style="display:none" onchange="handlePasteImage(event)">Upload Screenshot</label>';
+    h+='<button class="btn btn-o btn-s" onclick="exportPDF(\'All Payments\')">PDF All</button>';
+    h+='<button class="btn btn-o btn-s" onclick="exportPDF(\'Today\',function(e){return(e.ts||\'\').slice(0,10)===new Date().toISOString().slice(0,10)})">PDF Today</button>';
+    h+='</div><div id="extractResult"></div></div></div>';
+    
+    // Payment review cards
+    if(pgRaw.length===0){
+      h+='<div class="card"><div class="card-b" style="text-align:center;padding:30px;color:#999">No incoming payments. Open paygate-v9.html to submit, or paste a message above.</div></div>';
+    } else {
+      pgRaw.forEach(function(e,i){
+        var st=e.journaled?"verified":e.rejected?"rejected":e.bank_verified?"verified":"unverified";
+        h+='<div class="review-card '+st+'" onclick="showPaymentReview('+i+')" style="cursor:pointer">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:center">';
+        h+='<div><span class="mono gry" style="font-size:10px">'+(e.id||"--")+'</span> <b>'+(e.cust||"--")+'</b> <span class="badge b-'+(e.ent||"CST")+'">'+(e.ent||"--")+'</span></div>';
+        h+='<div style="font-size:16px;font-weight:700;font-family:monospace;color:#16a34a">PKR '+Number(e.amt||0).toLocaleString()+'</div></div>';
+        h+='<div style="display:flex;gap:6px;margin-top:6px;align-items:center">';
+        h+='<span style="font-size:10px;color:#888">'+(e.date||"")+" "+(e.time||"")+'</span>';
+        h+='<span class="pill pill-'+(e.typ==="cash"?"y":"b")+'">'+(e.typ||"--")+'</span>';
+        if(e.source_text)h+='<span class="pill pill-p">MSG</span>';
+        if(e.photo)h+='<span class="pill pill-y">PHOTO</span>';
+        h+='<span class="pill '+(e.bank_verified?"pill-g":"pill-r")+'">'+(e.bank_verified?"BANK OK":"NO BANK")+'</span>';
+        h+='<span class="pill '+(e.journaled?"pill-g":e.rejected?"pill-r":"pill-y")+'">'+(e.journaled?"POSTED":e.rejected?"REJECTED":"PENDING")+'</span>';
+        h+='</div></div>';
+      });
+    }
+  }
+
+  else if(tab==="dealers"){
+    var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+    
+    // Merge master dealer list + payment history
+    var dealerMap={};
+    // Seed from master DEALERS list
+    if(typeof DEALERS!=="undefined"){
+      DEALERS.forEach(function(d){
+        dealerMap[d.n]={name:d.n,ent:d.e,type:d.t,count:d.c,total:0,lastDate:"",payCount:0};
+      });
+    }
+    // Overlay with actual payment data
+    pgRaw.forEach(function(e){
+      var c=e.cust||"?";
+      if(!dealerMap[c])dealerMap[c]={name:c,ent:e.ent||"CNC",type:"dealer",count:0,total:0,lastDate:"",payCount:0};
+      dealerMap[c].total+=Number(e.amt||0);
+      dealerMap[c].payCount++;
+      if(!dealerMap[c].lastDate||e.date>dealerMap[c].lastDate)dealerMap[c].lastDate=e.date;
+    });
+    
+    var dealers=Object.values(dealerMap).sort(function(a,b){return(b.payCount||0)-(a.payCount||0)||(b.count||0)-(a.count||0)});
+    
+    h+='<div class="grid g5">';
+    h+='<div class="kpi"><div class="bar" style="background:#2563eb"></div><div class="l">Total Dealers</div><div class="v">'+dealers.length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#16a34a"></div><div class="l">Active (paid)</div><div class="v">'+dealers.filter(function(d){return d.payCount>0}).length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#7c3aed"></div><div class="l">CNC</div><div class="v">'+dealers.filter(function(d){return d.ent==="CNC"}).length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#0891b2"></div><div class="l">CST</div><div class="v">'+dealers.filter(function(d){return d.ent==="CST"}).length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#16a34a"></div><div class="l">CSPL</div><div class="v">'+dealers.filter(function(d){return d.ent==="CSPL"}).length+'</div></div>';
+    h+='</div>';
+    
+    h+='<div class="card"><div class="card-h">All Dealers & Clients <span class="s">'+dealers.length+' total · from master list + payments</span></div>';
+    h+='<div style="padding:8px 14px"><input class="finp" id="dealerSearch" placeholder="Search dealers..." oninput="window._dsq=this.value;render()" value="'+(window._dsq||"")+'"></div>';
+    h+='<div class="card-b" style="padding:0"><table><thead><tr><th>Dealer / Client</th><th>Entity</th><th>Type</th><th class="r">Payments</th><th class="r">Total Paid</th><th>Last</th></tr></thead><tbody>';
+    
+    var _dsq=(window._dsq||"").toLowerCase();
+    var _filtered=_dsq?dealers.filter(function(d){return d.name.toLowerCase().indexOf(_dsq)>=0}):dealers;
+    
+    _filtered.slice(0,100).forEach(function(d){
+      h+='<tr class="clickrow">';
+      h+='<td class="fw6">'+d.name+'</td>';
+      h+='<td><span class="badge b-'+d.ent+'">'+d.ent+'</span></td>';
+      h+='<td><span style="font-size:10px;color:#888">'+d.type+'</span></td>';
+      h+='<td class="r mono">'+(d.payCount||d.count||0)+'</td>';
+      h+='<td class="r mono fw6 grn">'+(d.total>0?SH(d.total):"—")+'</td>';
+      h+='<td class="gry" style="font-size:11px">'+(d.lastDate||"—")+'</td>';
+      h+='</tr>';
+    });
+    if(_filtered.length>100)h+='<tr><td colspan="6" style="text-align:center;padding:8px;color:#888;font-size:11px">Showing 100 of '+_filtered.length+' — use search to filter</td></tr>';
+    h+='</tbody></table></div></div>';
+  }
+
+  
+  else if(tab==="reports"){
+    h+='<div class="card"><div class="card-h">Export Reports</div><div class="card-b"><div class="grid g3" style="gap:8px">';
+    h+='<button class="btn btn-b" onclick="exportPDF(\'All Payments\')" style="padding:14px">All Payments</button>';
+    h+='<button class="btn btn-g" onclick="exportPDF(\'Today\',function(e){return(e.ts||\'\').slice(0,10)===new Date().toISOString().slice(0,10)})" style="padding:14px">Today</button>';
+    h+='<button class="btn btn-p" onclick="exportPDF(\'This Month\',function(e){return(e.ts||\'\').slice(0,7)===new Date().toISOString().slice(0,7)})" style="padding:14px">This Month</button>';
+    h+='</div></div></div>';
+    // Settings
+    h+='<div class="card"><div class="card-h">Settings</div><div class="card-b">';
+    h+='<div class="grid g2" style="gap:10px">';
+    h+='<div><div class="flbl">Your Role</div><select class="fsel" onchange="userRole=this.value;localStorage.setItem(\'pg_role\',this.value);render()"><option value="cfo"'+(userRole==="cfo"?" selected":"")+'>CFO / Director</option><option value="ceo"'+(userRole==="ceo"?" selected":"")+'>CEO</option><option value="coo"'+(userRole==="coo"?" selected":"")+'>COO</option><option value="accounts"'+(userRole==="accounts"?" selected":"")+'>Accounts (Shahbaz)</option><option value="sales_manager"'+(userRole==="sales_manager"?" selected":"")+'>Sales Manager</option><option value="salesperson"'+(userRole==="salesperson"?" selected":"")+'>Salesperson</option><option value="warehouse"'+(userRole==="warehouse"?" selected":"")+'>Warehouse</option></select></div>';
+    h+='<div><div class="flbl">Claude API Key (AI extraction)</div><input class="finp" type="password" value="'+(pgSettings.claude_api_key||"")+'" placeholder="sk-ant-..." onchange="pgSettings.claude_api_key=this.value;saveSettings()"></div>';
+    h+='</div>';
+    h+='<div style="margin-top:10px;font-size:11px;color:#999"><b>Delete access:</b> Only CFO/CEO/COO roles can delete payments. Current role: <b>'+userRole+'</b></div>';
+    h+='</div></div>';
+  }
+
+  
+  else if(tab==="admin"){
+    if(userRole!=="ceo"&&userRole!=="coo"){h+='<div class="card"><div class="card-b" style="text-align:center;padding:30px;color:#999">Admin access restricted to CEO/COO only.</div></div>';}
+    else {
+      // User Management
+      var allUsers=Object.keys(USERS);
+      var pendingRegs=[];try{pendingRegs=JSON.parse(localStorage.getItem("pg_pending_reg")||"[]")}catch(e){}
+      
+      h+='<div class="card"><div class="card-h">User Management ('+allUsers.length+' users) <button class="btn btn-p btn-s" onclick="showAddUser()">+ Add User</button></div>';
+      h+='<table><thead><tr><th>Username</th><th>Name</th><th>Role</th><th>Title</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+      allUsers.forEach(function(key){
+        var u=USERS[key];
+        h+='<tr><td class="mono" style="font-size:11px">'+key+'</td>';
+        h+='<td class="fw6">'+u.name+'</td>';
+        h+='<td><span class="pill pill-b">'+u.role+'</span></td>';
+        h+='<td style="font-size:11px;color:#888">'+(u.title||"—")+'</td>';
+        h+='<td>'+(u.blocked?'<span class="pill pill-r">Blocked</span>':'<span class="pill pill-g">Active</span>')+'</td>';
+        h+='<td><button class="btn btn-o btn-s" onclick="toggleBlock(\''+key+'\')">'+( u.blocked?"Unblock":"Block")+'</button> <button class="btn btn-o btn-s" onclick="resetPassword(\''+key+'\')">Reset PW</button></td>';
+        h+='</tr>';
+      });
+      h+='</tbody></table></div>';
+      
+      // Pending Registrations
+      if(pendingRegs.length){
+        h+='<div class="card"><div class="card-h" style="color:#dc2626">Pending Registrations ('+pendingRegs.length+')</div>';
+        h+='<table><thead><tr><th>Name</th><th>Username</th><th>Phone</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+        pendingRegs.forEach(function(r,i){
+          h+='<tr><td class="fw6">'+r.name+'</td><td class="mono">'+r.user+'</td><td>'+( r.phone||"—")+'</td><td style="font-size:11px;color:#888">'+(r.date?r.date.slice(0,10):"")+'</td>';
+          h+='<td><button class="btn btn-g btn-s" onclick="approveReg('+i+')">Approve</button> <button class="btn btn-r btn-s" onclick="rejectReg('+i+')">Reject</button></td></tr>';
+        });
+        h+='</tbody></table></div>';
+      }
+      
+      // System Settings
+      h+='<div class="card"><div class="card-h">System Settings</div><div class="card-b">';
+      h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+      h+='<div><div class="flbl">Min Amount Filter (ignore below)</div><input class="finp" type="number" value="'+(pgSettings.min_amount||0)+'" onchange="pgSettings.min_amount=Number(this.value);saveSettings()"></div>';
+      h+='<div><div class="flbl">Blocked Email Senders (comma-separated)</div><input class="finp" value="'+(pgSettings.blocked_senders||"")+'" onchange="pgSettings.blocked_senders=this.value;saveSettings()"></div>';
+      h+='</div>';
+      h+='<div style="margin-top:10px"><div class="flbl">Claude API Key</div><input class="finp" type="password" value="'+(pgSettings.claude_api_key||"")+'" onchange="pgSettings.claude_api_key=this.value;saveSettings()"></div>';
+      h+='<div style="margin-top:14px;padding:12px;border-radius:8px;background:#f9fafb;border:1px solid #e5e7eb"><div style="font-size:13px;font-weight:700;margin-bottom:8px">WhatsApp Business API</div>';
+      h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
+      h+='<div><div class="flbl">Phone Number ID</div><input class="finp" value="'+(pgSettings.whatsapp_phone_id||"")+'" placeholder="From Meta Dashboard" onchange="pgSettings.whatsapp_phone_id=this.value;saveSettings()"></div>';
+      h+='<div><div class="flbl">Access Token</div><input class="finp" type="password" value="'+(pgSettings.whatsapp_token||"")+'" placeholder="Bearer token" onchange="pgSettings.whatsapp_token=this.value;saveSettings()"></div>';
+      h+='<div><div class="flbl">Daily Summary Recipients</div><input class="finp" value="'+(pgSettings.whatsapp_daily_to||"")+'" placeholder="03XX-XXX,03XX-XXX" onchange="pgSettings.whatsapp_daily_to=this.value;saveSettings()"></div>';
+      h+='<div><div class="flbl">Send Test</div><button class="btn btn-o" onclick="sendWhatsApp(prompt(&quot;Phone?&quot;),&quot;Test msg&quot;)">Test WhatsApp</button></div>';
+      h+='</div>';
+      h+='<div style="font-size:10px;color:#888;margin-top:6px">Setup: developers.facebook.com → WhatsApp → Cloud API → Get Phone ID + Token</div>';
+      h+='</div>';
+      h+='<div style="margin-top:10px"><button class="btn btn-o" onclick="sendDailySummaryWhatsApp()">Send Daily Summary Now</button></div>';
+      h+='<div style="margin-top:10px"><div class="flbl" style="display:none"><input class="finp" type="password" value="'+(pgSettings.claude_api_key||"")+'" onchange="pgSettings.claude_api_key=this.value;saveSettings()"></div>';
+      h+='</div></div>';
+    }
+  }
+  else if(tab==="activity"){
+    if(userRole!=="ceo"&&userRole!=="coo"){h+='<div class="card"><div class="card-b" style="text-align:center;padding:30px;color:#999">Activity log restricted to CEO/COO only.</div></div>';}
+    else {
+      h+='<div class="card"><div class="card-h">Activity Log ('+actLog.length+' entries) <button class="btn btn-o btn-s" onclick="exportActivityPDF()">PDF Export</button></div>';
+      
+      // Filters
+      h+='<div class="card-b" style="border-bottom:1px solid #f3f4f6;display:flex;gap:8px;flex-wrap:wrap">';
+      h+='<select class="fsel" id="actFilterUser" onchange="render()" style="width:auto"><option value="">All Users</option>';
+      var logUsers={};actLog.forEach(function(a){logUsers[a.user]=true});
+      Object.keys(logUsers).forEach(function(u){h+='<option value="'+u+'">'+u+'</option>'});
+      h+='</select>';
+      h+='<select class="fsel" id="actFilterAction" onchange="render()" style="width:auto"><option value="">All Actions</option>';
+      var logActions={};actLog.forEach(function(a){logActions[a.action]=true});
+      Object.keys(logActions).forEach(function(a){h+='<option value="'+a+'">'+a+'</option>'});
+      h+='</select>';
+      h+='<input class="finp" type="date" id="actFilterDate" onchange="render()" style="width:auto">';
+      h+='</div>';
+      
+      h+='<table><thead><tr><th>Time</th><th>User</th><th>Role</th><th>Action</th><th>Detail</th></tr></thead><tbody>';
+      var filtered=actLog;
+      var fu=document.getElementById("actFilterUser");if(fu&&fu.value)filtered=filtered.filter(function(a){return a.user===fu.value});
+      var fa=document.getElementById("actFilterAction");if(fa&&fa.value)filtered=filtered.filter(function(a){return a.action===fa.value});
+      var fd=document.getElementById("actFilterDate");if(fd&&fd.value)filtered=filtered.filter(function(a){return(a.ts||"").slice(0,10)===fd.value});
+      
+      filtered.slice(0,100).forEach(function(a){
+        h+='<tr><td style="font-size:10px;color:#888;white-space:nowrap">'+(a.ts?new Date(a.ts).toLocaleString():"")+'</td>';
+        h+='<td class="fw6" style="font-size:12px">'+( a.user||"?")+'</td>';
+        h+='<td style="font-size:10px;color:#888">'+(a.role||"")+'</td>';
+        h+='<td><span class="pill '+(a.action==="login"?"pill-g":a.action==="delete"||a.action==="perm_delete"?"pill-r":a.action==="reject"?"pill-r":"pill-b")+'">'+(a.action||"")+'</span></td>';
+        h+='<td style="font-size:11px;color:#555;max-width:300px;overflow:hidden;text-overflow:ellipsis">'+(a.detail||"")+'</td></tr>';
+      });
+      h+='</tbody></table></div>';
+      
+      // Daily Summary
+      var dailyAct={};
+      actLog.forEach(function(a){var d=(a.ts||"").slice(0,10);if(!d)return;if(!dailyAct[d])dailyAct[d]={date:d,count:0,users:{},actions:{}};dailyAct[d].count++;dailyAct[d].users[a.user]=true;dailyAct[d].actions[a.action]=(dailyAct[d].actions[a.action]||0)+1});
+      var days=Object.values(dailyAct).sort(function(a,b){return b.date>a.date?1:-1});
+      if(days.length){
+        h+='<div class="card"><div class="card-h">Daily Summary</div>';
+        h+='<table><thead><tr><th>Date</th><th>Actions</th><th>Users</th><th>Breakdown</th></tr></thead><tbody>';
+        days.slice(0,30).forEach(function(d){
+          var breakdown=Object.entries(d.actions).map(function(e){return e[0]+":"+e[1]}).join(", ");
+          h+='<tr><td class="fw6">'+d.date+'</td><td>'+d.count+'</td><td>'+Object.keys(d.users).length+'</td><td style="font-size:10px;color:#888">'+breakdown+'</td></tr>';
+        });
+        h+='</tbody></table></div>';
+      }
+    }
+  }
+  else if(tab==="archive"){
+    h+='<div class="card"><div class="card-h">Archived Items ('+archived.length+')</div>';
+    if(!archived.length){h+='<div class="card-b" style="text-align:center;padding:30px;color:#999">No archived items.</div>'}
+    else {
+      h+='<table><thead><tr><th>ID</th><th>Customer</th><th>Amount</th><th>Archived By</th><th>Date</th><th>Actions</th></tr></thead><tbody>';
+      archived.forEach(function(e,i){
+        h+='<tr><td class="mono gry" style="font-size:10px">'+(e.id||"")+'</td>';
+        h+='<td class="fw6">'+(e.cust||"?")+'</td>';
+        h+='<td class="r mono fw6">PKR '+Number(e.amt||0).toLocaleString()+'</td>';
+        h+='<td style="font-size:11px;color:#888">'+(e.archived_by||"?")+'</td>';
+        h+='<td style="font-size:11px;color:#888">'+(e.archived_at?e.archived_at.slice(0,10):"")+'</td>';
+        h+='<td>';
+        if(userRole==="ceo"||userRole==="coo"||userRole==="accounts")h+='<button class="btn btn-g btn-s" onclick="restoreFromArchive('+i+')">Restore</button> ';
+        if(userRole==="ceo"||userRole==="coo")h+='<button class="btn btn-r btn-s" onclick="permanentDelete('+i+')">Perm Delete</button>';
+        h+='</td></tr>';
+      });
+      h+='</tbody></table>'}
+    h+='</div>';
+  }
+
+  else if(tab==="bs"){
+    var ast=[],lia=[],eq=[];
+    for(i=0;i<keys.length;i++){a=b[keys[i]];if(a.code[0]==="1"&&a.type!=="header"&&a.bal)ast.push(a);if(a.code[0]==="2"&&a.type!=="header"&&a.bal)lia.push(a);if(a.code[0]==="3"&&a.type!=="header"&&a.bal)eq.push(a)}
+    ast.sort(function(x,y){return x.code<y.code?-1:1});
+    var tA=0,tL=0,tE=0;ast.forEach(function(a){tA+=a.bal});lia.forEach(function(a){tL+=a.bal});eq.forEach(function(a){tE+=a.bal});
+    h+='<div class='+Q+'card'+Q+'><div class='+Q+'card-h'+Q+'>Balance Sheet <span class='+Q+'s'+Q+'>'+(Math.abs(tA-tL-tE)<2?"&#10003; A = L+E":"&#9888; Diff "+PKR(tA-tL-tE))+'</span></div><table><tbody>';
+    h+='<tr class='+Q+'sect sect-a'+Q+'><td colspan='+Q+'2'+Q+'>ASSETS</td></tr>';
+    ast.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+' data-pcode='+Q+a.code+Q+' data-pname='+Q+a.name+Q+' data-pbal='+Q+a.bal+Q+' class='+Q+'person-link'+Q+'>'+a.bal.toLocaleString()+'</td></tr>'});
+    h+='<tr style='+Q+'background:#2563eb;color:#fff'+Q+'><td class='+Q+'fw7'+Q+' style='+Q+'padding:8px 10px'+Q+'>Total Assets</td><td class='+Q+'r mono fw7'+Q+' style='+Q+'padding:8px 10px'+Q+'>'+tA.toLocaleString()+'</td></tr>';
+    h+='<tr class='+Q+'sect sect-l'+Q+'><td colspan='+Q+'2'+Q+'>LIABILITIES</td></tr>';
+    lia.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+' data-pcode='+Q+a.code+Q+' data-pname='+Q+a.name+Q+' data-pbal='+Q+a.bal+Q+' class='+Q+'person-link'+Q+'>'+a.bal.toLocaleString()+'</td></tr>'});
+    h+='<tr style='+Q+'border-top:2px solid #dc2626'+Q+'><td class='+Q+'fw7'+Q+'>Total Liabilities</td><td class='+Q+'r mono fw7'+Q+'>'+tL.toLocaleString()+'</td></tr>';
+    h+='<tr class='+Q+'sect sect-e'+Q+'><td colspan='+Q+'2'+Q+'>EQUITY</td></tr>';
+    eq.forEach(function(a){h+='<tr><td style='+Q+'padding-left:24px'+Q+'>'+a.name+'</td><td class='+Q+'r mono'+Q+' data-pcode='+Q+a.code+Q+' data-pname='+Q+a.name+Q+' data-pbal='+Q+a.bal+Q+' class='+Q+'person-link'+Q+'>'+a.bal.toLocaleString()+'</td></tr>'});
+    h+='<tr class='+Q+'totrow'+Q+'><td>Liabilities + Equity</td><td class='+Q+'r mono'+Q+'>'+(tL+tE).toLocaleString()+'</td></tr></tbody></table></div>';
+  }
+
+  else if(tab==="emails"){
+    var _feeds=window.PG_FEEDS||[];
+    var _loaded=window.PG_LOADED||false;
+    h+='<div class="grid g5">';
+    h+='<div class="kpi"><div class="bar" style="background:#2563eb"></div><div class="l">Total Emails</div><div class="v">'+_feeds.length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#16a34a"></div><div class="l">Matched</div><div class="v">'+_feeds.filter(function(f){return f.match_status==="MATCHED"}).length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#f59e0b"></div><div class="l">Unmatched</div><div class="v">'+_feeds.filter(function(f){return f.match_status!=="MATCHED"}).length+'</div></div>';
+    h+='<div class="kpi"><div class="bar" style="background:#'+(_loaded?"16a34a":"f59e0b")+'"></div><div class="l">Firebase</div><div class="v" style="font-size:13px">'+(_loaded?"🟢 Live":"🟡 Loading")+'</div></div>';
+    h+='</div>';
+
+    if(!_loaded){
+      h+='<div class="card"><div class="card-b" style="text-align:center;padding:30px;color:#888">⏳ Connecting to Firebase bank feed...</div></div>';
+    } else if(_feeds.length===0){
+      h+='<div class="warn-y"><b>⚠️ No bank emails in system.</b> The Gmail Apps Script trigger may have stopped. Go to script.google.com and check if the trigger is active. Or click Fetch Gmail above to pull emails manually.</div>';
+    } else {
+      h+='<div class="card"><div class="card-h">Bank Emails from Firebase <span class="s">'+_feeds.length+' emails · via Gmail Apps Script</span></div>';
+      h+='<div class="card-b" style="padding:0"><table><thead><tr>';
+      h+='<th>Bank</th><th>Amount</th><th>TID / Ref</th><th>Payer</th><th>Account</th><th>Date</th><th>Status</th><th>Matched To</th>';
+      h+='</tr></thead><tbody>';
+      _feeds.forEach(function(f){
+        var matched=f.match_status==="MATCHED";
+        h+='<tr style="background:'+(matched?"#f0fdf4":"#fff")+'">';
+        h+='<td><span class="badge b-CST">'+(f.bank||"?")+'</span></td>';
+        h+='<td class="r mono fw6 grn">PKR '+(Number(f.amount||0).toLocaleString())+'</td>';
+        h+='<td class="mono" style="font-size:10px">'+(f.ref||f.tid||"—")+'</td>';
+        h+='<td style="font-size:11px">'+(f.payer||"—")+'</td>';
+        h+='<td class="mono" style="font-size:10px">'+(f.account||"—")+'</td>';
+        h+='<td class="gry" style="font-size:10px">'+(f.processed_at?(f.processed_at+"").slice(0,16):"—")+'</td>';
+        h+='<td><span class="badge '+(matched?"b-posted":"b-pending")+'">'+(matched?"MATCHED":"UNMATCHED")+'</span></td>';
+        h+='<td class="mono gry" style="font-size:10px">'+(f.matched_to||"—")+'</td>';
+        h+='</tr>';
+      });
+      h+='</tbody></table></div></div>';
+    }
+  }
+
+  h+="</div>";
+  document.getElementById("app").innerHTML=h;
+}
+
+
+
+// ═══ PERSON DETAIL MODAL ═══
+function showPerson(code,name,bal){
+  var ld=PERSON_LEDGERS[code]||null;
+  var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><h2>'+name+'</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+  m+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px"><div style="padding:10px;border-radius:8px;background:'+(bal>0?"#f0fdf4":"#fef2f2")+';text-align:center"><div style="font-size:10px;color:#888">Balance</div><div style="font-size:20px;font-weight:700;font-family:monospace;color:'+(bal>0?"#111827":"#dc2626")+'">PKR '+Math.abs(Math.round(bal)).toLocaleString()+'</div><div style="font-size:10px;color:#888">'+(bal>0?"OWES COMPANY":"COMPANY OWES")+'</div></div>';
+  var aj=[];journals.forEach(function(j){if(j.status==="posted"){j.lines.forEach(function(l){if(l.a===code){aj.push({date:j.date,ref:j.ref,nar:j.nar,ent:j.ent,dr:l.d,cr:l.c})}})}});
+  m+='<div style="padding:10px;border-radius:8px;background:#eff6ff;text-align:center"><div style="font-size:10px;color:#888">Entries</div><div style="font-size:20px;font-weight:700">'+aj.length+'</div></div></div>';
+  if(ld){m+='<div style="font-size:12px;font-weight:700;margin-bottom:6px">Detailed Ledger</div><table><thead><tr><th>Date</th><th>Description</th><th class="r grn">Debit</th><th class="r red">Credit</th><th class="r">Balance</th></tr></thead><tbody><tr style="background:#f9fafb"><td colspan="4" style="font-weight:600;color:#888">Opening</td><td class="r mono fw7">437,047</td></tr>';ld.forEach(function(e){m+='<tr><td style="font-size:11px;color:#888;white-space:nowrap">'+e.d+'</td><td>'+e.desc+'</td><td class="r mono '+(e.dr?"grn fw6":"")+'">'+(e.dr?e.dr.toLocaleString():"")+'</td><td class="r mono '+(e.cr?"red fw6":"")+'">'+(e.cr?e.cr.toLocaleString():"")+'</td><td class="r mono fw6">'+e.bal.toLocaleString()+'</td></tr>'});var td=0,tc=0;ld.forEach(function(e){td+=e.dr;tc+=e.cr});m+='<tr style="background:#111;color:#fff"><td colspan="2" style="padding:8px 10px;font-weight:700">Closing</td><td class="r mono" style="padding:8px 10px">'+td.toLocaleString()+'</td><td class="r mono" style="padding:8px 10px">'+tc.toLocaleString()+'</td><td class="r mono" style="padding:8px 10px">'+ld[ld.length-1].bal.toLocaleString()+'</td></tr></tbody></table>';m+='<div style="margin-top:10px;padding:10px;border-radius:8px;background:#fef3c7;border:1px solid #fcd34d;font-size:11px;color:#92400e"><b>'+name+' owes PKR '+ld[ld.length-1].bal.toLocaleString()+'</b></div>';}
+  if(aj.length){m+='<div style="font-size:12px;font-weight:700;margin:14px 0 6px">PayGate Entries</div><table><thead><tr><th>Date</th><th>Ref</th><th>Narration</th><th class="r grn">DR</th><th class="r red">CR</th></tr></thead><tbody>';aj.forEach(function(j){m+='<tr><td style="font-size:11px;color:#888">'+j.date+'</td><td class="mono gry" style="font-size:10px">'+j.ref+'</td><td>'+j.nar+'</td><td class="r mono grn">'+(j.dr?j.dr.toLocaleString():"")+'</td><td class="r mono red">'+(j.cr?j.cr.toLocaleString():"")+'</td></tr>'});m+='</tbody></table>';}
+  if(!ld&&!aj.length)m+='<div style="text-align:center;padding:30px;color:#999">No ledger data yet.</div>';
+  m+='</div></div></div>';var d=document.createElement("div");d.id="personModal";d.innerHTML=m;document.body.appendChild(d);
+}
+function closeModal(){var m=document.getElementById("personModal");if(m)m.remove()}
+
+// ═══ SOUND + ALERTS ═══
+function playAlertSound(){try{var ctx=new(window.AudioContext||window.webkitAudioContext)();[523.25,659.25,783.99].forEach(function(f,i){var o=ctx.createOscillator();var g=ctx.createGain();o.type="sine";o.frequency.value=f;g.gain.setValueAtTime(0.4,ctx.currentTime+i*.12);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+i*.12+.6);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+i*.12);o.stop(ctx.currentTime+i*.12+.6)})}catch(e){}}
+function showAlertToast(n,e){var o=document.getElementById("alertToast");if(o)o.remove();var d=document.createElement("div");d.id="alertToast";d.className="alert-toast";d.innerHTML='<button class="at-close" onclick="this.parentElement.remove()">x</button><div class="at-title">New Payment!</div><div class="at-body">'+(e?(e.cust||"?")+" - PKR "+Number(e.amt||0).toLocaleString()+" ("+e.ent+")":n+" new")+'</div>';document.body.appendChild(d);setTimeout(function(){var x=document.getElementById("alertToast");if(x)x.remove()},8000)}
+function checkNewPayments(){var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}if(p.length>lastPgCount&&lastPgCount>=0){showAlertToast(p.length-lastPgCount,p[0]);playAlertSound();if(tab==="incoming")render()}lastPgCount=p.length}
+function testAlert(){showAlertToast(1,{cust:"Test Customer",amt:150000,ent:"CNC"});playAlertSound()}
+
+// ═══ AI TEXT EXTRACTION ═══
+function extractFromText(text){
+  var r={amount:0,bank:"",account:"",payer:"",ref:"",date:"",raw:text,confidence:"low",method:"regex"};
+  if(!text)return r;
+  var amtM=text.match(/(?:Rs\.?|PKR|Rs)\s*([\d,]+(?:\.\d+)?)/i);
+  if(amtM){r.amount=parseFloat(amtM[1].replace(/,/g,""));r.confidence="medium"}
+  var bankMap={"habib":"BAH","alhabib":"BAH","bahl":"BAH","alfalah":"BAFL","bafl":"BAFL","meezan":"Meezan","soneri":"Soneri","hbl":"HBL","ubl":"UBL","mcb":"MCB","jazzcash":"JazzCash","easypaisa":"Easypaisa"};
+  var tl=text.toLowerCase();for(var k in bankMap){if(tl.indexOf(k)>=0){r.bank=bankMap[k];break}}
+  var accM=text.match(/(?:A\/C|AC|account)[:\s#]*([\d*\-X]+)/i);if(accM)r.account=accM[1];
+  var payerM=text.match(/(?:from|sender|by|received from)[:\s]+([A-Za-z][A-Za-z\s\.]+?)(?:\s*[\(\.]|\s+(?:MBL|HBL|via|on|AC)|$)/i);if(payerM)r.payer=payerM[1].trim();
+  var refM=text.match(/(?:Ref|TID|Txn)[:\s#]*([\w\-]+)/i);if(refM)r.ref=refM[1];
+  var dateM=text.match(/(\d{1,2}[\-\/]\w{3}[\-\/]\d{2,4}|\d{1,2}[\-\/]\d{1,2}[\-\/]\d{2,4})/);if(dateM)r.date=dateM[1];
+  if(r.amount>0&&r.bank)r.confidence="high";
+  return r;
+}
+function extractWithAI(text,imgB64,cb){
+  var key=pgSettings.claude_api_key||"";
+  if(!key){cb(extractFromText(text));return}
+  var msgs=[{role:"user",content:[]}];
+  if(imgB64)msgs[0].content.push({type:"image",source:{type:"base64",media_type:"image/jpeg",data:imgB64}});
+  msgs[0].content.push({type:"text",text:"Extract payment details. Return ONLY JSON: {amount,bank,account,payer,ref,date}\n\n"+text});
+  fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:300,messages:msgs})}).then(function(r){return r.json()}).then(function(d){try{var j=JSON.parse(d.content[0].text.replace(/```json|```/g,"").trim());j.confidence="high";j.method="claude-ai";j.raw=text;cb(j)}catch(e){cb(extractFromText(text))}}).catch(function(){cb(extractFromText(text))});
+}
+
+// ═══ PAYMENT REVIEW DETAIL ═══
+
+// ═══════════════════════════════════════════════
+// FRAUD & RISK DETECTION ENGINE
+// ═══════════════════════════════════════════════
+
+function runFraudChecks(entry, idx, allEntries){
+  var flags = [];
+  var amt = Number(entry.amt || 0);
+  var ts = entry.ts ? new Date(entry.ts) : new Date();
+  var ai = entry.ai_extracted || {};
+  
+  // 1. DUPLICATE PHOTO — hash comparison
+  if(entry.photo){
+    var photoSig = entry.photo.length + "_" + entry.photo.slice(-50);
+    allEntries.forEach(function(other, oi){
+      if(oi !== idx && other.photo){
+        var otherSig = other.photo.length + "_" + other.photo.slice(-50);
+        if(photoSig === otherSig){
+          flags.push({level:"critical",code:"DUP_PHOTO",msg:"DUPLICATE RECEIPT — same photo used in " + (other.id||"PG-???"),detail:"This exact receipt image was already submitted in entry " + other.id + " on " + (other.date||"?")});
+        }
+      }
+    });
+  }
+  
+  // 2. DUPLICATE AMOUNT — same customer, same amount within 24hrs
+  allEntries.forEach(function(other, oi){
+    if(oi !== idx && other.cust === entry.cust && Math.abs(Number(other.amt||0) - amt) < 10){
+      var otherTs = other.ts ? new Date(other.ts) : null;
+      if(otherTs && Math.abs(ts - otherTs) < 86400000){
+        var hrs = Math.round(Math.abs(ts - otherTs) / 3600000);
+        flags.push({level:"warning",code:"DUP_AMOUNT",msg:"POSSIBLE DUPLICATE — PKR " + amt.toLocaleString() + " also in " + (other.id||"?"),detail:"Same customer (" + entry.cust + ") same amount, " + hrs + " hours apart. Entry: " + other.id});
+      }
+    }
+  });
+  
+  
+  // 2b. SAME DEPOSIT BY DIFFERENT SALESPEOPLE
+  allEntries.forEach(function(other, oi){
+    if(oi !== idx && other.cust === entry.cust && Math.abs(Number(other.amt||0) - amt) < 100){
+      var sameSubmitter = (other.submitted_by||"") === (entry.submitted_by||"");
+      if(!sameSubmitter && (other.submitted_by||"unknown") !== (entry.submitted_by||"unknown")){
+        flags.push({level:"critical",code:"DUAL_SUBMIT",msg:"DUAL SUBMISSION \u2014 also posted by " + (other.submitted_by||"another person") + " as " + (other.id||"?"),detail:"Two different salespeople submitted the same payment. " + (entry.submitted_by||"Person A") + " posted this entry, but " + (other.submitted_by||"Person B") + " also posted " + (other.id||"?") + " for " + (other.cust||"same customer") + " PKR " + Number(other.amt||0).toLocaleString() + ". Only ONE should be approved."});
+      }
+    }
+  });
+
+  // 3. OLD RECEIPT — AI date doesn't match today
+  if(ai.date){
+    var receiptDateStr = ai.date || "";
+    var todayStr = new Date().toISOString().slice(0,10);
+    var submissionStr = (entry.ts||"").slice(0,10);
+    // Simple check: if receipt date string doesn't contain today's day
+    var todayDay = new Date().getDate();
+    var todayMonth = new Date().toLocaleString("en",{month:"short"});
+    if(receiptDateStr.indexOf(String(todayDay)) < 0 || (receiptDateStr.toLowerCase().indexOf(todayMonth.toLowerCase()) < 0 && receiptDateStr.indexOf(String(new Date().getMonth()+1)) < 0)){
+      flags.push({level:"warning",code:"OLD_RECEIPT",msg:"OLD RECEIPT — photo date: " + receiptDateStr + ", submitted: " + (entry.date||"today"),detail:"The receipt/screenshot shows a different date than when it was submitted. Could be a recycled receipt."});
+    }
+  }
+  
+  // 4. STALE DEPOSIT — entry timestamp vs today
+  if(entry.ts){
+    var entryDate = new Date(entry.ts);
+    var now = new Date();
+    var daysDiff = Math.floor((now - entryDate) / 86400000);
+    if(daysDiff >= 1 && !entry.journaled){
+      flags.push({level:"info",code:"STALE",msg:"STALE — submitted " + daysDiff + " day(s) ago, still pending",detail:"This payment was submitted on " + (entry.date||"?") + " but not yet processed."});
+    }
+  }
+  
+  // 5. TID ALREADY EXISTS — check for duplicate transaction IDs
+  if(ai.ref || ai.tid){
+    var tid = ai.ref || ai.tid;
+    allEntries.forEach(function(other, oi){
+      if(oi !== idx){
+        var otherAi = other.ai_extracted || {};
+        if((otherAi.ref && otherAi.ref === tid) || (otherAi.tid && otherAi.tid === tid)){
+          flags.push({level:"critical",code:"DUP_TID",msg:"DUPLICATE TID — " + tid + " already in " + (other.id||"?"),detail:"Transaction ID " + tid + " was already used in entry " + other.id + ". This is the same bank transaction being submitted again."});
+        }
+      }
+    });
+  }
+  
+  
+  // 5b. BANK VERIFICATION ALREADY CONSUMED
+  if(entry.bank_feed_ref || (ai.ref || ai.tid)){
+    var thisRef = entry.bank_feed_ref || ai.ref || ai.tid || "";
+    if(thisRef){
+      allEntries.forEach(function(other, oi){
+        if(oi !== idx && other.journaled){
+          var otherRef = other.bank_feed_ref || "";
+          var otherAi = other.ai_extracted || {};
+          var otherTid = otherRef || otherAi.ref || otherAi.tid || "";
+          if(otherTid && otherTid === thisRef){
+            flags.push({level:"critical",code:"VERIFICATION_USED",msg:"BANK VERIFICATION ALREADY USED \u2014 consumed by " + (other.id||"?"),detail:"The bank transaction " + thisRef + " was already used to verify and POST entry " + other.id + " (" + (other.cust||"?") + " PKR " + Number(other.amt||0).toLocaleString() + "). This same bank confirmation CANNOT be used twice. REJECT this entry."});
+          }
+        }
+      });
+    }
+  }
+
+  // 6. AMOUNT MISMATCH (from V7)
+  if(ai.amount && amt > 0 && Math.abs(ai.amount - amt) > 10){
+    flags.push({level:"critical",code:"AMT_MISMATCH",msg:"AMOUNT MISMATCH — Claimed PKR " + amt.toLocaleString() + " vs Receipt PKR " + ai.amount.toLocaleString(),detail:"Difference of PKR " + Math.abs(amt - ai.amount).toLocaleString() + ". The salesperson claimed a different amount than what the receipt shows."});
+  }
+  
+  // 7. SENDER ACCOUNT INTELLIGENCE
+  if(ai.account){
+    var acctHistory=[];
+    var seenByThisDealer=false;
+    var seenByOtherDealer=false;
+    var otherDealerNames=[];
+    
+    allEntries.forEach(function(other, oi){
+      if(oi===idx)return;
+      var otherAcct=other.sender_account||(other.ai_extracted&&other.ai_extracted.account)||"";
+      if(otherAcct===ai.account){
+        acctHistory.push(other);
+        if(other.cust===entry.cust){
+          seenByThisDealer=true;
+        } else {
+          seenByOtherDealer=true;
+          if(otherDealerNames.indexOf(other.cust)<0)otherDealerNames.push(other.cust);
+        }
+      }
+    });
+    
+    if(seenByOtherDealer){
+      // CRITICAL: This account was used by a DIFFERENT dealer before
+      flags.push({level:"critical",code:"CROSS_DEALER_ACCT",msg:"CROSS-DEALER ACCOUNT \u2014 " + ai.account + " belongs to: " + otherDealerNames.join(", "),detail:"Account " + ai.account + " (" + (ai.payer||"?") + ") was previously used to deposit for: " + otherDealerNames.join(", ") + ". Now being used for " + (entry.cust||"?") + ". This could mean: (1) shared account between dealers, (2) wrong dealer selected, or (3) fraud. Verify with both dealers."});
+    } else if(seenByThisDealer){
+      // Known account for this dealer - all good
+      flags.push({level:"info",code:"KNOWN_ACCT",msg:"KNOWN ACCOUNT \u2014 " + ai.account + " seen " + acctHistory.length + " time(s) for " + (entry.cust||"?"),detail:"This account has deposited for " + (entry.cust||"this dealer") + " before. Trusted sender."});
+    } else {
+      // First time seeing this account at all
+      flags.push({level:"warning",code:"NEW_ACCT",msg:"NEW ACCOUNT \u2014 " + ai.account + " (" + (ai.payer||"unknown") + ") never seen before",detail:"First time deposit from account " + ai.account + " (" + (ai.payer||"?") + "). Not previously associated with " + (entry.cust||"any dealer") + " or any other dealer. Verify sender identity."});
+    }
+  }
+  // 8. WRONG RECIPIENT — check if money went to our account
+  if(ai.recipient){
+    var r = ai.recipient.toUpperCase();
+    if(r.indexOf("COGNITIVE") < 0 && r.indexOf("CNC") < 0 && r.indexOf("CS TRADER") < 0 && r.indexOf("CSPL") < 0){
+      flags.push({level:"critical",code:"WRONG_RECIP",msg:"WRONG RECIPIENT — " + ai.recipient,detail:"Money was sent to '" + ai.recipient + "' which does not match any company account (Cognitive Solutions / CNC / CS Traders / CSPL)."});
+    }
+  }
+  
+  // 9. OFF-HOURS DEPOSIT
+  if(ai.time){
+    var timeMatch = ai.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+    if(timeMatch){
+      var hr = parseInt(timeMatch[1]);
+      if(timeMatch[3] && timeMatch[3].toUpperCase() === "PM" && hr < 12) hr += 12;
+      if(timeMatch[3] && timeMatch[3].toUpperCase() === "AM" && hr === 12) hr = 0;
+      if(hr < 8 || hr > 20){
+        flags.push({level:"info",code:"OFF_HOURS",msg:"OFF-HOURS — deposit at " + ai.time,detail:"Transaction made outside normal banking hours (8AM-8PM). Could be online transfer or suspicious."});
+      }
+    }
+  }
+  
+  // 10. VELOCITY — too many from same submitter in 1 hour
+  var recentCount = 0;
+  var oneHourAgo = new Date(ts.getTime() - 3600000);
+  allEntries.forEach(function(other){
+    if(other.ts && new Date(other.ts) > oneHourAgo && new Date(other.ts) <= ts){
+      recentCount++;
+    }
+  });
+  if(recentCount > 5){
+    flags.push({level:"warning",code:"HIGH_VELOCITY",msg:"HIGH VELOCITY — " + recentCount + " entries in last hour",detail:recentCount + " payment entries submitted within the same hour. Unusual pattern."});
+  }
+  
+  // 12. NO EVIDENCE — no photo AND no text message
+  if(!entry.photo && !entry.source_text){
+    flags.push({level:"warning",code:"NO_EVIDENCE",msg:"NO EVIDENCE — no receipt photo or message",detail:"Salesperson submitted this payment without any supporting evidence (no photo, no pasted message). Cannot verify."});
+  }
+  
+  // Sort: critical first, then warning, then info
+  var order = {critical:0, warning:1, info:2};
+  flags.sort(function(a,b){return (order[a.level]||9) - (order[b.level]||9)});
+  
+  return flags;
+}
+
+function renderFraudFlags(flags){
+  if(!flags.length) return '<div style="padding:8px;background:#dcfce7;border:1px solid #86efac;border-radius:8px;text-align:center;font-size:12px;color:#16a34a;font-weight:600;margin:10px 0">NO FLAGS — All checks passed</div>';
+  
+  var h = '<div style="margin:10px 0">';
+  h += '<div style="font-size:11px;font-weight:700;color:#111;margin-bottom:6px">RISK FLAGS (' + flags.length + ')</div>';
+  flags.forEach(function(f){
+    var bg = f.level==="critical"?"#fef2f2":f.level==="warning"?"#fffbeb":"#eff6ff";
+    var bc = f.level==="critical"?"#fca5a5":f.level==="warning"?"#fcd34d":"#93c5fd";
+    var tc = f.level==="critical"?"#dc2626":f.level==="warning"?"#d97706":"#111827";
+    var icon = f.level==="critical"?"&#128308;":f.level==="warning"?"&#128992;":"&#128309;";
+    h += '<div style="padding:8px 10px;background:'+bg+';border:1px solid '+bc+';border-radius:8px;margin-bottom:4px">';
+    h += '<div style="font-size:12px;font-weight:700;color:'+tc+'">'+icon+' '+f.msg+'</div>';
+    h += '<div style="font-size:10px;color:#666;margin-top:2px">'+f.detail+'</div>';
+    h += '</div>';
+  });
+  h += '</div>';
+  return h;
+}
+
+function showPaymentReview(idx){
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var e=pgRaw[idx];if(!e)return;
+  
+  var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal" style="max-width:900px"><div class="modal-h"><h2>Payment Review: '+(e.id||"--")+'</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+  
+  // Status
+  var st=e.journaled?"POSTED":e.bank_verified?"BANK VERIFIED":e.rejected?"REJECTED":"PENDING REVIEW";
+  var stc=e.journaled?"pill-g":e.bank_verified?"pill-b":e.rejected?"pill-r":"pill-y";
+  m+='<div style="margin-bottom:14px;display:flex;gap:6px;align-items:center"><span class="pill '+stc+'" style="font-size:12px;padding:4px 12px">'+st+'</span>';
+  if(e.ai_extracted)m+='<span class="pill pill-p">AI Analyzed</span>';
+  m+='</div>';
+  
+    var fraudFlags=runFraudChecks(e,idx,pgRaw);m+=renderFraudFlags(fraudFlags);
+  // === 3-COLUMN LAYOUT ===
+  m+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">';
+  
+  // COL 1: Salesperson Claim
+  m+='<div class="review-col claim"><div style="font-size:11px;font-weight:700;color:#2563eb;margin-bottom:8px">SALESPERSON CLAIM</div>';
+  m+='<div style="font-size:10px;color:#888">Customer</div><div class="fw6" style="margin-bottom:4px">'+(e.cust||"--")+'</div>';
+  m+='<div style="font-size:10px;color:#888">Claimed Amount</div><div class="fw7 grn" style="font-size:18px;font-family:monospace;margin-bottom:4px">PKR '+Number(e.amt||0).toLocaleString()+'</div>';
+  m+='<div style="font-size:10px;color:#888">Entity</div><div style="margin-bottom:4px"><span class="badge b-'+(e.ent||"CST")+'">'+(e.ent||"--")+'</span></div>';
+  m+='<div style="font-size:10px;color:#888">Type</div><div style="margin-bottom:4px">'+(e.typ||"--")+'</div>';
+  m+='<div style="font-size:10px;color:#888">Date/Time</div><div style="margin-bottom:4px">'+(e.date||"")+" "+(e.time||"")+'</div>';
+  if(e.note)m+='<div style="font-size:10px;color:#888">Note</div><div style="margin-bottom:4px;font-size:11px">'+e.note+'</div>';
+  m+='</div>';
+  
+  // COL 2: Receipt Photo + Depositor Message
+  m+='<div style="padding:10px;border-radius:8px;background:#f9fafb;border:1px solid #e5e7eb">';
+  m+='<div style="font-size:11px;font-weight:700;color:#111;margin-bottom:8px">EVIDENCE</div>';
+  if(e.photo){
+    m+='<div style="font-size:10px;color:#888;margin-bottom:3px">Receipt Screenshot</div>';
+    m+='<img src="'+e.photo+'" style="width:100%;border-radius:6px;border:1px solid #ddd;margin-bottom:8px">';
+  }
+  if(e.source_text){
+    m+='<div style="font-size:10px;color:#888;margin-bottom:3px">Pasted Message</div>';
+    m+='<div style="background:white;border:1px solid #ddd;border-radius:6px;padding:8px;font-size:11px;font-family:monospace;max-height:120px;overflow-y:auto">'+e.source_text.replace(/</g,"&lt;").replace(/\n/g,"<br>")+'</div>';
+  }
+  if(e.depositor_message){
+    m+='<div style="font-size:10px;color:#888;margin-bottom:3px;margin-top:8px">Depositor Message</div>';
+    m+='<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:8px;font-size:11px">'+e.depositor_message.replace(/</g,"&lt;")+'</div>';
+  }
+  if(e.invoice){
+    m+='<div style="font-size:10px;color:#888;margin-bottom:3px;margin-top:8px">Invoice Attached</div>';
+    if(e.invoice.indexOf("image")>=0)m+='<img src="'+e.invoice+'" style="max-width:100%;border-radius:6px;border:1px solid #ddd">';
+    else m+='<div style="padding:8px;background:#f0fdf4;border-radius:6px;font-size:11px;color:#16a34a">'+( e.invoice_name||"Document attached")+'</div>';
+  }
+  if(!e.photo&&!e.source_text&&!e.depositor_message){
+    m+='<div style="text-align:center;padding:20px;color:#999;font-size:12px">No receipt photo or message provided</div>';
+  }
+  m+='</div>';
+  
+  // COL 3: AI Extraction + Bank Verification
+  m+='<div>';
+  
+  // AI Extracted details (if photo was analyzed)
+  m+='<div style="padding:10px;border-radius:8px;background:linear-gradient(135deg,#faf5ff,#eff6ff);border:1px solid #c7d2fe;margin-bottom:10px">';
+  m+='<div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:8px"><span class="ai-tag">AI</span> EXTRACTED FROM RECEIPT</div>';
+  m+='<div id="aiExtract_'+idx+'">';
+  if(e.ai_extracted){
+    var ai=e.ai_extracted;
+    m+='<div style="font-size:10px;color:#888">Actual Amount</div><div class="fw7" style="font-size:18px;font-family:monospace;color:'+(ai.amount&&Math.abs(ai.amount-Number(e.amt||0))>10?"#dc2626":"#111827")+'">PKR '+(ai.amount?ai.amount.toLocaleString():"--")+'</div>';
+    if(ai.amount&&Math.abs(ai.amount-Number(e.amt||0))>10){
+      m+='<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:6px;margin:4px 0;font-size:11px;color:#dc2626;font-weight:700">MISMATCH! Claimed: PKR '+Number(e.amt).toLocaleString()+' vs Actual: PKR '+ai.amount.toLocaleString()+' (Diff: PKR '+Math.abs(Number(e.amt)-ai.amount).toLocaleString()+')</div>';
+    } else if(ai.amount){
+      m+='<div style="background:#dcfce7;border:1px solid #86efac;border-radius:6px;padding:4px 6px;margin:4px 0;font-size:11px;color:#16a34a;font-weight:600">AMOUNT MATCHES</div>';
+    }
+    m+='<div style="font-size:10px;color:#888;margin-top:6px">Sender</div><div class="fw6">'+(ai.payer||"--")+'</div>';
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">Sender Account</div><div class="mono" style="font-size:11px">'+(ai.account||"--")+'</div>';
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">Recipient</div><div style="font-size:11px">'+(ai.recipient||"--")+'</div>';
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">Bank</div><div style="font-size:11px">'+(ai.bank||"--")+'</div>';
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">TID / Ref</div><div class="mono" style="font-size:11px">'+(ai.ref||ai.tid||"--")+'</div>';
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">Date/Time</div><div style="font-size:11px">'+(ai.date||"--")+" "+(ai.time||"")+'</div>';
+    // Check if sender account is known
+    if(ai.account){
+      var known=false;var crossD=false;var crossN=[];var acCnt=0;var pgAll=[];try{pgAll=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(ex){}
+      pgAll.forEach(function(pe,pi){if(pi!==idx){var pA=pe.sender_account||(pe.ai_extracted&&pe.ai_extracted.account)||"";if(pA===ai.account){acCnt++;if(pe.cust===e.cust)known=true;else{crossD=true;if(crossN.indexOf(pe.cust)<0)crossN.push(pe.cust)}}}});
+      if(crossD){m+='<div style="margin-top:6px;padding:6px;background:#fef2f2;border:1px solid #fca5a5;border-radius:6px"><span class="pill pill-r">CROSS-DEALER ACCOUNT!</span><div style="font-size:10px;color:#dc2626;margin-top:3px">Also used by: <b>'+crossN.join(", ")+'</b></div></div>'}
+      else if(known){m+='<div style="margin-top:6px"><span class="pill pill-g">KNOWN ACCOUNT</span><span style="font-size:10px;color:#888;margin-left:4px"> - seen '+acCnt+'x for this dealer</span></div>'}
+      else{m+='<div style="margin-top:6px"><span class="pill pill-y">NEW ACCOUNT - Never seen before</span></div>'}
+    }
+  } else {
+    m+='<div style="text-align:center;padding:10px;color:#888;font-size:11px">';
+    if(e.photo){
+      m+='<button class="btn btn-p" onclick="analyzeReceiptPhoto('+idx+')">Analyze Photo with AI</button>';
+      m+='<div style="margin-top:6px;font-size:10px">Needs Claude API key in Settings</div>';
+    } else {
+      m+='No photo to analyze';
+    }
+    m+='</div>';
+  }
+  m+='</div></div>';
+  
+  // Bank email verification — 7 distinct states
+  var bankOK=e.bank_verified||false;
+  var _feeds=window.PG_FEEDS||[];
+  var _loaded=window.PG_LOADED||false;
+  var _eAmt=Number(e.amt||0);
+  var _eTid=e.bank_feed_ref||(e.ai_extracted&&(e.ai_extracted.ref||e.ai_extracted.tid))||"";
+  var _eAcc=e.sender_account||(e.ai_extracted&&e.ai_extracted.account)||"";
+
+  var _bg,_bc,_icon,_title,_detail;
+
+  if(bankOK){
+    // Distinguish auto vs manual verify
+    var _isManual=(e.verified_by&&e.verified_by!=="auto-firebase"&&e.verified_by!=="auto");
+    _bg="#f0fdf4";_bc="#86efac";_icon="✅";
+    _title=_isManual?"MANUALLY VERIFIED":"BANK EMAIL CONFIRMED";
+    if(_isManual){
+      _detail="Verified by "+e.verified_by+" at "+(e.verified_at||"—")+" — cash or manual check";
+    } else {
+      _detail="Email match: PKR "+_eAmt.toLocaleString()+(e.bank_feed_bank?" · "+e.bank_feed_bank:"")+(e.bank_feed_payer?" · "+e.bank_feed_payer:"")+(e.bank_feed_ref?" · "+e.bank_feed_ref:"")+" · "+(e.verified_at||"Auto");
+    }
+  } else if(!_loaded){
+    _bg="#fffbeb";_bc="#fcd34d";_icon="⏳";
+    _title="EMAIL SYSTEM CONNECTING";
+    _detail="Firebase still loading. Verification will run automatically when connected.";
+  } else if(_feeds.length===0){
+    _bg="#fff7ed";_bc="#fed7aa";_icon="⚠️";
+    _title="NO BANK EMAILS IN SYSTEM";
+    _detail="0 bank emails fetched. Apps Script trigger may have stopped. Check script.google.com → Triggers.";
+  } else {
+    // System loaded with feeds — do deep analysis
+    var _amtMatch=_feeds.filter(function(f){return Math.abs(Number(f.amount||0)-_eAmt)<1});
+    var _tidMatch=_eTid?_feeds.filter(function(f){return(f.ref||"").indexOf(_eTid)>=0||(f.tid||"").indexOf(_eTid)>=0}):[];
+    var _alreadyUsed=_amtMatch.filter(function(f){return f.match_status==="MATCHED"});
+
+    if(_tidMatch.length>0){
+      // TID found — check amount
+      var _tf=_tidMatch[0];
+      if(Math.abs(Number(_tf.amount||0)-_eAmt)<1){
+        // TID + amount match but bank_verified wasn't set — something wrong
+        _bg="#eff6ff";_bc="#93c5fd";_icon="🔵";
+        _title="TID MATCH FOUND — VERIFY SENDER";
+        _detail="Email TID matches ("+_eTid+") but auto-match didn't trigger. Amount: PKR "+Number(_tf.amount||0).toLocaleString()+". Click Manual Bank Verify.";
+      } else {
+        _bg="#fef3c7";_bc="#fcd34d";_icon="⚠️";
+        _title="TID MATCH — AMOUNT DIFFERS";
+        _detail="Email with this TID shows PKR "+Number(_tf.amount||0).toLocaleString()+" but claimed PKR "+_eAmt.toLocaleString()+". Possible manipulation.";
+      }
+    } else if(_alreadyUsed.length>0){
+      _bg="#fef2f2";_bc="#fca5a5";_icon="🔴";
+      _title="DUPLICATE — EMAIL ALREADY USED";
+      _detail="A bank email for PKR "+_eAmt.toLocaleString()+" was already matched to another payment. Possible duplicate submission.";
+    } else if(_amtMatch.length>0){
+      var _af=_amtMatch[0];
+      var _accOK=(!_eAcc||!_af.payer||_af.payer.indexOf(_eAcc.slice(-4))>=0||_eAcc.indexOf((_af.payer||"").slice(-4))>=0);
+      if(!_accOK){
+        _bg="#fef3c7";_bc="#fcd34d";_icon="⚠️";
+        _title="AMOUNT MATCH — ACCOUNT DIFFERS";
+        _detail="Email shows PKR "+_eAmt.toLocaleString()+" but sender account in email ("+(_af.payer||"??")+") differs from receipt ("+_eAcc+"). Verify sender identity.";
+      } else {
+        _bg="#fffbeb";_bc="#fcd34d";_icon="🟡";
+        _title="AMOUNT MATCH — PENDING AUTO-VERIFY";
+        _detail=_feeds.length+" emails loaded. PKR "+_eAmt.toLocaleString()+" found in email from "+(_af.bank||"?")+" at "+(_af.processed_at||"??")+". Auto-match will run shortly.";
+      }
+    } else {
+      _bg="#fef2f2";_bc="#fca5a5";_icon="❌";
+      _title="NO MATCHING EMAIL FOUND";
+      _detail=_feeds.length+" bank email"+ (_feeds.length===1?"":"s")+" loaded — none match PKR "+_eAmt.toLocaleString()+(_eTid?" or TID "+_eTid:"")+". Email may be delayed (wait 2 mins) or Apps Script not capturing this bank.";
+    }
+  }
+
+  m+='<div style="padding:10px;border-radius:8px;background:'+_bg+';border:1px solid '+_bc+'">';
+  m+='<div style="font-size:11px;font-weight:700;color:#111827;margin-bottom:4px">'+_icon+' '+_title+'</div>';
+  m+='<div style="font-size:11px;color:#374151;line-height:1.5">'+_detail+'</div>';
+  if(!bankOK&&_feeds.length>0){
+    m+='<div style="font-size:10px;color:#888;margin-top:4px">'+_feeds.length+' emails in system · Last: '+(_feeds[0]&&_feeds[0].processed_at?_feeds[0].processed_at.slice(0,16):"—")+'</div>';
+  }
+  m+='</div>';
+  
+  m+='</div></div>';
+  
+  // Action buttons
+  m+='<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid #e5e7eb;padding-top:12px">';
+  if(!e.journaled&&!e.rejected){
+    if(bankOK){m+='<button class="btn btn-g" onclick="approveAndPost('+idx+')">Approve &amp; Post</button>'}
+    else{
+      if(userRole==="cfo"||userRole==="ceo"||userRole==="coo"){
+        m+='<button class="btn btn-g" onclick="if(confirm(\'CFO Override: Post without bank match?\')){approveAndPost('+idx+')}">CFO Override Post</button>';
+      }
+    }
+    m+='<button class="btn btn-r" onclick="rejectPayment('+idx+')">Reject</button>';
+    m+='<button class="btn btn-p" onclick="markBankVerified('+idx+')">Manual Bank Verify</button>';
+  }
+  if(e.journaled){m+='<span class="pill pill-g" style="font-size:12px;padding:6px 14px">Posted: '+(e.journal_id||"")+'</span>'}
+  if(e.rejected){m+='<span class="pill pill-r" style="font-size:12px;padding:6px 14px">Rejected: '+(e.rejection_reason||"")+'</span>'}
+  if(userRole==="cfo"||userRole==="ceo"||userRole==="coo"){
+    m+='<button class="btn btn-r btn-s" style="margin-left:auto" onclick="archivePayment('+idx+')}">Archive</button>';
+  }
+  m+='</div>';
+  
+  m+='</div></div></div>';
+  var d=document.createElement("div");d.id="personModal";d.innerHTML=m;document.body.appendChild(d);
+  
+  // Auto-analyze if photo exists and not yet analyzed
+  if(e.photo&&!e.ai_extracted){
+    setTimeout(function(){analyzeReceiptPhoto(idx)},500);
+  }
+}
+
+// ═══ APPROVAL ACTIONS ═══
+
+function analyzeReceiptPhoto(idx){
+  var key=pgSettings.claude_api_key||"";
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  var e=pgRaw[idx];if(!e||!e.photo)return;
+  
+  var resultDiv=document.getElementById("aiExtract_"+idx);
+  if(resultDiv)resultDiv.innerHTML='<div style="text-align:center;padding:10px;color:#7c3aed;font-size:11px"><span class="ai-tag">ANALYZING...</span> Reading receipt photo...</div>';
+  
+  if(!key){
+    // No API key - try regex on any text in the entry
+    var text=(e.source_text||"")+" "+(e.note||"");
+    var r=extractFromText(text);
+    if(r.amount>0){
+      pgRaw[idx].ai_extracted=r;
+      try{localStorage.setItem("pg_e",JSON.stringify(pgRaw))}catch(ex){}
+    }
+    if(resultDiv)resultDiv.innerHTML='<div style="text-align:center;padding:10px;color:#f59e0b;font-size:11px">No Claude API key. Add in Reports → Settings for AI photo reading.</div>';
+    return;
+  }
+  
+  // Extract base64 from photo data URL
+  var b64=e.photo;
+  if(b64.indexOf(",")>0)b64=b64.split(",")[1];
+  
+  var msgs=[{role:"user",content:[
+    {type:"image",source:{type:"base64",media_type:"image/jpeg",data:b64}},
+    {type:"text",text:"Extract ALL details from this bank transfer receipt/screenshot. Return ONLY JSON with these fields:\n{\"amount\": number, \"payer\": \"sender name\", \"account\": \"sender account number\", \"recipient\": \"receiving party name\", \"recipient_account\": \"receiving account\", \"bank\": \"bank name\", \"ref\": \"transaction ID/reference\", \"tid\": \"transaction ID\", \"date\": \"date\", \"time\": \"time\", \"branch\": \"branch if visible\"}\nReturn ONLY the JSON object, no explanation."}
+  ]}];
+  
+  fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,messages:msgs})
+  }).then(function(r){return r.json()}).then(function(d){
+    try{
+      var txt=d.content[0].text;
+      var ai=JSON.parse(txt.replace(/```json|```/g,"").trim());
+      ai.confidence="high";ai.method="claude-vision";
+      
+      // Save to entry
+      pgRaw[idx].ai_extracted=ai;
+      pgRaw[idx].sender_account=ai.account||"";
+      pgRaw[idx].sender_bank=ai.bank||"";
+      try{localStorage.setItem("pg_e",JSON.stringify(pgRaw))}catch(ex){}
+      
+      // Re-open the review with updated data
+      closeModal();
+      showPaymentReview(idx);
+    }catch(ex){
+      if(resultDiv)resultDiv.innerHTML='<div style="color:#dc2626;font-size:11px">Could not parse AI response. Try again.</div>';
+    }
+  }).catch(function(err){
+    if(resultDiv)resultDiv.innerHTML='<div style="color:#dc2626;font-size:11px">API error: '+err.message+'</div>';
+  });
+}
+
+function approveAndPost(idx){
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  if(!p[idx]||p[idx].journaled)return;var e=p[idx];
+  var bk="1101",rv="1201",ent=e.ent||"CST";
+  if(ent==="CNC"){rv="1201";bk="1106"}if(ent==="CST"){rv="1202";bk="1101"}if(ent==="CSPL"){rv="1203";bk="1104"}
+  if(e.typ==="cash")bk="1151";
+  var amt=Number(e.amt||0);var jid="JV-"+String(journals.length+1).padStart(4,"0");
+  journals.push({id:jid,date:new Date().toISOString().slice(0,10),ref:e.id||"",nar:(e.cust||"Customer")+" - "+(e.typ||"payment")+" via PayGate",ent:ent,status:amt>100000?"pending":"posted",by:"accounts",lines:[{a:bk,d:amt,c:0,m:e.typ||"bank"},{a:rv,d:0,c:amt,m:e.cust||""}]});
+  p[idx].journaled=true;p[idx].sync=true;p[idx].journal_id=jid;p[idx].approved_by=userRole;p[idx].approved_at=new Date().toISOString();
+  // Lock bank verification - mark ref as consumed
+  var ai=p[idx].ai_extracted||{};
+  if(ai.ref||ai.tid){p[idx].bank_feed_ref=ai.ref||ai.tid}
+  p[idx].verification_locked=true;
+  try{localStorage.setItem("pg_e",JSON.stringify(p))}catch(ex){}
+  try{notifyApprovalWhatsApp(p[idx])}catch(e){}
+  closeModal();render();
+}
+function rejectPayment(idx){
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  if(!pgRaw[idx])return;
+  
+  // Build rejection modal with category + reason + comments
+  var rm='<div class="modal-bg" onclick="if(event.target===this)closeRejectModal()"><div class="modal" style="max-width:500px"><div class="modal-h"><h2 style="color:#dc2626">Reject Payment: '+(pgRaw[idx].id||"?")+'</h2><button class="modal-close" onclick="closeRejectModal()">x</button></div><div class="modal-body">';
+  rm+='<div style="margin-bottom:12px;padding:10px;background:#fef2f2;border-radius:8px;border:1px solid #fca5a5"><b>'+( pgRaw[idx].cust||"?")+'</b> \u2014 PKR '+Number(pgRaw[idx].amt||0).toLocaleString()+' ('+( pgRaw[idx].ent||"?")+')</div>';
+  rm+='<div class="flbl">Rejection Category</div>';
+  rm+='<select class="fsel" id="rejectCat"><option value="duplicate">Duplicate Entry</option><option value="amount_mismatch">Amount Mismatch</option><option value="fake_receipt">Fake/Old Receipt</option><option value="wrong_account">Wrong Bank Account</option><option value="no_bank_match">No Bank Verification</option><option value="dual_submission">Submitted by Another Person</option><option value="verification_used">Bank Verification Already Used</option><option value="insufficient_evidence">Insufficient Evidence</option><option value="other">Other</option></select>';
+  rm+='<div class="flbl" style="margin-top:8px">Reason / Comments (required)</div>';
+  rm+='<textarea class="ftxt" id="rejectReason" placeholder="Explain why this payment is being rejected..." style="min-height:80px"></textarea>';
+  rm+='<div class="flbl" style="margin-top:8px">Action for Salesperson</div>';
+  rm+='<select class="fsel" id="rejectAction"><option value="resubmit">Ask to resubmit with correct details</option><option value="contact_dealer">Contact dealer for clarification</option><option value="no_action">No further action needed</option><option value="escalate">Escalate to CFO</option></select>';
+  rm+='<div style="margin-top:12px;display:flex;gap:8px"><button class="btn btn-r" onclick="confirmReject('+idx+')">Confirm Rejection</button><button class="btn btn-o" onclick="closeRejectModal()">Cancel</button></div>';
+  rm+='</div></div></div>';
+  
+  var d=document.createElement("div");d.id="rejectModal";d.innerHTML=rm;document.body.appendChild(d);
+}
+function closeRejectModal(){var m=document.getElementById("rejectModal");if(m)m.remove()}
+function confirmReject(idx){
+  var reason=document.getElementById("rejectReason");
+  if(!reason||!reason.value.trim()){alert("Please enter a rejection reason");return}
+  var cat=document.getElementById("rejectCat").value;
+  var action=document.getElementById("rejectAction").value;
+  
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  if(!pgRaw[idx])return;
+  
+  pgRaw[idx].rejected=true;
+  pgRaw[idx].rejection_reason=reason.value.trim();
+  pgRaw[idx].rejection_category=cat;
+  pgRaw[idx].rejection_action=action;
+  pgRaw[idx].rejected_by=userRole;
+  pgRaw[idx].rejected_at=new Date().toISOString();
+  
+  try{localStorage.setItem("pg_e",JSON.stringify(pgRaw))}catch(ex){}
+  try{notifyRejectionWhatsApp(pgRaw[idx],reason.value.trim())}catch(e){}
+  closeRejectModal();closeModal();render();
+}
+
+function markBankVerified(idx){
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  if(!p[idx])return;
+  p[idx].bank_verified=true;p[idx].verified_at=new Date().toLocaleString();p[idx].verified_by=userRole;
+  try{localStorage.setItem("pg_e",JSON.stringify(p))}catch(ex){}
+  closeModal();showPaymentReview(idx);
+}
+function deletePayment(idx){
+  if(userRole!=="cfo"&&userRole!=="ceo"&&userRole!=="coo"){alert("Only CFO/CEO/COO can delete");return}
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  p.splice(idx,1);
+  try{localStorage.setItem("pg_e",JSON.stringify(p))}catch(ex){}
+  closeModal();render();
+}
+
+// ═══ AI EXTRACT UI ═══
+function doExtract(){
+  var txt=document.getElementById("pasteMsg");if(!txt||!txt.value.trim()){alert("Paste a message first");return}
+  var rd=document.getElementById("extractResult");rd.innerHTML='<div class="ai-box"><span class="ai-tag">EXTRACTING...</span></div>';
+  extractWithAI(txt.value.trim(),null,function(r){
+    var h='<div class="ai-box"><span class="ai-tag">EXTRACTED</span> <span class="pill pill-'+(r.confidence==="high"?"g":r.confidence==="medium"?"y":"r")+'">'+r.confidence+'</span><span class="pill pill-b">'+r.method+'</span><div class="extract-grid" style="margin-top:8px"><div><div class="ek">Amount</div><div class="ev grn" style="font-size:16px">PKR '+(r.amount?r.amount.toLocaleString():"--")+'</div></div><div><div class="ek">Bank</div><div class="ev">'+(r.bank||"--")+'</div></div><div><div class="ek">Account</div><div class="ev">'+(r.account||"--")+'</div></div><div><div class="ek">Payer</div><div class="ev">'+(r.payer||"--")+'</div></div><div><div class="ek">Ref</div><div class="ev">'+(r.ref||"--")+'</div></div><div><div class="ek">Date</div><div class="ev">'+(r.date||"--")+'</div></div></div>';
+    if(r.amount>0)h+='<button class="btn btn-g" style="margin-top:8px" onclick="addExtracted()">Add as Payment</button>';
+    h+='</div>';rd.innerHTML=h;window._lastExtracted=r;
+  });
+}
+function addExtracted(){
+  var r=window._lastExtracted;if(!r||!r.amount)return;
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var now=new Date();
+  p.unshift({id:"PG-"+Date.now(),cust:r.payer||"Unknown",amt:r.amount,ent:"CST",typ:"bank_transfer",note:"From message",source_text:r.raw||"",sender_account:r.account||"",sender_bank:r.bank||"",ts:now.toISOString(),date:now.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}),time:now.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",hour12:true}),sync:false,journaled:false,bank_verified:false});
+  try{localStorage.setItem("pg_e",JSON.stringify(p.slice(0,500)))}catch(e){}
+  document.getElementById("pasteMsg").value="";document.getElementById("extractResult").innerHTML='<div class="ai-box" style="background:#f0fdf4;border-color:#86efac"><b class="grn">Added!</b></div>';window._lastExtracted=null;setTimeout(render,1000);
+}
+function handlePasteImage(evt){
+  var file=evt.target.files[0];if(!file)return;
+  var reader=new FileReader();reader.onload=function(e){
+    var b64=e.target.result.split(",")[1];
+    document.getElementById("extractResult").innerHTML='<div class="ai-box"><span class="ai-tag">READING IMAGE...</span></div>';
+    extractWithAI("Extract payment details",b64,function(r){window._lastExtracted=r;var h='<div class="ai-box"><span class="ai-tag">FROM IMAGE</span><div class="extract-grid" style="margin-top:8px"><div><div class="ek">Amount</div><div class="ev grn">PKR '+(r.amount?r.amount.toLocaleString():"--")+'</div></div><div><div class="ek">Payer</div><div class="ev">'+(r.payer||"--")+'</div></div></div>';if(r.amount>0)h+='<button class="btn btn-g" style="margin-top:8px" onclick="addExtracted()">Add</button>';h+='</div>';document.getElementById("extractResult").innerHTML=h});
+  };reader.readAsDataURL(file);
+}
+
+// ═══ PDF EXPORT ═══
+function exportPDF(title,filterFn){
+  var entries=[];try{entries=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  if(filterFn)entries=entries.filter(filterFn);
+  var w=window.open("","_blank");var total=0;
+  var html=`<!DOCTYPE html><html><head><title>"+title+"</title><style>body{font-family:system-ui;font-size:12px;padding:20px}h1{font-size:18px}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{padding:5px 8px;border:1px solid #ddd;text-align:left}th{background:#f5f5f5}.r{text-align:right}.mono{font-family:monospace}
+.login-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#f0f4ff,#e8f0fe);z-index:500;display:flex;align-items:center;justify-content:center}
+.login-box{background:white;border-radius:16px;padding:40px 36px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-box h1{font-size:22px;font-weight:800;color:#111;margin:0 0 4px;text-align:center}
+.login-box .sub{font-size:12px;color:#888;text-align:center;margin-bottom:24px}
+.login-box .logo{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;color:white;font-weight:800}
+.login-box label{display:block;font-size:11px;font-weight:600;color:#555;margin-bottom:4px;margin-top:14px}
+.login-box input{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;box-sizing:border-box}
+.login-box input:focus{border-color:#2563eb;outline:none;box-shadow:0 0 0 3px #2563eb20}
+.login-box .lbtn{width:100%;padding:12px;border:none;border-radius:8px;background:#2563eb;color:white;font-size:14px;font-weight:700;cursor:pointer;margin-top:20px}
+.login-box .lbtn:hover{background:#1d4ed8}
+.login-box .lerr{color:#dc2626;font-size:12px;text-align:center;margin-top:10px;min-height:18px}
+.login-box .role-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10px;font-weight:600;margin-top:8px}
+</style></head><body><h1>"+title+"</h1><div style='color:#888;font-size:11px'>Generated: "+new Date().toLocaleString()+" | PayGate V7</div><table><thead><tr><th>ID</th><th>Date</th><th>Customer</th><th>Entity</th><th>Type</th><th class='r'>Amount</th><th>Bank Verified</th><th>Status</th></tr></thead><tbody>`;
+  entries.forEach(function(e){total+=Number(e.amt||0);html+="<tr><td class='mono'>"+(e.id||"")+"</td><td>"+(e.date||"")+"</td><td>"+(e.cust||"")+"</td><td>"+(e.ent||"")+"</td><td>"+(e.typ||"")+"</td><td class='r mono'>"+Number(e.amt||0).toLocaleString()+"</td><td>"+(e.bank_verified?"Yes":"No")+"</td><td>"+(e.journaled?"Posted":e.rejected?"Rejected":"Pending")+"</td></tr>"});
+  html+="<tr style='font-weight:700;background:#f0f0f0'><td colspan='5'>TOTAL</td><td class='r mono'>PKR "+total.toLocaleString()+"</td><td></td><td></td></tr></tbody></table></body></html>";
+  w.document.write(html);w.document.close();setTimeout(function(){w.print()},500);
+}
+
+function saveSettings(){try{localStorage.setItem("pg_settings",JSON.stringify(pgSettings))}catch(e){}}
+
+
+document.addEventListener("click",function(e){var el=e.target.closest(".person-link");if(el){var code=el.getAttribute("data-pcode");var name=el.getAttribute("data-pname");var bal=parseFloat(el.getAttribute("data-pbal")||0);if(code&&name)showPerson(code,name,bal)}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeModal()});
+setInterval(checkNewPayments,3000);
+
+function dlExcel(){
+  if(typeof XLSX==="undefined"){alert("Excel library not loaded. Check internet connection.");return}
+  var wb=XLSX.utils.book_new();
+  var b=calc();var keys=Object.keys(b);
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  
+  // S1: Journal Entries
+  var d1=[["Date","Ref","Narration","Entity","Account","Name","Debit","Credit","Status"]];
+  journals.forEach(function(j){j.lines.forEach(function(l,i){d1.push([i?"":j.date,i?"":j.ref,i?"":j.nar,i?"":j.ent,l.a,AN(l.a),l.d||"",l.c||"",i?"":j.status])})});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d1),"Journal Entries");
+  
+  // S2: Trial Balance
+  var d2=[["Code","Account","Debit","Credit"]];
+  for(var i=0;i<keys.length;i++){var a=b[keys[i]];if(a.type!=="header"&&(a.dr||a.cr)){d2.push([a.code,a.name,a.normal==="debit"&&a.bal>0?a.bal:"",a.normal==="credit"&&a.bal>0?a.bal:""])}}
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d2),"Trial Balance");
+  
+  // S3: Incoming Payments (ALL fields)
+  var d3=[["ID","Timestamp","Date","Time","Customer","Amount","Entity","Type","Note","Photo","Source Text","Sender Account","Sender Bank","Bank Verified","Verified At","Status","Journal ID","Approved By","Rejected","Rejection Category","Rejection Reason","AI Amount","AI Payer","AI Account","AI Bank","AI TID","AI Date"]];
+  pgRaw.forEach(function(e){var ai=e.ai_extracted||{};d3.push([e.id||"",e.ts||"",e.date||"",e.time||"",e.cust||"",Number(e.amt||0),e.ent||"",e.typ||"",e.note||"",e.photo?"Yes":"No",e.source_text||"",e.sender_account||"",e.sender_bank||"",e.bank_verified?"Yes":"No",e.verified_at||"",e.journaled?"Posted":e.rejected?"Rejected":"Pending",e.journal_id||"",e.approved_by||"",e.rejected?"Yes":"No",e.rejection_category||"",e.rejection_reason||"",ai.amount||"",ai.payer||"",ai.account||"",ai.bank||"",ai.ref||ai.tid||"",ai.date||""])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d3),"All Payments");
+  
+  // S4: Bank Balances
+  var d4=[["Code","Bank","Balance"]];
+  ["1101","1102","1103","1104","1105","1106","1107"].forEach(function(c){if(b[c])d4.push([c,b[c].name,Math.round(b[c].bal)])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d4),"Bank Balances");
+  
+  // S5: Person Accounts
+  var d5=[["Code","Name","Balance","Direction"]];
+  COA.filter(function(a){return(a.type==="receivable"||a.type==="payable")&&b[a.code]&&b[a.code].bal}).forEach(function(a){d5.push([a.code,a.name,Math.round(b[a.code].bal),b[a.code].bal>0?"Owes Company":"Company Owes"])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d5),"Person Accounts");
+  
+  // S6: Chart of Accounts
+  var d6=[["Code","Name","Type","Normal","Balance"]];
+  COA.forEach(function(a){d6.push([a.code,a.name,a.type,a.normal,b[a.code]?Math.round(b[a.code].bal):""])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d6),"Chart of Accounts");
+  
+  // S7: Dealer Summary
+  var dm={};pgRaw.forEach(function(e){var c=e.cust||"?";if(!dm[c])dm[c]={t:0,n:0,p:0,pn:0,r:0};dm[c].t+=Number(e.amt||0);dm[c].n++;if(e.journaled)dm[c].p++;else if(e.rejected)dm[c].r++;else dm[c].pn++});
+  var d7=[["Dealer","Total","Payments","Posted","Pending","Rejected"]];
+  Object.keys(dm).sort(function(a,b2){return dm[b2].t-dm[a].t}).forEach(function(d){var v=dm[d];d7.push([d,v.t,v.n,v.p,v.pn,v.r])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d7),"Dealer Summary");
+  
+  // S8: Daily Summary
+  var dy={};pgRaw.forEach(function(e){var d=(e.ts||"").slice(0,10);if(!d)return;if(!dy[d])dy[d]={n:0,t:0,p:0,pn:0,r:0,v:0};dy[d].n++;dy[d].t+=Number(e.amt||0);if(e.journaled)dy[d].p++;else if(e.rejected)dy[d].r++;else dy[d].pn++;if(e.bank_verified)dy[d].v++});
+  var d8=[["Date","Entries","Total","Posted","Pending","Rejected","Bank Verified"]];
+  Object.keys(dy).sort().reverse().forEach(function(d){var v=dy[d];d8.push([d,v.n,v.t,v.p,v.pn,v.r,v.v])});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d8),"Daily Summary");
+  
+  // S9: Fraud Flags
+  var d9=[["Payment ID","Customer","Amount","Level","Code","Message"]];
+  pgRaw.forEach(function(e,i){var ff=runFraudChecks(e,i,pgRaw);ff.forEach(function(f){d9.push([e.id||"",e.cust||"",Number(e.amt||0),f.level,f.code,f.msg])})});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d9),"Fraud Flags");
+  
+  // S10: Account Transactions
+  var d10=[["Account","Name","Journal","Date","Narration","Entity","Debit","Credit"]];
+  COA.filter(function(a){return a.type!=="header"}).forEach(function(ac){journals.filter(function(j){return j.status==="posted"}).forEach(function(j){j.lines.forEach(function(l){if(l.a===ac.code)d10.push([ac.code,ac.name,j.id,j.date,j.nar,j.ent,l.d||"",l.c||""])})})});
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d10),"Account Transactions");
+  
+  // S11: P&L
+  var d11=[["Category","Code","Account","Amount"]];var rv=0,cs=0,ex=0;
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="4"&&a.type!=="header"&&a.bal){d11.push(["Revenue",a.code,a.name,a.bal]);rv+=a.bal}});
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="5"&&a.type!=="header"&&a.bal){d11.push(["COGS",a.code,a.name,-a.bal]);cs+=a.bal}});
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="6"&&a.type!=="header"&&a.bal){d11.push(["Expenses",a.code,a.name,-a.bal]);ex+=a.bal}});
+  d11.push(["","","NET PROFIT",rv-cs-ex]);
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d11),"Profit & Loss");
+  
+  // S12: Balance Sheet
+  var d12=[["Section","Code","Account","Amount"]];var tA=0,tL=0,tE=0;
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="1"&&a.type!=="header"&&a.bal){d12.push(["Assets",a.code,a.name,Math.round(a.bal)]);tA+=a.bal}});
+  d12.push(["","","TOTAL ASSETS",Math.round(tA)]);
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="2"&&a.type!=="header"&&a.bal){d12.push(["Liabilities",a.code,a.name,Math.round(a.bal)]);tL+=a.bal}});
+  keys.forEach(function(k){var a=b[k];if(a.code[0]==="3"&&a.type!=="header"&&a.bal){d12.push(["Equity",a.code,a.name,Math.round(a.bal)]);tE+=a.bal}});
+  d12.push(["","","L+E",Math.round(tL+tE)]);
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(d12),"Balance Sheet");
+  
+  XLSX.writeFile(wb,"PayGate_V43_"+new Date().toISOString().slice(0,10)+".xlsx");
+}
+
+var chatOpen=false;
+function toggleChat(){chatOpen=!chatOpen;document.getElementById("chatPanel").style.display=chatOpen?"flex":"none";if(chatOpen)document.getElementById("chatInput").focus()}
+function sendChat(){
+  var inp=document.getElementById("chatInput");var q=inp.value.trim();if(!q)return;inp.value="";
+  var body=document.getElementById("chatBody");
+  body.innerHTML+='<div class="chat-msg user">'+q.replace(/</g,"&lt;")+'</div>';
+  body.innerHTML+='<div class="chat-msg thinking" id="chatThinking">Thinking...</div>';
+  body.scrollTop=body.scrollHeight;
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var context="PayGate AI for CNC/CST/CSPL.\n";var total=0,pending=0,verified=0,dealerTotals={};
+  pgRaw.forEach(function(e){total+=Number(e.amt||0);if(e.journaled)verified++;else if(!e.rejected)pending++;var c=e.cust||"?";if(!dealerTotals[c])dealerTotals[c]=0;dealerTotals[c]+=Number(e.amt||0)});
+  context+="Payments:"+pgRaw.length+" Total:PKR "+total.toLocaleString()+" Pending:"+pending+" Posted:"+verified+"\n";
+  try{var b=calc();["1101","1102","1103","1104","1105","1106","1107"].forEach(function(code){if(b[code]&&b[code].bal)context+=b[code].name+":PKR "+Math.round(b[code].bal).toLocaleString()+" "})}catch(ex){}
+  var key=pgSettings.claude_api_key||"";
+  if(!key){var answer=localAnswer(q,pgRaw,dealerTotals,total,pending,verified);document.getElementById("chatThinking").remove();body.innerHTML+='<div class="chat-msg bot">'+answer+'</div>';body.scrollTop=body.scrollHeight;return}
+  fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:500,system:context,messages:[{role:"user",content:q}]})}).then(function(r){return r.json()}).then(function(d){var reply=d.content&&d.content[0]?d.content[0].text:"No response.";document.getElementById("chatThinking").remove();body.innerHTML+='<div class="chat-msg bot">'+reply.replace(/</g,"&lt;").replace(/\n/g,"<br>")+'</div>';body.scrollTop=body.scrollHeight}).catch(function(err){document.getElementById("chatThinking").remove();body.innerHTML+='<div class="chat-msg bot" style="color:#dc2626">Error</div>'});
+}
+function localAnswer(q,entries,dealers,total,pending,posted){
+  var ql=q.toLowerCase();
+  if(ql.indexOf("total")>=0){for(var d in dealers){if(ql.indexOf(d.toLowerCase())>=0)return d+": <b>PKR "+dealers[d].toLocaleString()+"</b>"}return"Total: <b>PKR "+total.toLocaleString()+"</b> ("+entries.length+" entries)"}
+  if(ql.indexOf("pending")>=0)return pending+" pending.";
+  if(ql.indexOf("balance")>=0||ql.indexOf("bank")>=0){try{var b=calc();var ans="";["1101","1102","1103","1104","1105","1106","1107"].forEach(function(c){if(b[c]&&b[c].bal)ans+=b[c].name+": PKR "+Math.round(b[c].bal).toLocaleString()+"<br>"});return ans||"No data"}catch(e){return"Error"}}
+  return"Try: totals, pending, bank balances, or dealer names. Add Claude API key for smarter answers.";
+}
+function addManualSMS(){var text=prompt("Paste bank SMS:");if(!text)return;var f=[];try{f=JSON.parse(localStorage.getItem("pg_sms_feed")||"[]")}catch(e){}f.unshift({from:"Manual",body:text,time:new Date().toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})});try{localStorage.setItem("pg_sms_feed",JSON.stringify(f.slice(0,100)))}catch(e){}var p=document.getElementById("pasteMsg");if(p)p.value=text;render()}
+
+// ═══ EXCEL UPLOAD / IMPORT ═══
+function handleExcelUpload(event){
+  var file=event.target.files[0];if(!file)return;
+  if(typeof XLSX==="undefined"){alert("Excel library loading...");return}
+  
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var wb=XLSX.read(e.target.result,{type:"array"});
+      var sheetNames=wb.SheetNames;
+      
+      // Show import dialog
+      var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal" style="max-width:600px"><div class="modal-h"><h2>Import Excel Data</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+      m+='<div style="padding:10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;margin-bottom:12px;font-size:12px"><b>File:</b> '+file.name+' ('+sheetNames.length+' sheets)</div>';
+      m+='<div style="font-size:12px;font-weight:700;margin-bottom:6px">Sheets Found:</div>';
+      
+      // List all sheets with preview
+      sheetNames.forEach(function(name,i){
+        var ws=wb.Sheets[name];
+        var data=XLSX.utils.sheet_to_json(ws,{header:1});
+        var rows=data.length;
+        var cols=data[0]?data[0].length:0;
+        m+='<div style="padding:8px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center">';
+        m+='<div><b>'+name+'</b><span style="font-size:10px;color:#888;margin-left:6px">'+rows+' rows, '+cols+' cols</span></div>';
+        m+='</div>';
+      });
+      
+      m+='<div style="margin-top:14px;font-size:12px;font-weight:700">Import Options:</div>';
+      m+='<div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">';
+      
+      // Option 1: Import as payments
+      m+='<button class="btn btn-g" style="padding:12px;text-align:left" onclick="importAsPayments()"><b>Import as Incoming Payments</b><br><span style="font-size:10px;font-weight:400">Maps columns: Customer, Amount, Entity, Date, Bank. Adds to Incoming tab.</span></button>';
+      
+      // Option 2: Import bank entries
+      m+='<button class="btn btn-b" style="padding:12px;text-align:left" onclick="importAsBankEntries()"><b>Import as Bank Entries</b><br><span style="font-size:10px;font-weight:400">Maps: Date, Description, Debit, Credit, Balance. Updates bank ledger.</span></button>';
+      
+      // Option 3: Import journal entries
+      m+='<button class="btn btn-p" style="padding:12px;text-align:left" onclick="importAsJournals()"><b>Import as Journal Entries</b><br><span style="font-size:10px;font-weight:400">Maps: Date, Narration, Account, Debit, Credit. Creates double-entry journals.</span></button>';
+      
+      // Option 4: Import cash ledger
+      m+='<button class="btn btn-o" style="padding:12px;text-align:left" onclick="importAsCash()"><b>Import Cash Ledger</b><br><span style="font-size:10px;font-weight:400">Maps: Date, Description, In, Out, Balance. From CS Accounts format.</span></button>';
+      
+      m+='</div>';
+      m+='<div style="margin-top:12px;padding:8px;background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;font-size:11px;color:#92400e"><b>Note:</b> Imported data is added to existing data, not replaced. You can always download a backup first.</div>';
+      m+='</div></div></div>';
+      
+      var d=document.createElement("div");d.id="personModal";d.innerHTML=m;document.body.appendChild(d);
+      
+      // Store workbook globally for import functions
+      window._importWB=wb;
+      window._importFile=file.name;
+      
+    }catch(err){
+      alert("Error reading Excel file: "+err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+  event.target.value=""; // Reset so same file can be uploaded again
+}
+
+function importAsPayments(){
+  var wb=window._importWB;if(!wb)return;
+  // Try to find a sheet with payment-like data
+  var ws=null;var wsName="";
+  ["Payments","Cash","Sheet1","Incoming","Sales"].forEach(function(n){
+    if(!ws){wb.SheetNames.forEach(function(sn){if(!ws&&sn.toLowerCase().indexOf(n.toLowerCase())>=0){ws=wb.Sheets[sn];wsName=sn}})}
+  });
+  if(!ws)ws=wb.Sheets[wb.SheetNames[0]];
+  
+  var data=XLSX.utils.sheet_to_json(ws);
+  if(!data.length){alert("No data found in sheet");return}
+  
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var added=0;
+  
+  data.forEach(function(row){
+    // Try to map common column names
+    var amt=Number(row.Amount||row.amount||row.amt||row.Amt||row.PKR||row.Total||row.total||row["Amount (PKR)"]||row.dr||row.Debit||row.debit||0);
+    if(amt<=0)return; // Skip zero/negative
+    
+    var cust=row.Customer||row.customer||row.Name||row.name||row.Party||row.party||row.Dealer||row.dealer||row.Description||row.desc||row.Desc||"Unknown";
+    var ent=row.Entity||row.entity||row.Ent||row.ent||"CST";
+    var dateStr=row.Date||row.date||row.d||"";
+    var typ=row.Type||row.type||row.typ||"ledger";
+    var note=row.Note||row.note||row.Notes||row.notes||row.Narration||row.narration||row.Description||row.desc||"";
+    
+    // Normalize entity
+    if(typeof ent==="string"){
+      var el=ent.toLowerCase();
+      if(el.indexOf("cnc")>=0)ent="CNC";
+      else if(el.indexOf("cst")>=0||el.indexOf("trader")>=0)ent="CST";
+      else if(el.indexOf("cspl")>=0||el.indexOf("solar")>=0)ent="CSPL";
+    }
+    
+    var now=new Date();
+    pgRaw.push({
+      id:"IMP-"+Date.now()+"-"+added,
+      cust:String(cust).trim(),
+      amt:amt,
+      ent:ent,
+      typ:typ,
+      note:"Imported from "+( window._importFile||"Excel")+": "+String(note).slice(0,100),
+      source_text:"Excel import",
+      ts:now.toISOString(),
+      date:dateStr||now.toLocaleDateString("en-GB",{day:"2-digit",month:"short"}),
+      time:now.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit",hour12:true}),
+      sync:false,journaled:false,bank_verified:false,imported:true
+    });
+    added++;
+  });
+  
+  try{localStorage.setItem("pg_e",JSON.stringify(pgRaw.slice(0,2000)))}catch(e){}
+  closeModal();
+  alert("Imported "+added+" payments from Excel.\nGo to Incoming tab to review and approve.");
+  tab="incoming";render();
+}
+
+function importAsBankEntries(){
+  var wb=window._importWB;if(!wb)return;
+  var ws=null;
+  ["Bank","BAH","BAFL","Meezan","Entries"].forEach(function(n){
+    if(!ws){wb.SheetNames.forEach(function(sn){if(!ws&&sn.toLowerCase().indexOf(n.toLowerCase())>=0){ws=wb.Sheets[sn]}})}
+  });
+  if(!ws)ws=wb.Sheets[wb.SheetNames[0]];
+  
+  var data=XLSX.utils.sheet_to_json(ws);
+  var smsFeed=[];try{smsFeed=JSON.parse(localStorage.getItem("pg_sms_feed")||"[]")}catch(e){}
+  var added=0;
+  
+  data.forEach(function(row){
+    var amt=Number(row.Debit||row.debit||row.dr||row.Credit||row.credit||row.cr||row.Amount||row.amount||0);
+    if(amt<=0)return;
+    var desc=row.Description||row.description||row.desc||row.Desc||row.Narration||row.narration||"";
+    smsFeed.push({from:"Excel Import",body:"PKR "+amt.toLocaleString()+" - "+desc,time:row.Date||row.date||""});
+    added++;
+  });
+  
+  try{localStorage.setItem("pg_sms_feed",JSON.stringify(smsFeed.slice(0,500)))}catch(e){}
+  closeModal();
+  alert("Imported "+added+" bank entries to SMS Feed.\nPaste them into the extractor to create payment entries.");
+  render();
+}
+
+function importAsJournals(){
+  var wb=window._importWB;if(!wb)return;
+  var ws=null;
+  ["Journal","Entries","JV"].forEach(function(n){
+    if(!ws){wb.SheetNames.forEach(function(sn){if(!ws&&sn.toLowerCase().indexOf(n.toLowerCase())>=0){ws=wb.Sheets[sn]}})}
+  });
+  if(!ws)ws=wb.Sheets[wb.SheetNames[0]];
+  
+  var data=XLSX.utils.sheet_to_json(ws);
+  var added=0;
+  var currentJV=null;
+  
+  data.forEach(function(row){
+    var date=row.Date||row.date||"";
+    var nar=row.Narration||row.narration||row.Description||row.desc||"";
+    var acct=row.Account||row.account||row["Account Code"]||"";
+    var dr=Number(row.Debit||row.debit||row.dr||0);
+    var cr=Number(row.Credit||row.credit||row.cr||0);
+    var ent=row.Entity||row.entity||"CST";
+    
+    if(date&&nar){
+      // New journal entry
+      if(currentJV)journals.push(currentJV);
+      currentJV={
+        id:"JV-"+String(journals.length+added+1).padStart(4,"0"),
+        date:date,ref:"IMP",nar:nar,ent:ent,
+        status:"pending",by:"excel-import",
+        lines:[]
+      };
+      added++;
+    }
+    if(currentJV&&acct&&(dr||cr)){
+      currentJV.lines.push({a:acct,d:dr,c:cr,m:nar.slice(0,30)});
+    }
+  });
+  if(currentJV&&currentJV.lines.length>=2)journals.push(currentJV);
+  
+  closeModal();
+  alert("Imported "+added+" journal entries (status: PENDING).\nReview in Journal tab and approve.");
+  tab="jnl";render();
+}
+
+function importAsCash(){
+  var wb=window._importWB;if(!wb)return;
+  var ws=null;
+  ["Cash","Ledger","Daily"].forEach(function(n){
+    if(!ws){wb.SheetNames.forEach(function(sn){if(!ws&&sn.toLowerCase().indexOf(n.toLowerCase())>=0){ws=wb.Sheets[sn]}})}
+  });
+  if(!ws)ws=wb.Sheets[wb.SheetNames[0]];
+  
+  var data=XLSX.utils.sheet_to_json(ws);
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var added=0;
+  
+  data.forEach(function(row){
+    var inAmt=Number(row.In||row["in"]||row.Inflow||row.Receipt||row.Received||0);
+    var outAmt=Number(row.Out||row["out"]||row.Outflow||row.Payment||row.Paid||0);
+    var desc=row.Description||row.description||row.desc||row.Desc||row.Narration||"";
+    var date=row.Date||row.date||row.d||"";
+    
+    if(inAmt>0){
+      pgRaw.push({
+        id:"CASH-"+Date.now()+"-"+added,cust:String(desc).trim(),amt:inAmt,ent:"CST",typ:"cash",
+        note:"Cash In - imported",source_text:"Cash ledger import",
+        ts:new Date().toISOString(),date:date||"",time:"",
+        sync:false,journaled:false,bank_verified:false,imported:true
+      });
+      added++;
+    }
+  });
+  
+  try{localStorage.setItem("pg_e",JSON.stringify(pgRaw.slice(0,2000)))}catch(e){}
+  closeModal();
+  alert("Imported "+added+" cash receipts.\nGo to Incoming tab to review.");
+  tab="incoming";render();
+}
+
+
+// ═══ ARCHIVE SYSTEM (no delete, only archive) ═══
+var archived=[];
+try{archived=JSON.parse(localStorage.getItem("pg_archived")||"[]")}catch(e){}
+
+function archivePayment(idx){
+  if(userRole!=="cfo"&&userRole!=="ceo"&&userRole!=="coo"&&userRole!=="accounts"){alert("No permission");return}
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){return}
+  if(!p[idx])return;
+  p[idx].archived=true;p[idx].archived_at=new Date().toISOString();p[idx].archived_by=currentUser?currentUser.name:userRole;
+  archived.push(p[idx]);
+  p.splice(idx,1);
+  try{localStorage.setItem("pg_e",JSON.stringify(p));localStorage.setItem("pg_archived",JSON.stringify(archived))}catch(e){}
+  logAct("archive","Archived payment");
+  closeModal();render();
+}
+
+function permanentDelete(idx){
+  if(userRole!=="ceo"&&userRole!=="coo"){alert("Only CEO/COO can permanently delete");return}
+  if(!confirm("PERMANENTLY delete from archive? This cannot be undone."))return;
+  archived.splice(idx,1);
+  try{localStorage.setItem("pg_archived",JSON.stringify(archived))}catch(e){}
+  logAct("perm_delete","Permanently deleted from archive");
+  render();
+}
+
+function restoreFromArchive(idx){
+  if(userRole!=="ceo"&&userRole!=="coo"&&userRole!=="accounts"){alert("No permission");return}
+  var entry=archived[idx];if(!entry)return;
+  delete entry.archived;delete entry.archived_at;delete entry.archived_by;
+  var p=[];try{p=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  p.unshift(entry);
+  archived.splice(idx,1);
+  try{localStorage.setItem("pg_e",JSON.stringify(p));localStorage.setItem("pg_archived",JSON.stringify(archived))}catch(e){}
+  logAct("restore","Restored from archive");
+  render();
+}
+
+// ═══ ACTIVITY LOG ═══
+var actLog=[];
+try{actLog=JSON.parse(localStorage.getItem("pg_activity")||"[]")}catch(e){}
+function logAct(action,detail){
+  actLog.unshift({ts:new Date().toISOString(),user:currentUser?currentUser.name:userRole,role:currentUser?currentUser.role:userRole,action:action,detail:detail});
+  try{localStorage.setItem("pg_activity",JSON.stringify(actLog.slice(0,2000)))}catch(e){}
+}
+
+// ═══ MESSAGES ═══
+var pgMessages=[];
+try{pgMessages=JSON.parse(localStorage.getItem("pg_messages")||"[]")}catch(e){}
+function addPgMessage(payId,text){
+  pgMessages.push({id:"M-"+Date.now(),paymentId:payId,from:currentUser?currentUser.name:"Accounts",text:text,ts:new Date().toISOString()});
+  try{localStorage.setItem("pg_messages",JSON.stringify(pgMessages.slice(0,2000)))}catch(e){}
+}
+function getPgMessages(payId){return pgMessages.filter(function(m){return m.paymentId===payId})}
+
+
+// ═══ DEALER PROFILES WITH BANK ACCOUNTS ═══
+var dealers={};
+try{dealers=JSON.parse(localStorage.getItem("pg_dealers_v2")||"{}")}catch(e){}
+
+function getDealer(name){
+  if(!name)return null;
+  var key=name.toLowerCase().trim();
+  for(var k in dealers){if(k===key||dealers[k].name.toLowerCase()===key)return dealers[k]}
+  return null;
+}
+
+function addDealerBank(dealerName,account,bank){
+  var key=dealerName.toLowerCase().trim();
+  if(!dealers[key])dealers[key]={name:dealerName,phone:"",entity:"",type:"regular",banks:[],created:new Date().toISOString()};
+  var exists=dealers[key].banks.find(function(b){return b.account===account});
+  if(!exists){
+    dealers[key].banks.push({account:account,bank:bank||"",added:new Date().toISOString(),added_by:currentUser?currentUser.name:"system"});
+    saveDealers();
+    return true;
+  }
+  return false;
+}
+
+function checkDealerAccount(dealerName,account){
+  if(!account)return{status:"no_account",msg:"No account number"};
+  // Check if this account is registered to ANY dealer
+  for(var k in dealers){
+    var d=dealers[k];
+    for(var i=0;i<d.banks.length;i++){
+      if(d.banks[i].account===account){
+        if(d.name.toLowerCase()===dealerName.toLowerCase()){
+          return{status:"known",msg:"Known account for "+d.name,dealer:d,count:d.banks.length};
+        } else {
+          return{status:"cross_dealer",msg:"Account "+account+" belongs to "+d.name+", not "+dealerName,owner:d.name};
+        }
+      }
+    }
+  }
+  // Account not found anywhere
+  var dealer=getDealer(dealerName);
+  if(dealer){
+    return{status:"new_account",msg:"New account for "+dealer.name+". Add to profile?",dealer:dealer};
+  }
+  return{status:"unknown",msg:"No dealer profile for "+dealerName+". Create?"};
+}
+
+function saveDealers(){try{localStorage.setItem("pg_dealers_v2",JSON.stringify(dealers))}catch(e){}}
+
+// ═══ TEAM MESSAGES ON PAYMENTS ═══
+var pgMsgs=[];
+try{pgMsgs=JSON.parse(localStorage.getItem("pg_msgs_v2")||"[]")}catch(e){}
+
+function addPayMsg(payId,text,from){
+  pgMsgs.push({payId:payId,text:text,from:from||(currentUser?currentUser.name:"Accounts"),ts:new Date().toISOString()});
+  try{localStorage.setItem("pg_msgs_v2",JSON.stringify(pgMsgs.slice(0,3000)))}catch(e){}
+}
+function getPayMsgs(payId){return pgMsgs.filter(function(m){return m.payId===payId})}
+
+// ═══ TID DUPLICATE CHECK ═══
+function checkTidDuplicate(tid){
+  if(!tid)return null;
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  for(var i=0;i<pgRaw.length;i++){
+    var ai=pgRaw[i].ai_extracted||{};
+    if((ai.ref===tid||ai.tid===tid||pgRaw[i].bank_feed_ref===tid)&&pgRaw[i].journaled){
+      return pgRaw[i];
+    }
+  }
+  return null;
+}
+
+
+function showAddDealer(){
+  var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><h2>Add New Dealer</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+  m+='<div class="flbl">Dealer Name *</div><input class="finp" id="newDealerName" placeholder="e.g. Shaheen Solar">';
+  m+='<div class="flbl">Phone Number *</div><input class="finp" id="newDealerPhone" type="tel" placeholder="03XX-XXXXXXX">';
+  m+='<div class="flbl">Entity</div><select class="fsel" id="newDealerEnt"><option>CNC</option><option>CST</option><option>CSPL</option></select>';
+  m+='<div class="flbl">Type</div><select class="fsel" id="newDealerType"><option value="regular">Regular Dealer</option><option value="walkin">Walk-in / One-time</option></select>';
+  m+='<div class="flbl">Bank Account (optional)</div><input class="finp" id="newDealerAcct" placeholder="Account number">';
+  m+='<div class="flbl">Bank Name</div><input class="finp" id="newDealerBank" placeholder="e.g. BAHL, Meezan">';
+  m+='<button class="btn btn-g" style="margin-top:14px" onclick="saveNewDealer()">Save Dealer</button>';
+  m+='</div></div></div>';
+  var d=document.createElement("div");d.id="personModal";d.innerHTML=m;document.body.appendChild(d);
+}
+
+function saveNewDealer(){
+  var name=document.getElementById("newDealerName").value.trim();
+  var phone=document.getElementById("newDealerPhone").value.trim();
+  var ent=document.getElementById("newDealerEnt").value;
+  var typ=document.getElementById("newDealerType").value;
+  var acct=document.getElementById("newDealerAcct").value.trim();
+  var bank=document.getElementById("newDealerBank").value.trim();
+  if(!name){alert("Name is required");return}
+  if(!phone){alert("Phone number is mandatory for all dealers");return}
+  var key=name.toLowerCase().trim();
+  dealers[key]={name:name,phone:phone,entity:ent,type:typ,banks:[],created:new Date().toISOString()};
+  if(acct)dealers[key].banks.push({account:acct,bank:bank,added:new Date().toISOString(),added_by:currentUser?currentUser.name:"admin"});
+  saveDealers();
+  logAct("add_dealer","Added dealer: "+name);
+  closeModal();render();
+}
+
+function showDealerDetail(name){
+  var d=getDealer(name);
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var payments=pgRaw.filter(function(e){return(e.cust||"").toLowerCase()===name.toLowerCase()});
+  
+  var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><h2>'+name+'</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+  
+  if(d){
+    m+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">';
+    m+='<div style="padding:10px;border-radius:8px;background:#f0fdf4"><div style="font-size:10px;color:#888">Phone</div><div style="font-weight:600">'+(d.phone||"—")+'</div></div>';
+    m+='<div style="padding:10px;border-radius:8px;background:#eff6ff"><div style="font-size:10px;color:#888">Type</div><div style="font-weight:600">'+(d.type||"regular")+'</div></div>';
+    m+='</div>';
+    
+    // Bank accounts
+    m+='<div style="font-size:13px;font-weight:700;margin-bottom:6px">Registered Bank Accounts</div>';
+    if(d.banks.length){
+      d.banks.forEach(function(b,i){
+        m+='<div style="padding:8px;background:#f9fafb;border-radius:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center">';
+        m+='<div><span style="font-weight:600;font-family:monospace">'+b.account+'</span> <span style="color:#888;font-size:11px">'+(b.bank||"")+'</span></div>';
+        m+='<span style="font-size:10px;color:#888">Added '+(b.added?b.added.slice(0,10):"")+'</span>';
+        m+='</div>';
+      });
+    } else {
+      m+='<div style="padding:14px;text-align:center;color:#999;font-size:12px;background:#f9fafb;border-radius:6px">No bank accounts registered</div>';
+    }
+    m+='<div style="margin-top:8px;display:flex;gap:6px"><input class="finp" id="addAcctNum" placeholder="Account number" style="flex:1"><input class="finp" id="addAcctBank" placeholder="Bank" style="width:100px"><button class="btn btn-p btn-s" onclick="addBankToDealer(\''+name.replace(/'/g,"\\'")+'\')">+ Add Bank</button></div>';
+  } else {
+    m+='<div style="padding:14px;background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;font-size:12px;color:#d97706;margin-bottom:10px">No dealer profile found. <button class="btn btn-g btn-s" onclick="closeModal();showAddDealer()">Create Profile</button></div>';
+  }
+  
+  // Payment history
+  m+='<div style="font-size:13px;font-weight:700;margin:14px 0 6px">Payment History ('+payments.length+')</div>';
+  payments.slice(0,10).forEach(function(e){
+    var st=e.journaled?"Posted":e.rejected?"Rejected":"Pending";
+    var stc=e.journaled?"grn":e.rejected?"red":"";
+    m+='<div style="padding:6px;border-bottom:1px solid #f3f4f6;display:flex;justify-content:space-between;font-size:12px"><div><span class="mono gry" style="font-size:10px">'+(e.id||"")+'</span> '+(e.date||"")+'</div><div><span class="mono fw6 '+stc+'">PKR '+Number(e.amt||0).toLocaleString()+'</span> <span style="font-size:10px;color:#888">'+st+'</span></div></div>';
+  });
+  
+  m+='</div></div></div>';
+  var el=document.createElement("div");el.id="personModal";el.innerHTML=m;document.body.appendChild(el);
+}
+
+function addBankToDealer(name){
+  var acct=document.getElementById("addAcctNum").value.trim();
+  var bank=document.getElementById("addAcctBank").value.trim();
+  if(!acct){alert("Enter account number");return}
+  if(addDealerBank(name,acct,bank)){
+    logAct("add_bank","Added bank "+acct+" to "+name);
+    closeModal();showDealerDetail(name);
+  } else {
+    alert("Account already registered");
+  }
+}
+
+function addBankFromReview(dealerName,account,bank){
+  addDealerBank(dealerName,account,bank);
+  logAct("add_bank_review","Added "+account+" to "+dealerName+" from review");
+  closeModal();render();
+}
+
+// Message from review panel
+function sendReviewMsg(payId){
+  var inp=document.getElementById("reviewMsgInput");
+  if(!inp||!inp.value.trim())return;
+  addPayMsg(payId,inp.value.trim());
+  logAct("message","Message on "+payId);
+  closeModal();
+  // Re-open the review
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  for(var i=0;i<pgRaw.length;i++){if(pgRaw[i].id===payId){showPaymentReview(i);break}}
+}
+
+
+// ═══ ADMIN FUNCTIONS ═══
+function showAddUser(){
+  var m='<div class="modal-bg" onclick="if(event.target===this)closeModal()"><div class="modal"><div class="modal-h"><h2>Add User</h2><button class="modal-close" onclick="closeModal()">x</button></div><div class="modal-body">';
+  m+='<div class="flbl">Username *</div><input class="finp" id="newUserKey" placeholder="e.g. salesman1">';
+  m+='<div class="flbl">Full Name *</div><input class="finp" id="newUserName" placeholder="Full name">';
+  m+='<div class="flbl">Password *</div><input class="finp" type="password" id="newUserPass" placeholder="Min 8 characters">';
+  m+='<div class="flbl">Role *</div><select class="fsel" id="newUserRole"><option value="salesperson">Salesperson</option><option value="sales_manager">Sales Manager</option><option value="accounts">Accounts</option><option value="warehouse">Warehouse</option><option value="ceo">CEO</option><option value="coo">COO</option></select>';
+  m+='<div class="flbl">Title</div><input class="finp" id="newUserTitle" placeholder="e.g. Sales Executive">';
+  m+='<button class="btn btn-g" style="margin-top:14px" onclick="saveNewUser()">Create User</button>';
+  m+='</div></div></div>';
+  var d=document.createElement("div");d.id="personModal";d.innerHTML=m;document.body.appendChild(d);
+}
+
+function saveNewUser(){
+  var key=document.getElementById("newUserKey").value.trim().toLowerCase();
+  var name=document.getElementById("newUserName").value.trim();
+  var pass=document.getElementById("newUserPass").value;
+  var role=document.getElementById("newUserRole").value;
+  var title=document.getElementById("newUserTitle").value.trim();
+  if(!key||!name||!pass){alert("Fill all required fields");return}
+  if(pass.length<8){alert("Password must be 8+ characters");return}
+  if(USERS[key]){alert("Username already exists");return}
+  USERS[key]={pass:pass,role:role,name:name,title:title||role};
+  var saved={};try{saved=JSON.parse(localStorage.getItem("pg_users")||"{}")}catch(e){}
+  saved[key]=USERS[key];
+  try{localStorage.setItem("pg_users",JSON.stringify(saved))}catch(e){}
+  logAct("add_user","Created user: "+name+" ("+role+")");
+  closeModal();render();
+}
+
+function toggleBlock(key){
+  if(!USERS[key])return;
+  USERS[key].blocked=!USERS[key].blocked;
+  var saved={};try{saved=JSON.parse(localStorage.getItem("pg_users")||"{}")}catch(e){}
+  saved[key]=USERS[key];
+  try{localStorage.setItem("pg_users",JSON.stringify(saved))}catch(e){}
+  logAct("block_user",(USERS[key].blocked?"Blocked":"Unblocked")+" user: "+USERS[key].name);
+  render();
+}
+
+function resetPassword(key){
+  var newPass=prompt("Enter new password for "+USERS[key].name+":");
+  if(!newPass||newPass.length<8){alert("Password must be 8+ characters");return}
+  USERS[key].pass=newPass;
+  var saved={};try{saved=JSON.parse(localStorage.getItem("pg_users")||"{}")}catch(e){}
+  saved[key]=USERS[key];
+  try{localStorage.setItem("pg_users",JSON.stringify(saved))}catch(e){}
+  logAct("reset_pw","Reset password for: "+USERS[key].name);
+  alert("Password reset for "+USERS[key].name);
+}
+
+function approveReg(idx){
+  var regs=[];try{regs=JSON.parse(localStorage.getItem("pg_pending_reg")||"[]")}catch(e){}
+  var r=regs[idx];if(!r)return;
+  var role=prompt("Assign role (salesperson/sales_manager/accounts/warehouse):","salesperson");
+  if(!role)return;
+  USERS[r.user]={pass:r.pass,role:role,name:r.name,title:role};
+  var saved={};try{saved=JSON.parse(localStorage.getItem("pg_users")||"{}")}catch(e){}
+  saved[r.user]=USERS[r.user];
+  try{localStorage.setItem("pg_users",JSON.stringify(saved))}catch(e){}
+  regs.splice(idx,1);
+  try{localStorage.setItem("pg_pending_reg",JSON.stringify(regs))}catch(e){}
+  logAct("approve_reg","Approved registration: "+r.name+" as "+role);
+  render();
+}
+
+function rejectReg(idx){
+  var regs=[];try{regs=JSON.parse(localStorage.getItem("pg_pending_reg")||"[]")}catch(e){}
+  regs.splice(idx,1);
+  try{localStorage.setItem("pg_pending_reg",JSON.stringify(regs))}catch(e){}
+  logAct("reject_reg","Rejected registration request");
+  render();
+}
+
+function exportActivityPDF(){
+  var w=window.open("","_blank");
+  var h="<!DOCTYPE html><html><head><title>Activity Log</title><style>body{font-family:system-ui;font-size:11px;padding:20px}h1{font-size:16px}table{width:100%;border-collapse:collapse}th,td{padding:4px 8px;border:1px solid #ddd;text-align:left}th{background:#f5f5f5;font-size:10px}</style></head><body>";
+  h+="<h1>PayGate Activity Log</h1><div style='color:#888;font-size:10px'>Generated: "+new Date().toLocaleString()+"</div>";
+  
+  // User summary
+  var userSummary={};
+  actLog.forEach(function(a){if(!userSummary[a.user])userSummary[a.user]={count:0,actions:{}};userSummary[a.user].count++;userSummary[a.user].actions[a.action]=(userSummary[a.user].actions[a.action]||0)+1});
+  h+="<h2>User Summary</h2><table><tr><th>User</th><th>Total Actions</th><th>Breakdown</th></tr>";
+  Object.keys(userSummary).forEach(function(u){
+    h+="<tr><td><b>"+u+"</b></td><td>"+userSummary[u].count+"</td><td>"+Object.entries(userSummary[u].actions).map(function(e){return e[0]+": "+e[1]}).join(", ")+"</td></tr>";
+  });
+  h+="</table>";
+  
+  // Full log
+  h+="<h2>Full Log (last 200)</h2><table><tr><th>Time</th><th>User</th><th>Role</th><th>Action</th><th>Detail</th></tr>";
+  actLog.slice(0,200).forEach(function(a){
+    h+="<tr><td>"+(a.ts?new Date(a.ts).toLocaleString():"")+"</td><td>"+( a.user||"")+"</td><td>"+(a.role||"")+"</td><td>"+(a.action||"")+"</td><td>"+(a.detail||"")+"</td></tr>";
+  });
+  h+="</table></body></html>";
+  w.document.write(h);w.document.close();setTimeout(function(){w.print()},500);
+}
+
+
+// ═══ INVOICE ATTACHMENT ═══
+function attachInvoice(idx){
+  var inp=document.createElement("input");inp.type="file";inp.accept="image/*,.pdf";
+  inp.onchange=function(e){
+    var file=e.target.files[0];if(!file)return;
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+      if(!pgRaw[idx])return;
+      pgRaw[idx].invoice=ev.target.result;
+      pgRaw[idx].invoice_name=file.name;
+      pgRaw[idx].invoice_date=new Date().toISOString();
+      try{localStorage.setItem("pg_e",JSON.stringify(pgRaw))}catch(e){}
+      logAct("invoice","Attached invoice to "+(pgRaw[idx].id||"?"));
+      closeModal();showPaymentReview(idx);
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+// ═══ WALK-IN CLIENT LOGIC ═══
+function checkWalkIn(custName){
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var d=getDealer(custName);
+  if(d&&d.type==="walkin"){
+    var txCount=pgRaw.filter(function(e){return(e.cust||"").toLowerCase()===custName.toLowerCase()}).length;
+    if(txCount>=3){
+      return{suggest:true,count:txCount,msg:txCount+" transactions from walk-in. Convert to regular dealer?"};
+    }
+  }
+  return{suggest:false};
+}
+
+// ═══ DEVICE FINGERPRINT ═══
+function getDeviceFingerprint(){
+  var fp="";
+  try{
+    fp+=screen.width+"x"+screen.height+"|";
+    fp+=navigator.language+"|";
+    fp+=Intl.DateTimeFormat().resolvedOptions().timeZone+"|";
+    fp+=navigator.platform+"|";
+    fp+=navigator.hardwareConcurrency||"?";
+    // Canvas fingerprint
+    var cv=document.createElement("canvas");var ctx=cv.getContext("2d");
+    ctx.textBaseline="top";ctx.font="14px Arial";ctx.fillText("PG",2,2);
+    fp+="|"+cv.toDataURL().slice(-20);
+  }catch(e){fp+="err"}
+  // Simple hash
+  var hash=0;for(var i=0;i<fp.length;i++){hash=((hash<<5)-hash)+fp.charCodeAt(i);hash|=0}
+  return"DEV-"+Math.abs(hash).toString(36);
+}
+
+var deviceFP=getDeviceFingerprint();
+var knownDevices={};
+try{knownDevices=JSON.parse(localStorage.getItem("pg_devices")||"{}")}catch(e){}
+
+function checkDevice(username){
+  if(!knownDevices[username]){
+    // First login - register this device
+    knownDevices[username]={fp:deviceFP,registered:new Date().toISOString(),ua:navigator.userAgent.slice(0,60)};
+    try{localStorage.setItem("pg_devices",JSON.stringify(knownDevices))}catch(e){}
+    return{ok:true,first:true};
+  }
+  if(knownDevices[username].fp===deviceFP){
+    return{ok:true,first:false};
+  }
+  return{ok:false,registered:knownDevices[username].fp,current:deviceFP,msg:"Different device detected! Registered: "+knownDevices[username].ua};
+}
+
+function approveDevice(username){
+  knownDevices[username]={fp:deviceFP,registered:new Date().toISOString(),ua:navigator.userAgent.slice(0,60)};
+  try{localStorage.setItem("pg_devices",JSON.stringify(knownDevices))}catch(e){}
+  logAct("device_approve","Approved new device for "+username);
+}
+
+// ═══ SPAM FILTER ═══
+function isSpamPayment(entry){
+  var minAmt=Number(pgSettings.min_amount||0);
+  if(minAmt>0&&Number(entry.amt||0)<minAmt)return{spam:true,reason:"Below minimum amount PKR "+minAmt};
+  var blocked=(pgSettings.blocked_senders||"").split(",").map(function(s){return s.trim().toLowerCase()}).filter(function(s){return s});
+  if(blocked.length&&entry.sender_bank){
+    var sb=entry.sender_bank.toLowerCase();
+    for(var i=0;i<blocked.length;i++){if(sb.indexOf(blocked[i])>=0)return{spam:true,reason:"Blocked sender: "+blocked[i]}}
+  }
+  return{spam:false};
+}
+
+
+// ═══ WHATSAPP BUSINESS API INTEGRATION ═══
+// Meta Cloud API: https://developers.facebook.com/docs/whatsapp/cloud-api
+
+function sendWhatsApp(phone,message){
+  var token=pgSettings.whatsapp_token||"";
+  var phoneId=pgSettings.whatsapp_phone_id||"";
+  if(!token||!phoneId){console.log("WhatsApp not configured");return Promise.resolve(false)}
+  
+  // Format phone: remove leading 0, add 92 for Pakistan
+  var to=phone.replace(/[\s\-]/g,"");
+  if(to.startsWith("0"))to="92"+to.slice(1);
+  if(!to.startsWith("92"))to="92"+to;
+  
+  return fetch("https://graph.facebook.com/v18.0/"+phoneId+"/messages",{
+    method:"POST",
+    headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"},
+    body:JSON.stringify({
+      messaging_product:"whatsapp",
+      to:to,
+      type:"text",
+      text:{body:message}
+    })
+  }).then(function(r){return r.json()}).then(function(d){
+    console.log("WhatsApp sent to "+to);
+    logAct("whatsapp_send","Sent to "+phone+": "+message.slice(0,50));
+    return true;
+  }).catch(function(e){console.log("WhatsApp error: "+e.message);return false});
+}
+
+// Send payment notification to dealer
+function notifyDealerWhatsApp(payment){
+  var dealer=getDealer(payment.cust);
+  if(!dealer||!dealer.phone)return;
+  var msg="PayGate Notification\n\n";
+  msg+="Payment Received: PKR "+Number(payment.amt||0).toLocaleString()+"\n";
+  msg+="Customer: "+(payment.cust||"")+"\n";
+  msg+="Entity: "+(payment.ent||"")+"\n";
+  msg+="Status: "+(payment.journaled?"POSTED":payment.bank_verified?"VERIFIED":"PENDING")+"\n";
+  msg+="\nThank you - CNC Electric";
+  sendWhatsApp(dealer.phone,msg);
+}
+
+// Send daily summary to CEO/COO
+function sendDailySummaryWhatsApp(){
+  var pgRaw=[];try{pgRaw=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+  var today=new Date().toISOString().slice(0,10);
+  var todayEntries=pgRaw.filter(function(e){return(e.ts||"").slice(0,10)===today});
+  var total=todayEntries.reduce(function(s,e){return s+Number(e.amt||0)},0);
+  var pending=todayEntries.filter(function(e){return!e.journaled&&!e.rejected}).length;
+  var posted=todayEntries.filter(function(e){return e.journaled}).length;
+  
+  var msg="PayGate Daily Summary\n";
+  msg+=today+"\n\n";
+  msg+="Payments: "+todayEntries.length+"\n";
+  msg+="Total: PKR "+total.toLocaleString()+"\n";
+  msg+="Posted: "+posted+"\n";
+  msg+="Pending: "+pending+"\n";
+  
+  // Bank balances
+  try{
+    var b=calc();
+    msg+="\nBank Balances:\n";
+    ["1101","1102","1106"].forEach(function(code){
+      if(b[code]&&b[code].bal)msg+=b[code].name+": PKR "+Math.round(b[code].bal).toLocaleString()+"\n";
+    });
+  }catch(e){}
+  
+  // Send to configured numbers
+  var recipients=(pgSettings.whatsapp_daily_to||"").split(",").map(function(s){return s.trim()}).filter(function(s){return s});
+  recipients.forEach(function(phone){sendWhatsApp(phone,msg)});
+}
+
+// Send rejection notification
+function notifyRejectionWhatsApp(payment,reason){
+  var dealer=getDealer(payment.cust);
+  if(!dealer||!dealer.phone)return;
+  var msg="PayGate Alert\n\n";
+  msg+="Payment REJECTED\n";
+  msg+="Amount: PKR "+Number(payment.amt||0).toLocaleString()+"\n";
+  msg+="Reason: "+(reason||"Not specified")+"\n";
+  msg+="\nPlease contact accounts for clarification.";
+  sendWhatsApp(dealer.phone,msg);
+}
+
+// Send approval notification
+function notifyApprovalWhatsApp(payment){
+  var dealer=getDealer(payment.cust);
+  if(!dealer||!dealer.phone)return;
+  var msg="PayGate Confirmation\n\n";
+  msg+="Payment APPROVED & POSTED\n";
+  msg+="Amount: PKR "+Number(payment.amt||0).toLocaleString()+"\n";
+  msg+="Ref: "+(payment.journal_id||payment.id||"")+"\n";
+  msg+="\nThank you for your payment - CNC Electric";
+  sendWhatsApp(dealer.phone,msg);
+}
+
+// Parse incoming WhatsApp message for payment info
+function parseWhatsAppMessage(text){
+  return extractFromText(text); // Reuse existing text extraction
+}
+
+// Webhook handler for incoming WhatsApp messages (future: needs server)
+// For now, manual paste of WhatsApp messages in the Incoming tab works
+
+// Restore session AFTER render() is defined
+(function(){
+  try{var r=JSON.parse(localStorage.getItem("pg_remember")||"null");if(r&&r.user&&USERS[r.user]){loggedIn=true;currentUser=r;document.getElementById("loginScreen").style.display="none";}}catch(e){}
+  if(!loggedIn)try{var s=JSON.parse(sessionStorage.getItem("pg_session")||"null");if(s&&s.user&&USERS[s.user]){loggedIn=true;currentUser=s;document.getElementById("loginScreen").style.display="none";}}catch(e){}
+  if(loggedIn){render();}
+})();
+
+</script>
+<input type="file" id="excelUpload" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleExcelUpload(event)">
+<div id="chatFab" class="chat-fab" onclick="toggleChat()">&#128172;</div>
+<div id="chatPanel" class="chat-panel" style="display:none">
+<div class="chat-header"><h3>PayGate AI</h3><button onclick="toggleChat()" style="background:none;border:none;color:white;font-size:18px;cursor:pointer">&#10005;</button></div>
+<div class="chat-body" id="chatBody"><div class="chat-msg bot">Ask about payments, balances, dealers. Try: "total today" or "pending payments"</div></div>
+<div class="chat-input"><input id="chatInput" placeholder="Ask..." onkeydown="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">Send</button></div>
+</div>
+<div id="version-bar" style="position:fixed;bottom:0;left:0;right:0;background:#f1f5f9;border-top:1px solid #e2e8f0;padding:4px 14px;display:flex;justify-content:space-between;font-size:9px;color:#94a3b8;z-index:40"><span>paygate-accounts-v43.html</span><span>V43 &middot; 24 Mar 2026</span></div>
+<script>
+// PayGate Firebase Module V43
+(function(){
+  var DB=null,FEEDS=[],LOADED=false;
+  function loadJS(u,cb){var s=document.createElement("script");s.src=u;s.onload=cb;s.onerror=function(){};document.head.appendChild(s)}
+  function start(){
+    loadJS("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js",function(){
+      loadJS("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js",function(){
+        try{
+          firebase.initializeApp({apiKey:"AIzaSyBDZqYPKJdvcXibQezyt8Nqy3DO2r9ZJJY",authDomain:"paygate-cnc.firebaseapp.com",projectId:"paygate-cnc",storageBucket:"paygate-cnc.firebasestorage.app",messagingSenderId:"382293084139",appId:"1:382293084139:web:9c08ab938bd1cc85bafbae"});
+          DB=firebase.firestore();
+          fetchFeeds();
+        }catch(e){console.log("FB:"+e.message)}
+      });
+    });
+  }
+  function fetchFeeds(){
+    if(!DB)return;
+    DB.collection("paygate_bank_feeds").orderBy("processed_at","desc").limit(200).get()
+    .then(function(snap){FEEDS=[];snap.forEach(function(d){var o=d.data();o._id=d.id;FEEDS.push(o)});LOADED=true;window.PG_FEEDS=FEEDS;window.PG_LOADED=true;showBadge();autoMatch()})
+    .catch(function(e){console.log("FB read:"+e.message)});
+    DB.collection("paygate_bank_feeds").orderBy("processed_at","desc").limit(30)
+    .onSnapshot(function(snap){var ch=false;snap.docChanges().forEach(function(c){if(c.type==="added"){var o=c.doc.data();o._id=c.doc.id;if(!FEEDS.find(function(f){return f._id===o._id})){FEEDS.unshift(o);ch=true;window.PG_FEEDS=FEEDS;if(LOADED&&typeof playAlertSound==="function")playAlertSound()}}});if(ch){showBadge();autoMatch()}}},function(e){console.log("FB listen:"+e.message)});
+  }
+  // Expose to window for payment review modal
+  window.PG_FEEDS=FEEDS;
+  window.PG_LOADED=LOADED;
+
+  function autoMatch(){
+    var pg=[];try{pg=JSON.parse(localStorage.getItem("pg_e")||"[]")}catch(e){}
+    var n=0;
+    pg.forEach(function(p){if(p.bank_verified||p.journaled)return;for(var i=0;i<FEEDS.length;i++){var f=FEEDS[i];if(f.match_status==="MATCHED")continue;if(Number(p.amt||0)===Number(f.amount||0)){p.bank_verified=true;p.bank_feed_amount=f.amount;p.bank_feed_bank=f.bank;p.bank_feed_ref=f.ref||"";p.bank_feed_payer=f.payer||"";p.verified_at=new Date().toLocaleString();p.verified_by="auto-firebase";if(DB)DB.collection("paygate_bank_feeds").doc(f._id).update({match_status:"MATCHED",matched:true,matched_to:p.id||""}).catch(function(){});f.match_status="MATCHED";n++;break}}});
+    if(n>0){try{localStorage.setItem("pg_e",JSON.stringify(pg))}catch(e){}}
+  }
+  function showBadge(){var h=document.querySelector(".right");if(!h)return;var b=document.getElementById("fbBadge");if(!b){b=document.createElement("span");b.id="fbBadge";b.style.cssText="font-size:10px;margin-left:8px";h.appendChild(b)}b.innerHTML=LOADED?"<span style=color:#16a34a>\u25CF Live ("+FEEDS.length+")</span>":"<span style=color:#f59e0b>\u25CF ...</span>"}
+  setInterval(showBadge,3000);
+  setTimeout(start,500);
+})();
+</script>
+</body>
+</html>
