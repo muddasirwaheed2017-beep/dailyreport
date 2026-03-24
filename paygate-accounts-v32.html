@@ -139,17 +139,6 @@ var USERS={
 var loggedIn=false;
 var currentUser=null;
 
-// Check remembered login (persistent)
-try{
-  var rem=JSON.parse(localStorage.getItem("pg_remember")||"null");
-  if(rem&&rem.user&&USERS[rem.user]){loggedIn=true;currentUser=rem;document.getElementById("loginScreen").style.display="none"}
-}catch(e){}
-// Check session login (tab-level)
-if(!loggedIn)try{
-  var sess=JSON.parse(sessionStorage.getItem("pg_session")||"null");
-  if(sess&&sess.user&&USERS[sess.user]){loggedIn=true;currentUser=sess;document.getElementById("loginScreen").style.display="none"}
-}catch(e){}
-
 function doLogin(){
   var u=document.getElementById("loginUser").value.trim().toLowerCase();
   var p=document.getElementById("loginPass").value;
@@ -2059,8 +2048,18 @@ function parseWhatsAppMessage(text){
 // Webhook handler for incoming WhatsApp messages (future: needs server)
 // For now, manual paste of WhatsApp messages in the Incoming tab works
 
-if(loggedIn){render();}
-setTimeout(function(){if(loggedIn&&document.getElementById("app")&&!document.getElementById("app").innerHTML.trim()){render();}},200);
+// Auto-login check runs HERE, after render() is fully defined
+(function(){
+  try{
+    var rem=JSON.parse(localStorage.getItem("pg_remember")||"null");
+    if(rem&&rem.user&&USERS[rem.user]){loggedIn=true;currentUser=rem;document.getElementById("loginScreen").style.display="none";}
+  }catch(e){}
+  if(!loggedIn)try{
+    var sess=JSON.parse(sessionStorage.getItem("pg_session")||"null");
+    if(sess&&sess.user&&USERS[sess.user]){loggedIn=true;currentUser=sess;document.getElementById("loginScreen").style.display="none";}
+  }catch(e){}
+  if(loggedIn){render();}
+})();
 
 </script>
 <input type="file" id="excelUpload" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleExcelUpload(event)">
