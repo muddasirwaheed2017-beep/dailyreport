@@ -222,6 +222,10 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
       <div style="flex:1"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">From</label><input type="date" id="hlv-from" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
       <div style="flex:1"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">To</label><input type="date" id="hlv-to" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
     </div>
+    <div style="display:flex;gap:6px;margin-bottom:8px">
+      <div style="flex:1"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">Leave Type</label><select id="hlv-type" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px" onchange="document.getElementById('hlv-half-wrap').style.display=this.value==='half'?'block':'none';if(this.value==='half'){document.getElementById('hlv-to').value=document.getElementById('hlv-from').value;document.getElementById('hlv-to').disabled=true}else{document.getElementById('hlv-to').disabled=false}"><option value="full">Full Day</option><option value="half">Half Day</option></select></div>
+      <div style="flex:1;display:none" id="hlv-half-wrap"><label style="font-size:10px;font-weight:700;color:var(--G5);display:block;margin-bottom:2px">Which Half</label><select id="hlv-half" style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"><option value="first">First Half (Morning)</option><option value="second">Second Half (Afternoon)</option></select></div>
+    </div>
     <div style="margin-bottom:8px"><input id="hlv-reason" placeholder="Reason..." style="width:100%;padding:8px;border:2px solid var(--G8);border-radius:8px;font-size:12px"></div>
     <button class="jbtn jbtn-red" style="font-size:12px;padding:10px" onclick="App.quickLeave()">📋 Submit Leave</button>
   </div>
@@ -498,6 +502,10 @@ button,input,select,textarea{font-family:inherit;border:none;outline:none;font-s
           <div style="flex:1"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:3px">From Date *</label><input type="date" id="lv-from" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px"></div>
           <div style="flex:1"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:3px">To Date</label><input type="date" id="lv-to" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px"></div>
         </div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <div style="flex:1"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:3px">Leave Type</label><select id="lv-type" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px" onchange="document.getElementById('lv-half-wrap').style.display=this.value==='half'?'block':'none';if(this.value==='half'){document.getElementById('lv-to').value=document.getElementById('lv-from').value;document.getElementById('lv-to').disabled=true}else{document.getElementById('lv-to').disabled=false}"><option value="full">Full Day</option><option value="half">Half Day</option></select></div>
+          <div style="flex:1;display:none" id="lv-half-wrap"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:3px">Which Half</label><select id="lv-half" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px"><option value="first">First Half (Morning)</option><option value="second">Second Half (Afternoon)</option></select></div>
+        </div>
         <div style="margin-bottom:10px"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:3px">Reason *</label><input id="lv-reason" placeholder="Sick leave, personal, emergency..." style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px"></div>
         <button class="jbtn jbtn-red" onclick="App.applyLeave()">📋 Submit Leave Request</button>
       </div>
@@ -657,7 +665,7 @@ var C={
     {name:'Karachi Office',lat:24.857580,lng:67.043633}
   ],
   GEO_RADIUS:50,
-  START_TIME:'09:30',END_TIME:'16:00',OT_START:'18:00',AUTO_CLOSE:'23:00',
+  START_TIME:'10:00',END_TIME:'16:00',OT_START:'18:00',AUTO_CLOSE:'23:00',
   MAX_OVERNIGHT:3,
   TAGS:['recovery','followup','newclient','payment','demo','complaint','order','quote','meeting','proposal','delivery','return','cold','urgent','cncsale','ficosale'],
   MAX_WORDS:2000
@@ -1620,7 +1628,7 @@ loadMyAtt:async function(period){
   this._leaves.forEach(function(l){
     if(l.status!=='approved'||l.userId!==ME.id)return;
     var cur=new Date(l.date+'T00:00:00');var end=new Date((l.dateTo||l.date)+'T00:00:00');
-    while(cur<=end){var ds=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');lvLookup[ds]=true;cur.setDate(cur.getDate()+1)}
+    while(cur<=end){var ds=cur.getFullYear()+'-'+String(cur.getMonth()+1).padStart(2,'0')+'-'+String(cur.getDate()).padStart(2,'0');lvLookup[ds]=(lvLookup[ds]||0)+(l.leaveDay==='half'?0.5:1);cur.setDate(cur.getDate()+1)}
   });
 
   var myA=(_att||[]).filter(function(a){return a.userId===ME.id&&a.date>=start&&a.date<=todayStr}).sort(function(a,b){return b.date>a.date?1:b.date<a.date?-1:0});
@@ -1638,7 +1646,16 @@ loadMyAtt:async function(period){
     var isOffDay=App._offDays[ds];
     if(!isSun&&!isHol&&!isOffDay){
       workingDays++;
-      if(lvLookup[ds]){leaveDays++}
+      var lvVal=lvLookup[ds]||0;
+      if(lvVal>=1){leaveDays++}
+      else if(lvVal===0.5){
+        leaveDays+=0.5;
+        /* Half day leave: check if they attended the other half */
+        if(attByDate[ds]){
+          if((attByDate[ds].time||'')>C.START_TIME){late++;if(cfg.deductionMode==='salary')lateDed+=hourlyRate;else lateDed+=cfg.flatLate||200}
+          else onTime++;
+        }
+      }
       else if(attByDate[ds]){
         if((attByDate[ds].time||'')>C.START_TIME){late++;if(cfg.deductionMode==='salary')lateDed+=hourlyRate;else lateDed+=cfg.flatLate||200}
         else onTime++;
@@ -1699,8 +1716,10 @@ loadMyAtt:async function(period){
       h+='<div style="background:var(--blu-bg);border:1px solid var(--blu);border-radius:8px;padding:8px 12px;margin-bottom:3px;display:flex;justify-content:space-between;font-size:11px"><span>'+dateStr2+'</span><span style="color:var(--blu);font-weight:700">🎉 '+isHol2+'</span></div>';
     } else if(isOffDay2){
       h+='<div style="background:var(--G9);border:1px solid var(--G7);border-radius:8px;padding:8px 12px;margin-bottom:3px;display:flex;justify-content:space-between;font-size:11px"><span>'+dateStr2+'</span><span style="color:var(--G5);font-weight:700">🚫 '+isOffDay2+'</span></div>';
-    } else if(isLeave2){
+    } else if(isLeave2>=1){
       h+='<div style="background:var(--blu-bg);border:1px solid var(--blu);border-left:3px solid var(--blu);border-radius:8px;padding:8px 12px;margin-bottom:3px;display:flex;justify-content:space-between;font-size:11px"><span style="font-weight:700">'+dateStr2+'</span><span style="color:var(--blu);font-weight:700">📋 Approved Leave</span></div>';
+    } else if(isLeave2===0.5){
+      h+='<div style="background:#fefce8;border:1px solid #fbbf24;border-left:3px solid #fbbf24;border-radius:8px;padding:8px 12px;margin-bottom:3px;display:flex;justify-content:space-between;font-size:11px"><span style="font-weight:700">'+dateStr2+'</span><span style="color:#d97706;font-weight:700">📋 ½ Day Leave</span></div>';
     } else if(att2){
       var isLate2=(att2.time||'')>C.START_TIME;
       var inLoc2=att2.inNear===true?'🏢 '+(att2.inOffice||''):'📍 Away';
@@ -1730,19 +1749,22 @@ applyLeave:async function(){
   var from=document.getElementById('lv-from').value;
   var to=document.getElementById('lv-to').value||from;
   var reason=document.getElementById('lv-reason').value.trim();
+  var leaveDay=document.getElementById('lv-type').value||'full';
+  var halfType=leaveDay==='half'?document.getElementById('lv-half').value:'';
   if(!from){U.toast('Select date','warn');return}
   if(!reason){U.toast('Enter reason','warn');return}
+  if(leaveDay==='half'){to=from}
   var d1=new Date(from+'T00:00:00'),d2=new Date(to+'T00:00:00');
-  var days=Math.round((d2-d1)/(1000*60*60*24))+1;if(days<1)days=1;
+  var days=leaveDay==='half'?0.5:Math.round((d2-d1)/(1000*60*60*24))+1;if(days<0.5)days=0.5;
   showLoad('Submitting','Applying for leave...');
   try{
     await F.push('leaves',{
-      userId:ME.id,userName:ME.name,date:from,dateTo:to,days:days,
+      userId:ME.id,userName:ME.name,date:from,dateTo:to,days:days,leaveDay:leaveDay,halfType:halfType,
       reason:reason,status:'pending',adminApproved:false,
       ts:new Date().toISOString()
     });
     U.toast('Leave application submitted — pending approval','ok');S.p('ok');
-    document.getElementById('lv-from').value='';document.getElementById('lv-to').value='';document.getElementById('lv-reason').value='';
+    document.getElementById('lv-from').value='';document.getElementById('lv-to').value='';document.getElementById('lv-reason').value='';document.getElementById('lv-type').value='full';document.getElementById('lv-half-wrap').style.display='none';document.getElementById('lv-to').disabled=false;
     this._leaves=F.arr(await F.g('leaves'));
     this.loadMyLeaves();
   }catch(e){U.toast('Error','err')}
@@ -1757,8 +1779,10 @@ loadMyLeaves:function(){
     var stCls=l.status==='approved'?'color:var(--grn)':l.status==='rejected'?'color:var(--R)':'color:var(--amb)';
     var stTxt=l.status==='approved'?'✅ Approved':l.status==='rejected'?'❌ Rejected':'⏳ Pending';
     var admin=l.adminApproved?' (Admin)':'';
+    var halfBadge=l.leaveDay==='half'?'<span style="font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;background:#fef3c7;color:#d97706;margin-left:4px">½ '+(l.halfType==='first'?'Morning':'Afternoon')+'</span>':'';
+    var daysTxt=l.leaveDay==='half'?'½d':l.days+'d';
     h+='<div style="background:var(--W);border:2px solid var(--G8);border-radius:8px;padding:10px 12px;margin-bottom:4px">';
-    h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700">'+l.date+(l.dateTo&&l.dateTo!==l.date?' → '+l.dateTo:'')+' ('+l.days+'d)</span><span style="font-size:10px;font-weight:700;'+stCls+'">'+stTxt+admin+'</span></div>';
+    h+='<div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:12px;font-weight:700">'+l.date+(l.dateTo&&l.dateTo!==l.date?' → '+l.dateTo:'')+' ('+daysTxt+')'+halfBadge+'</span><span style="font-size:10px;font-weight:700;'+stCls+'">'+stTxt+admin+'</span></div>';
     h+='<div style="font-size:11px;color:var(--G5);margin-top:3px">'+(l.reason||'—')+'</div></div>';
   });
   document.getElementById('my-lv-list').innerHTML=h;
@@ -1816,14 +1840,17 @@ quickLeave:async function(){
   var from=document.getElementById('hlv-from').value;
   var to=document.getElementById('hlv-to').value||from;
   var reason=document.getElementById('hlv-reason').value.trim();
+  var leaveDay=document.getElementById('hlv-type').value||'full';
+  var halfType=leaveDay==='half'?document.getElementById('hlv-half').value:'';
   if(!from){U.toast('Select date','warn');return}
   if(!reason){U.toast('Enter reason','warn');return}
+  if(leaveDay==='half'){to=from}
   var d1=new Date(from+'T00:00:00'),d2=new Date(to+'T00:00:00');
-  var days=Math.round((d2-d1)/(1000*60*60*24))+1;if(days<1)days=1;
+  var days=leaveDay==='half'?0.5:Math.round((d2-d1)/(1000*60*60*24))+1;if(days<0.5)days=0.5;
   try{
-    await F.push('leaves',{userId:ME.id,userName:ME.name,date:from,dateTo:to,days:days,reason:reason,status:'pending',adminApproved:false,ts:new Date().toISOString()});
+    await F.push('leaves',{userId:ME.id,userName:ME.name,date:from,dateTo:to,days:days,leaveDay:leaveDay,halfType:halfType,reason:reason,status:'pending',adminApproved:false,ts:new Date().toISOString()});
     U.toast('Leave submitted — pending approval ✅','ok');S.p('ok');
-    document.getElementById('hlv-from').value='';document.getElementById('hlv-to').value='';document.getElementById('hlv-reason').value='';
+    document.getElementById('hlv-from').value='';document.getElementById('hlv-to').value='';document.getElementById('hlv-reason').value='';document.getElementById('hlv-type').value='full';document.getElementById('hlv-half-wrap').style.display='none';document.getElementById('hlv-to').disabled=false;
     this._leaves=F.arr(await F.g('leaves'));
   }catch(e){U.toast('Error','err')}
 },
@@ -1834,7 +1861,7 @@ loadHomeRecent:function(){
   if(!recent.length&&!recentAtt.length){document.getElementById('home-recent').innerHTML='<div style="font-size:12px;color:var(--G5);text-align:center;padding:10px">No recent activity</div>';return}
   var h='';
   recentAtt.forEach(function(a){
-    var isLate=(a.time||'')>'09:30';
+    var isLate=(a.time||'')>C.START_TIME;
     var dateStr=new Date(a.date+'T00:00:00').toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
     h+='<div style="background:var(--W);border:1px solid var(--G8);border-left:3px solid '+(isLate?'var(--amb)':'var(--grn)')+';border-radius:8px;padding:8px 10px;margin-bottom:4px;font-size:11px">';
     h+='<span style="font-weight:700">'+(isLate?'⏰':'✅')+' '+dateStr+'</span> · '+a.time+(a.out?' → '+a.out:'')+'</div>';
