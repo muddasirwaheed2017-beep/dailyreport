@@ -19,10 +19,10 @@ var CONFIG = {
   FIRESTORE_URL: "https://firestore.googleapis.com/v1/projects/paygate-cnc/databases/(default)/documents/paygate_bank_feeds",
   PROCESSED_LABEL: "PayGate-Processed",
   SEARCH_DAYS: 7,
-  BANK_QUERIES: ["from:*@bahl.com","from:*@bankalfalah.com","from:*@meezanbank.com","from:*@jsbl.com","from:*@hbl.com","from:*@soneribank.com"],
+  BANK_QUERIES: ["from:*@bahl.com","from:*@bankalfalah.com","from:*@meezanbank.com","from:*@jsbl.com","from:*@hbl.com","from:*@soneribank.com","from:*@ubl.com.pk","from:*@mcb.com.pk","from:*@askaribank.com","from:*@faysalbank.com","from:*@standardchartered.com","from:*@aikibank.com","subject:\"Credit Alert\"","subject:\"credit notification\"","subject:\"Transaction Successful\""],
   SMS_QUERY: 'subject:"[SMSForwarder]"',
   ALERT_EMAIL: "muddasirwaheed2017@gmail.com",  // daily health report recipient
-  SMS_SENDER_NUMBERS: ["8810","8811","8001","8009"],  // valid bank SMS sender numbers
+  SMS_SENDER_NUMBERS: ["8810","8811","8001","8009","8222","8551","8200","8210","8300","8305","8500","8700","9012"],  // valid bank SMS sender numbers (expanded for all PK banks)
   DEBIT_KEYWORDS: ["debited","withdrawn","sent to","debit","transferred from your","paid to","outgoing"],
   MAX_AMOUNT: 50000000  // Rs. 5 crore — flag anything above this
 };
@@ -108,7 +108,7 @@ function isBankSMS(body, subject) {
   var text = (body + " " + subject).toLowerCase();
 
   // ORIGINAL V2 keyword check (preserved exactly)
-  var hasKeyword = ["dear cogniti","cognitive solutions","credited","received pkr","deposited","bahl","alfalah","meezan"].some(function(kw) { return text.indexOf(kw) >= 0; });
+  var hasKeyword = ["dear cogniti","cognitive solutions","credited","received pkr","deposited","bahl","alfalah","meezan","credit alert","has been credited","pkr","amount credited","fund transfer","raast","ibft"].some(function(kw) { return text.indexOf(kw) >= 0; });
   if (!hasKeyword) return false;
 
   // F-003 NEW: Reject if debit keywords found
@@ -229,30 +229,47 @@ function parseMessage(text, source, msg) {
   else if(from.indexOf("hbl")>=0||tl.indexOf("hbl")>=0) data.bank="HBL";
   else data.bank="Unknown";
 
-  // Payer — SAME AS V2 (preserved exactly)
-  var payP = [/credited\s+by\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s+via|\s+from|\.|,|\n)/i,/from\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s+account|\.|,|\n)/i,/sender[:\s]+([A-Z][A-Z\s\.]{2,40}?)(?:\.|,|\n)/i];
+  // Payer — ENHANCED: Added BAHL IBFT/Raast format + Meezan format
+  var payP = [
+    /via\s+(?:IBFT|Raast|Fund Transfer)\s+from\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s*,|\s+\d|\s+on\b)/i,  // BAHL: "via IBFT from JAPAN VARIETY STORE, 246887"
+    /from\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s*,\s*(?:BAHL|Meezan|HBL|UBL)|\s*,\s*\d|\s+on\s+\d)/i,  // "from PERSON, BAHL on DD/MM"
+    /credited\s+by\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s+via|\s+from|\.|,|\n)/i,  // V2 original
+    /sender[:\s]+([A-Z][A-Z\s\.]{2,40}?)(?:\.|,|\n)/i,  // V2 original
+    /Transferred\s+.*?to\s+([A-Z][A-Z\s\.()]{2,40}?)(?:\s+Meezan|\s+Bank|\n)/i,  // Meezan: "Money Transferred Rs.200,000 to COGNITIVE SOLUTIONS"
+    /from\s+([A-Z][A-Z\s\.]{2,40}?)(?:\s+account|\.|,|\n)/i  // V2 original (moved lower priority)
+  ];
   for(var j=0;j<payP.length;j++){var pm=text.match(payP[j]);if(pm&&pm[1].trim().length>2){data.payer=pm[1].trim().toUpperCase();break;}}
 
   // TID — F-007 FIX: Removed overly broad 3rd pattern [A-Z]{2}[0-9]{10,18}
   var tidP = [/(?:Ref|TID|Txn|RRN)[.:\s#]+([A-Z0-9]{6,25})/i, /FT[0-9]{12,15}/];
   for(var k=0;k<tidP.length;k++){var tm=text.match(tidP[k]);if(tm){data.tid=tm[1]||tm[0];break;}}
 
-  // Date — F-005 FIX: Added proper date validation
+  // Date — F-005 FIX v2: Hardened date extraction to avoid phone number matches
+  // The SMS format is: "...on DD/MM/YYYY at HH:MM:SS. For details, please call: 021-111-014-014"
+  // The old regex matched "21-111-014" or "11-014-014" from the phone number!
   var dateP = [
-    /on\s+(\d{1,2}\/\d{2}\/\d{4})\s+at/i,  // NEW: "on DD/MM/YYYY at" — most reliable for BAHL SMS
-    /(\d{1,2}[-\/][A-Za-z]{3,9}[-\/]\d{4})/,  // V2 original
-    /(\d{4}[-\/]\d{2}[-\/]\d{2})/,             // V2 original
-    /(\d{1,2}[-\/]\d{2}[-\/]\d{4})/            // V2 original
+    /on\s+(\d{1,2}\/\d{1,2}\/\d{4})\s+at\s+\d/i,  // "on DD/MM/YYYY at H" — BAHL SMS (most reliable, requires "at" followed by digit)
+    /on\s+(\d{1,2}-\d{1,2}-\d{4})\s+at\s+\d/i,     // "on DD-MM-YYYY at H" — alternate format
+    /dated?\s+(\d{1,2}[-\/]\d{1,2}[-\/]\d{4})/i,    // "date DD/MM/YYYY" or "dated DD-MM-YYYY"
+    /(\d{1,2}[-\/][A-Za-z]{3,9}[-\/]\d{4})/,        // DD-Mon-YYYY (e.g., "03-Mar-2026")
+    /(\d{4}[-\/]\d{2}[-\/]\d{2})/                    // YYYY-MM-DD
+    // REMOVED: generic /(\d{1,2}[-\/]\d{2}[-\/]\d{4})/ — this was matching phone numbers!
   ];
   for(var d=0;d<dateP.length;d++){
     var dm=text.match(dateP[d]);
     if(dm){
       var dateStr = dm[1];
-      // F-005 FIX: Validate the extracted date is actually a real date
       if(isValidDate(dateStr)){
         data.txn_date = dateStr;
         break;
       }
+    }
+  }
+  // Fallback: if no date found yet, try the generic DD/MM/YYYY but ONLY if not preceded by "call" or "phone"
+  if (!data.txn_date) {
+    var fallbackMatch = text.match(/(?<!call[:\s].*?)(?<!phone[:\s].*?)(?<!dial[:\s].*?)(\d{1,2}\/\d{2}\/\d{4})/i);
+    if (fallbackMatch && isValidDate(fallbackMatch[1])) {
+      data.txn_date = fallbackMatch[1];
     }
   }
 
@@ -297,7 +314,11 @@ function isValidDate(dateStr) {
   if (month < 1 || month > 12) return false;
   if (day < 1 || day > 31) return false;
   // Reject obvious phone number fragments (3-digit segments that aren't valid dates)
-  if (parts.some(function(p){ return p.length === 3 && !isNaN(p) && !months[p.toLowerCase()]; })) return false;
+  if (parts.some(function(p){ return p.length === 3 && !isNaN(p) && parseInt(p) > 31 && !months[p.toLowerCase()]; })) return false;
+  // Reject if any segment has 3+ digits and looks like phone (e.g., "111", "014")
+  if (parts.some(function(p){ return p.length === 3 && !isNaN(p) && parseInt(p) > 99; })) return false;
+  // Reject dates where month > 12 (catches "21-111-014" type patterns)
+  if (month > 12) return false;
 
   return true;
 }
@@ -374,9 +395,9 @@ function setupTrigger() {
       Logger.log("Deleted trigger: " + t.getHandlerFunction());
     }
   });
-  ScriptApp.newTrigger("checkBankEmails").timeBased().everyMinutes(1).create();
+  ScriptApp.newTrigger("checkBankEmails").timeBased().everyMinutes(2).create();
   getOrCreateLabel(CONFIG.PROCESSED_LABEL);
-  Logger.log("✅ Trigger set: checkBankEmails every 1 minute");
+  Logger.log("✅ Trigger set: checkBankEmails every 2 minutes");
   Logger.log("✅ Label: " + CONFIG.PROCESSED_LABEL);
   Logger.log("✅ V3 safety guards active");
   Logger.log("Run testConnection() to verify.");
@@ -477,8 +498,8 @@ function sendDailyHealthReport() {
     "Processed today: " + processedThreads.length + "\n" +
     "Unprocessed: " + (recentThreads.length - processedThreads.length) + "\n";
 
-  if (triggers === 0) body += "\n WARNING: No active triggers! The system is NOT running.\n";
-  if (recentThreads.length === 0) body += "\n NOTE: Zero emails received today — may be normal on quiet days.\n";
+  if (triggers === 0) body += "\n⚠️ WARNING: No active triggers! The system is NOT running.\n";
+  if (recentThreads.length === 0) body += "\n⚠️ NOTE: Zero emails received today — may be normal on quiet days.\n";
 
   MailApp.sendEmail(CONFIG.ALERT_EMAIL, "PayGate Health: " + triggers + " triggers, " + processedThreads.length + " processed", body);
   Logger.log("Health report sent to " + CONFIG.ALERT_EMAIL);
