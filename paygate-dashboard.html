@@ -10,16 +10,12 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Segoe UI',system-ui,sans-serif; background:#f0f2f5; color:#1a1a2e; }
-
-  /* Layout */
   .top-bar { background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 100%); color:white; padding:16px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:100; }
   .top-bar h1 { font-size:20px; }
   .top-bar .tabs { display:flex; gap:4px; }
   .top-bar .tab { background:rgba(255,255,255,0.15); border:none; color:white; padding:8px 18px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; }
   .top-bar .tab.active { background:white; color:#1a1a2e; }
   .container { max-width:1200px; margin:0 auto; padding:20px; }
-
-  /* Cards */
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:20px; }
   .card { background:white; border-radius:10px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.06); text-align:center; }
   .card .num { font-size:28px; font-weight:800; }
@@ -28,24 +24,18 @@
   .card .num.orange { color:#e67e22; }
   .card .num.blue { color:#1565c0; }
   .card .lbl { font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.4px; margin-top:2px; }
-
-  /* Upload zone */
   .upload-zone { background:white; border:3px dashed #ccc; border-radius:14px; padding:40px 20px; text-align:center; margin-bottom:20px; cursor:pointer; transition:all 0.2s; }
   .upload-zone:hover, .upload-zone.dragover { border-color:#0f3460; background:#f0f4ff; }
   .upload-zone h3 { font-size:18px; color:#1a1a2e; margin-bottom:6px; }
   .upload-zone p { font-size:13px; color:#888; }
   .upload-zone input { display:none; }
   .upload-icon { font-size:48px; margin-bottom:10px; }
-
-  /* Filter bar */
   .filter-bar { background:white; border-radius:10px; padding:14px 18px; margin-bottom:16px; display:flex; flex-wrap:wrap; gap:10px; align-items:center; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
   .filter-bar label { font-size:12px; color:#666; font-weight:600; }
   .filter-bar select, .filter-bar input { padding:6px 10px; border:1px solid #ddd; border-radius:6px; font-size:13px; }
   .filter-bar input[type="date"] { width:140px; }
   .filter-bar button { background:#1a1a2e; color:white; border:none; padding:7px 16px; border-radius:6px; cursor:pointer; font-size:13px; }
   .filter-bar button.secondary { background:#e0e0e0; color:#333; }
-
-  /* Table */
   .data-table-wrap { background:white; border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:20px; overflow-x:auto; }
   table { width:100%; border-collapse:collapse; font-size:13px; }
   th { background:#f5f5f5; padding:10px 12px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.4px; color:#666; border-bottom:2px solid #e0e0e0; position:sticky; top:0; cursor:pointer; white-space:nowrap; }
@@ -59,59 +49,38 @@
   .badge.sms { background:#e8f4fd; color:#0c5460; }
   .badge.email { background:#f0e6ff; color:#5a2d82; }
   .badge.excel { background:#e8f5e9; color:#1b5e20; }
-
-  /* Analysis section */
   .analysis-panel { background:white; border-radius:10px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
   .analysis-panel h3 { font-size:16px; margin-bottom:14px; color:#1a1a2e; }
-  .date-group-header { background:#1a1a2e; color:white; padding:10px 16px; font-weight:600; font-size:14px; display:flex; justify-content:space-between; cursor:pointer; }
-  .date-group-header:hover { background:#2a2a4e; }
-
-  /* Charts */
   .chart-bar { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
   .chart-label { font-size:12px; width:100px; text-align:right; color:#666; flex-shrink:0; }
   .chart-track { flex:1; height:28px; background:#f0f0f0; border-radius:6px; overflow:hidden; position:relative; }
   .chart-fill { height:100%; border-radius:6px; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:700; color:white; min-width:fit-content; transition:width 0.5s; }
   .chart-fill.bank { background:linear-gradient(90deg,#0a8754,#27ae60); }
   .chart-fill.excel { background:linear-gradient(90deg,#1565c0,#42a5f5); }
-
-  /* Sections hidden by default */
   .page-section { display:none; }
   .page-section.active { display:block; }
-
-  /* Reconciliation */
-  .recon-row { display:grid; grid-template-columns:1fr 60px 1fr; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid #f0f0f0; }
-  .recon-row:hover { background:#f8f9ff; }
   .recon-side { font-size:13px; }
   .recon-icon { text-align:center; font-size:20px; }
   .recon-match { color:#27ae60; }
   .recon-miss { color:#e53935; }
   .recon-partial { color:#f9a825; }
-
   .empty-state { text-align:center; padding:60px 20px; color:#999; }
   .empty-state h3 { font-size:18px; margin-bottom:8px; color:#666; }
-
-  /* Responsive */
-  @media(max-width:600px) {
-    .cards { grid-template-columns:repeat(2,1fr); }
-    .filter-bar { flex-direction:column; align-items:stretch; }
-  }
+  @media(max-width:600px) { .cards { grid-template-columns:repeat(2,1fr); } .filter-bar { flex-direction:column; align-items:stretch; } }
 </style>
 </head>
 <body>
-
 <div class="top-bar">
-  <h1>PayGate Bank Feed Dashboard</h1>
+  <h1>PayGate Bank Feed Dashboard <span id="firebase-status" style="font-size:11px;font-weight:400;opacity:0.8;margin-left:10px;">Connecting to Firebase...</span></h1>
   <div class="tabs">
     <button class="tab active" onclick="showTab('bank')">Bank Feed</button>
     <button class="tab" onclick="showTab('excel')">Excel Data</button>
     <button class="tab" onclick="showTab('analysis')">Analysis</button>
     <button class="tab" onclick="showTab('recon')">Reconciliation</button>
+    <button class="tab" onclick="loadBankDataFromFirebase()" style="background:rgba(10,135,84,0.3);">Refresh Live Data</button>
   </div>
 </div>
-
 <div class="container">
-
-  <!-- ============ BANK FEED TAB ============ -->
   <div id="tab-bank" class="page-section active">
     <div class="cards" id="bank-cards">
       <div class="card"><div class="num" id="bank-total-count">0</div><div class="lbl">Total Entries</div></div>
@@ -120,114 +89,60 @@
       <div class="card"><div class="num orange" id="bank-unmatched">0</div><div class="lbl">Unmatched</div></div>
       <div class="card"><div class="num green" id="bank-matched">0</div><div class="lbl">Matched</div></div>
     </div>
-
     <div class="filter-bar">
       <label>Date From</label><input type="date" id="bank-from">
       <label>Date To</label><input type="date" id="bank-to">
-      <label>Bank</label>
-      <select id="bank-filter"><option value="">All</option></select>
-      <label>Status</label>
-      <select id="status-filter"><option value="">All</option><option value="MATCHED">Matched</option><option value="UNMATCHED">Unmatched</option></select>
+      <label>Bank</label><select id="bank-filter"><option value="">All</option></select>
+      <label>Status</label><select id="status-filter"><option value="">All</option><option value="MATCHED">Matched</option><option value="UNMATCHED">Unmatched</option></select>
       <button onclick="applyBankFilters()">Filter</button>
       <button class="secondary" onclick="resetBankFilters()">Reset</button>
     </div>
-
     <div class="data-table-wrap">
-      <table id="bank-table">
-        <thead>
-          <tr>
-            <th onclick="sortBank('idx')">#</th>
-            <th onclick="sortBank('txn_date')">Date</th>
-            <th onclick="sortBank('amount')">Amount (Rs.)</th>
-            <th onclick="sortBank('payer')">Payer</th>
-            <th onclick="sortBank('bank')">Bank</th>
-            <th onclick="sortBank('source')">Source</th>
-            <th onclick="sortBank('tid')">TID</th>
-            <th onclick="sortBank('match_status')">Status</th>
-          </tr>
-        </thead>
-        <tbody id="bank-tbody"></tbody>
-      </table>
+      <table id="bank-table"><thead><tr>
+        <th onclick="sortBank('idx')">#</th><th onclick="sortBank('txn_date')">Date</th><th onclick="sortBank('amount')">Amount (Rs.)</th><th onclick="sortBank('payer')">Payer</th><th onclick="sortBank('bank')">Bank</th><th onclick="sortBank('source')">Source</th><th onclick="sortBank('tid')">TID</th><th onclick="sortBank('match_status')">Status</th>
+      </tr></thead><tbody id="bank-tbody"></tbody></table>
     </div>
   </div>
-
-  <!-- ============ EXCEL TAB ============ -->
   <div id="tab-excel" class="page-section">
     <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
       <div class="upload-icon">&#128196;</div>
       <h3>Drop your Excel file here or click to browse</h3>
-      <p>Supports .xlsx, .xls, .csv files &mdash; your daily sales/payment sheet</p>
+      <p>Supports .xlsx, .xls, .csv files</p>
       <input type="file" id="file-input" accept=".xlsx,.xls,.csv">
     </div>
-
     <div id="excel-loaded" style="display:none">
       <div class="cards" id="excel-cards">
-        <div class="card"><div class="num blue" id="excel-filename">—</div><div class="lbl">File</div></div>
+        <div class="card"><div class="num blue" id="excel-filename">-</div><div class="lbl">File</div></div>
         <div class="card"><div class="num" id="excel-rows">0</div><div class="lbl">Rows</div></div>
         <div class="card"><div class="num" id="excel-cols">0</div><div class="lbl">Columns</div></div>
         <div class="card"><div class="num green" id="excel-amount-sum">Rs. 0</div><div class="lbl">Amount Total</div></div>
       </div>
-
       <div class="filter-bar">
-        <label>Sheet</label>
-        <select id="sheet-select" onchange="switchSheet()"></select>
-        <label>Amount Column</label>
-        <select id="amount-col-select" onchange="recalcExcelStats()"></select>
-        <label>Date Column</label>
-        <select id="date-col-select" onchange="recalcExcelStats()"></select>
-        <label>Payer/Name Column</label>
-        <select id="payer-col-select"></select>
+        <label>Sheet</label><select id="sheet-select" onchange="switchSheet()"></select>
+        <label>Amount Column</label><select id="amount-col-select" onchange="recalcExcelStats()"></select>
+        <label>Date Column</label><select id="date-col-select" onchange="recalcExcelStats()"></select>
+        <label>Payer/Name Column</label><select id="payer-col-select"></select>
         <button onclick="document.getElementById('file-input').click()">Upload New</button>
       </div>
-
-      <div class="data-table-wrap">
-        <table id="excel-table">
-          <thead id="excel-thead"></thead>
-          <tbody id="excel-tbody"></tbody>
-        </table>
-      </div>
+      <div class="data-table-wrap"><table id="excel-table"><thead id="excel-thead"></thead><tbody id="excel-tbody"></tbody></table></div>
     </div>
   </div>
-
-  <!-- ============ ANALYSIS TAB ============ -->
   <div id="tab-analysis" class="page-section">
-    <div id="analysis-empty" class="empty-state">
-      <h3>Upload an Excel file to start analysis</h3>
-      <p>Once you upload your daily sheet, date-wise analysis with bank feed comparison will appear here.</p>
-    </div>
+    <div id="analysis-empty" class="empty-state"><h3>Upload an Excel file to start analysis</h3><p>Once you upload your daily sheet, date-wise analysis with bank feed comparison will appear here.</p></div>
     <div id="analysis-content" style="display:none">
-
       <div class="cards" id="analysis-cards">
         <div class="card"><div class="num green" id="a-bank-total">Rs. 0</div><div class="lbl">Bank Feed Total</div></div>
         <div class="card"><div class="num blue" id="a-excel-total">Rs. 0</div><div class="lbl">Excel Total</div></div>
         <div class="card"><div class="num" id="a-difference" style="color:#333">Rs. 0</div><div class="lbl">Difference</div></div>
         <div class="card"><div class="num" id="a-match-rate">0%</div><div class="lbl">Match Rate</div></div>
       </div>
-
-      <div class="analysis-panel">
-        <h3>Date-wise Comparison</h3>
-        <div id="date-comparison"></div>
-      </div>
-
-      <div class="analysis-panel">
-        <h3>Daily Volume — Bank Feed vs Excel</h3>
-        <div id="daily-chart"></div>
-      </div>
-
-      <div class="analysis-panel">
-        <h3>Top Payers (Bank Feed)</h3>
-        <div id="payer-chart"></div>
-      </div>
-
+      <div class="analysis-panel"><h3>Date-wise Comparison</h3><div id="date-comparison"></div></div>
+      <div class="analysis-panel"><h3>Daily Volume</h3><div id="daily-chart"></div></div>
+      <div class="analysis-panel"><h3>Top Payers (Bank Feed)</h3><div id="payer-chart"></div></div>
     </div>
   </div>
-
-  <!-- ============ RECONCILIATION TAB ============ -->
   <div id="tab-recon" class="page-section">
-    <div id="recon-empty" class="empty-state">
-      <h3>Upload an Excel file to start reconciliation</h3>
-      <p>This tab will match Excel rows against bank feed entries by amount and date.</p>
-    </div>
+    <div id="recon-empty" class="empty-state"><h3>Upload an Excel file to start reconciliation</h3><p>This tab will match Excel rows against bank feed entries by amount and date.</p></div>
     <div id="recon-content" style="display:none">
       <div class="cards">
         <div class="card"><div class="num green" id="r-matched">0</div><div class="lbl">Matched</div></div>
@@ -236,561 +151,73 @@
       </div>
       <div class="filter-bar">
         <label>Show</label>
-        <select id="recon-filter" onchange="renderRecon()">
-          <option value="all">All</option>
-          <option value="matched">Matched Only</option>
-          <option value="bank-only">Bank Only (Missing in Excel)</option>
-          <option value="excel-only">Excel Only (Missing in Bank)</option>
-        </select>
+        <select id="recon-filter" onchange="renderRecon()"><option value="all">All</option><option value="matched">Matched Only</option><option value="bank-only">Bank Only</option><option value="excel-only">Excel Only</option></select>
         <button onclick="exportReconCSV()">Export CSV</button>
       </div>
-      <div class="data-table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:42%">Bank Feed Entry</th>
-              <th style="width:16%;text-align:center">Status</th>
-              <th style="width:42%">Excel Entry</th>
-            </tr>
-          </thead>
-          <tbody id="recon-tbody"></tbody>
-        </table>
-      </div>
+      <div class="data-table-wrap"><table><thead><tr><th style="width:42%">Bank Feed Entry</th><th style="width:16%;text-align:center">Status</th><th style="width:42%">Excel Entry</th></tr></thead><tbody id="recon-tbody"></tbody></table></div>
     </div>
   </div>
-
 </div>
-
 <script>
-// ===================================================================
-// STATE
-// ===================================================================
-var bankData = [];       // from Firebase (hardcoded snapshot + future live)
-var excelData = [];      // parsed from uploaded file
-var excelHeaders = [];
-var excelSheets = {};
-var currentSheet = '';
-var bankSortKey = 'idx';
-var bankSortAsc = true;
-var reconResults = [];
+var bankData=[], excelData=[], excelHeaders=[], excelSheets={}, currentSheet='', bankSortKey='idx', bankSortAsc=true, reconResults=[];
 
-// ===================================================================
-// BANK FEED DATA (snapshot from Firebase — paygate_bank_feeds)
-// ===================================================================
-var RAW_BANK_DATA = [
-  {idx:1, amount:350000, payer:"JAPAN VARIETY STORE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T13:20:18Z", raw_subject:"[SMSForwarder] New message from 8810 - 24/03, 6:20 pm", doc_id:"hZtmfwTAD7M61lrSVpvJ"},
-  {idx:2, amount:350000, payer:"JAPAN VARIETY STORE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:08:18Z", doc_id:"FVHVAf20F4MVe3nKzCfQ"},
-  {idx:3, amount:350000, payer:"JAPAN VARIETY STORE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:30:09Z", doc_id:"K6TZiQP1yROShWStjtYG"},
-  {idx:4, amount:350000, payer:"JAPAN VARIETY STORE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:31:07Z", doc_id:"f0LCS8bMxnFaBQjv2CvX"},
-  {idx:5, amount:350000, payer:"JAPAN VARIETY STORE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:31:57Z", doc_id:"6m649KPZQ4GJcS4EWdDB"},
-  {idx:6, amount:7600, payer:"PRINT LIVE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T13:09:21Z", raw_subject:"[SMSForwarder] New message from 8810 - 24/03, 6:08 pm", doc_id:"mzwYdB4527Qwj5Yr4mZs"},
-  {idx:7, amount:7600, payer:"PRINT LIVE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:08:19Z", doc_id:"eTzF7hXsPuVQwxBZISfE"},
-  {idx:8, amount:7600, payer:"PRINT LIVE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:30:11Z", doc_id:"3Y3wAGkL2F7yFRSmoh4R"},
-  {idx:9, amount:7600, payer:"PRINT LIVE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:31:09Z", doc_id:"UTKsyfGNQ8i4HsLrSUkO"},
-  {idx:10, amount:7600, payer:"PRINT LIVE", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:31:58Z", doc_id:"fbcae30CbGXV6wL3cJc6"},
-  {idx:11, amount:152225, payer:"MUZAFFAR HUSSAIN", bank:"BAH", source:"sms", tid:null, txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T07:51:17Z", doc_id:"EhNo2nZfxKQBMjRjzv3m"},
-  {idx:12, amount:152225, payer:"MUZAFFAR HUSSAIN", bank:"BAH", source:"sms", tid:"KA012701059169852603", txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:08:20Z", doc_id:"iURJKIo7ZNkX2DZHGaKH"},
-  {idx:13, amount:200000, payer:"MUHAMMAD ZEESHAN", bank:"BAH", source:"sms", tid:"KA014601076828402603", txn_date:"24/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:08:25Z", doc_id:"BChIyCUGGIYsJN3a8sn5"},
-  {idx:14, amount:200000, payer:"MUHAMMAD ZEESHAN", bank:"BAH", source:"sms", tid:null, txn_date:"23/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-23T09:53:18Z", doc_id:"Qxg2aNc9r3jOl9RcDvxK"},
-  {idx:15, amount:100, payer:"MUHAMMAD SHAHBAZ SHAUKAT", bank:"BAH", source:"sms", tid:null, txn_date:"20/03/2026", match_status:"MATCHED", processed_at:"2026-03-22T09:32:17Z", doc_id:"sO6tDrJwqxuUqC8mejBO"},
-  {idx:16, amount:100, payer:"MUHAMMAD SHAHBAZ SHAUKAT", bank:"BAH", source:"sms", tid:null, txn_date:"20/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:08:27Z", doc_id:"PIaFod0ePxm2kP9o8Ca4"},
-  {idx:17, amount:100, payer:"MUHAMMAD SHAHBAZ SHAUKAT", bank:"BAH", source:"sms", tid:null, txn_date:"20/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:30:15Z", doc_id:"v8y7XO1KUFZ3EbHXTyON"},
-  {idx:18, amount:100, payer:"MUHAMMAD SHAHBAZ SHAUKAT", bank:"BAH", source:"sms", tid:null, txn_date:"20/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:31:13Z", doc_id:"rZWATvDyc1JnltVOcYQz"},
-  {idx:19, amount:100, payer:"MUHAMMAD SHAHBAZ SHAUKAT", bank:"BAH", source:"sms", tid:null, txn_date:"20/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-24T19:32:00Z", doc_id:"KkJ58QOw1EhQAjEDpGcM"},
-  {idx:20, amount:200000, payer:"ASADULLAH", bank:"Meezan", source:"email", tid:"100587", txn_date:"19/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-21T20:49:09Z", doc_id:"iJcrNrr3nx9G4XlSsAdg"},
-  {idx:21, amount:150000, payer:"", bank:"Unknown", source:"email", tid:null, txn_date:"04/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-21T20:49:07Z", doc_id:"xjf7ccV2rLkouPjQR261"},
-  {idx:22, amount:222940, payer:"HOORAIN TRADER", bank:"BAH", source:"email", tid:"IBFT-202603030001", txn_date:"03/03/2026", match_status:"UNMATCHED", processed_at:"2026-03-21T20:49:07Z", doc_id:"Y9b8dEieEkqeiCS0sgpz"}
-];
+// FIREBASE LIVE CONNECTION
+firebase.initializeApp({apiKey:"AIzaSyBDZqYPKJdvcXibQezyt8Nqy3DO2r9ZJJY",authDomain:"paygate-cnc.firebaseapp.com",projectId:"paygate-cnc",storageBucket:"paygate-cnc.firebasestorage.app",messagingSenderId:"382293084139",appId:"1:382293084139:web:9c08ab938bd1cc85bafbae"});
+var DB=firebase.firestore();
+var RAW_BANK_DATA=[];
 
-// ===================================================================
-// INIT
-// ===================================================================
-window.onload = function() {
-  bankData = RAW_BANK_DATA.slice();
-  renderBankTable(bankData);
-  updateBankCards(bankData);
-  populateBankFilters();
-  setupFileUpload();
-};
-
-// ===================================================================
-// TAB SWITCHING
-// ===================================================================
-function showTab(name) {
-  document.querySelectorAll('.page-section').forEach(function(el){ el.classList.remove('active'); });
-  document.querySelectorAll('.tab').forEach(function(el){ el.classList.remove('active'); });
-  document.getElementById('tab-'+name).classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ===================================================================
-// FORMAT HELPERS
-// ===================================================================
-function fmtRs(n) {
-  if(n===null||n===undefined||isNaN(n)) return '—';
-  return 'Rs. ' + Number(n).toLocaleString('en-PK');
-}
-function fmtNum(n) { return Number(n).toLocaleString('en-PK'); }
-function esc(s) { var d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
-function parseDateDMY(s) {
-  if(!s) return null;
-  var p = String(s).split(/[\/\-]/);
-  if(p.length!==3) return null;
-  var d=parseInt(p[0]),m=parseInt(p[1]),y=parseInt(p[2]);
-  if(y<100) y+=2000;
-  if(m>12||d>31) return null;
-  return new Date(y,m-1,d);
-}
-function toSortableDate(s) {
-  var d=parseDateDMY(s);
-  return d?d.getTime():0;
-}
-
-// ===================================================================
-// BANK FEED TABLE
-// ===================================================================
-function renderBankTable(data) {
-  var tb = document.getElementById('bank-tbody');
-  tb.innerHTML = '';
-  data.forEach(function(r) {
-    var srcBadge = r.source==='sms' ? '<span class="badge sms">SMS</span>' : '<span class="badge email">Email</span>';
-    var stBadge = r.match_status==='MATCHED' ? '<span class="badge matched">Matched</span>' : '<span class="badge unmatched">Unmatched</span>';
-    var tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td>'+r.idx+'</td>'+
-      '<td>'+esc(r.txn_date)+'</td>'+
-      '<td class="amount-cell">'+fmtNum(r.amount)+'</td>'+
-      '<td>'+esc(r.payer||'—')+'</td>'+
-      '<td>'+esc(r.bank)+'</td>'+
-      '<td>'+srcBadge+'</td>'+
-      '<td style="font-family:monospace;font-size:11px;color:#666">'+esc(r.tid||'—')+'</td>'+
-      '<td>'+stBadge+'</td>';
-    tb.appendChild(tr);
-  });
-}
-
-function updateBankCards(data) {
-  var total=0,sms=0,matched=0,unmatched=0;
-  data.forEach(function(r){ total+=r.amount; if(r.source==='sms') sms++; if(r.match_status==='MATCHED') matched++; else unmatched++; });
-  document.getElementById('bank-total-count').textContent = data.length;
-  document.getElementById('bank-total-amount').textContent = fmtRs(total);
-  document.getElementById('bank-sms-count').textContent = sms;
-  document.getElementById('bank-matched').textContent = matched;
-  document.getElementById('bank-unmatched').textContent = unmatched;
-}
-
-function populateBankFilters() {
-  var banks = {};
-  bankData.forEach(function(r){ banks[r.bank]=1; });
-  var sel = document.getElementById('bank-filter');
-  Object.keys(banks).sort().forEach(function(b){
-    var o=document.createElement('option'); o.value=b; o.textContent=b; sel.appendChild(o);
-  });
-}
-
-function sortBank(key) {
-  if(bankSortKey===key) bankSortAsc=!bankSortAsc; else { bankSortKey=key; bankSortAsc=true; }
-  var sorted = bankData.slice().sort(function(a,b){
-    var va=a[key],vb=b[key];
-    if(key==='amount') { va=Number(va)||0; vb=Number(vb)||0; }
-    else if(key==='txn_date') { va=toSortableDate(va); vb=toSortableDate(vb); }
-    else { va=String(va||'').toLowerCase(); vb=String(vb||'').toLowerCase(); }
-    if(va<vb) return bankSortAsc?-1:1;
-    if(va>vb) return bankSortAsc?1:-1;
-    return 0;
-  });
-  renderBankTable(sorted);
-}
-
-function applyBankFilters() {
-  var from=document.getElementById('bank-from').value;
-  var to=document.getElementById('bank-to').value;
-  var bank=document.getElementById('bank-filter').value;
-  var status=document.getElementById('status-filter').value;
-  var filtered = RAW_BANK_DATA.filter(function(r){
-    if(bank && r.bank!==bank) return false;
-    if(status && r.match_status!==status) return false;
-    if(from) { var d=parseDateDMY(r.txn_date); if(!d||d<new Date(from)) return false; }
-    if(to) { var d2=parseDateDMY(r.txn_date); if(!d2||d2>new Date(to+'T23:59:59')) return false; }
-    return true;
-  });
-  bankData = filtered;
-  renderBankTable(filtered);
-  updateBankCards(filtered);
-}
-
-function resetBankFilters() {
-  document.getElementById('bank-from').value='';
-  document.getElementById('bank-to').value='';
-  document.getElementById('bank-filter').value='';
-  document.getElementById('status-filter').value='';
-  bankData = RAW_BANK_DATA.slice();
-  renderBankTable(bankData);
-  updateBankCards(bankData);
-}
-
-// ===================================================================
-// EXCEL UPLOAD + PARSING
-// ===================================================================
-function setupFileUpload() {
-  var zone = document.getElementById('drop-zone');
-  var input = document.getElementById('file-input');
-
-  zone.addEventListener('dragover', function(e){ e.preventDefault(); zone.classList.add('dragover'); });
-  zone.addEventListener('dragleave', function(){ zone.classList.remove('dragover'); });
-  zone.addEventListener('drop', function(e){ e.preventDefault(); zone.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
-  input.addEventListener('change', function(){ if(input.files[0]) handleFile(input.files[0]); });
-}
-
-function handleFile(file) {
-  if(!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      var wb = XLSX.read(e.target.result, {type:'array', cellDates:true});
-      excelSheets = {};
-      wb.SheetNames.forEach(function(name){
-        excelSheets[name] = XLSX.utils.sheet_to_json(wb.Sheets[name], {defval:''});
-      });
-
-      // Populate sheet selector
-      var sel = document.getElementById('sheet-select');
-      sel.innerHTML = '';
-      wb.SheetNames.forEach(function(name){
-        var o=document.createElement('option'); o.value=name; o.textContent=name+' ('+excelSheets[name].length+' rows)'; sel.appendChild(o);
-      });
-
-      currentSheet = wb.SheetNames[0];
-      document.getElementById('excel-filename').textContent = file.name;
-      document.getElementById('excel-filename').style.fontSize = '14px';
-      loadSheet(currentSheet);
-      document.getElementById('excel-loaded').style.display='block';
-    } catch(err) {
-      alert('Error reading file: '+err.message);
-    }
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-function switchSheet() {
-  currentSheet = document.getElementById('sheet-select').value;
-  loadSheet(currentSheet);
-}
-
-function loadSheet(name) {
-  excelData = excelSheets[name] || [];
-  if(excelData.length===0) return;
-  excelHeaders = Object.keys(excelData[0]);
-
-  // Populate column selectors
-  ['amount-col-select','date-col-select','payer-col-select'].forEach(function(id){
-    var sel=document.getElementById(id);
-    sel.innerHTML='<option value="">— Auto-detect —</option>';
-    excelHeaders.forEach(function(h){
-      var o=document.createElement('option'); o.value=h; o.textContent=h; sel.appendChild(o);
+function loadBankDataFromFirebase(){
+  var s=document.getElementById('firebase-status');
+  if(s) s.textContent='Loading live data from Firebase...';
+  DB.collection('paygate_bank_feeds').orderBy('processed_at','desc').get()
+  .then(function(snap){
+    RAW_BANK_DATA=[];var idx=1;
+    snap.forEach(function(doc){
+      var d=doc.data();
+      RAW_BANK_DATA.push({idx:idx++,amount:parseFloat(d.amount)||0,payer:(d.payer||'').toString(),bank:(d.bank||'Unknown').toString(),source:(d.source||'unknown').toString(),tid:d.tid?d.tid.toString():null,txn_date:(d.txn_date||'').toString(),match_status:(d.match_status||'UNMATCHED').toString(),processed_at:(d.processed_at||'').toString(),raw_subject:(d.raw_subject||'').toString(),doc_id:doc.id});
     });
-  });
-
-  // Auto-detect columns
-  autoDetectColumns();
-  renderExcelTable();
-  recalcExcelStats();
-  runAnalysis();
-  runReconciliation();
-}
-
-function autoDetectColumns() {
-  var amtKeys = ['amount','amt','total','credit','payment','received','price','sum','debit','rs','pkr'];
-  var dateKeys = ['date','txn_date','transaction_date','payment_date','dt','dated'];
-  var payerKeys = ['payer','name','customer','sender','party','client','buyer','account_name','shop'];
-
-  excelHeaders.forEach(function(h){
-    var hl = h.toLowerCase().replace(/[^a-z0-9]/g,'');
-    amtKeys.forEach(function(k){ if(hl.indexOf(k)>=0) document.getElementById('amount-col-select').value=h; });
-    dateKeys.forEach(function(k){ if(hl.indexOf(k)>=0) document.getElementById('date-col-select').value=h; });
-    payerKeys.forEach(function(k){ if(hl.indexOf(k)>=0) document.getElementById('payer-col-select').value=h; });
+    bankData=RAW_BANK_DATA.slice();
+    renderBankTable(bankData);updateBankCards(bankData);populateBankFilters();
+    if(s){s.textContent='LIVE — '+RAW_BANK_DATA.length+' entries from Firebase';s.style.color='#0a8754';}
+  }).catch(function(e){
+    console.error('Firebase error:',e);
+    if(s){s.textContent='ERROR: '+e.message;s.style.color='#c62828';}
   });
 }
 
-function renderExcelTable() {
-  var thead=document.getElementById('excel-thead');
-  var tbody=document.getElementById('excel-tbody');
-  thead.innerHTML=''; tbody.innerHTML='';
-  if(!excelData.length) return;
+window.onload=function(){setupFileUpload();loadBankDataFromFirebase();};
 
-  var tr=document.createElement('tr');
-  tr.innerHTML = '<th>#</th>';
-  excelHeaders.forEach(function(h){ tr.innerHTML += '<th>'+esc(h)+'</th>'; });
-  thead.appendChild(tr);
+function showTab(name){document.querySelectorAll('.page-section').forEach(function(el){el.classList.remove('active')});document.querySelectorAll('.tab').forEach(function(el){el.classList.remove('active')});document.getElementById('tab-'+name).classList.add('active');if(event&&event.target)event.target.classList.add('active');}
+function fmtRs(n){if(n===null||n===undefined||isNaN(n))return'-';return'Rs. '+Number(n).toLocaleString('en-PK');}
+function fmtNum(n){return Number(n).toLocaleString('en-PK');}
+function esc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+function parseDateDMY(s){if(!s)return null;var p=String(s).split(/[\/\-]/);if(p.length!==3)return null;var d=parseInt(p[0]),m=parseInt(p[1]),y=parseInt(p[2]);if(y<100)y+=2000;if(m>12||d>31)return null;return new Date(y,m-1,d);}
+function toSortableDate(s){var d=parseDateDMY(s);return d?d.getTime():0;}
 
-  var limit = Math.min(excelData.length, 500);
-  for(var i=0;i<limit;i++){
-    var row=excelData[i];
-    var r=document.createElement('tr');
-    r.innerHTML = '<td>'+(i+1)+'</td>';
-    excelHeaders.forEach(function(h){
-      var val = row[h];
-      if(val instanceof Date) val = val.toLocaleDateString('en-GB');
-      r.innerHTML += '<td>'+esc(String(val))+'</td>';
-    });
-    tbody.appendChild(r);
-  }
+function renderBankTable(data){var tb=document.getElementById('bank-tbody');tb.innerHTML='';data.forEach(function(r){var srcBadge=r.source==='sms'?'<span class="badge sms">SMS</span>':'<span class="badge email">Email</span>';var stBadge=r.match_status==='MATCHED'?'<span class="badge matched">Matched</span>':'<span class="badge unmatched">Unmatched</span>';var tr=document.createElement('tr');tr.innerHTML='<td>'+r.idx+'</td><td>'+esc(r.txn_date)+'</td><td class="amount-cell">'+fmtNum(r.amount)+'</td><td>'+esc(r.payer||'-')+'</td><td>'+esc(r.bank)+'</td><td>'+srcBadge+'</td><td style="font-family:monospace;font-size:11px;color:#666">'+esc(r.tid||'-')+'</td><td>'+stBadge+'</td>';tb.appendChild(tr);});}
+function updateBankCards(data){var total=0,sms=0,matched=0,unmatched=0;data.forEach(function(r){total+=r.amount;if(r.source==='sms')sms++;if(r.match_status==='MATCHED')matched++;else unmatched++;});document.getElementById('bank-total-count').textContent=data.length;document.getElementById('bank-total-amount').textContent=fmtRs(total);document.getElementById('bank-sms-count').textContent=sms;document.getElementById('bank-matched').textContent=matched;document.getElementById('bank-unmatched').textContent=unmatched;}
+function populateBankFilters(){var banks={};RAW_BANK_DATA.forEach(function(r){banks[r.bank]=1;});var sel=document.getElementById('bank-filter');sel.innerHTML='<option value="">All</option>';Object.keys(banks).sort().forEach(function(b){var o=document.createElement('option');o.value=b;o.textContent=b;sel.appendChild(o);});}
+function sortBank(key){if(bankSortKey===key)bankSortAsc=!bankSortAsc;else{bankSortKey=key;bankSortAsc=true;}var sorted=bankData.slice().sort(function(a,b){var va=a[key],vb=b[key];if(key==='amount'){va=Number(va)||0;vb=Number(vb)||0;}else if(key==='txn_date'){va=toSortableDate(va);vb=toSortableDate(vb);}else{va=String(va||'').toLowerCase();vb=String(vb||'').toLowerCase();}if(va<vb)return bankSortAsc?-1:1;if(va>vb)return bankSortAsc?1:-1;return 0;});renderBankTable(sorted);}
+function applyBankFilters(){var from=document.getElementById('bank-from').value;var to=document.getElementById('bank-to').value;var bank=document.getElementById('bank-filter').value;var status=document.getElementById('status-filter').value;var filtered=RAW_BANK_DATA.filter(function(r){if(bank&&r.bank!==bank)return false;if(status&&r.match_status!==status)return false;if(from){var d=parseDateDMY(r.txn_date);if(!d||d<new Date(from))return false;}if(to){var d2=parseDateDMY(r.txn_date);if(!d2||d2>new Date(to+'T23:59:59'))return false;}return true;});bankData=filtered;renderBankTable(filtered);updateBankCards(filtered);}
+function resetBankFilters(){document.getElementById('bank-from').value='';document.getElementById('bank-to').value='';document.getElementById('bank-filter').value='';document.getElementById('status-filter').value='';bankData=RAW_BANK_DATA.slice();renderBankTable(bankData);updateBankCards(bankData);}
 
-  document.getElementById('excel-rows').textContent = excelData.length;
-  document.getElementById('excel-cols').textContent = excelHeaders.length;
-}
+function setupFileUpload(){var zone=document.getElementById('drop-zone');var input=document.getElementById('file-input');zone.addEventListener('dragover',function(e){e.preventDefault();zone.classList.add('dragover');});zone.addEventListener('dragleave',function(){zone.classList.remove('dragover');});zone.addEventListener('drop',function(e){e.preventDefault();zone.classList.remove('dragover');handleFile(e.dataTransfer.files[0]);});input.addEventListener('change',function(){if(input.files[0])handleFile(input.files[0]);});}
+function handleFile(file){if(!file)return;var reader=new FileReader();reader.onload=function(e){try{var wb=XLSX.read(e.target.result,{type:'array',cellDates:true});excelSheets={};wb.SheetNames.forEach(function(name){excelSheets[name]=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});});var sel=document.getElementById('sheet-select');sel.innerHTML='';wb.SheetNames.forEach(function(name){var o=document.createElement('option');o.value=name;o.textContent=name+' ('+excelSheets[name].length+' rows)';sel.appendChild(o);});currentSheet=wb.SheetNames[0];document.getElementById('excel-filename').textContent=file.name;document.getElementById('excel-filename').style.fontSize='14px';loadSheet(currentSheet);document.getElementById('excel-loaded').style.display='block';}catch(err){alert('Error reading file: '+err.message);}};reader.readAsArrayBuffer(file);}
+function switchSheet(){currentSheet=document.getElementById('sheet-select').value;loadSheet(currentSheet);}
+function loadSheet(name){excelData=excelSheets[name]||[];if(excelData.length===0)return;excelHeaders=Object.keys(excelData[0]);['amount-col-select','date-col-select','payer-col-select'].forEach(function(id){var sel=document.getElementById(id);sel.innerHTML='<option value="">Auto-detect</option>';excelHeaders.forEach(function(h){var o=document.createElement('option');o.value=h;o.textContent=h;sel.appendChild(o);});});autoDetectColumns();renderExcelTable();recalcExcelStats();runAnalysis();runReconciliation();}
+function autoDetectColumns(){var amtKeys=['amount','amt','total','credit','payment','received','price','sum','rs','pkr'];var dateKeys=['date','txn_date','transaction_date','payment_date','dt','dated'];var payerKeys=['payer','name','customer','sender','party','client','buyer','account_name','shop'];excelHeaders.forEach(function(h){var hl=h.toLowerCase().replace(/[^a-z0-9]/g,'');amtKeys.forEach(function(k){if(hl.indexOf(k)>=0)document.getElementById('amount-col-select').value=h;});dateKeys.forEach(function(k){if(hl.indexOf(k)>=0)document.getElementById('date-col-select').value=h;});payerKeys.forEach(function(k){if(hl.indexOf(k)>=0)document.getElementById('payer-col-select').value=h;});});}
+function renderExcelTable(){var thead=document.getElementById('excel-thead');var tbody=document.getElementById('excel-tbody');thead.innerHTML='';tbody.innerHTML='';if(!excelData.length)return;var tr=document.createElement('tr');tr.innerHTML='<th>#</th>';excelHeaders.forEach(function(h){tr.innerHTML+='<th>'+esc(h)+'</th>';});thead.appendChild(tr);var limit=Math.min(excelData.length,500);for(var i=0;i<limit;i++){var row=excelData[i];var r=document.createElement('tr');r.innerHTML='<td>'+(i+1)+'</td>';excelHeaders.forEach(function(h){var val=row[h];if(val instanceof Date)val=val.toLocaleDateString('en-GB');r.innerHTML+='<td>'+esc(String(val))+'</td>';});tbody.appendChild(r);}document.getElementById('excel-rows').textContent=excelData.length;document.getElementById('excel-cols').textContent=excelHeaders.length;}
+function recalcExcelStats(){var amtCol=document.getElementById('amount-col-select').value;var sum=0;if(amtCol){excelData.forEach(function(r){var v=parseFloat(String(r[amtCol]).replace(/[^0-9.\-]/g,''));if(!isNaN(v))sum+=v;});}document.getElementById('excel-amount-sum').textContent=fmtRs(sum);runAnalysis();runReconciliation();}
+function getExcelAmount(row){var col=document.getElementById('amount-col-select').value;if(!col)return 0;return parseFloat(String(row[col]).replace(/[^0-9.\-]/g,''))||0;}
+function getExcelDate(row){var col=document.getElementById('date-col-select').value;if(!col)return'';var v=row[col];if(v instanceof Date)return v.getDate()+'/'+(v.getMonth()+1<10?'0':'')+(v.getMonth()+1)+'/'+v.getFullYear();return String(v);}
+function getExcelPayer(row){var col=document.getElementById('payer-col-select').value;if(!col)return'';return String(row[col]||'');}
 
-function recalcExcelStats() {
-  var amtCol = document.getElementById('amount-col-select').value;
-  var sum = 0;
-  if(amtCol) {
-    excelData.forEach(function(r){
-      var v = parseFloat(String(r[amtCol]).replace(/[^0-9.\-]/g,''));
-      if(!isNaN(v)) sum += v;
-    });
-  }
-  document.getElementById('excel-amount-sum').textContent = fmtRs(sum);
-  runAnalysis();
-  runReconciliation();
-}
+function runAnalysis(){if(!excelData.length){document.getElementById('analysis-empty').style.display='block';document.getElementById('analysis-content').style.display='none';return;}document.getElementById('analysis-empty').style.display='none';document.getElementById('analysis-content').style.display='block';var bankTotal=0,excelTotal=0;RAW_BANK_DATA.forEach(function(r){bankTotal+=r.amount;});var amtCol=document.getElementById('amount-col-select').value;if(amtCol)excelData.forEach(function(r){excelTotal+=getExcelAmount(r);});document.getElementById('a-bank-total').textContent=fmtRs(bankTotal);document.getElementById('a-excel-total').textContent=fmtRs(excelTotal);var diff=bankTotal-excelTotal;var diffEl=document.getElementById('a-difference');diffEl.textContent=(diff>=0?'+':'')+fmtRs(Math.abs(diff));diffEl.style.color=Math.abs(diff)<1?'#0a8754':'#c62828';var bankByDate={},excelByDate={};RAW_BANK_DATA.forEach(function(r){var d=r.txn_date||'Unknown';if(!bankByDate[d])bankByDate[d]={total:0,count:0};bankByDate[d].total+=r.amount;bankByDate[d].count++;});if(amtCol)excelData.forEach(function(r){var d=getExcelDate(r)||'Unknown';if(!excelByDate[d])excelByDate[d]={total:0,count:0};excelByDate[d].total+=getExcelAmount(r);excelByDate[d].count++;});var allDates={};Object.keys(bankByDate).forEach(function(d){allDates[d]=1;});Object.keys(excelByDate).forEach(function(d){allDates[d]=1;});var sortedDates=Object.keys(allDates).sort(function(a,b){return toSortableDate(b)-toSortableDate(a);});var maxAmt=1;sortedDates.forEach(function(d){var bAmt=bankByDate[d]?bankByDate[d].total:0;var eAmt=excelByDate[d]?excelByDate[d].total:0;if(bAmt>maxAmt)maxAmt=bAmt;if(eAmt>maxAmt)maxAmt=eAmt;});var chartHtml='';sortedDates.forEach(function(d){var bk=bankByDate[d]||{total:0,count:0};var ex=excelByDate[d]||{total:0,count:0};var bPct=Math.max(2,(bk.total/maxAmt)*100);var ePct=Math.max(2,(ex.total/maxAmt)*100);chartHtml+='<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0"><div style="font-weight:700;font-size:14px;margin-bottom:6px">'+esc(d)+'</div><div class="chart-bar"><div class="chart-label">Bank ('+bk.count+')</div><div class="chart-track"><div class="chart-fill bank" style="width:'+bPct+'%">'+fmtRs(bk.total)+'</div></div></div><div class="chart-bar"><div class="chart-label">Excel ('+ex.count+')</div><div class="chart-track"><div class="chart-fill excel" style="width:'+ePct+'%">'+fmtRs(ex.total)+'</div></div></div></div>';});document.getElementById('date-comparison').innerHTML=chartHtml;var matchCount=0;RAW_BANK_DATA.forEach(function(r){if(r.match_status==='MATCHED')matchCount++;});document.getElementById('a-match-rate').textContent=RAW_BANK_DATA.length?Math.round((matchCount/RAW_BANK_DATA.length)*100)+'%':'0%';var payerTotals={};RAW_BANK_DATA.forEach(function(r){var p=r.payer||'Unknown';payerTotals[p]=(payerTotals[p]||0)+r.amount;});var topPayers=Object.keys(payerTotals).sort(function(a,b){return payerTotals[b]-payerTotals[a];}).slice(0,10);var pMax=payerTotals[topPayers[0]]||1;var pHtml='';topPayers.forEach(function(p){var pct=Math.max(3,(payerTotals[p]/pMax)*100);pHtml+='<div class="chart-bar"><div class="chart-label" style="width:180px">'+esc(p)+'</div><div class="chart-track"><div class="chart-fill bank" style="width:'+pct+'%">'+fmtRs(payerTotals[p])+'</div></div></div>';});document.getElementById('payer-chart').innerHTML=pHtml;}
 
-function getExcelAmount(row) {
-  var col = document.getElementById('amount-col-select').value;
-  if(!col) return 0;
-  return parseFloat(String(row[col]).replace(/[^0-9.\-]/g,'')) || 0;
-}
-
-function getExcelDate(row) {
-  var col = document.getElementById('date-col-select').value;
-  if(!col) return '';
-  var v = row[col];
-  if(v instanceof Date) return v.getDate()+'/'+(v.getMonth()+1<10?'0':'')+(v.getMonth()+1)+'/'+v.getFullYear();
-  return String(v);
-}
-
-function getExcelPayer(row) {
-  var col = document.getElementById('payer-col-select').value;
-  if(!col) return '';
-  return String(row[col]||'');
-}
-
-// ===================================================================
-// ANALYSIS
-// ===================================================================
-function runAnalysis() {
-  if(!excelData.length) {
-    document.getElementById('analysis-empty').style.display='block';
-    document.getElementById('analysis-content').style.display='none';
-    return;
-  }
-  document.getElementById('analysis-empty').style.display='none';
-  document.getElementById('analysis-content').style.display='block';
-
-  var bankTotal=0, excelTotal=0;
-  RAW_BANK_DATA.forEach(function(r){ bankTotal+=r.amount; });
-  var amtCol = document.getElementById('amount-col-select').value;
-  if(amtCol) excelData.forEach(function(r){ excelTotal+=getExcelAmount(r); });
-
-  document.getElementById('a-bank-total').textContent = fmtRs(bankTotal);
-  document.getElementById('a-excel-total').textContent = fmtRs(excelTotal);
-  var diff = bankTotal - excelTotal;
-  var diffEl = document.getElementById('a-difference');
-  diffEl.textContent = (diff>=0?'+':'') + fmtRs(Math.abs(diff));
-  diffEl.style.color = Math.abs(diff)<1 ? '#0a8754' : '#c62828';
-
-  // Date-wise comparison
-  var bankByDate={}, excelByDate={};
-  RAW_BANK_DATA.forEach(function(r){
-    var d=r.txn_date||'Unknown';
-    if(!bankByDate[d]) bankByDate[d]={total:0,count:0};
-    bankByDate[d].total+=r.amount; bankByDate[d].count++;
-  });
-  if(amtCol) excelData.forEach(function(r){
-    var d=getExcelDate(r)||'Unknown';
-    if(!excelByDate[d]) excelByDate[d]={total:0,count:0};
-    excelByDate[d].total+=getExcelAmount(r); excelByDate[d].count++;
-  });
-
-  var allDates = {};
-  Object.keys(bankByDate).forEach(function(d){ allDates[d]=1; });
-  Object.keys(excelByDate).forEach(function(d){ allDates[d]=1; });
-  var sortedDates = Object.keys(allDates).sort(function(a,b){ return toSortableDate(b)-toSortableDate(a); });
-
-  var maxAmt = 1;
-  sortedDates.forEach(function(d){
-    var bAmt = bankByDate[d]?bankByDate[d].total:0;
-    var eAmt = excelByDate[d]?excelByDate[d].total:0;
-    if(bAmt>maxAmt) maxAmt=bAmt;
-    if(eAmt>maxAmt) maxAmt=eAmt;
-  });
-
-  var chartHtml = '';
-  sortedDates.forEach(function(d){
-    var bk = bankByDate[d]||{total:0,count:0};
-    var ex = excelByDate[d]||{total:0,count:0};
-    var bPct = Math.max(2, (bk.total/maxAmt)*100);
-    var ePct = Math.max(2, (ex.total/maxAmt)*100);
-    chartHtml += '<div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f0f0f0">';
-    chartHtml += '<div style="font-weight:700;font-size:14px;margin-bottom:6px">'+esc(d)+'</div>';
-    chartHtml += '<div class="chart-bar"><div class="chart-label">Bank ('+bk.count+')</div><div class="chart-track"><div class="chart-fill bank" style="width:'+bPct+'%">'+fmtRs(bk.total)+'</div></div></div>';
-    chartHtml += '<div class="chart-bar"><div class="chart-label">Excel ('+ex.count+')</div><div class="chart-track"><div class="chart-fill excel" style="width:'+ePct+'%">'+fmtRs(ex.total)+'</div></div></div>';
-    var diff2 = bk.total - ex.total;
-    if(Math.abs(diff2)>0.5) {
-      chartHtml += '<div style="font-size:12px;margin-left:110px;color:'+(diff2>0?'#e65100':'#c62828')+'">Difference: '+(diff2>0?'+':'')+fmtRs(Math.abs(diff2))+'</div>';
-    }
-    chartHtml += '</div>';
-  });
-  document.getElementById('date-comparison').innerHTML = chartHtml;
-
-  // Match rate
-  var matchCount = 0;
-  RAW_BANK_DATA.forEach(function(r){ if(r.match_status==='MATCHED') matchCount++; });
-  document.getElementById('a-match-rate').textContent = Math.round((matchCount/RAW_BANK_DATA.length)*100)+'%';
-
-  // Top payers chart
-  var payerTotals = {};
-  RAW_BANK_DATA.forEach(function(r){ var p=r.payer||'Unknown'; payerTotals[p]=(payerTotals[p]||0)+r.amount; });
-  var topPayers = Object.keys(payerTotals).sort(function(a,b){ return payerTotals[b]-payerTotals[a]; }).slice(0,10);
-  var pMax = payerTotals[topPayers[0]]||1;
-  var pHtml = '';
-  topPayers.forEach(function(p){
-    var pct = Math.max(3,(payerTotals[p]/pMax)*100);
-    pHtml += '<div class="chart-bar"><div class="chart-label" style="width:180px">'+esc(p)+'</div><div class="chart-track"><div class="chart-fill bank" style="width:'+pct+'%">'+fmtRs(payerTotals[p])+'</div></div></div>';
-  });
-  document.getElementById('payer-chart').innerHTML = pHtml;
-}
-
-// ===================================================================
-// RECONCILIATION
-// ===================================================================
-function runReconciliation() {
-  if(!excelData.length || !document.getElementById('amount-col-select').value) {
-    document.getElementById('recon-empty').style.display='block';
-    document.getElementById('recon-content').style.display='none';
-    return;
-  }
-  document.getElementById('recon-empty').style.display='none';
-  document.getElementById('recon-content').style.display='block';
-
-  reconResults = [];
-  var bankUsed = {};
-  var excelUsed = {};
-
-  // Pass 1: Exact match by amount + date
-  excelData.forEach(function(eRow, eIdx){
-    var eAmt = getExcelAmount(eRow);
-    var eDate = getExcelDate(eRow);
-    if(!eAmt) return;
-
-    for(var i=0;i<RAW_BANK_DATA.length;i++){
-      if(bankUsed[i]) continue;
-      var bRow = RAW_BANK_DATA[i];
-      if(Math.abs(bRow.amount - eAmt) < 0.5 && normalizeDate(bRow.txn_date)===normalizeDate(eDate)) {
-        reconResults.push({type:'matched', bank:bRow, excel:eRow, eIdx:eIdx});
-        bankUsed[i] = true;
-        excelUsed[eIdx] = true;
-        break;
-      }
-    }
-  });
-
-  // Pass 2: Match by amount only (date might differ)
-  excelData.forEach(function(eRow, eIdx){
-    if(excelUsed[eIdx]) return;
-    var eAmt = getExcelAmount(eRow);
-    if(!eAmt) return;
-
-    for(var i=0;i<RAW_BANK_DATA.length;i++){
-      if(bankUsed[i]) continue;
-      var bRow = RAW_BANK_DATA[i];
-      if(Math.abs(bRow.amount - eAmt) < 0.5) {
-        reconResults.push({type:'partial', bank:bRow, excel:eRow, eIdx:eIdx});
-        bankUsed[i] = true;
-        excelUsed[eIdx] = true;
-        break;
-      }
-    }
-  });
-
-  // Unmatched bank entries
-  RAW_BANK_DATA.forEach(function(bRow, i){
-    if(!bankUsed[i]) reconResults.push({type:'bank-only', bank:bRow, excel:null});
-  });
-
-  // Unmatched excel entries
-  excelData.forEach(function(eRow, eIdx){
-    if(!excelUsed[eIdx] && getExcelAmount(eRow)) {
-      reconResults.push({type:'excel-only', bank:null, excel:eRow, eIdx:eIdx});
-    }
-  });
-
-  // Update counts
-  var mc=0,bo=0,eo=0;
-  reconResults.forEach(function(r){ if(r.type==='matched'||r.type==='partial') mc++; else if(r.type==='bank-only') bo++; else eo++; });
-  document.getElementById('r-matched').textContent = mc;
-  document.getElementById('r-unmatched-bank').textContent = bo;
-  document.getElementById('r-unmatched-excel').textContent = eo;
-
-  renderRecon();
-}
-
-function normalizeDate(s) {
-  if(!s) return '';
-  var d = parseDateDMY(s);
-  if(!d || isNaN(d.getTime())) return String(s).trim();
-  return d.getFullYear()+'-'+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();
-}
-
-function renderRecon() {
-  var filter = document.getElementById('recon-filter').value;
-  var tbody = document.getElementById('recon-tbody');
-  tbody.innerHTML = '';
-
-  var filtered = reconResults.filter(function(r){
-    if(filter==='all') return true;
-    if(filter==='matched') return r.type==='matched'||r.type==='partial';
-    if(filter==='bank-only') return r.type==='bank-only';
-    if(filter==='excel-only') return r.type==='excel-only';
-    return true;
-  });
-
-  filtered.forEach(function(r){
-    var tr = document.createElement('tr');
-    var bankSide = r.bank ? '<strong>'+fmtRs(r.bank.amount)+'</strong><br><span style="color:#666;font-size:12px">'+esc(r.bank.payer||'—')+' | '+esc(r.bank.txn_date)+' | '+esc(r.bank.bank)+'</span>' : '<span style="color:#ccc">—</span>';
-    var excelSide = r.excel ? '<strong>'+fmtRs(getExcelAmount(r.excel))+'</strong><br><span style="color:#666;font-size:12px">'+esc(getExcelPayer(r.excel)||'—')+' | '+esc(getExcelDate(r.excel))+'</span>' : '<span style="color:#ccc">—</span>';
-
-    var icon = '&#10060;';
-    var iconClass = 'recon-miss';
-    if(r.type==='matched') { icon='&#9989;'; iconClass='recon-match'; }
-    else if(r.type==='partial') { icon='&#9888;&#65039;'; iconClass='recon-partial'; }
-
-    tr.innerHTML = '<td class="recon-side">'+bankSide+'</td><td class="recon-icon '+iconClass+'">'+icon+'</td><td class="recon-side">'+excelSide+'</td>';
-    tbody.appendChild(tr);
-  });
-}
-
-function exportReconCSV() {
-  var rows = [['Status','Bank_Amount','Bank_Payer','Bank_Date','Bank_Bank','Excel_Amount','Excel_Payer','Excel_Date']];
-  reconResults.forEach(function(r){
-    rows.push([
-      r.type,
-      r.bank?r.bank.amount:'',
-      r.bank?r.bank.payer:'',
-      r.bank?r.bank.txn_date:'',
-      r.bank?r.bank.bank:'',
-      r.excel?getExcelAmount(r.excel):'',
-      r.excel?getExcelPayer(r.excel):'',
-      r.excel?getExcelDate(r.excel):''
-    ]);
-  });
-  var csv = rows.map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
-  var blob = new Blob([csv], {type:'text/csv'});
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'paygate-reconciliation-'+new Date().toISOString().slice(0,10)+'.csv';
-  a.click();
-}
+function runReconciliation(){if(!excelData.length||!document.getElementById('amount-col-select').value){document.getElementById('recon-empty').style.display='block';document.getElementById('recon-content').style.display='none';return;}document.getElementById('recon-empty').style.display='none';document.getElementById('recon-content').style.display='block';reconResults=[];var bankUsed={};var excelUsed={};excelData.forEach(function(eRow,eIdx){var eAmt=getExcelAmount(eRow);var eDate=getExcelDate(eRow);if(!eAmt)return;for(var i=0;i<RAW_BANK_DATA.length;i++){if(bankUsed[i])continue;var bRow=RAW_BANK_DATA[i];if(Math.abs(bRow.amount-eAmt)<0.5&&normalizeDate(bRow.txn_date)===normalizeDate(eDate)){reconResults.push({type:'matched',bank:bRow,excel:eRow,eIdx:eIdx});bankUsed[i]=true;excelUsed[eIdx]=true;break;}}});excelData.forEach(function(eRow,eIdx){if(excelUsed[eIdx])return;var eAmt=getExcelAmount(eRow);if(!eAmt)return;for(var i=0;i<RAW_BANK_DATA.length;i++){if(bankUsed[i])continue;var bRow=RAW_BANK_DATA[i];if(Math.abs(bRow.amount-eAmt)<0.5){reconResults.push({type:'partial',bank:bRow,excel:eRow,eIdx:eIdx});bankUsed[i]=true;excelUsed[eIdx]=true;break;}}});RAW_BANK_DATA.forEach(function(bRow,i){if(!bankUsed[i])reconResults.push({type:'bank-only',bank:bRow,excel:null});});excelData.forEach(function(eRow,eIdx){if(!excelUsed[eIdx]&&getExcelAmount(eRow))reconResults.push({type:'excel-only',bank:null,excel:eRow,eIdx:eIdx});});var mc=0,bo=0,eo=0;reconResults.forEach(function(r){if(r.type==='matched'||r.type==='partial')mc++;else if(r.type==='bank-only')bo++;else eo++;});document.getElementById('r-matched').textContent=mc;document.getElementById('r-unmatched-bank').textContent=bo;document.getElementById('r-unmatched-excel').textContent=eo;renderRecon();}
+function normalizeDate(s){if(!s)return'';var d=parseDateDMY(s);if(!d||isNaN(d.getTime()))return String(s).trim();return d.getFullYear()+'-'+(d.getMonth()+1<10?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();}
+function renderRecon(){var filter=document.getElementById('recon-filter').value;var tbody=document.getElementById('recon-tbody');tbody.innerHTML='';var filtered=reconResults.filter(function(r){if(filter==='all')return true;if(filter==='matched')return r.type==='matched'||r.type==='partial';if(filter==='bank-only')return r.type==='bank-only';if(filter==='excel-only')return r.type==='excel-only';return true;});filtered.forEach(function(r){var tr=document.createElement('tr');var bankSide=r.bank?'<strong>'+fmtRs(r.bank.amount)+'</strong><br><span style="color:#666;font-size:12px">'+esc(r.bank.payer||'-')+' | '+esc(r.bank.txn_date)+' | '+esc(r.bank.bank)+'</span>':'<span style="color:#ccc">-</span>';var excelSide=r.excel?'<strong>'+fmtRs(getExcelAmount(r.excel))+'</strong><br><span style="color:#666;font-size:12px">'+esc(getExcelPayer(r.excel)||'-')+' | '+esc(getExcelDate(r.excel))+'</span>':'<span style="color:#ccc">-</span>';var icon='&#10060;';var iconClass='recon-miss';if(r.type==='matched'){icon='&#9989;';iconClass='recon-match';}else if(r.type==='partial'){icon='&#9888;&#65039;';iconClass='recon-partial';}tr.innerHTML='<td class="recon-side">'+bankSide+'</td><td class="recon-icon '+iconClass+'">'+icon+'</td><td class="recon-side">'+excelSide+'</td>';tbody.appendChild(tr);});}
+function exportReconCSV(){var rows=[['Status','Bank_Amount','Bank_Payer','Bank_Date','Bank_Bank','Excel_Amount','Excel_Payer','Excel_Date']];reconResults.forEach(function(r){rows.push([r.type,r.bank?r.bank.amount:'',r.bank?r.bank.payer:'',r.bank?r.bank.txn_date:'',r.bank?r.bank.bank:'',r.excel?getExcelAmount(r.excel):'',r.excel?getExcelPayer(r.excel):'',r.excel?getExcelDate(r.excel):'']);});var csv=rows.map(function(r){return r.map(function(c){return'"'+String(c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='paygate-reconciliation-'+new Date().toISOString().slice(0,10)+'.csv';a.click();}
 </script>
-
 </body>
 </html>
