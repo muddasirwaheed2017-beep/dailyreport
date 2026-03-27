@@ -1527,7 +1527,7 @@ if(seeded>0){
 document.getElementById('a-el').innerHTML=ac.length?ac.map(function(e){
   var sal=e.salary||0;var daily=sal?Math.round(sal/30):0;var dept=e.department||'—';
   var salLine=sal?'<span style="font-size:10px;color:var(--G3)">Rs '+sal.toLocaleString()+' · Daily: '+daily.toLocaleString()+'</span>':'<span style="font-size:10px;color:var(--R)">⚠ No salary set</span>';
-  return'<div class="ei"><div class="av" style="background:'+U.clr(e.name)+'">'+U.ini(e.name)+'</div><div class="ei-info"><div class="ei-nm">'+e.name+' <span class="badge badge-ok">Active</span>'+(dept!=='—'?' <span style="font-size:8px;color:var(--G5);font-weight:600;padding:1px 5px;border:1px solid var(--G8);border-radius:4px">'+dept+'</span>':'')+'</div><div class="ei-det">@'+e.username+(e.wa?' · '+e.wa:'')+'</div><div>'+salLine+'</div></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" title="Edit Salary" onclick="App.editEmpSalary(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\','+sal+',\''+(e.department||'').replace(/'/g,"\\'")+'\')">💰</button><button class="btn btn-ghost btn-sm" title="Reset Device" onclick="App.rstD(\''+e.id+'\')">↺</button><button class="btn btn-sm" style="background:var(--amb-bg);color:var(--amb);border:2px solid #fcd34d;width:34px;height:34px;padding:0" title="Block" onclick="App.blockE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">🚫</button><button class="btn btn-sm" style="background:var(--Rbg);color:var(--R);border:2px solid var(--Rl);width:34px;height:34px;padding:0" title="Delete" onclick="App.delE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">✕</button></div></div>'}).join(''):'<div style="font-size:12px;color:var(--G5);padding:4px">No active employees</div>';
+  return'<div class="ei"><div class="av" style="background:'+U.clr(e.name)+'">'+U.ini(e.name)+'</div><div class="ei-info"><div class="ei-nm">'+e.name+' <span class="badge badge-ok">Active</span>'+(dept!=='—'?' <span style="font-size:8px;color:var(--G5);font-weight:600;padding:1px 5px;border:1px solid var(--G8);border-radius:4px">'+dept+'</span>':'')+'</div><div class="ei-det">@'+e.username+(e.wa?' · '+e.wa:'')+'</div><div>'+salLine+'</div></div><div style="display:flex;gap:4px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" title="Summary Report" onclick="App.viewEmpReport(\''+e.id+'\')">📊</button><button class="btn btn-ghost btn-sm" title="Calendar" onclick="App.viewEmpCalendar(\''+e.id+'\')">📅</button><button class="btn btn-ghost btn-sm" title="Attendance" onclick="App.viewEmpAttendance(\''+e.id+'\')">✅</button><button class="btn btn-ghost btn-sm" title="Edit Salary &amp; Dept" onclick="App.editEmpSalary(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\','+sal+',\''+(e.department||'').replace(/'/g,"\\'")+'\')">✏️</button><button class="btn btn-ghost btn-sm" title="Reset Device" onclick="App.rstD(\''+e.id+'\')">↺</button><button class="btn btn-sm" style="background:var(--amb-bg);color:var(--amb);border:2px solid #fcd34d;width:34px;height:34px;padding:0" title="Block" onclick="App.blockE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">🚫</button><button class="btn btn-sm" style="background:var(--Rbg);color:var(--R);border:2px solid var(--Rl);width:34px;height:34px;padding:0" title="Delete" onclick="App.delE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">✕</button></div></div>'}).join(''):'<div style="font-size:12px;color:var(--G5);padding:4px">No active employees</div>';
 
 /* Blocked employees */
 document.getElementById('a-bl').innerHTML=bl.length?bl.map(function(e){return'<div class="ei" style="opacity:.7;border-left:3px solid var(--R)"><div class="av" style="background:#666">'+U.ini(e.name)+'</div><div class="ei-info"><div class="ei-nm">'+e.name+' <span style="font-size:8px;font-weight:700;padding:2px 6px;border-radius:4px;background:var(--Rbg);color:var(--R)">🚫 Blocked</span></div><div class="ei-det">@'+e.username+(e.blockedAt?' · Blocked: '+e.blockedAt:'')+'</div></div><div style="display:flex;gap:4px"><button class="btn btn-sm" style="background:var(--grn-bg);color:var(--grn);border:2px solid #86efac" title="Unblock" onclick="App.unblockE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">✅ Unblock</button><button class="btn btn-sm" style="background:var(--Rbg);color:var(--R);border:2px solid var(--Rl);width:34px;height:34px;padding:0" title="Delete" onclick="App.delE(\''+e.id+'\',\''+e.name.replace(/'/g,"\\'")+'\')">✕</button></div></div>'}).join(''):'<div style="font-size:12px;color:var(--G5);padding:4px">None</div>';
@@ -1543,10 +1543,52 @@ appE:async function(id,name){
   sal=parseInt(sal)||0;
   try{await F.up('users/'+id,{approved:true,blocked:false,salary:sal,department:dept});U.toast((name||'Employee')+' approved with Rs '+sal.toLocaleString(),'ok');this.loadStaff();this.loadDash()}catch(e){U.toast('Error','err')}},
 editEmpSalary:function(uid,name,curSal,curDept){
-  var sal=window.prompt('Basic salary for '+name+' (Rs):',curSal||'0');if(sal===null)return;
-  var dept=window.prompt('Department for '+name+':',curDept||'');if(dept===null)dept=curDept;
-  sal=parseInt(sal)||0;
-  F.up('users/'+uid,{salary:sal,department:dept}).then(function(){U.toast(name+': Rs '+sal.toLocaleString()+' saved ✅','ok');App.loadStaff()}).catch(function(){U.toast('Error','err')});
+  /* Build modal */
+  var deptOpts=['Sales','C-Solar','CNC Social Media','Finance','Admin','Shop','Store','Karachi','Other'];
+  var h='<div id="edit-emp-ov" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)this.remove()">';
+  h+='<div style="background:var(--W);border-radius:16px;width:100%;max-width:380px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.3)">';
+  h+='<div style="font-size:16px;font-weight:800;margin-bottom:4px">✏️ Edit Employee</div>';
+  h+='<div style="font-size:12px;color:var(--G5);margin-bottom:16px">'+name+'</div>';
+  h+='<div style="margin-bottom:12px"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Basic Salary (Rs)</label><input type="number" id="em-sal" value="'+(curSal||0)+'" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:14px;font-weight:700"></div>';
+  h+='<div style="margin-bottom:16px"><label style="font-size:11px;font-weight:700;color:var(--G5);display:block;margin-bottom:4px">Department</label><select id="em-dept" style="width:100%;padding:10px;border:2px solid var(--G8);border-radius:8px;font-size:13px;-webkit-appearance:auto"><option value="">— Select —</option>';
+  deptOpts.forEach(function(d){h+='<option value="'+d+'"'+(d===curDept?' selected':'')+'>'+d+'</option>'});
+  h+='</select></div>';
+  h+='<div style="display:flex;gap:8px"><button style="flex:1;padding:10px;border:2px solid var(--G8);border-radius:8px;background:var(--W);font-size:13px;font-weight:700;cursor:pointer" onclick="document.getElementById(\'edit-emp-ov\').remove()">Cancel</button>';
+  h+='<button style="flex:1;padding:10px;border:none;border-radius:8px;background:var(--R);color:var(--W);font-size:13px;font-weight:700;cursor:pointer" onclick="App._saveEmpEdit(\''+uid+'\',\''+name.replace(/'/g,"\\'")+'\')">💾 Save</button></div>';
+  h+='</div></div>';
+  document.body.insertAdjacentHTML('beforeend',h);
+  document.getElementById('em-sal').focus();
+},
+_saveEmpEdit:function(uid,name){
+  var sal=parseInt(document.getElementById('em-sal').value)||0;
+  var dept=document.getElementById('em-dept').value||'';
+  F.up('users/'+uid,{salary:sal,department:dept}).then(function(){
+    U.toast(name+': Rs '+sal.toLocaleString()+' · '+dept+' ✅','ok');
+    document.getElementById('edit-emp-ov').remove();
+    App.loadStaff();
+  }).catch(function(){U.toast('Error','err')});
+},
+viewEmpReport:function(uid){
+  /* Navigate to Summary tab with this employee pre-selected */
+  App.anav('sum');
+  setTimeout(function(){
+    var sel=document.getElementById('as-emp');
+    if(sel){sel.value=uid;App.loadAdmSum()}
+  },300);
+},
+viewEmpCalendar:function(uid){
+  App.anav('cal');
+  setTimeout(function(){
+    var sel=document.getElementById('ac-emp');
+    if(sel){sel.value=uid;App.loadAdmCal()}
+  },300);
+},
+viewEmpAttendance:function(uid){
+  App.anav('att');
+  setTimeout(function(){
+    var sel=document.getElementById('aa-emp');
+    if(sel){sel.value=uid;App.loadAdmAtt()}
+  },300);
 },
 blockE:async function(id,name){if(!confirm('Block '+name+'? They will not be able to log in.'))return;try{await F.up('users/'+id,{blocked:true,blockedAt:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})});U.toast(name+' blocked','warn');this.loadStaff()}catch(e){U.toast('Error','err')}},
 unblockE:async function(id,name){if(!confirm('Unblock '+name+'?'))return;try{await F.up('users/'+id,{blocked:false,blockedAt:null});U.toast(name+' unblocked ✅','ok');this.loadStaff()}catch(e){U.toast('Error','err')}},
@@ -2025,10 +2067,7 @@ App.loadSalaryTable=async function(){
   document.getElementById('sal-list').innerHTML=h}catch(e){}
 };
 App.editSalary=function(uid,name,curSal,curDept){
-  var sal=window.prompt('Basic salary for '+name+':',curSal||'');if(sal===null)return;
-  var dept=window.prompt('Department for '+name+':',curDept||'');if(dept===null)dept=curDept;
-  sal=parseInt(sal)||0;
-  F.up('users/'+uid,{salary:sal,department:dept}).then(function(){U.toast(name+': Rs '+sal.toLocaleString()+' saved','ok');App.loadSalaryTable()}).catch(function(){U.toast('Error','err')});
+  App.editEmpSalary(uid,name,curSal,curDept);
 };
 App._salarySeeded=false;
 App._seedSalaries=async function(users){
