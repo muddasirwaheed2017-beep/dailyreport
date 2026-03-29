@@ -234,7 +234,7 @@ c.innerHTML=h;
 var CNC_FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app/cnc_chatbot';
 var fbEvents=[];
 function fetchFirebase(){
-fetch(CNC_FB_URL+'/events.json?orderBy="ts"&limitToLast=500').then(function(r){return r.json()}).then(function(d){
+fetch(CNC_FB_URL+'/events.json').then(function(r){return r.json()}).then(function(d){
 if(!d)return;
 fbEvents=Object.keys(d).map(function(k){return d[k]}).filter(function(e){return e&&e.ts});
 fbEvents.sort(function(a,b){return a.ts-b.ts});
