@@ -99,7 +99,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 </div>
 </div>
 <script>
-function getEvents(){try{return JSON.parse(localStorage.getItem('cnc_chat_events')||'[]')}catch(e){return[]}}
 function clearData(){if(confirm('Clear all data?')){localStorage.removeItem('cnc_chat_events');refresh()}}
 function todayStart(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
 function fmt(ts){var d=new Date(ts);var h=d.getHours();var m=d.getMinutes();var a=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+a}
@@ -232,7 +231,33 @@ h+='<div class="ev-row"><div class="ev-icon '+info.c+'">'+info.i+'</div><div cla
 c.innerHTML=h;
 }
 
-refresh();setInterval(refresh,5000);
+var CNC_FB_URL='https://cs-daily-reports-default-rtdb.asia-southeast1.firebasedatabase.app/cnc_chatbot';
+var fbEvents=[];
+function fetchFirebase(){
+fetch(CNC_FB_URL+'/events.json?orderBy="ts"&limitToLast=500').then(function(r){return r.json()}).then(function(d){
+if(!d)return;
+fbEvents=Object.keys(d).map(function(k){return d[k]}).filter(function(e){return e&&e.ts});
+fbEvents.sort(function(a,b){return a.ts-b.ts});
+refresh();
+}).catch(function(){});
+}
+function getEvents(){
+// Merge localStorage + Firebase, deduplicate by ts
+var local=[];
+try{local=JSON.parse(localStorage.getItem('cnc_chat_events')||'[]')}catch(e){}
+var all=local.concat(fbEvents);
+var seen={};
+var unique=[];
+all.forEach(function(e){
+var key=e.ts+'_'+e.type;
+if(!seen[key]){seen[key]=1;unique.push(e)}
+});
+unique.sort(function(a,b){return a.ts-b.ts});
+return unique;
+}
+fetchFirebase();
+refresh();
+setInterval(function(){fetchFirebase();refresh()},5000);
 </script>
 </body>
 </html>
