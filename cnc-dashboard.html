@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNC Electric — Chatbot Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#333}
+.header{background:linear-gradient(135deg,#d42027,#b71c1c);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.header h1{font-size:20px;font-weight:700}
+.header .sub{font-size:12px;opacity:.8}
+.header .live{display:flex;align-items:center;gap:6px;font-size:13px}
+.header .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.container{max-width:1400px;margin:0 auto;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.stat-card{background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.stat-card .label{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:.5px}
+.stat-card .value{font-size:28px;font-weight:800;color:#d42027;margin:4px 0}
+.stat-card .sub{font-size:11px;color:#aaa}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.panel{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
+.panel-header{padding:12px 16px;border-bottom:1px solid #eee;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+.panel-body{padding:12px 16px;max-height:420px;overflow-y:auto}
+.full-width{grid-column:1/-1}
+.chat-session{border:1px solid #eee;border-radius:8px;margin-bottom:8px;overflow:hidden}
+.chat-session-header{background:#fafafa;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:13px}
+.chat-session-header:hover{background:#f0f0f0}
+.chat-session-header .uid{font-weight:700;color:#d42027}
+.chat-session-header .time{font-size:11px;color:#999}
+.chat-session-header .badge{font-size:10px;background:#d42027;color:#fff;padding:1px 8px;border-radius:10px}
+.chat-msgs{display:none;padding:8px 12px;background:#fff;max-height:300px;overflow-y:auto}
+.chat-msgs.open{display:block}
+.cm{margin-bottom:5px;font-size:12px;line-height:1.4}
+.cm .r{font-weight:700;display:inline}
+.cm .r.u{color:#d42027}
+.cm .r.b{color:#2563eb}
+.cm .r.p{color:#16a34a}
+.cm .t{color:#ccc;font-size:10px;margin-left:4px}
+.product-row{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid #f5f5f5}
+.product-row:last-child{border:none}
+.product-rank{width:22px;height:22px;border-radius:50%;background:#d42027;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.product-name{flex:1;font-size:12px;font-weight:600}
+.product-count{font-size:13px;color:#d42027;font-weight:700}
+.pbar{height:4px;background:#fee2e2;border-radius:2px;margin-top:2px}
+.pbar-f{height:100%;background:#d42027;border-radius:2px;transition:width .5s}
+.search-tag{display:inline-block;background:#f0f0f0;padding:3px 10px;border-radius:12px;font-size:11px;margin:2px;color:#555}
+.search-tag .cnt{font-weight:700;color:#d42027;margin-left:4px}
+.ev-row{display:flex;gap:8px;padding:4px 0;border-bottom:1px solid #f8f8f8;font-size:12px;align-items:center}
+.ev-row:last-child{border:none}
+.ev-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.ev-icon.s{background:#dbeafe}
+.ev-icon.m{background:#f0fdf4}
+.ev-icon.p{background:#fef3c7}
+.ev-icon.c{background:#d1fae5}
+.ev-icon.e{background:#fee2e2}
+.ev-icon.k{background:#ede9fe}
+.ev-text{flex:1;color:#555}
+.ev-time{font-size:10px;color:#bbb;flex-shrink:0}
+.funnel-step{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.funnel-bar{height:28px;border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:12px;font-weight:600;color:#fff;min-width:40px}
+.funnel-label{font-size:12px;width:100px;text-align:right;color:#666;flex-shrink:0}
+.hchart{display:flex;align-items:flex-end;gap:2px;height:100px}
+.hbar{flex:1;border-radius:2px 2px 0 0;min-height:2px;position:relative;cursor:pointer;transition:all .2s}
+.hbar:hover .htip{display:block}
+.htip{display:none;position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px;white-space:nowrap;margin-bottom:4px}
+.hlabels{display:flex;gap:2px;margin-top:4px}
+.hlabels span{flex:1;text-align:center;font-size:8px;color:#bbb}
+.nodata{text-align:center;color:#ccc;padding:30px 20px;font-size:13px}
+.btn{padding:6px 14px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:600}
+.btn-g{background:#eee;color:#666}
+</style>
+</head>
+<body>
+<div class="header">
+<div><h1>CNC Electric — Chatbot Dashboard</h1><div class="sub" id="dt"></div></div>
+<div style="display:flex;gap:8px;align-items:center">
+<div class="live"><span class="dot"></span> Live</div>
+<button class="btn btn-g" onclick="clearData()">Clear</button>
+</div>
+</div>
+<div class="container">
+<div class="stats">
+<div class="stat-card"><div class="label">Conversations</div><div class="value" id="s1">0</div><div class="sub">Today</div></div>
+<div class="stat-card"><div class="label">Messages</div><div class="value" id="s2">0</div><div class="sub">Total</div></div>
+<div class="stat-card"><div class="label">Products Shown</div><div class="value" id="s3">0</div><div class="sub">Cards</div></div>
+<div class="stat-card"><div class="label">Add to Cart</div><div class="value" id="s4">0</div><div class="sub">Success</div></div>
+<div class="stat-card"><div class="label">Errors</div><div class="value" id="s5">0%</div><div class="sub">Rate</div></div>
+</div>
+<div class="grid">
+<div class="panel full-width"><div class="panel-header">Live Chats by User <span id="cc" style="font-weight:400;font-size:12px;color:#999"></span></div><div class="panel-body" id="lc"></div></div>
+<div class="panel"><div class="panel-header">Top Products Shown</div><div class="panel-body" id="tp"></div></div>
+<div class="panel"><div class="panel-header">Products Searched / Asked About</div><div class="panel-body" id="st"></div></div>
+<div class="panel"><div class="panel-header">Conversion Funnel</div><div class="panel-body" id="fn"></div></div>
+<div class="panel"><div class="panel-header">Messages Per Hour</div><div class="panel-body" id="hr"></div></div>
+<div class="panel full-width"><div class="panel-header">Recent Activity <span id="ec" style="font-weight:400;font-size:12px;color:#999"></span></div><div class="panel-body" id="al" style="max-height:280px"></div></div>
+</div>
+</div>
+<script>
+function getEvents(){try{return JSON.parse(localStorage.getItem('cnc_chat_events')||'[]')}catch(e){return[]}}
+function clearData(){if(confirm('Clear all data?')){localStorage.removeItem('cnc_chat_events');refresh()}}
+function todayStart(){var d=new Date();d.setHours(0,0,0,0);return d.getTime()}
+function fmt(ts){var d=new Date(ts);var h=d.getHours();var m=d.getMinutes();var a=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+a}
+function fmtFull(ts){return new Date(ts).toLocaleDateString()+' '+fmt(ts)}
+function esc(s){if(!s)return'';var d=document.createElement('div');d.appendChild(document.createTextNode(String(s)));return d.innerHTML}
+
+function refresh(){
+var ev=getEvents();var t0=todayStart();
+var te=ev.filter(function(e){return e.ts>=t0});
+document.getElementById('dt').textContent=new Date().toLocaleString();
+var co=te.filter(function(e){return e.type==='conversation_start'}).length;
+var ms=te.filter(function(e){return e.type==='message_sent'}).length;
+var mr=te.filter(function(e){return e.type==='message_received'}).length;
+var pr=te.filter(function(e){return e.type==='product_shown'}).length;
+var ac=te.filter(function(e){return e.type==='add_to_cart_success'}).length;
+var er=te.filter(function(e){return e.type==='error'}).length;
+var tm=ms+mr;
+document.getElementById('s1').textContent=co;
+document.getElementById('s2').textContent=tm;
+document.getElementById('s3').textContent=pr;
+document.getElementById('s4').textContent=ac;
+document.getElementById('s5').textContent=tm>0?((er/tm)*100).toFixed(1)+'%':'0%';
+renderChats(ev);renderProducts(ev);renderSearches(ev);renderFunnel(te,co,pr,ac,ms);renderHourly(te);renderLog(te);
+}
+
+function renderChats(ev){
+var c=document.getElementById('lc');
+var sessions={};var order=[];
+ev.forEach(function(e){
+if(e.type==='conversation_start'){var sid='s'+e.ts;sessions[sid]={id:sid,start:e.ts,msgs:[],prods:[]};order.push(sid)}
+var cur=order.length>0?order[order.length-1]:null;
+if(!cur||!sessions[cur])return;
+var s=sessions[cur];
+if(e.type==='message_sent')s.msgs.push({r:'u',txt:e.data&&e.data.text?e.data.text:'...',ts:e.ts});
+else if(e.type==='message_received')s.msgs.push({r:'b',txt:e.data&&e.data.text?e.data.text:'...',ts:e.ts});
+else if(e.type==='product_shown'){var n=e.data&&e.data.name?e.data.name:'Product';var p=e.data&&e.data.price?e.data.price:'';s.msgs.push({r:'p',txt:n+(p?' - Rs.'+p:''),ts:e.ts});s.prods.push(n)}
+else if(e.type==='add_to_cart_success')s.msgs.push({r:'p',txt:'Added to cart',ts:e.ts});
+else if(e.type==='chip_click')s.msgs.push({r:'u',txt:'[chip] '+(e.data&&e.data.text?e.data.text:''),ts:e.ts});
+});
+var sids=order.slice().reverse().slice(0,25);
+if(sids.length===0){c.innerHTML='<div class="nodata">No chat sessions yet. Use the chatbot on cncelectric.pk to see live data here.</div>';document.getElementById('cc').textContent='';return}
+document.getElementById('cc').textContent=order.length+' sessions';
+var h='';
+sids.forEach(function(sid,i){
+var s=sessions[sid];if(!s)return;
+var mc=s.msgs.length;
+var prodList=s.prods.length>0?' | Products: '+s.prods.join(', '):'';
+h+='<div class="chat-session"><div class="chat-session-header" onclick="this.nextElementSibling.classList.toggle(\'open\')"><span class="uid">Chat #'+(order.length-i)+'</span><span class="time">'+fmtFull(s.start)+prodList+'</span><span class="badge">'+mc+'</span></div>';
+h+='<div class="chat-msgs'+(i===0?' open':'')+'">';
+s.msgs.forEach(function(m){
+var rc=m.r==='u'?'u':(m.r==='p'?'p':'b');
+var rl=m.r==='u'?'Customer':(m.r==='p'?'Product':'Bot');
+h+='<div class="cm"><span class="r '+rc+'">'+rl+':</span> '+esc(m.txt)+'<span class="t">'+fmt(m.ts)+'</span></div>';
+});
+if(s.msgs.length===0)h+='<div class="cm" style="color:#ccc">No messages</div>';
+h+='</div></div>';
+});
+c.innerHTML=h;
+}
+
+function renderProducts(ev){
+var c=document.getElementById('tp');
+var counts={};
+ev.forEach(function(e){if(e.type==='product_shown'&&e.data&&e.data.name){var n=e.data.name;counts[n]=(counts[n]||0)+1}});
+var sorted=Object.keys(counts).map(function(k){return{n:k,c:counts[k]}}).sort(function(a,b){return b.c-a.c}).slice(0,10);
+if(sorted.length===0){c.innerHTML='<div class="nodata">No products yet</div>';return}
+var mx=sorted[0].c;
+var h='';
+sorted.forEach(function(p,i){
+var pct=(p.c/mx*100).toFixed(0);
+h+='<div class="product-row"><div class="product-rank">'+(i+1)+'</div><div style="flex:1"><div class="product-name">'+esc(p.n)+'</div><div class="pbar"><div class="pbar-f" style="width:'+pct+'%"></div></div></div><div class="product-count">'+p.c+'x</div></div>';
+});
+c.innerHTML=h;
+}
+
+function renderSearches(ev){
+var c=document.getElementById('st');
+var terms={};
+var kws=['voltage','protector','ats','mcb','breaker','solar','spd','surge','changeover','wifi','smart','rcbo','dc','ac','inverter','panel','db box','fuse','ev charger','hybrid','on-grid','backup','generator','3 phase','single phase','load shedding','battery','isolator','mccb','contactor','relay','timer','meter','cable'];
+ev.forEach(function(e){
+if(e.type==='message_sent'&&e.data&&e.data.text){
+var txt=e.data.text.toLowerCase();
+kws.forEach(function(kw){if(txt.indexOf(kw)!==-1)terms[kw]=(terms[kw]||0)+1});
+}
+if(e.type==='product_shown'&&e.data&&e.data.name)terms[e.data.name]=(terms[e.data.name]||0)+1;
+if(e.type==='chip_click'&&e.data&&e.data.text){var ct=e.data.text.toLowerCase();terms[ct]=(terms[ct]||0)+1}
+});
+var sorted=Object.keys(terms).map(function(k){return{t:k,c:terms[k]}}).sort(function(a,b){return b.c-a.c}).slice(0,30);
+if(sorted.length===0){c.innerHTML='<div class="nodata">No searches yet</div>';return}
+var h='';
+sorted.forEach(function(t){h+='<span class="search-tag">'+esc(t.t)+'<span class="cnt">'+t.c+'</span></span>'});
+c.innerHTML=h;
+}
+
+function renderFunnel(ev,co,pr,ac,ms){
+var c=document.getElementById('fn');
+var steps=[{l:'Conversations',v:co,cl:'#3b82f6'},{l:'Messages',v:ms,cl:'#6366f1'},{l:'Products Shown',v:pr,cl:'#f59e0b'},{l:'Add to Cart',v:ac,cl:'#10b981'}];
+var mx=Math.max.apply(null,steps.map(function(s){return s.v}))||1;
+var h='';
+steps.forEach(function(s){var pct=Math.max(s.v/mx*100,10);h+='<div class="funnel-step"><div class="funnel-label">'+s.l+'</div><div class="funnel-bar" style="width:'+pct+'%;background:'+s.cl+'">'+s.v+'</div></div>'});
+c.innerHTML=h||'<div class="nodata">No data</div>';
+}
+
+function renderHourly(ev){
+var c=document.getElementById('hr');
+var hrs=[];for(var i=0;i<24;i++)hrs[i]=0;
+ev.forEach(function(e){if(e.type==='message_sent'||e.type==='message_received'){hrs[new Date(e.ts).getHours()]++}});
+var mx=Math.max.apply(null,hrs)||1;
+var h='<div class="hchart">';
+for(var i=0;i<24;i++){var pct=hrs[i]/mx*100;var bg=hrs[i]>0?'#d42027':'#fee2e2';h+='<div class="hbar" style="height:'+Math.max(pct,3)+'%;background:'+bg+'"><div class="htip">'+(i<10?'0':'')+i+':00 - '+hrs[i]+' msgs</div></div>'}
+h+='</div><div class="hlabels">';
+for(var i=0;i<24;i+=4)h+='<span>'+(i<10?'0':'')+i+'</span><span></span><span></span><span></span>';
+h+='</div>';
+c.innerHTML=h;
+}
+
+function renderLog(ev){
+var c=document.getElementById('al');
+var recent=ev.slice().reverse().slice(0,50);
+if(recent.length===0){c.innerHTML='<div class="nodata">No events</div>';document.getElementById('ec').textContent='';return}
+document.getElementById('ec').textContent=ev.length+' events';
+var im={conversation_start:{i:'💬',c:'s',l:'Chat started'},message_sent:{i:'👤',c:'m',l:'Customer'},message_received:{i:'🤖',c:'m',l:'Bot'},product_shown:{i:'📦',c:'p',l:'Product shown'},add_to_cart_success:{i:'🛒',c:'c',l:'Added to cart'},add_to_cart_fail:{i:'❌',c:'e',l:'Cart failed'},chip_click:{i:'👆',c:'k',l:'Quick reply'},error:{i:'⚠️',c:'e',l:'Error'}};
+var h='';
+recent.forEach(function(e){
+var info=im[e.type]||{i:'•',c:'m',l:e.type};
+var det='';
+if(e.data){if(e.data.text)det=e.data.text;else if(e.data.name)det=e.data.name+(e.data.price?' - Rs.'+e.data.price:'');else if(e.data.message)det=e.data.message;else if(e.data.handle)det=e.data.handle}
+h+='<div class="ev-row"><div class="ev-icon '+info.c+'">'+info.i+'</div><div class="ev-text"><b>'+info.l+'</b>'+(det?' - '+esc(det):'')+'</div><div class="ev-time">'+fmt(e.ts)+'</div></div>';
+});
+c.innerHTML=h;
+}
+
+refresh();setInterval(refresh,5000);
+</script>
+</body>
+</html>
