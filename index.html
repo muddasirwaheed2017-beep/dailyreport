@@ -33,6 +33,15 @@
   <script type="text/babel">
 const { useState, useEffect, useCallback, useRef } = React;
 
+function getApiKey() {
+  let key = localStorage.getItem("cnc-anthropic-key");
+  if (!key) {
+    key = prompt("Enter your Anthropic API key (starts with sk-ant-...)\\nSaved in your browser only, never uploaded.");
+    if (key) localStorage.setItem("cnc-anthropic-key", key);
+  }
+  return key || "";
+}
+
 // ═══ FULL PROJECT CONTEXT FOR AI CHATBOT ═══
 const PROJECT_CONTEXT = `You are the AI backlink strategist for CNC Electric Pakistan. You have COMPLETE knowledge of this project.
 
@@ -314,7 +323,7 @@ function App() {
   const callAPI = async(prompt, system="") => {
     try {
       const r = await fetch("https://corsproxy.io/?url=" + encodeURIComponent("https://api.anthropic.com/v1/messages"), {
-        method:"POST", headers:{"Content-Type":"application/json","x-api-key":""},
+        method:"POST", headers:{"Content-Type":"application/json","x-api-key": getApiKey()},
         body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:2000,
           system: system || PROJECT_CONTEXT,
           messages:[{role:"user",content:prompt}]
@@ -376,7 +385,7 @@ If unlinked mention: politely ask to add link.`);
     const history = msgs.slice(-10).map(m=>({role:m.role,content:m.content}));
     try {
       const r = await fetch("https://corsproxy.io/?url=" + encodeURIComponent("https://api.anthropic.com/v1/messages"),{
-        method:"POST",headers:{"Content-Type":"application/json","x-api-key":""},
+        method:"POST",headers:{"Content-Type":"application/json","x-api-key": getApiKey()},
         body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:2000,system:PROJECT_CONTEXT,messages:history})
       });
       const d = await r.json();
