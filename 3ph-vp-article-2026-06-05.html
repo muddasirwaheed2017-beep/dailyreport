@@ -1,0 +1,99 @@
+<p>A 3-phase voltage protector is what factories, commercial buildings, and 3-phase residential installs need to protect against phase failure, voltage sag, and over-voltage — all at once. Pakistani 3-phase distribution feeders are notoriously unstable: phase asymmetry, missing neutrals, dropped phases — every event can cost a 3-phase motor PKR 35,000-180,000 in rewind.</p>
+<p>This guide covers <strong>3-phase voltage protector prices in Pakistan for 2026</strong>, sizing for 25A to 200A loads, and the wiring to integrate with your existing 3-phase DB box or motor panel.</p>
+
+<h2 id="what">1. What is a 3-phase voltage protector?</h2>
+<p>A 3-phase voltage protector continuously monitors all 3 phases (R, Y, B) and cuts the load if any of the following occur:</p>
+<ul>
+  <li>Any phase voltage exits 170-265V safe band</li>
+  <li>Phase asymmetry exceeds 10% (one phase ≠ others)</li>
+  <li>Phase failure (any phase drops out)</li>
+  <li>Wrong phase rotation (will not allow start)</li>
+  <li>Neutral failure (in 4-wire systems)</li>
+</ul>
+<p>It restores power automatically once all 3 phases return to normal for a programmable delay (typically 5-30 seconds).</p>
+
+<h2 id="prices">2. 3-phase voltage protector prices Pakistan 2026</h2>
+<table>
+  <thead><tr><th>Model</th><th>Amperage</th><th>Voltage</th><th>Phases</th><th>Price PKR</th></tr></thead>
+  <tbody>
+    <tr><td>CNC YC3VP-25</td><td>25A</td><td>380V</td><td>3-phase + N</td><td>9,500</td></tr>
+    <tr><td>CNC YC3VP-40</td><td>40A</td><td>380V</td><td>3-phase + N</td><td>12,500</td></tr>
+    <tr><td>CNC YC3VP-63</td><td>63A</td><td>380V</td><td>3-phase + N</td><td>16,800</td></tr>
+    <tr><td>CNC YC3VP-100</td><td>100A</td><td>380V</td><td>3-phase + N</td><td>24,500</td></tr>
+    <tr><td>CNC YC3VP-125</td><td>125A</td><td>380V</td><td>3-phase + N</td><td>32,500</td></tr>
+    <tr><td>CNC YC3VP-200</td><td>200A</td><td>380V</td><td>3-phase + N</td><td>52,000</td></tr>
+    <tr><td>CNC YC3VP-W-63</td><td>63A WiFi smart</td><td>380V</td><td>3-phase + N</td><td>22,000</td></tr>
+    <tr><td>CNC YC3VP-W-125</td><td>125A WiFi smart</td><td>380V</td><td>3-phase + N</td><td>42,500</td></tr>
+  </tbody>
+</table>
+
+<h2 id="sizing">3. Sizing rules for Pakistani 3-phase loads</h2>
+<ol>
+  <li>Total your 3-phase load in kW (sum all motors, ACs, equipment).</li>
+  <li>Convert to amps: kW × 1000 / (1.732 × 380V × 0.85 PF) = continuous current per leg.</li>
+  <li>Add 25% safety margin.</li>
+  <li>Pick the next standard catalogue rating: 25A, 40A, 63A, 100A, 125A, 200A.</li>
+</ol>
+
+<h3>Quick lookup</h3>
+<table>
+  <thead><tr><th>Application</th><th>Recommended protector</th></tr></thead>
+  <tbody>
+    <tr><td>Small workshop 5-10 kW 3-phase</td><td>YC3VP-25 PKR 9,500</td></tr>
+    <tr><td>Medium workshop 15-25 kW</td><td>YC3VP-40 PKR 12,500</td></tr>
+    <tr><td>Light commercial / restaurant 30-40 kW</td><td>YC3VP-63 PKR 16,800</td></tr>
+    <tr><td>Medium commercial 60-80 kW</td><td>YC3VP-100 PKR 24,500</td></tr>
+    <tr><td>Large commercial 80-100 kW</td><td>YC3VP-125 PKR 32,500</td></tr>
+    <tr><td>Industrial 150-200 kW</td><td>YC3VP-200 PKR 52,000</td></tr>
+    <tr><td>Solar prosumer with 3-phase grid feed</td><td>YC3VP-63 PKR 16,800 minimum</td></tr>
+  </tbody>
+</table>
+
+<h2 id="install">4. Installation in a 3-phase DB box</h2>
+<ol>
+  <li>Power off at the upstream main breaker. Verify zero voltage on each phase with a tester.</li>
+  <li>Mount the protector on DIN rail or wall depending on model size.</li>
+  <li>Wire R, Y, B phases + Neutral from the grid feed into the protector's IN terminals.</li>
+  <li>Wire R, Y, B phases + Neutral from the protector's OUT terminals to the downstream MCB row or motor contactor.</li>
+  <li>Connect earth to the protector's earth terminal.</li>
+  <li>Power on. Set parameters:
+    <br>- Under-voltage trip: typically 195V per phase
+    <br>- Over-voltage trip: typically 265V per phase
+    <br>- Asymmetry threshold: 10%
+    <br>- Restoration delay: 10 seconds</li>
+  <li>Test: simulate phase loss by switching off one upstream MCB; protector should trip within 100-300 ms.</li>
+</ol>
+
+<h2 id="vs-1ph">5. 3-phase vs single-phase voltage protector</h2>
+<table>
+  <thead><tr><th></th><th>Single-phase protector</th><th>3-phase protector</th></tr></thead>
+  <tbody>
+    <tr><td>Monitors</td><td>1 phase + neutral</td><td>3 phases + neutral</td></tr>
+    <tr><td>Detects phase failure?</td><td>Yes (the only one)</td><td>Yes (any of 3)</td></tr>
+    <tr><td>Detects asymmetry?</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Detects wrong rotation?</td><td>No</td><td>Yes</td></tr>
+    <tr><td>Cheapest model</td><td>PKR 3,200 (YC7VA 63A)</td><td>PKR 9,500 (YC3VP-25)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="faq">6. FAQ</h2>
+<h3>Cheapest 3-phase voltage protector in Pakistan 2026?</h3>
+<p>CNC YC3VP-25 at PKR 9,500 — 25A 3-phase + N, suitable for small workshops up to 10 kW 3-phase.</p>
+<h3>Do I need a 3-phase protector if I have a phase failure relay?</h3>
+<p>A phase failure relay only detects phase loss. A 3-phase voltage protector adds over-voltage, under-voltage, asymmetry, and rotation protection. Best practice: use both, or use a 3-phase protector that includes phase failure detection.</p>
+<h3>Will it protect a 3-phase solar inverter?</h3>
+<p>Yes — install upstream of the inverter's AC input. Protects against grid events that could damage the inverter.</p>
+<h3>Is the WiFi smart variant worth +PKR 6,000?</h3>
+<p>For factories where downtime costs money: yes — app alerts, runtime logs, scheduled tests. For typical residential 3-phase: standard variant is enough.</p>
+<h3>Will CNC YC3VP-series work with Inverex/Knox/Solis solar inverters?</h3>
+<p>Yes — it's grid-side protection, inverter brand-agnostic. Install between WAPDA feed and your DB/inverter input.</p>
+
+<h2 id="related">7. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/voltage-protector-price-in-pakistan-2026-buying-guide">Single-phase Voltage Protector Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/phase-failure-relay-price-in-pakistan-2026-3-phase-motor-protection-buyer-guide">Phase Failure Relay Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/voltage-regulator-vs-stabilizer-vs-protector-pakistan-2026-honest-comparison">Voltage Regulator vs Stabilizer vs Protector Comparison</a></li>
+</ul>
+
+<h2 id="cta">8. Need a 3-phase voltage protector for your install?</h2>
+<p>Send your total kW load + phase count on WhatsApp <strong>+92 326 1111 376</strong>. Free Pakistan delivery on orders over PKR 5,000.</p>

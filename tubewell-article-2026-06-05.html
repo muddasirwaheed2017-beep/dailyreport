@@ -1,0 +1,70 @@
+<p>"Best breaker for tubewell motor in Pakistan" is one of the most-searched buying questions on Google PK in 2026. The answer depends on your motor HP, your supply (single-phase or 3-phase), and whether you have a generator backup or solar VFD. Get this wrong and you cycle through PKR 35,000 motor rewinds yearly. Get it right and the motor outlasts the bore well.</p>
+<p>This guide ranks <strong>the best breakers + protection for Pakistani tubewell motors in 2026</strong>, sized for 1 HP residential bore to 10 HP agricultural deep wells.</p>
+
+<h2 id="why">1. Why tubewell motors fail in Pakistan</h2>
+<p>Three killers, in order of frequency:</p>
+<ol>
+  <li><strong>Voltage sag (45% of failures)</strong> &mdash; motor draws higher current at 195V; overload trips or windings overheat</li>
+  <li><strong>Single phasing (35% of failures)</strong> &mdash; one phase drops out; motor runs on 2 phases until burns</li>
+  <li><strong>Dry running (15%)</strong> &mdash; water table drops; pump sucks air; impellers melt</li>
+  <li><strong>Lightning + surge (5%)</strong> &mdash; nearby strike fries motor + inverter</li>
+</ol>
+
+<h2 id="protection-stack">2. The 2026 Pakistani tubewell protection stack</h2>
+<table>
+  <thead><tr><th>Protection</th><th>Function</th><th>CNC part</th><th>Price PKR</th></tr></thead>
+  <tbody>
+    <tr><td>Main MCB</td><td>Overcurrent + short circuit</td><td>YCB7 (single-phase) or YCM7 (3-ph)</td><td>520-4,400</td></tr>
+    <tr><td>Voltage protector</td><td>Cut on voltage out of band</td><td>YC7VA 63A</td><td>3,200</td></tr>
+    <tr><td>Phase failure relay (3-ph only)</td><td>Cut on single phasing</td><td>YCP-3F</td><td>1,400</td></tr>
+    <tr><td>Magnetic contactor</td><td>Switching + remote control</td><td>CJX2s sized to motor FLC</td><td>1,400-5,950</td></tr>
+    <tr><td>Thermal overload relay</td><td>Slow trip on motor overheat</td><td>NR2 sized to FLC</td><td>1,800</td></tr>
+    <tr><td>Dry-run sensor + interlock</td><td>Cut when pump airs out</td><td>Generic + relay logic</td><td>3,500</td></tr>
+    <tr><td>AC SPD</td><td>Surge protection</td><td>YCS6-T2-1P (single) or 3P</td><td>2,500-5,800</td></tr>
+    <tr><td>WiFi smart breaker (optional)</td><td>App + scheduling + auto-cut after N hrs</td><td>YCSi 1P 40A</td><td>4,500</td></tr>
+  </tbody>
+</table>
+
+<h2 id="sizing">3. Sizing by motor HP</h2>
+<table>
+  <thead><tr><th>Motor</th><th>FLC (single-ph 220V)</th><th>MCB</th><th>Contactor</th><th>Total CNC bundle</th></tr></thead>
+  <tbody>
+    <tr><td>1 HP residential</td><td>5-6 A</td><td>YCB7 1P 10A</td><td>CJX2s-09</td><td>~PKR 8,500</td></tr>
+    <tr><td>1.5 HP residential</td><td>7-8 A</td><td>YCB7 1P 16A</td><td>CJX2s-12</td><td>~PKR 9,800</td></tr>
+    <tr><td>2 HP residential</td><td>10-11 A</td><td>YCB7 1P 20A</td><td>CJX2s-18</td><td>~PKR 11,500</td></tr>
+    <tr><td>3 HP single-phase</td><td>14-16 A</td><td>YCB7 1P 25A</td><td>CJX2s-25</td><td>~PKR 13,200</td></tr>
+    <tr><td>5 HP 3-phase</td><td>9-11 A per leg</td><td>YCM7 4P 25A</td><td>CJX2s-18</td><td>~PKR 18,500</td></tr>
+    <tr><td>10 HP 3-phase</td><td>18-22 A per leg</td><td>YCM7 4P 40A</td><td>CJX2s-32</td><td>~PKR 25,500</td></tr>
+  </tbody>
+</table>
+
+<h2 id="wiring">4. Wiring sequence</h2>
+<ol>
+  <li>Power off at upstream isolator.</li>
+  <li>Main MCB &rarr; voltage protector &rarr; phase failure relay (3-ph only).</li>
+  <li>Then through magnetic contactor &rarr; thermal overload relay &rarr; to motor terminals.</li>
+  <li>Control: start/stop push-buttons with overload NC and PFR NC in series with contactor coil.</li>
+  <li>Optional: WiFi smart breaker between voltage protector and contactor for app control.</li>
+  <li>SPD: at the panel input, with short earth wire to building earth.</li>
+</ol>
+
+<h2 id="faq">5. FAQ</h2>
+<h3>Do I need all 4-5 protection devices for a 1 HP residential pump?</h3>
+<p>Minimum: MCB + voltage protector + thermal overload. Add phase failure if 3-phase. Add WiFi smart breaker if you want app control + auto-cut after N hours runtime.</p>
+<h3>Will a CNC YC7VA voltage protector work with single-phase tubewell?</h3>
+<p>Yes &mdash; YC7VA series handles single-phase motors up to 80A.</p>
+<h3>What's the bare-minimum budget protection?</h3>
+<p>PKR 1,000-1,500: 1 MCB + 1 manual overload reset. Won't catch voltage sag or single phasing. Cheap insurance only.</p>
+<h3>Solar + tubewell combo &mdash; what changes?</h3>
+<p>If running off a solar VFD: the VFD provides built-in soft-start + speed control. You still need MCB + voltage protector (on supply input) + dry-run sensor. The contactor + thermal overload may be integrated in the VFD.</p>
+
+<h2 id="related">6. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/magnetic-contactor-price-in-pakistan-2026-buying-guide">Magnetic Contactor Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/voltage-protector-price-in-pakistan-2026-buying-guide">Voltage Protector Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/phase-failure-relay-price-in-pakistan-2026-3-phase-motor-protection-buyer-guide">Phase Failure Relay Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/submersible-solar-pump-price-in-pakistan-2026-ac-dc-vfd-buyer-guide">Submersible Solar Pump Buying Guide</a></li>
+</ul>
+
+<h2 id="cta">7. Need a complete tubewell protection bundle quote?</h2>
+<p>Tell us motor HP + single or 3-phase + grid only or solar combo on WhatsApp <strong>+92 326 1111 376</strong>. Free Pakistan delivery on orders over PKR 5,000.</p>

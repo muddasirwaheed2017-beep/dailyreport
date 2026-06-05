@@ -1,0 +1,114 @@
+<p>"MCB vs MCCB vs RCCB vs RCBO" is the most-confused Pakistani electrical buyer question. Walk into any Hall Road shop and the salesman uses these terms interchangeably; result, you buy the wrong device and either over-pay for protection you don't need or under-buy and leave your family exposed to fault current. Five minutes of clarity will save you from a six-month replacement cycle.</p>
+<p>This guide compares <strong>MCB vs MCCB vs RCCB vs RCBO breakers in Pakistan for 2026</strong> with honest pricing, when to use each, and Pakistani electrical-code requirements.</p>
+
+<h2 id="quick-table">1. Quick comparison table</h2>
+<table>
+  <thead><tr><th>Device</th><th>What it does</th><th>Amperage range</th><th>Typical price PKR</th></tr></thead>
+  <tbody>
+    <tr><td><strong>MCB</strong> (Miniature Circuit Breaker)</td><td>Overload + short-circuit protection</td><td>6A-125A</td><td>450-650 (1P)</td></tr>
+    <tr><td><strong>MCCB</strong> (Moulded Case Circuit Breaker)</td><td>Same as MCB but for higher currents + adjustable trip</td><td>63A-1600A</td><td>4,400-65,000</td></tr>
+    <tr><td><strong>RCCB</strong> (Residual Current Circuit Breaker)</td><td>Earth-leakage protection ONLY (no overcurrent)</td><td>16A-100A</td><td>2,200-4,800</td></tr>
+    <tr><td><strong>RCBO</strong> (Residual Current Breaker with Overcurrent)</td><td>RCCB + MCB combined in one DIN slot</td><td>16A-63A</td><td>2,800-11,500</td></tr>
+  </tbody>
+</table>
+
+<h2 id="mcb">2. MCB — the workhorse</h2>
+<p>The MCB is what fills the slot in 95% of Pakistani DB-boxes. It protects against:</p>
+<ul>
+  <li><strong>Overload</strong> — slow trip (1-5 minutes) when current exceeds rating by 1.13-1.45×</li>
+  <li><strong>Short-circuit</strong> — fast trip (10-100 milliseconds) when current exceeds rating by 3-10× (depending on B, C, or D curve)</li>
+</ul>
+<p><strong>Best for:</strong> All residential circuits up to 63A. Lights, sockets, fans, ACs, geyser, tubewell motors up to 5 HP.</p>
+<p>See our <a href="https://www.cncelectric.pk/blogs/guides/circuit-breaker-price-in-pakistan-complete-price-list-2026">complete circuit breaker buying guide</a>.</p>
+
+<h2 id="mccb">3. MCCB — for higher current + adjustable trip</h2>
+<p>MCCB is essentially a larger MCB with:</p>
+<ul>
+  <li>Higher amperage rating (63A-1600A)</li>
+  <li>Higher breaking capacity (36 kA+ vs 6-10 kA for MCB)</li>
+  <li>Adjustable trip settings (you can fine-tune the trip current)</li>
+  <li>Larger physical size (panel-mounted, not DIN-rail)</li>
+</ul>
+<p><strong>Best for:</strong> Main DB-box incoming feed, light commercial main, sub-main feeds for industrial panels, larger motors (10-100 HP).</p>
+<p>See our <a href="https://www.cncelectric.pk/blogs/guides/mccb-acb-industrial-pakistan-factory-switchgear-buyers-guide-2026">MCCB + ACB industrial guide</a>.</p>
+
+<h2 id="rccb">4. RCCB — earth-leakage protection ONLY</h2>
+<p>An RCCB is NOT a circuit breaker in the overcurrent sense. It detects:</p>
+<ul>
+  <li><strong>Earth leakage</strong> — current going to earth (typically via a person touching live equipment)</li>
+  <li>Trips when leakage exceeds sensitivity (30 mA for residential shock protection, 100-300 mA for industrial fire protection)</li>
+</ul>
+<p><strong>Important:</strong> An RCCB alone provides NO overload or short-circuit protection. Always pair with MCB upstream.</p>
+<p><strong>Best for:</strong> Whole-house DB-box feed, with MCBs downstream for individual circuit overload protection.</p>
+
+<h2 id="rcbo">5. RCBO — MCB + RCCB in one DIN slot</h2>
+<p>An RCBO combines the functions of MCB + RCCB in a single device occupying 1 DIN slot. It gives you:</p>
+<ul>
+  <li>Overload protection (MCB function)</li>
+  <li>Short-circuit protection (MCB function)</li>
+  <li>Earth-leakage protection (RCCB function)</li>
+</ul>
+<p><strong>Best for:</strong> Per-circuit installation where selectivity matters. One RCBO per circuit (geyser, AC, kitchen, etc.) so a fault on one circuit doesn't kill the whole house.</p>
+<p>See our <a href="https://www.cncelectric.pk/blogs/guides/rcbo-price-in-pakistan-2026-type-ac-a-b-buyer-guide">RCBO buying guide</a>.</p>
+
+<h2 id="config">6. Pakistani DB-box configuration patterns</h2>
+
+<h3>Pattern 1 — Budget (cheapest)</h3>
+<ul>
+  <li>Main MCB at the incoming feed</li>
+  <li>One MCB per circuit</li>
+  <li>No earth-leakage protection (illegal under PEC code but common in older homes)</li>
+</ul>
+
+<h3>Pattern 2 — Standard residential (PEC compliant)</h3>
+<ul>
+  <li>Main MCB at incoming feed</li>
+  <li>One RCCB 30 mA covering all socket circuits</li>
+  <li>One MCB per circuit downstream of the RCCB</li>
+</ul>
+<p>Cost for 8 circuits: PKR ~5,000 for MCBs + PKR 3,500 RCCB = PKR 8,500.</p>
+
+<h3>Pattern 3 — Premium residential (selectivity)</h3>
+<ul>
+  <li>Main MCB</li>
+  <li>One RCBO 30 mA per circuit (replacing MCB + shared RCCB)</li>
+</ul>
+<p>Cost for 8 circuits: 8 × PKR 4,200 = PKR 33,600. Higher but each circuit isolates independently on fault.</p>
+
+<h3>Pattern 4 — Solar prosumer (NEPRA 2026)</h3>
+<ul>
+  <li>Pattern 3 plus dedicated Type B RCBO on solar feed (Type AC won't pass inspection)</li>
+</ul>
+
+<h2 id="curve">7. Trip curves — B, C, D</h2>
+<table>
+  <thead><tr><th>Curve</th><th>Trip threshold</th><th>Best for</th></tr></thead>
+  <tbody>
+    <tr><td>B</td><td>3-5× rated current</td><td>Resistive loads: lighting, heaters</td></tr>
+    <tr><td>C</td><td>5-10× rated</td><td>Most residential: ACs, fridges, motors, mixed loads (default pick)</td></tr>
+    <tr><td>D</td><td>10-20× rated</td><td>Transformers, welders, large motors</td></tr>
+  </tbody>
+</table>
+
+<h2 id="faq">8. FAQ</h2>
+<h3>MCB vs RCBO — which to use?</h3>
+<p>MCB protects against overcurrent. RCBO adds earth-leakage protection. PEC code requires earth-leakage protection on socket circuits, so RCBO (or MCB+RCCB combo) is mandatory for those. For lighting-only circuits, MCB alone is technically acceptable.</p>
+<h3>Cheapest combination for a 3-bed Pakistani home?</h3>
+<p>Main MCB + 1 shared RCCB + 8 MCBs = PKR 8,500. Pattern 2 above.</p>
+<h3>What's the difference between MCB and MCCB?</h3>
+<p>MCB is for 6-125A residential. MCCB is for 63-1600A commercial/industrial with adjustable trip. Same function, different scale.</p>
+<h3>Do I need Type B RCBO for solar?</h3>
+<p>Under NEPRA 2026 Prosumer Regulations, yes. Type AC fails DISCO inspection on the solar feed.</p>
+<h3>What does the kA rating mean?</h3>
+<p>kA = breaking capacity = how much fault current the breaker can interrupt without exploding. Residential MCBs are 6 kA (fine for Pakistani distribution). Commercial MCCBs are 25-36 kA. Industrial are 50-65 kA.</p>
+
+<h2 id="related">9. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/circuit-breaker-price-in-pakistan-complete-price-list-2026">Complete Circuit Breaker Price Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-ac-breaker-pakistan-2026-cnc-electric-top-pick-buyer-guide">Best AC Breaker Pakistan</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/rcbo-price-in-pakistan-2026-type-ac-a-b-buyer-guide">RCBO Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/mccb-acb-industrial-pakistan-factory-switchgear-buyers-guide-2026">MCCB + ACB Industrial Guide</a></li>
+</ul>
+
+<h2 id="cta">10. Need help picking breakers for your DB-box?</h2>
+<p>Send your circuit list (room + load) on WhatsApp <strong>+92 326 1111 376</strong>. We'll spec the right MCB/RCBO/RCCB combination. Free Pakistan delivery on orders over PKR 5,000.</p>

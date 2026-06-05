@@ -1,0 +1,77 @@
+<p>"Best breaker for 3-ton AC in Pakistan" gets searched every summer when buyers install central or split systems and realise their existing DB box can't handle the load. A 3-ton AC unit pulls 13-15A continuous + 5-8x inrush on startup; the wrong breaker either nuisance-trips or fails to protect against actual faults.</p>
+<p>This guide ranks <strong>the best breakers + protection for Pakistani 3-ton AC installations in 2026</strong>, with specific MCB, RCBO, voltage protector, and SPD recommendations.</p>
+
+<h2 id="loads">1. What a 3-ton AC actually draws</h2>
+<table>
+  <thead><tr><th>Spec</th><th>Typical 3-ton AC</th></tr></thead>
+  <tbody>
+    <tr><td>Cooling capacity</td><td>36,000 BTU/hr (3 tons)</td></tr>
+    <tr><td>Input power continuous</td><td>2.8-3.2 kW at 220V</td></tr>
+    <tr><td>Full-load current (FLC)</td><td>13-15 A continuous</td></tr>
+    <tr><td>Inrush current (compressor startup)</td><td>65-90 A for 2-3 seconds</td></tr>
+    <tr><td>Voltage range</td><td>185-264V (most variable-speed compressors)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="recommended">2. The complete protection bundle for 3-ton AC</h2>
+<table>
+  <thead><tr><th>Component</th><th>CNC part</th><th>Price PKR</th></tr></thead>
+  <tbody>
+    <tr><td>Dedicated MCB (C-curve handles compressor inrush)</td><td>YCB7 1P 20A C-curve</td><td>500</td></tr>
+    <tr><td>RCBO (earth-leakage + overcurrent in one)</td><td>YCB10 1P 20A 30mA Type A (electronics in modern ACs)</td><td>4,800</td></tr>
+    <tr><td>Voltage protector (against under/over voltage)</td><td>YC7VA 32A (handles compressor inrush)</td><td>3,400</td></tr>
+    <tr><td>AC SPD Type II</td><td>YCS6-T2-1P 20kA</td><td>2,500</td></tr>
+    <tr><td>Cable</td><td>4mm² copper (single-core or 2-core)</td><td>~300/m</td></tr>
+    <tr><td><strong>Total bundle</strong></td><td></td><td>~PKR 11,200</td></tr>
+  </tbody>
+</table>
+
+<h2 id="curve">3. Why C-curve (not B-curve)</h2>
+<p>AC compressor inrush current is 5-7× the running current for 1-3 seconds at startup. A B-curve MCB (trips at 3-5×) will nuisance-trip every time the AC kicks on. C-curve (5-10×) handles this cleanly while still protecting against actual overload or short-circuit.</p>
+<p>Same rule for fridges, motors, and pumps &mdash; C-curve handles inrush. B-curve is for pure resistive loads (heaters, lighting).</p>
+
+<h2 id="wiring">4. Wiring sequence for a 3-ton AC dedicated circuit</h2>
+<ol>
+  <li>Run a dedicated 4 mm&sup2; copper feed from your main DB box to the AC location.</li>
+  <li>In the DB box: MCB 20A C-curve in series with RCBO 30mA Type A.</li>
+  <li>Optionally: voltage protector upstream of MCB (cuts power on voltage events).</li>
+  <li>Optionally: AC SPD Type II at DB-box main, not on the AC circuit specifically.</li>
+  <li>Terminate at the AC outdoor unit junction box.</li>
+  <li>Earth: bond outdoor unit chassis to building earth electrode.</li>
+</ol>
+
+<h2 id="alt-sizes">5. If your AC is not 3 tons</h2>
+<table>
+  <thead><tr><th>AC size</th><th>FLC</th><th>Recommended MCB</th><th>Total bundle</th></tr></thead>
+  <tbody>
+    <tr><td>1 ton</td><td>4-5 A</td><td>YCB7 1P 10A C-curve</td><td>PKR 8,500</td></tr>
+    <tr><td>1.5 ton</td><td>6-8 A</td><td>YCB7 1P 16A C-curve</td><td>PKR 9,200</td></tr>
+    <tr><td>2 ton</td><td>9-11 A</td><td>YCB7 1P 16A C-curve</td><td>PKR 9,800</td></tr>
+    <tr><td>2.5 ton</td><td>11-13 A</td><td>YCB7 1P 20A C-curve</td><td>PKR 10,500</td></tr>
+    <tr><td>3 ton</td><td>13-15 A</td><td>YCB7 1P 20A C-curve</td><td>PKR 11,200</td></tr>
+    <tr><td>4 ton</td><td>17-20 A</td><td>YCB7 1P 25A C-curve</td><td>PKR 12,200</td></tr>
+    <tr><td>5 ton (3-phase usually)</td><td>22-25 A</td><td>YCM7 4P 25A C-curve</td><td>PKR 15,500</td></tr>
+  </tbody>
+</table>
+
+<h2 id="faq">6. FAQ</h2>
+<h3>What's the best AC breaker for a 3-ton air conditioner in Pakistan?</h3>
+<p>CNC YCB7 1P 20A C-curve MCB (PKR 500) paired with YCB10 RCBO 20A Type A (PKR 4,800) and YC7VA 32A voltage protector (PKR 3,400). Total: ~PKR 8,700 for core protection, ~PKR 11,200 for full bundle including SPD.</p>
+<h3>Can I use a B-curve breaker for an AC?</h3>
+<p>Not recommended &mdash; B-curve will nuisance-trip on compressor startup. Always C-curve for ACs, fridges, motors, pumps.</p>
+<h3>Do I need an RCBO or just an MCB?</h3>
+<p>NEPRA + PEC code requires earth-leakage protection on socket circuits. RCBO combines MCB + RCCB functionality. For AC circuits feeding through a wall socket, RCBO is mandatory.</p>
+<h3>Will a 16A MCB work for 3-ton AC?</h3>
+<p>13-15A continuous FLC is right at 16A MCB's limit. Best practice: 20A MCB for safe margin and to handle Pakistani voltage sag (motor draws more current at lower voltage). 16A is risky.</p>
+<h3>Cheapest CNC 3-ton AC bundle?</h3>
+<p>MCB only: PKR 500. MCB + voltage protector: PKR 3,900. Full bundle: PKR 11,200.</p>
+
+<h2 id="related">7. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-ac-breaker-pakistan-2026-cnc-electric-top-pick-buyer-guide">Best AC Breaker Pakistan 2026</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/rcbo-price-in-pakistan-2026-type-ac-a-b-buyer-guide">RCBO Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/voltage-protector-price-in-pakistan-2026-buying-guide">Voltage Protector Buying Guide</a></li>
+</ul>
+
+<h2 id="cta">8. Need a complete 3-ton AC protection bundle?</h2>
+<p>WhatsApp <strong>+92 326 1111 376</strong>. Free Pakistan delivery on orders over PKR 5,000.</p>

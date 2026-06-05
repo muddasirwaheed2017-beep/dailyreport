@@ -1,0 +1,84 @@
+<p>A 1.5-ton AC is the most-installed Pakistani residential cooling unit in 2026 — fitted in every other 3-bed home, commonly running 10-14 hours a day during summer. Buyers ask "best breaker for 1.5 ton AC" hoping for an exact answer that protects the AC + their family + their pocket. Here's the honest answer for Pakistani 2026 conditions.</p>
+<p>This guide covers <strong>the best breaker + protection bundle for a Pakistani 1.5-ton AC in 2026</strong> — MCB sizing, RCBO requirement, voltage protector, and AC SPD options.</p>
+
+<h2 id="loads">1. What a 1.5-ton AC actually draws</h2>
+<table>
+  <thead><tr><th>Spec</th><th>Inverter 1.5-ton AC</th><th>Non-inverter (fixed-speed) 1.5-ton AC</th></tr></thead>
+  <tbody>
+    <tr><td>Cooling capacity</td><td>18,000 BTU/hr</td><td>18,000 BTU/hr</td></tr>
+    <tr><td>Continuous power</td><td>1.4-1.8 kW</td><td>1.6-2.0 kW</td></tr>
+    <tr><td>Full-load current (FLC)</td><td>6-8 A</td><td>7-9 A</td></tr>
+    <tr><td>Inrush current (startup)</td><td>20-40 A for 1-2 sec (soft-start)</td><td>40-60 A for 2-3 sec</td></tr>
+    <tr><td>Voltage range</td><td>185-264V (wide tolerance)</td><td>200-240V (tight tolerance)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="bundle">2. The 1.5-ton AC protection bundle (recommended)</h2>
+<table>
+  <thead><tr><th>Component</th><th>CNC part</th><th>Price PKR</th></tr></thead>
+  <tbody>
+    <tr><td>Dedicated MCB (C-curve)</td><td>YCB7 1P 16A C-curve</td><td>490</td></tr>
+    <tr><td>RCBO (combined MCB + earth-leak)</td><td>YCB10 1P 16A 30mA Type A</td><td>4,200</td></tr>
+    <tr><td>Voltage protector</td><td>YC7VA 32A WiFi-smart</td><td>4,800</td></tr>
+    <tr><td>AC SPD Type II</td><td>YCS6-T2-1P 20kA</td><td>2,500</td></tr>
+    <tr><td><strong>Total core bundle</strong></td><td></td><td><strong>12,000</strong></td></tr>
+  </tbody>
+</table>
+
+<h2 id="why">3. Why these specific picks</h2>
+<h3>16A MCB (not 13A, not 20A)</h3>
+<p>13A MCB nuisance-trips during compressor inrush. 20A MCB protects against overload but won't trip on partial short-circuit involving 14A continuous draw. 16A C-curve is the goldilocks pick: catches actual faults while ignoring inrush.</p>
+
+<h3>C-curve (not B, not D)</h3>
+<p>B-curve trips at 3-5× rated = 48-80A; 1.5-ton AC inrush hits 60A. False trips guaranteed. C-curve trips at 5-10× = 80-160A — handles inrush cleanly. D-curve is for transformers and welders, unnecessary for ACs.</p>
+
+<h3>Type A RCBO (not Type AC)</h3>
+<p>Modern Pakistani inverter ACs contain DC-leakage-capable electronics. Type AC RCBOs miss DC leakage and trip unreliably. Type A (which detects both AC and pulsating DC) catches the modern AC's actual leak modes. PEC code increasingly mandates Type A for sockets feeding electronics.</p>
+
+<h3>32A voltage protector (not 16A)</h3>
+<p>1.5-ton AC continuous draw is 7-9A, but the voltage protector needs to handle compressor inrush of 40A briefly. A 32A-rated protector handles inrush cleanly. 16A protector trips on every AC startup.</p>
+
+<h2 id="install">4. Wiring sequence</h2>
+<ol>
+  <li>Power off at the main DB-box.</li>
+  <li>Run dedicated 2.5 mm² copper from DB-box to AC location (≤25m run typical residential).</li>
+  <li>In the DB-box: voltage protector → MCB → RCBO → outgoing live.</li>
+  <li>Terminate at the AC outdoor unit junction box with 16A IP44 industrial plug (optional) or direct hardwired.</li>
+  <li>Earth: bond AC outdoor unit chassis to building earth.</li>
+  <li>Test: power on, AC starts; verify voltage protector LED is green; verify RCBO test button trips correctly.</li>
+</ol>
+
+<h2 id="alt-budget">5. Budget vs Premium</h2>
+<table>
+  <thead><tr><th>Tier</th><th>Components</th><th>Total PKR</th></tr></thead>
+  <tbody>
+    <tr><td>Bare minimum</td><td>16A MCB only</td><td>490</td></tr>
+    <tr><td>Budget + safety</td><td>16A MCB + voltage protector</td><td>3,500</td></tr>
+    <tr><td>Recommended residential</td><td>16A RCBO + voltage protector + SPD</td><td>11,500</td></tr>
+    <tr><td>Premium (above + WiFi)</td><td>+ WiFi smart breaker</td><td>16,000</td></tr>
+    <tr><td>Solar prosumer (NEPRA 2026)</td><td>+ Type B RCBO upgrade</td><td>20,000</td></tr>
+  </tbody>
+</table>
+
+<h2 id="faq">6. FAQ</h2>
+<h3>Best breaker for 1.5-ton AC in Pakistan 2026?</h3>
+<p>CNC YCB7 1P 16A C-curve MCB (PKR 490) + YCB10 1P 16A 30mA Type A RCBO (PKR 4,200) + YC7VA 32A voltage protector (PKR 4,800). Total core bundle PKR 9,500.</p>
+<h3>Can I just use a single RCBO without separate MCB?</h3>
+<p>Yes — RCBO is MCB + RCCB in one device. The separate MCB is redundant if you have RCBO. For pure single-breaker simplicity: just use the YCB10 RCBO 16A Type A.</p>
+<h3>What's the cheapest acceptable protection?</h3>
+<p>Single 16A MCB + voltage protector at PKR 3,500. Skip RCBO and AC SPD if budget is extreme. You lose earth-leakage and surge protection but keep overload + short-circuit + voltage event protection.</p>
+<h3>Does the AC need a 13A or 16A breaker?</h3>
+<p>16A C-curve is recommended. 13A is too tight for 1.5-ton AC inrush. 20A is too loose.</p>
+<h3>1.5 ton vs 1 ton AC protection — same components?</h3>
+<p>1-ton AC: drop to 10A MCB instead of 16A. Same C-curve. Same Type A RCBO. Same 32A voltage protector handles either size.</p>
+
+<h2 id="related">7. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-ac-breaker-pakistan-2026-cnc-electric-top-pick-buyer-guide">Best AC Breaker Pakistan (full ranking)</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-breaker-for-3-ton-ac-in-pakistan-2026-complete-protection-bundle">Best Breaker for 3-Ton AC</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-voltage-stabilizer-for-ac-in-pakistan-2026-1-ton-to-10-ton-buyer-guide">Best Voltage Stabilizer for AC</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/rcbo-price-in-pakistan-2026-type-ac-a-b-buyer-guide">RCBO Buying Guide</a></li>
+</ul>
+
+<h2 id="cta">8. Need a complete 1.5-ton AC protection bundle?</h2>
+<p>WhatsApp <strong>+92 326 1111 376</strong>. Free Pakistan delivery on orders over PKR 5,000.</p>

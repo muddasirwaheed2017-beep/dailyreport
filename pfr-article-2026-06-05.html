@@ -1,0 +1,67 @@
+<p>A phase failure relay (also called phase failure protection or single-phasing preventer) is what saves 3-phase motors from being destroyed when one of the three grid phases drops out. In Pakistan this happens routinely &mdash; transformer fault, downed line, blown DISCO fuse &mdash; and motors that keep running on the remaining 2 phases overheat within seconds. A PKR 1,400 phase failure relay prevents PKR 35,000-180,000 worth of motor rewind.</p>
+<p>This guide covers <strong>phase failure relay prices in Pakistan for 2026</strong>, sizing for tubewells / factory motors / lift motors, wiring with contactors, and the CNC range.</p>
+
+<h2 id="what-is">1. What is a phase failure relay?</h2>
+<p>A phase failure relay continuously monitors all 3 line voltages (R, Y, B). When any one drops below threshold, the relay's output contact opens, breaking the contactor coil circuit and tripping the motor offline within 100-200 milliseconds. The motor stays off until all 3 phases return to normal voltage.</p>
+<p>Most relays also detect:</p>
+<ul>
+  <li><strong>Phase reversal</strong> &mdash; if phase rotation is wrong, motor would spin backwards; relay prevents starting</li>
+  <li><strong>Phase asymmetry / unbalance</strong> &mdash; if phases are unequal in voltage by more than 10%, relay trips</li>
+  <li><strong>Over/under voltage</strong> &mdash; outside the 195V-265V envelope</li>
+</ul>
+
+<h2 id="prices">2. Phase failure relay price in Pakistan 2026</h2>
+<table>
+  <thead><tr><th>Model</th><th>Functions</th><th>Voltage</th><th>Price PKR</th></tr></thead>
+  <tbody>
+    <tr><td>CNC YCP-3F basic</td><td>Phase failure + reversal</td><td>380V 3-ph</td><td>1,400</td></tr>
+    <tr><td>CNC YCP-3F-AS</td><td>+ asymmetry detection</td><td>380V 3-ph</td><td>2,200</td></tr>
+    <tr><td>CNC YCP-3F-UO</td><td>+ over/under voltage</td><td>380V 3-ph</td><td>3,200</td></tr>
+    <tr><td>CNC YCP-3F-ALL</td><td>All protections + adjustable</td><td>380V 3-ph</td><td>4,800</td></tr>
+    <tr><td>Chint NJB</td><td>Standard phase failure</td><td>380V 3-ph</td><td>2,400</td></tr>
+    <tr><td>Schneider RM17TG</td><td>Premium full protection</td><td>380V 3-ph</td><td>15,500</td></tr>
+    <tr><td>EPS PG-31</td><td>Asia mid-range</td><td>380V 3-ph</td><td>1,800</td></tr>
+  </tbody>
+</table>
+
+<h2 id="apps">3. Pakistani applications</h2>
+<table>
+  <thead><tr><th>Application</th><th>Recommended PFR</th></tr></thead>
+  <tbody>
+    <tr><td>Tubewell 1.5-5 HP motor</td><td>CNC YCP-3F (PKR 1,400)</td></tr>
+    <tr><td>Factory motor 5-15 HP</td><td>CNC YCP-3F-AS asymmetry (PKR 2,200)</td></tr>
+    <tr><td>Lift motor / elevator</td><td>CNC YCP-3F-ALL (PKR 4,800) &mdash; full protection mandatory</td></tr>
+    <tr><td>Sugar mill / paper mill main</td><td>Schneider RM17TG or CNC YCP-3F-ALL</td></tr>
+    <tr><td>HVAC chiller compressor</td><td>CNC YCP-3F-UO (over/under voltage included)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="wiring">4. Wiring with contactor + overload</h2>
+<ol>
+  <li>Wire 3-phase supply L1, L2, L3 to PFR sensing terminals R, Y, B.</li>
+  <li>Wire PFR's NC contact in series with: STOP push-button + thermal overload NC + START push-button (latched via contactor NO aux contact) + contactor coil A1, A2.</li>
+  <li>Tune PFR thresholds: typical under-voltage trip at 195V, over-voltage trip at 265V.</li>
+  <li>Test: simulate phase loss by switching off one MCB; PFR LED should change colour and motor should trip within 200ms.</li>
+</ol>
+
+<h2 id="faq">5. FAQ</h2>
+<h3>Cheapest phase failure relay in Pakistan 2026?</h3>
+<p>CNC YCP-3F at PKR 1,400 &mdash; phase failure + phase reversal protection. Suitable for tubewells and small factory motors.</p>
+<h3>Phase failure relay vs phase sequence relay &mdash; same thing?</h3>
+<p>Phase failure detects loss of a phase. Phase sequence detects wrong rotation direction. Most modern PFRs (including CNC YCP-3F) do both.</p>
+<h3>Will it protect against single phasing on single-phase motors?</h3>
+<p>No &mdash; single-phase motors have only one phase. This relay is for 3-phase motors only. Single-phase motors get overload + voltage protectors instead.</p>
+<h3>How often does phase failure happen in Pakistan?</h3>
+<p>Common &mdash; 5-20 events per year on a typical DISCO feeder. Cheap insurance via the PKR 1,400 relay.</p>
+<h3>Does CNC YCP series carry IEC certification?</h3>
+<p>Yes &mdash; IEC 60947-5-1, PSQCA approved. 5-year CNC warranty.</p>
+
+<h2 id="related">6. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/magnetic-contactor-price-in-pakistan-2026-buying-guide">Magnetic Contactor Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/vfd-variable-frequency-drive-price-in-pakistan-2026-buyer-guide">VFD for soft-start motor control</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/voltage-protector-price-in-pakistan-2026-buying-guide">Voltage Protector Buying Guide</a></li>
+</ul>
+
+<h2 id="cta">7. Need a phase failure relay for your panel?</h2>
+<p>WhatsApp <strong>+92 326 1111 376</strong>. Free Pakistan delivery on orders over PKR 5,000.</p>
