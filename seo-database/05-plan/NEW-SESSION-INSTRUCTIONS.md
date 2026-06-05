@@ -13,6 +13,12 @@
 4. **Continue off-site outreach via Chrome.** Daily routine in §"Daily routine for Claude" below.
 5. **Hands-off mandate.** Never ask permission. Execute. Show results after.
 
+## CRITICAL RULE for any FUTURE sprint (learned from this one)
+
+**Propose Anthropic Cloud Cron in the FIRST hour of any time-bounded sprint** ("21-day", "30 days", "no stopping 24/7", "while I sleep", "even when computer is off"). Do NOT default to in-session execution for recurring work. The current CNC sprint delayed cron setup until Day-6 — user explicitly called this out as costing them ~5 days of in-session babysitting that the cron would have absorbed. Memory rule persisted in `feedback_propose_cron_day_zero.md`.
+
+**Decision rule:** If the task is recurring/predictable (daily ship, daily intel pull, daily indexing, daily report), it belongs in cron. If it's one-off or requires judgment (pivot, strategy, manual outreach via Chrome), it belongs in-session.
+
 ## The user
 
 **Name:** Muddasir Waheed Malik
