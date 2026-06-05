@@ -94,19 +94,26 @@ The cloud cron will pick from these automatically. Manual override if user reque
 **GitHub repo:** `muddasirwaheed2017-beep/dailyreport`
 **MCPs attached:** Ahrefs, AirOps, Canva, Exa, Figma, Google Drive, Make, Supabase, Tavily (9 connectors)
 
-**Cron prompt:** 12-step daily ship covering:
-1. Ahrefs intel pull (organic KW deltas, Brand Radar SoV, backlinks)
-2. Pick next topic from 30-day roadmap
-3. Research with Exa + Tavily
-4. Write 800-1500 word buying guide (Pakistani buyer-intent format)
+**Cron prompt v2 (2026-06-05 PM update — "AGGRESSIVE v2 full automation"):** 12-step daily ship covering:
+1. Day-N detection (from CNC-DAY-*.md file count in repo)
+2. **Ahrefs intel** — site-explorer-metrics (CNC vs Alladin DR/KW/RD/traffic deltas) + priority KW position tracking (12 KW groups including new wifi/smart) + Brand Radar SoV across all 7 AI surfaces + **NEW Alladin DELTA scan** (overnight position + new ranking KW changes, flags URGENT content gaps if Alladin shipped >500 vol KW) + **NEW Powerhouse Express + Industry Parts delta scan**
+3. Topic pick from 21-day rotation (Day 7 = Cable Tray, Day 8 = Junction Box, etc.) WITH override if Step 2e flagged URGENT >1,500-vol KD-≤15 gap
+4. Write ~1,500-word buying guide with FAQ JSON-LD schema mandatory + 4-6 internal links from updated link bank (now includes the 4 WiFi guides shipped Day 6)
 5. POST to Shopify blog 89971589186 with title_tag + description_tag metafields
-6. IndexNow submit to Bing + Yandex
+6. **BATCH IndexNow** — today's URL + 3 most-recently-shipped URLs (4 URLs per ping = more crawl coverage)
 7. Yandex sitemap ping
-8. Cross-link from 2 existing high-PR pages
-9. Draft X post (manual posting if compose blocked)
-10. Write daily report to GitHub repo
-11. Update kpi-tracker.md with today's row
+8. **AGGRESSIVE cross-link cascade** — 5-6 inbound internal links per new article (MCB comparison guide + NEPRA checklist + most-related topical guide + collection page + AC breaker pillar), each with HTTP status logged
+9. **Distribution drafts** — X post (≤280 chars, repo path daily-x-posts/) **AND NEW LinkedIn post** (~250-400 words B2B format, repo path daily-linkedin-posts/) — user manually posts these the next morning
+10. Daily report with ALL of: Ahrefs snapshot + Brand Radar SoV table + Alladin delta + competitor scan + content shipped + distribution drafts paths + cumulative KW count + errors + content-gap KWs discovered + manual actions reminder list
+11. Append row to seo-database/05-plan/kpi-tracker.md
 12. Git commit + push
+
+**The 4 NEW jobs added in v2 (from user request 2026-06-05 evening):**
+- Daily Alladin KW position delta tracking (Step 2e)
+- Daily Powerhouse + Industry Parts ranking deltas (Step 2f)
+- Daily LinkedIn post draft generation (Step 9b)
+- More aggressive cross-link cascade — from 2 pages bumped to 5-6 pages (Step 8)
+- IndexNow batch (4 URLs per ping instead of 1)
 
 **To check cron status:**
 ```javascript
