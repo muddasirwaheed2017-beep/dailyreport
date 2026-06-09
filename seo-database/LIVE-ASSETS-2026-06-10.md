@@ -176,12 +176,21 @@ After buying guides + collection refreshes, pulled the Day-0 → Day-8 keyword d
 
 All 4 with title_tag + description_tag metafields + IndexNow 202 + Yandex 200.
 
+### Round 4 — SPD page-1 push + Cable Lugs Day-12 pre-empt
+
+After the Ahrefs round 3, kept attacking the easy lifts:
+
+- **SPD news post** (target "spd" 1,300 vol pos 11 + "surge protection device" 400 vol pos 4) — Type 1/2/3 explainer + NEPRA 2026 DC SPD rule + indicator window check + 6 mistakes. LIVE: [/blogs/news/spd-pakistan-…](https://www.cncelectric.pk/blogs/news/spd-pakistan-2026-type-1-2-3-surge-protection-device-news-explained)
+- **/collections/spd refreshed** — freshness Jun-10 + 7-link cluster aside (SPD news + Surge Arrester guide + SPD Full Form + NEPRA + Hybrid Inverter + Tiers + Switch Board) + IndexNow ping
+- **Cable Lugs buying guide** (Day-12 cron pre-empt) — IEC 61238-1 + DIN 46235 + 5 lug types + complete PKR matrix 2.5 mm² to 400 mm² + crimping tool selection + bolt torque + 6 mistakes. FAQ JSON-LD shipped. LIVE: [/blogs/guides/cable-lugs-crimping-…](https://www.cncelectric.pk/blogs/guides/cable-lugs-crimping-pakistan-2026-iec-61238-din-46235-buyer-guide)
+- **7-link cross-link cascade** for Cable Lugs + SPD news from cable-tray, junction-box, switch-board, earthing-grounding, MCB comparison, Tiers, Surge Arrester guides
+
 ### Total Day-10 calendar-day output
 
-- **4 buying guides** shipped to /blogs/guides (Day-9 Junction Box rescue, Day-10 Tiers rescue, Switch Board attack, PFCB cron pre-empt)
-- **4 news posts** shipped to /blogs/news (thermostat, breaker switch, 3-pin plug, circuit breaker types)
-- **3 high-traffic collections refreshed** (circuit-breakers, changeovers, ac-breaker)
-- **17 inbound cross-links** cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB)
-- **10 URLs IndexNow + Yandex pinged** (4 guides + 4 news + ac-breaker collection + ac-breaker re-ping)
+- **5 buying guides** shipped to /blogs/guides (Day-9 Junction Box rescue, Day-10 Tiers rescue, Switch Board attack, PFCB cron pre-empt, Cable Lugs Day-12 pre-empt)
+- **5 news posts** shipped to /blogs/news (thermostat, breaker switch, 3-pin plug, circuit breaker types, SPD Type 1/2/3)
+- **4 high-traffic collections refreshed** (circuit-breakers, changeovers, ac-breaker, spd)
+- **24 inbound cross-links** cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB + 7 Cable Lugs/SPD)
+- **13 URLs IndexNow + Yandex pinged**
 - **Cron v6 deployed** (eliminates 403 failure mode going forward)
-- 4 git commits pushed to dailyreport repo
+- 5 git commits pushed to dailyreport repo

@@ -1,0 +1,63 @@
+<p><em>News &mdash; CNC Electric Pakistan, June 10, 2026.</em></p>
+
+<p>Pakistani searches for "SPD" and "surge protection device" combined for ~1,700 monthly searches in 2026, with the term covering AC-side Type 1, Type 2, and Type 3 surge protectors plus the new DC-side Type 1+2 modules required by NEPRA 2026 net-metering. This news post explains what each SPD type does, lists current Pakistani PKR prices, and flags which IEC 61643 class your installation actually needs.</p>
+
+<h2 id="quick-answer">Quick answer</h2>
+<p>"SPD" stands for Surge Protection Device. The IEC 61643 family defines three classes: Type 1 (handles direct lightning strike, installed at building entry), Type 2 (handles indirect surge from grid, installed at main DB), Type 3 (handles residual surge at sensitive equipment, installed inside the appliance). For Pakistani residential, Type 2 is the default. NEPRA 2026 solar net-metering now requires Type 2 on both AC and DC sides per IEC 61643-31.</p>
+
+<h2 id="three-types">Three SPD types &mdash; what each protects against</h2>
+<table>
+  <thead><tr><th></th><th>Type 1 (Class B)</th><th>Type 2 (Class C)</th><th>Type 3 (Class D)</th></tr></thead>
+  <tbody>
+    <tr><td>Surge handled</td><td>Direct lightning + induced strike</td><td>Indirect surge from grid switching</td><td>Residual surge at end equipment</td></tr>
+    <tr><td>Discharge current (Imax)</td><td>25 kA - 100 kA</td><td>15 kA - 65 kA</td><td>3 kA - 10 kA</td></tr>
+    <tr><td>Install location</td><td>Building entry, ahead of MCCB</td><td>Main DB, after MCCB / before MCB</td><td>Inside sensitive equipment / at socket</td></tr>
+    <tr><td>IEC 61643-11 part</td><td>Type 1</td><td>Type 2</td><td>Type 3</td></tr>
+    <tr><td>Pakistani 2026 price (single-phase)</td><td>PKR 8,500 - 22,500</td><td>PKR 1,650 - 6,800</td><td>PKR 1,250 - 4,800</td></tr>
+    <tr><td>Pakistani 2026 price (3-phase)</td><td>PKR 18,500 - 48,500</td><td>PKR 4,800 - 16,500</td><td>n/a (per-circuit)</td></tr>
+  </tbody>
+</table>
+
+<h2 id="ac-vs-dc">AC SPD vs DC SPD &mdash; the NEPRA 2026 distinction</h2>
+<p>IEC 61643-11 covers AC-side SPDs; IEC 61643-31 (new 2018 standard) covers DC-side SPDs for photovoltaic systems. NEPRA's 2026 net-metering checklist requires both: Type 2 AC SPD on the inverter output side AND Type 1+2 DC SPD on the PV string side (1000V DC or 1500V DC rated depending on system topology).</p>
+<ul>
+  <li>AC SPDs: 230V / 400V rated, MOV-based, replaces on indicator change</li>
+  <li>DC SPDs: 600V / 1000V / 1500V rated, MOV + spark gap hybrid, different terminal layout</li>
+  <li><strong>Using AC SPD on DC side is a critical safety failure</strong> &mdash; MOV ages much faster and can fail short-circuit, starting a DC arc fire</li>
+</ul>
+
+<h2 id="install-sequence">Installation sequence in Pakistani DB</h2>
+<ol>
+  <li>Incoming from DISCO meter</li>
+  <li>Main isolator switch</li>
+  <li>Type 2 SPD (or combined Type 1+2 if exposed building)</li>
+  <li>RCCB or RCBO main</li>
+  <li>MCBs to sub-circuits</li>
+  <li>Type 3 SPD at sensitive equipment if needed</li>
+</ol>
+
+<h2 id="indicator">SPD indicator window &mdash; when to replace</h2>
+<p>Every SPD has a status indicator (green / red flag in a small window). When SPD has absorbed multiple surges over its lifetime, the MOV degrades and the indicator turns red. Replace immediately &mdash; a degraded SPD can fail short-circuit and trip your main breaker (or worse, fail open and offer no protection). Pakistani electrical inspection checks SPD indicator status on commercial + solar installations.</p>
+
+<h2 id="six-mistakes">Six common Pakistani SPD mistakes</h2>
+<ol>
+  <li>Using AC SPD on DC PV string (critical safety failure)</li>
+  <li>Skipping Type 1 on buildings with rooftop solar / exposed lightning risk</li>
+  <li>Not earthing the SPD &mdash; must have dedicated earth bond &lt; 50 cm</li>
+  <li>Connecting SPD downstream of MCB instead of upstream (MCB trips before SPD activates)</li>
+  <li>Not replacing on indicator change (MOV degraded = no protection)</li>
+  <li>Buying Type 3 only without Type 2 upstream (Type 3 alone has insufficient discharge capacity)</li>
+</ol>
+
+<h2 id="related">Related buying guides</h2>
+<ul>
+  <li><a href="/blogs/guides/spd-full-form-what-is-surge-protection-device-buying-guide">SPD Full Form — What is a Surge Protection Device</a></li>
+  <li><a href="/blogs/guides/surge-arrester-lightning-arrester-price-pakistan-2026-type-1-2-3-buyer-guide">Surge Arrester / Lightning Arrester Type 1-2-3 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/best-electrical-equipment-tiers-pakistan-2026-iec-certification-buyer-guide">Best Electrical Equipment Tiers Pakistan 2026</a></li>
+  <li><a href="/blogs/guides/nepra-2026-net-metering-equipment-checklist-pakistan-complete-list">NEPRA 2026 Net-Metering Equipment Checklist</a></li>
+  <li><a href="/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026">Hybrid vs On-Grid vs Off-Grid Solar Inverter</a></li>
+  <li><a href="/collections/spd">SPD Collection</a></li>
+</ul>
+
+<h2 id="cta">Need SPD sized + priced for your project?</h2>
+<p>WhatsApp <strong>+92 326 1111 376</strong> with your application (residential / solar / commercial / industrial). Free Pakistan delivery + COD: Karachi, Lahore, Islamabad, Multan, Peshawar, Faisalabad.</p>
