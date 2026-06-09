@@ -96,12 +96,65 @@ Top-3 keeps climbing — leading indicator. Traffic compound expected in next 7-
 5. Daraz official CNC store setup (Perplexity citation surface)
 6. Tier-1 PR pitches (Dawn, BR, Tribune, The News)
 
+## Session round 2 — proactive SEO + GEO push
+
+After cron v6 + Day-9/Day-10 rescue landed, kept going with offensive moves on the highest-leverage gaps:
+
+### 2 more buying guides shipped
+
+| # | Topic | Handle | Shopify ID | Status | Target KW |
+|---|---|---|---|---|---|
+| 11 | Switch Board IEC 61439 | `switch-board-price-in-pakistan-2026-distribution-board-msb-buyer-guide` | 573710893122 | ✅ LIVE | "switch board" 2,200 vol KD 1 (Clopal pos 1, CNC absent) |
+| 12 | Power Factor Capacitor Bank IEC 60831 | `power-factor-capacitor-bank-price-in-pakistan-2026-kvar-sizing-buyer-guide` | 573710925890 | ✅ LIVE | "power factor capacitor bank" Pakistani industrial high-intent |
+
+Both shipped with title_tag + description_tag + FAQ JSON-LD + IndexNow 202 + Yandex 200. Generic-tier framework — no competitor brand names.
+
+### GEO collection refreshes (Ahrefs top-traffic page leverage)
+
+| Collection | Position | Vol | Refresh applied |
+|---|---|---|---|
+| `/collections/circuit-breakers` | pos 2 "breaker" | 1,300 | Freshness Jun 10 + 7-link cluster aside to MCB-comparison, Tiers, Switch Board, RCBO, 1.5T AC, 3T AC, WiFi MCB |
+| `/collections/changeovers` | pos 6 "change over switch" | 1,400 | Freshness Jun 10 + 6-link cluster aside to ATS guide, Switch Board, Tiers, Hybrid Inverter, Tubewell, MCB comparison |
+
+Both IndexNow-pinged (202).
+
+### Cross-link cascade — 8 inbound links
+
+| # | From | Target |
+|---|---|---|
+| 1 | MCB vs MCCB vs RCCB vs RCBO | Switch Board |
+| 2 | Best Electrical Equipment Tiers | Switch Board |
+| 3 | RCBO Type AC/A/B | Switch Board |
+| 4 | NEPRA 2026 Equipment Checklist | Switch Board |
+| 5 | Best Breaker for 1.5-Ton AC | Switch Board |
+| 6 | Magnetic Contactor Price Guide | PFCB |
+| 7 | VFD Buyer Guide | PFCB |
+| 8 | Solar Inverter Price Guide | PFCB |
+
+All HTTP 200.
+
 ## Files created Day-11 (this session)
 
+### Round 1 — rescue + v6
 - `junction-box-article-2026-06-10.html`
 - `best-electrical-brands-article-2026-06-10.html`
 - `publish-day9-day10-rescue-2026-06-10.js`
 - `cross-link-day9-day10-rescue-2026-06-10.js`
+- Cron v6 deployed via RemoteTrigger MCP
+
+### Round 2 — proactive push
+- `switch-board-article-2026-06-10.html`
+- `pfcb-article-2026-06-10.html`
+- `publish-switch-board-pfcb-2026-06-10.js`
+- `refresh-cb-changeovers-2026-06-10.js`
+- `cross-link-switch-board-pfcb-2026-06-10.js`
+- `cross-link-switch-board-pfcb-pass2.js`
 - `seo-database/LIVE-ASSETS-2026-06-10.md` (this file)
 
-Cron prompt updated via RemoteTrigger MCP (no file diff — config-only change on Anthropic Cloud Cron infrastructure).
+### Total Day-10 calendar-day output
+
+- 4 buying guides shipped (Day-9 Junction Box, Day-10 Tiers, Switch Board attack, PFCB cron pre-empt)
+- 2 high-traffic collections refreshed (circuit-breakers, changeovers)
+- 17 cross-links cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB)
+- 6 URLs IndexNow + Yandex pinged
+- Cron v6 deployed (eliminates 403 failure mode going forward)

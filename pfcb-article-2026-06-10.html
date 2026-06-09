@@ -1,0 +1,146 @@
+<p>Power factor capacitor bank prices in Pakistan for 2026 swing from PKR 28,000 for a basic 10 kVAR 3-phase fixed bank up to PKR 1.45 million for a 300 kVAR detuned automatic bank with harmonic filtering. Pakistani industrial consumers face mandatory PEPCO + K-Electric power factor penalties below 0.90 — a 100 kW load with PF 0.75 pays PKR 35,000-65,000 per month in penalty surcharge. A correctly sized capacitor bank pays back in 6-14 months. This guide covers kVAR sizing math, fixed vs automatic, harmonic vs detuned, IEC 60831 / 61921, and 6 mistakes that destroy PF correction equipment.</p>
+
+<h2 id="what-pfc">1. What is power factor + why Pakistani industry must correct it</h2>
+<p>Power factor (PF) measures how efficiently your equipment converts incoming kVA into useful kW. Inductive loads (motors, transformers, fluorescent ballasts, welding plants) draw "reactive power" (kVAR) that doesn't do work but loads the cable + transformer + DISCO grid. Pakistani DISCOs (PEPCO, K-Electric, LESCO, IESCO, MEPCO, GEPCO, FESCO, HESCO) charge industrial consumers a PF penalty below 0.90.</p>
+<table>
+  <thead><tr><th>Power factor</th><th>Apparent power (kVA) for 100 kW load</th><th>Monthly penalty (industrial 2026)</th></tr></thead>
+  <tbody>
+    <tr><td>1.00 (unity)</td><td>100 kVA</td><td>none</td></tr>
+    <tr><td>0.95</td><td>105 kVA</td><td>none (above threshold)</td></tr>
+    <tr><td>0.90 (threshold)</td><td>111 kVA</td><td>none</td></tr>
+    <tr><td>0.85</td><td>118 kVA</td><td>~PKR 15,000-25,000</td></tr>
+    <tr><td>0.80</td><td>125 kVA</td><td>~PKR 25,000-40,000</td></tr>
+    <tr><td>0.75</td><td>133 kVA</td><td>~PKR 35,000-65,000</td></tr>
+    <tr><td>0.70</td><td>143 kVA</td><td>~PKR 50,000-95,000</td></tr>
+  </tbody>
+</table>
+<p>Real Pakistani factory example: 200 kW load with mixed motor + welding plant at PF 0.72 paid PKR 78,000/month penalty. After installing a 120 kVAR detuned auto bank (PKR 425,000 capex), PF rose to 0.96 — penalty eliminated. Payback: 5.4 months.</p>
+
+<h2 id="kvar-sizing">2. kVAR sizing — the math you actually need</h2>
+<p>To improve PF from current value to target value (typically 0.95):</p>
+<p><strong>Required kVAR = kW &times; (tan&phi;<sub>1</sub> - tan&phi;<sub>2</sub>)</strong></p>
+<p>Where &phi;<sub>1</sub> = current PF angle, &phi;<sub>2</sub> = target PF angle (typically 0.95 = 18.2&deg;).</p>
+<table>
+  <thead><tr><th>Current PF</th><th>kVAR per 100 kW load (target PF 0.95)</th></tr></thead>
+  <tbody>
+    <tr><td>0.65</td><td>84 kVAR</td></tr>
+    <tr><td>0.70</td><td>69 kVAR</td></tr>
+    <tr><td>0.75</td><td>55 kVAR</td></tr>
+    <tr><td>0.80</td><td>42 kVAR</td></tr>
+    <tr><td>0.85</td><td>30 kVAR</td></tr>
+    <tr><td>0.90</td><td>15 kVAR</td></tr>
+  </tbody>
+</table>
+<p><em>Practical rule of thumb:</em> for typical Pakistani factory at PF 0.75-0.80, plan 50-60 kVAR per 100 kW connected load. Add 20% safety margin for load growth.</p>
+
+<h2 id="fixed-vs-auto">3. Fixed vs Automatic — when each fits</h2>
+<table>
+  <thead><tr><th></th><th>Fixed bank</th><th>Automatic bank (APFC)</th></tr></thead>
+  <tbody>
+    <tr><td>How it works</td><td>Permanently connected capacitor block(s)</td><td>Controller switches steps in/out based on real-time PF measurement</td></tr>
+    <tr><td>Best for</td><td>Constant load (continuous motor, transformer hot)</td><td>Variable load (workshop with motors cycling on/off, welding plants)</td></tr>
+    <tr><td>Step granularity</td><td>1 step (all or nothing)</td><td>4-12 steps typically (finer correction)</td></tr>
+    <tr><td>2026 Pakistani price (50 kVAR)</td><td>PKR 38,000 - 65,000</td><td>PKR 145,000 - 245,000</td></tr>
+    <tr><td>2026 Pakistani price (100 kVAR)</td><td>PKR 75,000 - 125,000</td><td>PKR 245,000 - 385,000</td></tr>
+    <tr><td>2026 Pakistani price (200 kVAR)</td><td>PKR 145,000 - 245,000</td><td>PKR 485,000 - 685,000</td></tr>
+    <tr><td>Risk if oversized</td><td>Over-correction → PF leads → DISCO penalty same as lagging</td><td>Controller prevents over-correction automatically</td></tr>
+  </tbody>
+</table>
+<p>For Pakistani factory with VFD-driven motors, welding plants, or solar inverter, automatic is almost always the right call — fixed banks over-correct during low-load periods.</p>
+
+<h2 id="standard-vs-detuned">4. Standard vs Detuned — when harmonics force the upgrade</h2>
+<p>Standard capacitor banks work fine when load is purely linear (induction motors, transformers, lighting). Pakistani modern factories increasingly run VFDs, switching-mode power supplies, LED drivers, welding inverters, and solar inverters — all generate harmonics that resonate with standard capacitors and destroy them in 6-18 months.</p>
+<table>
+  <thead><tr><th></th><th>Standard capacitor bank</th><th>Detuned capacitor bank</th><th>Harmonic filter bank</th></tr></thead>
+  <tbody>
+    <tr><td>Components</td><td>Capacitors + contactors only</td><td>Capacitors + detuning reactors (typically 7% / 14%)</td><td>Capacitors + tuned reactors + sometimes active filter</td></tr>
+    <tr><td>Survives VFD harmonics</td><td>No — fails 6-18 months</td><td>Yes (most cases)</td><td>Yes + actively filters harmonics</td></tr>
+    <tr><td>Price premium vs standard</td><td>baseline</td><td>+35-55%</td><td>+150-300%</td></tr>
+    <tr><td>2026 Pakistani 100 kVAR auto</td><td>PKR 245,000-385,000</td><td>PKR 385,000-585,000</td><td>PKR 685,000-1,250,000</td></tr>
+    <tr><td>When to specify</td><td>Pure linear loads only</td><td>Default for modern Pakistani factories with any VFD / solar / welding</td><td>Heavy harmonics &gt; 5% THD or critical sensitive equipment</td></tr>
+  </tbody>
+</table>
+
+<h2 id="iec-standards">5. IEC standards — what to verify on the spec sheet</h2>
+<ul>
+  <li><strong>IEC 60831-1 / -2</strong> — power capacitor standard for self-healing types up to 1000V. Required for all Pakistani industrial power capacitors.</li>
+  <li><strong>IEC 61921</strong> — power factor correction capacitor banks — assembly + commissioning standard.</li>
+  <li><strong>IEC 60871</strong> — shunt capacitors for AC systems above 1000V (Pakistani HT applications above 11kV).</li>
+  <li><strong>IEC 61000-2-4</strong> — harmonic distortion limits for industrial systems.</li>
+  <li><strong>IEC 61000-3-4</strong> — emission limits for non-domestic equipment generating harmonics.</li>
+</ul>
+
+<h2 id="prices">6. Pakistani 2026 price matrix — complete</h2>
+<table>
+  <thead><tr><th>Configuration</th><th>Fixed standard PKR</th><th>Auto standard PKR</th><th>Auto detuned PKR</th></tr></thead>
+  <tbody>
+    <tr><td>10 kVAR 3-phase</td><td>28,000 - 42,000</td><td>n/a</td><td>n/a</td></tr>
+    <tr><td>25 kVAR 3-phase</td><td>38,000 - 58,000</td><td>95,000 - 145,000</td><td>n/a</td></tr>
+    <tr><td>50 kVAR 3-phase</td><td>58,000 - 95,000</td><td>145,000 - 245,000</td><td>225,000 - 365,000</td></tr>
+    <tr><td>100 kVAR 3-phase</td><td>105,000 - 165,000</td><td>245,000 - 385,000</td><td>385,000 - 585,000</td></tr>
+    <tr><td>150 kVAR 3-phase</td><td>155,000 - 245,000</td><td>365,000 - 525,000</td><td>525,000 - 785,000</td></tr>
+    <tr><td>200 kVAR 3-phase</td><td>205,000 - 325,000</td><td>485,000 - 685,000</td><td>685,000 - 985,000</td></tr>
+    <tr><td>300 kVAR 3-phase</td><td>305,000 - 485,000</td><td>685,000 - 945,000</td><td>985,000 - 1,450,000</td></tr>
+  </tbody>
+</table>
+
+<h2 id="six-mistakes">7. Six mistakes that destroy capacitor banks in Pakistani conditions</h2>
+<ol>
+  <li><strong>Specifying standard bank in a factory with VFDs.</strong> The #1 cause of capacitor failure in Pakistani factories. VFD harmonics resonate with capacitor + reactor reactance; capacitors swell, leak, then explode within 6-18 months. Always detuned in modern factories.</li>
+  <li><strong>Over-sizing fixed bank.</strong> During night / low-load periods, PF goes leading (capacitive). DISCO penalises leading PF same as lagging. Always automatic if load varies 30%+.</li>
+  <li><strong>Skipping the detuning reactor on auto banks.</strong> "We'll add it later" never happens. Capacitors fail in 1-2 years; retrofit reactor costs 2&times; new bank price.</li>
+  <li><strong>Mounting outdoor without IP54 + thermal management.</strong> Pakistani summer 45&deg;C+ + capacitor self-heating = derating + early failure. Indoor ventilated room or IP54 outdoor cabinet with forced ventilation.</li>
+  <li><strong>No fuse / MCCB upstream of bank.</strong> Capacitor failure short-circuits to ground. Without protection, the busbar fries. Always HRC fuses or fast-acting MCCB sized 1.43&times; capacitor rated current.</li>
+  <li><strong>No PF measurement after install.</strong> "We installed it, must be working" without verification. Always measure incoming PF before + after + monthly. PF meters PKR 8,500 - 18,500.</li>
+</ol>
+
+<h2 id="payback">8. Payback math — typical Pakistani factory</h2>
+<table>
+  <thead><tr><th>Scenario</th><th>Pre-correction monthly penalty</th><th>Bank capex (auto detuned)</th><th>Payback months</th></tr></thead>
+  <tbody>
+    <tr><td>50 kW small workshop, PF 0.80 &rarr; 0.95</td><td>PKR 8,500/mo</td><td>PKR 225,000</td><td>26 months</td></tr>
+    <tr><td>100 kW factory, PF 0.75 &rarr; 0.95</td><td>PKR 35,000/mo</td><td>PKR 385,000</td><td>11 months</td></tr>
+    <tr><td>200 kW factory, PF 0.72 &rarr; 0.96</td><td>PKR 78,000/mo</td><td>PKR 685,000</td><td>9 months</td></tr>
+    <tr><td>500 kW factory, PF 0.70 &rarr; 0.95</td><td>PKR 215,000/mo</td><td>PKR 1,250,000</td><td>6 months</td></tr>
+  </tbody>
+</table>
+
+<h2 id="install">9. Pakistani installation requirements</h2>
+<ul>
+  <li>Mount on incoming side after main switchgear, before distribution panels</li>
+  <li>3-phase current transformer (CT) on incoming feeder for APFC controller sensing</li>
+  <li>Bank ambient temperature &lt; 40&deg;C for full kVAR rating</li>
+  <li>Cable sizing: 1.43&times; rated capacitor current (per IEC 60831)</li>
+  <li>HRC fuse or fast MCCB upstream, sized 1.43&times; bank current</li>
+  <li>Earth bond cabinet + neutral bar (3-phase 4-wire) to building earth</li>
+  <li>Min 600 mm front clearance + 300 mm side clearance for service</li>
+  <li>PF meter on incoming for monthly verification (recommended)</li>
+</ul>
+
+<h2 id="faq">10. FAQ</h2>
+<h3>What size capacitor bank for a 100 kW Pakistani factory at PF 0.75?</h3>
+<p>~55 kVAR to reach 0.95. Add 20% growth margin → 65-70 kVAR auto detuned. Cost: PKR 285,000-385,000 tier-3 Pakistani manufacturer; payback 11-14 months at current PEPCO penalty rates.</p>
+
+<h3>Standard or detuned for my new Pakistani factory build?</h3>
+<p>Detuned. Default. Any factory with even one VFD, one welding plant, one solar inverter, or substantial LED lighting has enough harmonics to kill a standard bank in 12-18 months. PKR 100,000-150,000 premium over standard saves PKR 245,000-485,000 in replacement bank + downtime.</p>
+
+<h3>How long do capacitor banks last in Pakistani conditions?</h3>
+<p>Premium tier 1-2 detuned: 12-15 years. Tier 3 Pakistani / Chinese detuned: 8-10 years. Standard banks in VFD-heavy factory: 6-18 months. The choice of detuned vs standard matters 3-5&times; more than tier choice.</p>
+
+<h3>Will solar net-metering eliminate my PF penalty?</h3>
+<p>No. Solar inverters with grid-tie are required to operate at unity or near-unity PF on the AC output (UL 1741 / IEEE 1547 requirement). Your inductive load PF is unchanged by adding solar — only your kW import drops. PF penalty is on apparent power import, so reduced kW import does cut PF penalty but doesn't eliminate it. Most Pakistani factories with solar still need a capacitor bank.</p>
+
+<h3>Where to buy verified IEC 60831 capacitor banks in Pakistan?</h3>
+<p>Established Pakistani panel assemblers in Lahore Industrial Estate + Karachi SITE + Faisalabad Khurrianwala build to spec with IEC 60831 + IEC 61921 type tests. For pre-built banks 10-100 kVAR contact CNC Electric (Pakistani manufacturer, free delivery + COD nationwide) or authorised distributors in Hall Road Lahore + Jodia Bazar Karachi. Verify IEC certificate + factory acceptance test report (FAT) before paying for industrial units.</p>
+
+<h2 id="related">11. Related guides</h2>
+<ul>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/switch-board-price-in-pakistan-2026-distribution-board-msb-buyer-guide">Switch Board Price Guide — DB, MSB, MCC, PCC</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/difference-between-mcb-mccb-rccb-rcbo-pakistan-2026-buyer-comparison-guide">MCB vs MCCB vs RCCB vs RCBO Comparison</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/best-electrical-equipment-tiers-pakistan-2026-iec-certification-buyer-guide">Best Electrical Equipment Tiers Pakistan 2026</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/magnetic-contactor-buying-guide-pakistan-2026">Magnetic Contactor Buying Guide</a></li>
+  <li><a href="https://www.cncelectric.pk/blogs/guides/cable-tray-price-in-pakistan-2026-iec-61537-buyer-guide">Cable Tray IEC 61537 Guide</a></li>
+</ul>
+
+<h2 id="cta">12. Need a PFCB sized + priced for your Pakistani factory?</h2>
+<p>Send your monthly DISCO bill (showing PF) + your connected load schedule on WhatsApp <strong>+92 326 1111 376</strong>. We'll calculate required kVAR + recommend fixed vs auto vs detuned + give a complete PKR quote within 24 hours with payback analysis. Free Pakistan delivery + factory commissioning available: Karachi, Lahore, Islamabad, Multan, Peshawar, Faisalabad.</p>
