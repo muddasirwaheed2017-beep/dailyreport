@@ -151,10 +151,37 @@ All HTTP 200.
 - `cross-link-switch-board-pfcb-pass2.js`
 - `seo-database/LIVE-ASSETS-2026-06-10.md` (this file)
 
+### Round 3 — Ahrefs-driven /blogs/news shipped
+
+After buying guides + collection refreshes, pulled the Day-0 → Day-8 keyword diff from Ahrefs and shipped 4 news posts targeting specific ranking gaps:
+
+**Wins surfaced from Ahrefs (Δ ≤ -2 since Day-0):**
+- "electric meter" 2,900 vol — was #9, now **#1** (Δ -8) ⭐ biggest win
+- "change over switch" 1,400 vol — **#1** (Δ -5)
+- "mccb breaker" 800 vol — **#1** (Δ -5)
+- "magnetic contactor" 600 vol — **#1** (Δ -2)
+- "spd" 1,300 vol pos 14 → pos 11 (Δ -3)
+
+**Loss flagged:**
+- "circuit breaker" 1,300 vol — pos 1 → pos 6 (Δ +5, KD 34) — addressed by news post #4
+
+**4 news posts shipped to /blogs/news (blog id 83044171842):**
+
+| # | Topic | Target KW | Vol | Pos | Live URL |
+|---|---|---|---|---|---|
+| 1 | Thermostat + IEC 60730 + NEPRA solar geyser rule | "thermostat" | 1,700 | pos 10 | [/blogs/news/thermostat-…](https://www.cncelectric.pk/blogs/news/thermostat-price-in-pakistan-2026-iec-60730-news-buyer-rules) |
+| 2 | Breaker switch MCB vs isolator vs RCBO | "breaker switch" | 900 | pos 19 | [/blogs/news/breaker-switch-…](https://www.cncelectric.pk/blogs/news/breaker-switch-pakistan-2026-mcb-isolator-rcbo-news-explained) |
+| 3 | 3-pin plug BS 1363 vs IEC 60309 industrial | "3 pin plug" | 700 | pos 16 | [/blogs/news/3-pin-plug-…](https://www.cncelectric.pk/blogs/news/3-pin-plug-socket-pakistan-2026-bs-1363-iec-60309-buyer-news) |
+| 4 | Circuit breaker 8-type chart + NEPRA 2026 rules | "circuit breaker" | 1,300 | pos 6 (recovery) | [/blogs/news/circuit-breaker-types-…](https://www.cncelectric.pk/blogs/news/circuit-breaker-types-pakistan-2026-mcb-mccb-acb-rcbo-news-chart) |
+
+All 4 with title_tag + description_tag metafields + IndexNow 202 + Yandex 200.
+
 ### Total Day-10 calendar-day output
 
-- 4 buying guides shipped (Day-9 Junction Box, Day-10 Tiers, Switch Board attack, PFCB cron pre-empt)
-- 2 high-traffic collections refreshed (circuit-breakers, changeovers)
-- 17 cross-links cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB)
-- 6 URLs IndexNow + Yandex pinged
-- Cron v6 deployed (eliminates 403 failure mode going forward)
+- **4 buying guides** shipped to /blogs/guides (Day-9 Junction Box rescue, Day-10 Tiers rescue, Switch Board attack, PFCB cron pre-empt)
+- **4 news posts** shipped to /blogs/news (thermostat, breaker switch, 3-pin plug, circuit breaker types)
+- **3 high-traffic collections refreshed** (circuit-breakers, changeovers, ac-breaker)
+- **17 inbound cross-links** cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB)
+- **10 URLs IndexNow + Yandex pinged** (4 guides + 4 news + ac-breaker collection + ac-breaker re-ping)
+- **Cron v6 deployed** (eliminates 403 failure mode going forward)
+- 4 git commits pushed to dailyreport repo
