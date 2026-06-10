@@ -1,0 +1,82 @@
+<p><em>News &mdash; CNC Electric Pakistan, June 10, 2026.</em></p>
+
+<p>Pakistani solar installers shopping for "solar combiner box" in 2026 face a critical wiring decision: how to safely consolidate 4 to 32 PV string outputs onto a single DC bus before feeding the inverter. Wrong combiner box selection causes the #1 Pakistani solar fire mode &mdash; DC arcing across mis-rated fuses. This news post explains string combiner box topology, lists current Pakistani 2026 prices by string count + voltage class, flags NEPRA 2026 + IEC 60439-2 + 61730 standards required for net-metering, and shows the 6 mistakes Pakistani installers make.</p>
+
+<h2 id="what-it-is">What is a solar combiner box (and which type you need)</h2>
+<p>A solar combiner box is a sealed DC distribution enclosure containing: DC string fuses (one per PV string), a DC isolator, a Type 1+2 DC SPD, and bus bars consolidating all string outputs into a single feeder to the inverter. The combiner protects each string independently against backflow, fault current, and surge events. Pakistani residential solar systems typically need a 4-8 string combiner; commercial / industrial systems run 16-32 strings.</p>
+
+<h2 id="components">Required Pakistani 2026 combiner box components</h2>
+<table>
+  <thead><tr><th>Component</th><th>Specification</th><th>IEC standard</th></tr></thead>
+  <tbody>
+    <tr><td>DC string fuses (one per +ve)</td><td>4A / 6A / 10A / 15A gPV class, rated to system DC voltage</td><td>IEC 60269-6 gPV</td></tr>
+    <tr><td>DC isolator (load break)</td><td>4-pole, rated 600V/1000V/1500V DC, &times;1.25 string Isc</td><td>IEC 60947-3</td></tr>
+    <tr><td>Type 1+2 DC SPD</td><td>40 kA / 20 kA, MOV + spark gap hybrid, terminal layout for + and -</td><td>IEC 61643-31</td></tr>
+    <tr><td>Bus bar</td><td>Copper, rated &gt; sum of all string currents &times; 1.25</td><td>IEC 61439-2</td></tr>
+    <tr><td>Enclosure</td><td>IP65 minimum (rooftop), UV-stable ABS or polycarbonate</td><td>IEC 60529 IP65+</td></tr>
+    <tr><td>Earthing</td><td>Continuous bond from frame to string negative bus to building earth</td><td>IEC 60364-7-712</td></tr>
+  </tbody>
+</table>
+
+<h2 id="prices">Pakistani 2026 solar combiner box prices &mdash; complete matrix</h2>
+<table>
+  <thead><tr><th>String count</th><th>Voltage class</th><th>Tier 3 PKR</th><th>Tier 2 PKR</th><th>Tier 1 PKR</th></tr></thead>
+  <tbody>
+    <tr><td>4 string</td><td>600V DC</td><td>22,500 - 38,500</td><td>48,500 - 78,500</td><td>105,000 - 165,000</td></tr>
+    <tr><td>4 string</td><td>1000V DC</td><td>28,500 - 48,500</td><td>58,500 - 95,000</td><td>125,000 - 195,000</td></tr>
+    <tr><td>6 string</td><td>1000V DC</td><td>38,500 - 65,000</td><td>75,000 - 125,000</td><td>165,000 - 265,000</td></tr>
+    <tr><td>8 string</td><td>1000V DC</td><td>48,500 - 85,000</td><td>95,000 - 165,000</td><td>225,000 - 365,000</td></tr>
+    <tr><td>12 string</td><td>1000V DC</td><td>68,500 - 125,000</td><td>145,000 - 225,000</td><td>325,000 - 485,000</td></tr>
+    <tr><td>16 string</td><td>1000V DC</td><td>105,000 - 175,000</td><td>195,000 - 325,000</td><td>485,000 - 725,000</td></tr>
+    <tr><td>24 string</td><td>1500V DC</td><td>185,000 - 285,000</td><td>325,000 - 525,000</td><td>685,000 - 1,150,000</td></tr>
+    <tr><td>32 string</td><td>1500V DC</td><td>265,000 - 385,000</td><td>485,000 - 725,000</td><td>985,000 - 1,650,000</td></tr>
+  </tbody>
+</table>
+
+<h2 id="600-vs-1000-vs-1500">600V vs 1000V vs 1500V DC &mdash; choose your voltage class</h2>
+<table>
+  <thead><tr><th>Voltage class</th><th>Typical Pakistani system</th><th>String count + panel count</th></tr></thead>
+  <tbody>
+    <tr><td>600V DC</td><td>Residential 3-5 kW, older builds</td><td>1-2 strings of 10-12 panels each</td></tr>
+    <tr><td>1000V DC</td><td>Mainstream residential 5-10 kW, small commercial</td><td>2-8 strings of 18-22 panels each</td></tr>
+    <tr><td>1500V DC</td><td>Commercial 25+ kW, industrial, solar farm</td><td>16-32+ strings of 24-30 panels each</td></tr>
+  </tbody>
+</table>
+<p>NEPRA 2026 prosumer category systems above 12 kW typically use 1000V or 1500V DC. Older 600V systems are being phased out for new installs.</p>
+
+<h2 id="install-sequence">Pakistani 2026 install sequence</h2>
+<ol>
+  <li>PV strings &mdash; rooftop array, each string 10-30 panels in series</li>
+  <li>String cable to combiner box (rooftop or upper wall location)</li>
+  <li>Combiner box DC string fuse (one per +ve string)</li>
+  <li>Combiner box DC isolator (load break)</li>
+  <li>Combiner box Type 1+2 DC SPD (surge protection)</li>
+  <li>Combiner box bus bar (consolidates strings)</li>
+  <li>Single DC feeder cable to inverter</li>
+  <li>Earth bond combiner chassis + string negative + PV frame + building earth</li>
+</ol>
+
+<h2 id="six-mistakes">Six mistakes Pakistani solar installers make</h2>
+<ol>
+  <li><strong>Wrong DC fuse class.</strong> Using gG fuses instead of gPV class. gPV is specifically rated for DC PV inrush + arc characteristics; gG fails open at the wrong current.</li>
+  <li><strong>Under-rated voltage class.</strong> Installing 600V combiner on a 1000V system. Insulation breakdown + arc fault risk.</li>
+  <li><strong>Skipping the DC SPD.</strong> Rooftop combiners lose surge protection &rarr; lightning destroys inverter input. NEPRA 2026 requires Type 1+2 DC SPD on rooftop combiners.</li>
+  <li><strong>IP44 enclosure on rooftop.</strong> Should be IP65+ for direct sun + monsoon. PKR 5,000-15,000 saving turns into PKR 50,000+ retrofit cost.</li>
+  <li><strong>Mixing tier 5 unbranded fuses in tier 2-3 combiner.</strong> The cheapest component sets the system reliability. Match component tier.</li>
+  <li><strong>Skipping earth bond.</strong> Floating bus = arc fault risk + Pakistani inspection failure. Continuous earth bond mandatory per IEC 60364.</li>
+</ol>
+
+<h2 id="related">Related buying guides</h2>
+<ul>
+  <li><a href="/blogs/guides/solar-combiner-box-price-pakistan-2026-residential-commercial-wiring-bill-of-materials">Solar Combiner Box Price + Wiring + Bill of Materials</a></li>
+  <li><a href="/blogs/guides/solar-combiner-box-wiring-pakistan-dc-breaker-fuse-spd-step-by-step-installation">Solar Combiner Box Wiring &mdash; DC Breaker + Fuse + SPD Installation</a></li>
+  <li><a href="/blogs/guides/dc-fuse-vs-dc-breaker-pakistan-solar-strings-batteries-spd-protection-2026">DC Fuse vs DC Breaker Pakistan</a></li>
+  <li><a href="/blogs/guides/dc-isolator-switch-guide-pakistan-sizing-price-solar">DC Isolator Switch Guide</a></li>
+  <li><a href="/blogs/guides/dc-distribution-box-price-pakistan-2026-12v-24v-48v-off-grid-buyer-guide">DC Distribution Box Buyer Guide</a></li>
+  <li><a href="/blogs/news/spd-pakistan-2026-type-1-2-3-surge-protection-device-news-explained">SPD Pakistan 2026 News &mdash; Type 1/2/3</a></li>
+  <li><a href="/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026">Hybrid vs On-Grid vs Off-Grid Solar Inverter</a></li>
+  <li><a href="/blogs/guides/nepra-2026-net-metering-equipment-checklist-pakistan-complete-list">NEPRA 2026 Net-Metering Equipment Checklist</a></li>
+</ul>
+
+<h2 id="cta">Need a solar combiner box sized + priced for your project?</h2>
+<p>Send your PV string count + voltage class + panel model on WhatsApp <strong>+92 326 1111 376</strong>. We'll spec combiner + DC fuses + isolator + SPD bundle with PKR pricing in 24 hours. Free Pakistan delivery + COD: Karachi, Lahore, Islamabad, Multan, Peshawar, Faisalabad.</p>
