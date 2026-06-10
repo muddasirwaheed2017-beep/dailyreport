@@ -185,12 +185,33 @@ After the Ahrefs round 3, kept attacking the easy lifts:
 - **Cable Lugs buying guide** (Day-12 cron pre-empt) — IEC 61238-1 + DIN 46235 + 5 lug types + complete PKR matrix 2.5 mm² to 400 mm² + crimping tool selection + bolt torque + 6 mistakes. FAQ JSON-LD shipped. LIVE: [/blogs/guides/cable-lugs-crimping-…](https://www.cncelectric.pk/blogs/guides/cable-lugs-crimping-pakistan-2026-iec-61238-din-46235-buyer-guide)
 - **7-link cross-link cascade** for Cable Lugs + SPD news from cable-tray, junction-box, switch-board, earthing-grounding, MCB comparison, Tiers, Surge Arrester guides
 
+### Round 5 — UPS 17K vol + Lithium refresh + 2 motor-control collections
+
+Highest-vol-uncovered KW today: w11stop's "ups price in pakistan" 17,000 vol pos 3 (KD 0). Plus refresh of existing lithium-battery guide for compound effect with NEPRA 2026 + UPS LFP shift context. Plus push-button + selector-switch collections.
+
+**UPS news shipped:** [/blogs/news/ups-price-in-pakistan-2026-…](https://www.cncelectric.pk/blogs/news/ups-price-in-pakistan-2026-online-line-interactive-standby-news-iec-62040) — IEC 62040 VFI/VI/VFD classification, complete PKR matrix 600 VA to 40 kVA, LFP vs SLA shift, Pakistani sizing rule.
+
+**Lithium battery guide refresh:** existing `/blogs/guides/lithium-battery-price-in-pakistan-2026-lifepo4-48v-buyer-guide-with-dc-protection` (the 24K vol KW target) refreshed with:
+- Updated June 10 freshness block
+- NEPRA 2026 IEC 62619 + IEC 62133 cert rule
+- UPS LFP shift context with deep cross-link to UPS news post
+- Cycle-life economics math (LFP payback 18-30 months vs SLA)
+- Battery + protection bundle cross-links to RCBO + DCDB guides
+- Re-indexed via IndexNow
+
+**Motor-control collection refreshes:**
+- `/collections/push-button` (pos 7 vol 700) — freshness Jun-10 + 8-link cluster aside + description_tag refresh + IndexNow
+- `/collections/selector-switch` (pos 6 vol 600) — freshness Jun-10 + 8-link cluster aside + description_tag refresh + IndexNow
+
+**6-link cross-link cascade for UPS news** from battery-bank LFP, hybrid-inverter, NEPRA checklist, Tiers, DCDB, switch-board guides.
+
 ### Total Day-10 calendar-day output
 
-- **5 buying guides** shipped to /blogs/guides (Day-9 Junction Box rescue, Day-10 Tiers rescue, Switch Board attack, PFCB cron pre-empt, Cable Lugs Day-12 pre-empt)
-- **5 news posts** shipped to /blogs/news (thermostat, breaker switch, 3-pin plug, circuit breaker types, SPD Type 1/2/3)
-- **4 high-traffic collections refreshed** (circuit-breakers, changeovers, ac-breaker, spd)
-- **24 inbound cross-links** cascade (9 Day-9/10 rescue + 8 Switch Board/PFCB + 7 Cable Lugs/SPD)
-- **13 URLs IndexNow + Yandex pinged**
+- **5 buying guides** shipped (Day-9 Junction Box rescue, Day-10 Tiers rescue, Switch Board attack, PFCB cron pre-empt, Cable Lugs Day-12 pre-empt)
+- **6 news posts** shipped (thermostat, breaker switch, 3-pin plug, circuit breaker types, SPD Type 1/2/3, **UPS topology**)
+- **1 existing guide refreshed** (Lithium Battery — the 24K vol w11stop steal target — compound boost)
+- **6 high-traffic collections refreshed** (circuit-breakers, changeovers, ac-breaker, spd, push-button, selector-switch)
+- **30 inbound cross-links** cascade (9 Day-9/10 + 8 Switch Board/PFCB + 7 Cable Lugs/SPD + 6 UPS)
+- **17 URLs IndexNow + Yandex pinged**
 - **Cron v6 deployed** (eliminates 403 failure mode going forward)
-- 5 git commits pushed to dailyreport repo
+- 6 git commits pushed to dailyreport repo
