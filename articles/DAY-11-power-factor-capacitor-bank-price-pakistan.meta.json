@@ -1,0 +1,81 @@
+{
+  "day": 11,
+  "date": "2026-06-10",
+  "handle": "power-factor-capacitor-bank-price-pakistan",
+  "title": "Power Factor Capacitor Bank Price in Pakistan 2026 | CNC Electric",
+  "title_tag": "Power Factor Capacitor Bank Price in Pakistan 2026 | CNC",
+  "description_tag": "Power factor capacitor bank price Pakistan 2026. IEC certified, 5-yr warranty. Free delivery + COD: Karachi, Lahore, Islamabad, Multan, Peshawar.",
+  "summary_html": "<p>Complete buying guide for power factor capacitor banks and APFC panels in Pakistan 2026. Covers kVAR sizing formula, PKR price table (5–200 kVAR fixed + APFC panels), IEC 60831/61921 quality tiers, detuning reactor selection, NEPRA surcharge context, and 7-question FAQ JSON-LD. WhatsApp CTA +92 326 1111 376.</p>",
+  "tags": ["power-factor", "capacitor-bank", "industrial-electrical", "energy-saving", "power-quality", "apfc-panel", "pakistan-electrical"],
+  "shopify_blog_id": "89971589186",
+  "faq_schema_json": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a power factor capacitor bank?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A power factor capacitor bank is a set of capacitors connected in parallel to your electrical supply to provide reactive power locally. It improves your power factor (PF) from a typical 0.70–0.80 to 0.92–0.98, reducing NEPRA reactive-power surcharges, cutting cable losses, and freeing transformer capacity."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does a capacitor bank cost in Pakistan in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A fixed 10 kVAR capacitor bank costs PKR 14,000–25,000. A 50 kVAR APFC panel (automatic, 6-step) costs PKR 120,000–220,000. Prices depend on IEC certification level, housing material, detuning reactor inclusion, and origin tier."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate the kVAR size I need?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the formula: Qc (kVAR) = P (kW) × (tan φ1 − tan φ2). For a 100 kW factory at 0.75 PF targeting 0.95 PF, you need approximately 55 kVAR. For variable loads, choose an APFC panel with auto-switching steps."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is an APFC panel and do I need one?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An Automatic Power Factor Controller (APFC) panel uses a PF relay to switch capacitor steps in and out automatically as your load varies. Most industrial consumers above 50 kW benefit from APFC over fixed banks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if my power factor stays below 0.85 on my NEPRA bill?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "NEPRA levies a reactive-power surcharge (typically 2–5 PKR/kVArh excess) on industrial consumers falling below 0.85 monthly average PF. For a 200 kW factory, annual penalties can exceed PKR 300,000–400,000."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a detuning reactor with my capacitor bank?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, if your load includes VFDs, welding sets, arc furnaces, UPS systems, or any switched-mode power supply. A 7% detuned reactor (189 Hz tuning) is mandatory for modern industrial facilities in Pakistan."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the lifespan of a capacitor bank in Pakistani conditions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Economy-grade capacitors last 4–7 years in Pakistan's hot climate. IEC 60831-certified MKP polypropylene units last 10–12 years. Premium European-specification units achieve 15+ years."
+        }
+      }
+    ]
+  },
+  "target_links": [
+    "/collections/energy-meters",
+    "/collections/magnetic-contactors",
+    "/collections/mccb",
+    "/collections/vfd",
+    "/blogs/guides/mcb-vs-mccb-vs-rccb-vs-rcbo-guide",
+    "/collections/circuit-breakers"
+  ]
+}
