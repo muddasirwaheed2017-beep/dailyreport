@@ -1,0 +1,62 @@
+<p><em>News &mdash; CNC Electric Pakistan, June 10, 2026.</em></p>
+
+<p>Pakistani solar installers + small-business owners increasingly want to control their solar inverter, battery system, water pump, and UPS from a phone app &mdash; Wi-Fi smart breakers on the AC + DC side make this possible. But picking the wrong smart-breaker topology for a solar + UPS install creates two specific failure modes: (1) the smart breaker becomes a bottleneck when ISP drops, leaving the homeowner unable to cut power during a fault, and (2) the smart breaker's MOV / electronics degrade faster on a battery-fed DC bus than on grid AC. This news post explains the solar + UPS Wi-Fi smart breaker buying rules for Pakistan 2026.</p>
+
+<h2 id="solar-rules">Solar net-metered systems &mdash; Wi-Fi smart breaker rules</h2>
+<ul>
+  <li><strong>AC side:</strong> Wi-Fi MCB or RCBO on the inverter AC output is acceptable per NEPRA 2026 IF it has a manual isolator (IEC 60669-2) upstream + IEC 60898-1 base certification + local-control fallback (not cloud-only). PKR 6,500-12,500 bundle.</li>
+  <li><strong>DC side (PV strings):</strong> Wi-Fi DC smart breakers are NOT recommended for the PV string. DC arcing during smart-breaker contact wear creates fire risk. Use a Wi-Fi MCB for the AC inverter output side only; use a mechanical DC isolator (IEC 60947-3) + DC fuse (IEC 60269-6 gPV class) on the DC side.</li>
+  <li><strong>Battery DC bus:</strong> Same rule &mdash; Wi-Fi smart breakers on battery DC bus carry arcing + heat-aging risk. Use mechanical DC MCB (IEC 60898-1 DC) + battery management system (BMS) for cut-off control.</li>
+  <li><strong>Wi-Fi smart MPPT or smart inverter as alternative:</strong> Many premium 2026 hybrid inverters integrate Wi-Fi controls in the inverter itself, allowing app-controlled enable / disable without needing a separate smart breaker. PKR 195,000-525,000 for 5-10 kW hybrid inverter with built-in Wi-Fi (see our <a href="/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026">Hybrid vs On-Grid vs Off-Grid Solar Inverter buyer guide</a>).</li>
+</ul>
+
+<h2 id="ups-rules">UPS systems &mdash; Wi-Fi smart breaker rules</h2>
+<ul>
+  <li><strong>UPS input side (grid-to-UPS):</strong> Standard Wi-Fi MCB acceptable; protect the UPS from grid surges + overcurrent. Tier 3 IEC 60898-1 Wi-Fi MCB PKR 4,500-8,500.</li>
+  <li><strong>UPS output side (UPS-to-loads):</strong> Standard Wi-Fi MCB acceptable; allows app-controlled load shedding during long outages. Same price tier.</li>
+  <li><strong>UPS battery cable (DC side):</strong> NEVER use a consumer-grade Wi-Fi MCB on the battery DC cable. DC arcing + battery short-circuit current up to 8,000A would weld a Wi-Fi MCB contacts. Use mechanical DC battery fuse (IEC 60269-6) + battery cut-off switch.</li>
+</ul>
+
+<h2 id="local-control">Why local-control fallback matters for solar + UPS</h2>
+<p>Pakistani solar + UPS installations are usually in homes / small offices with intermittent ISP service. Pakistani PTA international-gateway throttling events affect cloud-based smart devices 30-50 hours per year (typical PTCL / Stormfiber / Nayatel customer experience). For solar + UPS, this means:</p>
+<ul>
+  <li>During ISP outage, cloud-only Wi-Fi MCB becomes uncontrollable &mdash; you can't turn the load circuit off without going to the physical breaker</li>
+  <li>For UPS during long power outages (load-shedding), ISP often drops too &mdash; cloud-only smart breaker becomes useless precisely when you need it most</li>
+  <li>Local-control protocols (Matter, MQTT, Tasmota, Home Assistant local-control) work over LAN-only without internet &mdash; preferred for solar + UPS reliability</li>
+</ul>
+
+<h2 id="pricing">Pakistani 2026 solar + UPS smart breaker pricing</h2>
+<table>
+  <thead><tr><th>Configuration</th><th>Tier 3 PK manufacturer PKR</th><th>Tier 2 Asian OEM PKR</th></tr></thead>
+  <tbody>
+    <tr><td>5 kW solar AC bundle (Wi-Fi MCB + RCBO + SPD + isolator)</td><td>22,500 - 35,500</td><td>48,500 - 78,500</td></tr>
+    <tr><td>10 kW solar AC bundle</td><td>32,500 - 52,500</td><td>78,500 - 125,000</td></tr>
+    <tr><td>UPS input + output Wi-Fi MCB pair</td><td>9,500 - 16,500</td><td>22,500 - 38,500</td></tr>
+    <tr><td>Battery DC fuse + cut-off switch (no smart)</td><td>4,500 - 8,500</td><td>9,500 - 16,500</td></tr>
+    <tr><td>Hybrid inverter with built-in Wi-Fi (alternative to separate smart breaker)</td><td>n/a</td><td>5 kW PKR 195,000-325,000</td></tr>
+  </tbody>
+</table>
+
+<h2 id="install-sequence">Solar + UPS install sequence with smart breakers</h2>
+<ol>
+  <li>Solar PV strings &rarr; DC fuse (mechanical, IEC 60269-6 gPV) &rarr; DC isolator (mechanical) &rarr; inverter DC input</li>
+  <li>Inverter AC output &rarr; <strong>Wi-Fi MCB or Wi-Fi RCBO</strong> (IEC 60898-1) &rarr; Type 2 SPD &rarr; mechanical isolator (NEPRA-required) &rarr; main DB</li>
+  <li>UPS grid input &rarr; <strong>Wi-Fi MCB</strong> (input protection) &rarr; UPS</li>
+  <li>UPS output &rarr; <strong>Wi-Fi MCB</strong> (load shedding control) &rarr; protected loads</li>
+  <li>UPS battery (DC) &rarr; DC fuse (mechanical, IEC 60269-6) &rarr; battery cut-off switch &rarr; UPS battery terminal</li>
+</ol>
+
+<h2 id="related">Related buying guides</h2>
+<ul>
+  <li><a href="/blogs/guides/wifi-mcb-wifi-breaker-pakistan-2026-smart-circuit-protection-buyer-guide">WiFi MCB / WiFi Breaker Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/3-phase-wifi-breaker-guide-pakistan">3-Phase WiFi Breaker Guide Pakistan</a></li>
+  <li><a href="/blogs/news/ups-price-in-pakistan-2026-online-line-interactive-standby-news-iec-62040">UPS Price in Pakistan 2026 &mdash; News</a></li>
+  <li><a href="/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026">Hybrid vs On-Grid vs Off-Grid Solar Inverter</a></li>
+  <li><a href="/blogs/guides/lithium-battery-price-in-pakistan-2026-lifepo4-48v-buyer-guide-with-dc-protection">Lithium Battery Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/dc-distribution-box-price-pakistan-2026-12v-24v-48v-off-grid-buyer-guide">DC Distribution Box Buyer Guide</a></li>
+  <li><a href="/blogs/guides/wifi-smart-breaker-troubleshooting-backup-guide-pakistan-2026-when-wifi-or-internet-goes-down">WiFi Smart Breaker Offline Fallback Guide</a></li>
+  <li><a href="/collections/wifi-smart-circuit-breakers">WiFi Smart Circuit Breakers Collection</a></li>
+</ul>
+
+<h2 id="cta">Need a solar + UPS Wi-Fi smart breaker bundle for your project?</h2>
+<p>Send your solar capacity + UPS rating + battery configuration on WhatsApp <strong>+92 326 1111 376</strong>. We'll spec the bundle with NEPRA-compliant breakers + protection + Wi-Fi control + PKR pricing in 24 hours. Free Pakistan delivery + COD: Karachi, Lahore, Islamabad, Multan, Peshawar, Faisalabad.</p>

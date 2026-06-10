@@ -1,0 +1,73 @@
+<p><em>News &mdash; CNC Electric Pakistan, June 10, 2026.</em></p>
+
+<p>Pakistani buyers shopping for WiFi smart breakers + smart switches in 2026 face a new compliance layer most retailers don't mention: NEPRA's 2026 prosumer rules + Pakistan Telecommunication Authority (PTA) smart-device data residency framework. Choosing an uncertified WiFi MCB or smart switch for a net-metered installation now risks failing the NEPRA audit and voiding the homeowner's net-meter approval. This news post lists which IEC + UL standards the smart device must meet, the PTA registration requirement coming into effect, and the IP rating / Wi-Fi protocol traps Pakistani buyers fall into.</p>
+
+<h2 id="nepra-smart-rule">NEPRA 2026 smart breaker rule &mdash; what it actually says</h2>
+<ul>
+  <li>Any WiFi or app-controlled overcurrent device installed on a net-metered solar circuit must hold IEC 60898-1 (residential) or IEC 60947-2 (industrial) base certification &mdash; the Wi-Fi function is supplemental, not a substitute for the breaker standard</li>
+  <li>Wi-Fi smart breakers must NOT be the sole interrupting device &mdash; a mechanical isolator (IEC 60669-2) must be present upstream so a homeowner can de-energize the system without internet access</li>
+  <li>For systems with battery storage (NEPRA 2026 prosumer category), Type B RCBO is mandatory per IEC 62423 &mdash; consumer-grade Wi-Fi MCBs without Type B RCBO functionality fail the audit</li>
+  <li>Smart device's mobile app must show OFF status verifiably (not just send command) &mdash; cloud-only confirmation is not accepted</li>
+</ul>
+
+<h2 id="pta-data-rule">PTA data residency framework (2026)</h2>
+<p>Pakistan Telecommunication Authority's 2026 smart-device data residency framework requires:</p>
+<ul>
+  <li>Smart-home device control servers must be either accessible from Pakistan (PTA-registered cloud) or run on a Pakistani-server-resident control protocol</li>
+  <li>Devices that depend exclusively on overseas cloud servers (e.g., US-only or EU-only Wi-Fi smart device cloud apps) face throttling or unavailability during PTA international gateway throttling events</li>
+  <li>Open-protocol devices (Matter, Tasmota, Home Assistant local-control) are exempt &mdash; local control bypasses the cloud-server geo restriction</li>
+  <li>See our <a href="/blogs/guides/wifi-smart-breaker-troubleshooting-backup-guide-pakistan-2026-when-wifi-or-internet-goes-down">WiFi Smart Breaker Troubleshooting Guide</a> for offline-fallback architecture</li>
+</ul>
+
+<h2 id="iec-cert">IEC + UL standards your smart breaker must meet</h2>
+<table>
+  <thead><tr><th>Function</th><th>Required standard</th><th>Pakistani retail 2026 typical compliance</th></tr></thead>
+  <tbody>
+    <tr><td>Residential MCB function</td><td>IEC 60898-1</td><td>Tier 3+ premium PK manufacturer compliant; tier 4 budget partial; tier 5 grey-market non-compliant</td></tr>
+    <tr><td>Industrial MCCB function</td><td>IEC 60947-2</td><td>Same tier distribution as above</td></tr>
+    <tr><td>RCBO Type B (battery-system)</td><td>IEC 62423 + IEC 61009-1</td><td>Tier 1-2 only; tier 3 emerging for premium PK manufacturer brand</td></tr>
+    <tr><td>Surge protection (Type 2 AC + DC)</td><td>IEC 61643-11 + 31</td><td>Separate device; tier 2-3 compliant</td></tr>
+    <tr><td>Wi-Fi RF emission</td><td>FCC Part 15 or EN 300 328 + ETSI EN 301 489</td><td>Tier 1-3 generally compliant; tier 4-5 unverified</td></tr>
+    <tr><td>Enclosure IP rating (outdoor solar)</td><td>IEC 60529 IP65+</td><td>Critical &mdash; most consumer-grade smart breakers are IP20 indoor only</td></tr>
+  </tbody>
+</table>
+
+<h2 id="protocol-traps">Three protocol traps Pakistani buyers fall into</h2>
+<ol>
+  <li><strong>Cloud-only Wi-Fi without local control.</strong> When ISP fails or PTA throttles international gateway (happens 30-50 hours/year in Pakistan), the device becomes a brick. Always require local-control fallback (Matter, MQTT, Tasmota, or Home Assistant integration).</li>
+  <li><strong>2.4 GHz only.</strong> Pakistani 2.4 GHz airspace is congested in dense city areas (DHA Lahore, F-sectors Islamabad). Dual-band Wi-Fi (2.4 + 5 GHz) is preferable for installations with weak signal strength.</li>
+  <li><strong>App-only OFF (no physical override).</strong> NEPRA 2026 requires a manual mechanical isolator upstream of any Wi-Fi smart breaker so the system can be de-energized for safety without an app or internet.</li>
+</ol>
+
+<h2 id="six-questions">Six questions to ask before buying a Wi-Fi smart breaker in Pakistan</h2>
+<ol>
+  <li>What IEC 60898-1 or 60947-2 certificate number does this breaker hold? (Demand the actual cert number, not "IEC compliant.")</li>
+  <li>Does it have local-control fallback (Matter, MQTT, Tasmota)? Or cloud-only?</li>
+  <li>What's the IP rating? (IP20 = indoor only; IP65+ for any rooftop / outdoor)</li>
+  <li>Does it integrate with Home Assistant or Tuya local app, or only manufacturer app?</li>
+  <li>What's the warranty + Pakistani dealer warranty replacement process?</li>
+  <li>For solar net-metering: does it have separate Type B RCBO functionality or does it need a separate Type B RCBO device upstream?</li>
+</ol>
+
+<h2 id="recommendations">Pakistani 2026 buyer recommendations</h2>
+<ul>
+  <li><strong>Residential mainstream (Pakistani DHA / Bahria / Defence):</strong> tier 3 Pakistani manufacturer Wi-Fi MCB + separate Type B RCBO + IEC 60898-1 cert + Tuya / Home Assistant compatible. Cost: PKR 4,500-8,500 per breaker + RCBO bundle PKR 6,500-12,500.</li>
+  <li><strong>Solar net-metered residential:</strong> NEPRA-compliant bundle: IEC 60898-1 Wi-Fi MCB + IEC 62423 Type B RCBO + IEC 61643-11 + 31 SPD (AC + DC) + IEC 60669-2 manual isolator upstream. Total: PKR 35,000-65,000.</li>
+  <li><strong>Industrial / commercial:</strong> IEC 60947-2 Wi-Fi MCCB + IEC 61009 RCBO + integration with factory SCADA via Modbus or MQTT (not just consumer Wi-Fi). Total: tier 2-3 PKR 85,000-185,000 per panel.</li>
+  <li><strong>Rural / off-grid:</strong> local-control Wi-Fi MCB with Tasmota or Home Assistant (no cloud dependency) + IP65 enclosure. Tier 3 PK manufacturer PKR 6,500-12,500.</li>
+</ul>
+
+<h2 id="related">Related buying guides</h2>
+<ul>
+  <li><a href="/blogs/guides/wifi-mcb-wifi-breaker-pakistan-2026-smart-circuit-protection-buyer-guide">WiFi MCB / WiFi Breaker Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/wifi-switch-pakistan-2026-best-smart-wall-switch-pakistani-homes-buyer-guide">WiFi Switch Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/smart-switch-board-pakistan-2026-full-db-box-smart-home-wiring-spec-buyer-guide">Smart Switch Board Pakistan 2026 &mdash; Full DB Box Wiring</a></li>
+  <li><a href="/blogs/guides/30-real-wifi-smart-breaker-use-cases-in-pakistan-2026-tubewells-mosques-signboards-rentals-solar">30 Real WiFi Smart Breaker Use Cases Pakistan</a></li>
+  <li><a href="/blogs/guides/wifi-smart-breaker-troubleshooting-backup-guide-pakistan-2026-when-wifi-or-internet-goes-down">WiFi Smart Breaker Offline Fallback Guide</a></li>
+  <li><a href="/blogs/guides/rcbo-price-in-pakistan-2026-type-ac-a-b-buyer-guide">RCBO Type AC vs A vs B Buyer Guide</a></li>
+  <li><a href="/blogs/guides/nepra-2026-net-metering-equipment-checklist-pakistan-complete-list">NEPRA 2026 Net-Metering Equipment Checklist</a></li>
+  <li><a href="/collections/wifi-smart-circuit-breakers">WiFi Smart Circuit Breakers Collection</a></li>
+</ul>
+
+<h2 id="cta">Need a NEPRA-compliant Wi-Fi smart breaker bundle for your project?</h2>
+<p>Send your system type (residential / solar / industrial) on WhatsApp <strong>+92 326 1111 376</strong>. We'll spec IEC-certified Wi-Fi MCB + Type B RCBO + SPD + manual isolator bundle with PKR pricing in 24 hours. Free Pakistan delivery + COD: Karachi, Lahore, Islamabad, Multan, Peshawar, Faisalabad.</p>
