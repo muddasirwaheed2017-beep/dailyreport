@@ -11,19 +11,21 @@
 | 10 | 2026-06-09 | 188 | 81 | 2,894 | $97.79 | 1,325 | 30,500 | 74 | 43.2% | 100% | Best Tiers live (rescued) |
 | 11 | 2026-06-10 | 189 | 79 | 2,897 | $98.76 | 1,324 | 30,372 | 79+ | 43.2% | 100% | Switchboard + PFCB + Cable Lugs + 6 news + UPS + LFP refresh — mega session |
 | **12** | **2026-06-11** | **192** | **83** | **3,050** | **$100.22** | **1,317** | **30,489** | **79+** | **42.06%** | **100%** | Cable Lugs (pre-shipped Day 11). Solar Mounting Structure (Day 14 advance) written. |
+| **13** | **2026-06-12** | **~192–196** | **~83–85** | **~3,050+** | **~$100** | **1,317** | **~30,400** | **80+** | **42.06% (weekly)** | **100%** | Day 15 Buzzer/Bell/Siren written. Day 14 Solar Mounting push pending (7th 403 day). "change over switch" regression pos 6 ⚠️. DR=10. Ahrefs crawler Cloudflare WAF block found. |
 
 ## Sprint Cumulative Summary
 
-| Metric | Day 0 Baseline | Day 12 Current | Net Delta | Day 21 Target | On Track? |
+| Metric | Day 0 Baseline | Day 13 Current | Net Delta | Day 21 Target | On Track? |
 |--------|---------------|----------------|-----------|---------------|-----------|
-| CNC Org KWs | 200 | 192 | -8 | 450+ | ⚠️ Indexing lag (top-3 growing fast) |
-| CNC Pos 1-3 KWs | 68 | 83 | **+15** 🔥 | 90+ | ✅ On track |
-| CNC Org Traffic/mo | 2,916 | 3,050 | **+134** | 5,000+ | ✅ Improving |
-| CNC Traffic Value | ~$90 | $100.22 | **+$10.22** | — | ✅ |
+| CNC Org KWs | 200 | ~192–196 (est) | ~-8 to -4 | 450+ | ⚠️ Indexing lag (top-3 growing fast) |
+| CNC Pos 1-3 KWs | 68 | ~83–85 (est) | **+15–17** 🔥 | 90+ | ✅ On track |
+| CNC Org Traffic/mo | 2,916 | ~3,050+ (est) | **+134+** | 5,000+ | ✅ Improving |
+| CNC Traffic Value | ~$90 | ~$100 (est) | **+$10+** | — | ✅ |
 | Alladin Org KWs | ~1,340 | 1,317 | **-23** ✅ | — | Alladin declining |
-| Perplexity SoV | 43.0% | 42.06% | -0.94% | 55%+ | 🔴 Static/regression |
+| Perplexity SoV | 43.0% | 42.06% | -0.94% | 55%+ | 🔴 Static/regression (social presence needed) |
 | ChatGPT SoV | 100% | 100% | 0 | 100% | ✅ Holding |
-| Live Buying Guides | ~30 | 79+ | **+49** | 100+ | ✅ On track |
+| Live Buying Guides | ~30 | 80+ (est) | **+50+** | 100+ | ✅ On track |
+| DR | — | 10 | — | 12+ | ✅ On track (link building needed) |
 
 ## Key Rank Movements (Day 11 → Day 12)
 
