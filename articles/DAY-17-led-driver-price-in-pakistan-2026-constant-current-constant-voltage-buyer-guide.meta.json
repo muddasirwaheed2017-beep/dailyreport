@@ -1,0 +1,29 @@
+{
+  "blog_id": "89971589186",
+  "handle": "led-driver-price-in-pakistan-2026-constant-current-constant-voltage-buyer-guide",
+  "title": "LED Driver Price in Pakistan 2026 — Constant Current vs Constant Voltage Complete Buyer Guide",
+  "title_tag": "LED Driver Price in Pakistan 2026 — CC vs CV Buyer Guide",
+  "description_tag": "LED driver price in Pakistan 2026. Constant current vs constant voltage, dimmable, waterproof IP67. Full PKR price matrix + wattage calculator + installation guide.",
+  "tags": [
+    "led driver",
+    "led driver price in pakistan",
+    "constant current led driver",
+    "constant voltage led driver",
+    "dimmable led driver",
+    "waterproof led driver",
+    "led strip driver",
+    "led transformer",
+    "12v led driver",
+    "24v led driver",
+    "led driver 350ma",
+    "led driver 700ma",
+    "ip67 led driver",
+    "triac dimmable led driver",
+    "buying guide"
+  ],
+  "summary_html": "Complete LED driver buying guide for Pakistan 2026. Constant current vs constant voltage explained, IP rating selection, dimmability types (TRIAC/0-10V/DALI), wattage derating for 50°C ambient, and full PKR price matrix from 12W to 320W with IEC standards checklist.",
+  "published_at": "2026-06-16T09:00:00+05:00",
+  "author": "CNC Electric Pakistan",
+  "template_suffix": "",
+  "shopify_rescue_command": "curl -s -X POST 'https://cncelectric.myshopify.com/admin/api/2024-10/blogs/89971589186/articles.json' -H 'X-Shopify-Access-Token: $SHOPIFY_TOKEN' -H 'Content-Type: application/json' -d @articles/DAY-17-led-driver-price-in-pakistan-2026-constant-current-constant-voltage-buyer-guide.shopify.json"
+}
