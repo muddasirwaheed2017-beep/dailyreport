@@ -1,0 +1,32 @@
+{
+  "blog_id": "89971589186",
+  "handle": "3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide",
+  "title": "3 Phase Energy Meter Price in Pakistan 2026 — Digital, Smart & DIN Rail Complete Buyer Guide",
+  "title_tag": "3 Phase Energy Meter Price in Pakistan 2026 — Digital, Smart & DIN Rail Guide",
+  "description_tag": "3 phase energy meter price in Pakistan 2026. Digital, smart AMI, bi-directional net metering meters. IEC 62053-21/22 accuracy class guide, CT ratio selection, full PKR price matrix Rs 2,800 – Rs 65,000.",
+  "tags": [
+    "3 phase energy meter",
+    "3 phase energy meter price in pakistan",
+    "energy meter price in pakistan",
+    "digital energy meter pakistan",
+    "smart energy meter pakistan",
+    "din rail energy meter",
+    "kwh meter price pakistan",
+    "bi-directional energy meter",
+    "net metering energy meter",
+    "sub metering pakistan",
+    "AMI meter pakistan",
+    "WAPDA smart meter",
+    "IEC 62053-21",
+    "IEC 62053-22",
+    "DLMS COSEM meter",
+    "power factor meter",
+    "modbus energy meter",
+    "buying guide"
+  ],
+  "summary_html": "Complete 3-phase energy meter buying guide for Pakistan 2026. IEC 62053-21/22 accuracy classes explained (Class 2/1/0.5S), four meter types compared (digital/multi-function/smart AMI/bi-directional), CT ratio selection formula, NEPRA net metering check meter requirements, full PKR price matrix Rs 2,800–Rs 65,000, and 5 costly mistakes to avoid.",
+  "published_at": "2026-06-17T09:00:00+05:00",
+  "author": "CNC Electric Pakistan",
+  "template_suffix": "",
+  "shopify_rescue_command": "curl -s -X POST 'https://cncelectric.myshopify.com/admin/api/2024-10/blogs/89971589186/articles.json' -H 'X-Shopify-Access-Token: $SHOPIFY_TOKEN' -H 'Content-Type: application/json' -d @articles/DAY-18-3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide.shopify.json"
+}

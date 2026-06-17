@@ -13,6 +13,10 @@
 | **12** | **2026-06-11** | **192** | **83** | **3,050** | **$100.22** | **1,317** | **30,489** | **79+** | **42.06%** | **100%** | Cable Lugs (pre-shipped Day 11). Solar Mounting Structure (Day 14 advance) written. |
 | **13** | **2026-06-12** | **~192–196** | **~83–85** | **~3,050+** | **~$100** | **1,317** | **~30,400** | **80+** | **42.06% (weekly)** | **100%** | Day 15 Buzzer/Bell/Siren written. Day 14 Solar Mounting push pending (7th 403 day). "change over switch" regression pos 6 ⚠️. DR=10. Ahrefs crawler Cloudflare WAF block found. |
 | **14** | **2026-06-13** | **193** | **86** | **3,034** | **$100.12** | **1,306** | **30,365** | **80+** | **🚀 65.78%** | **100%** | FIRST REAL site-audit API pull: 75 errors (↓87% from 577). Perplexity SoV BREAKOUT to 65.78% (was 42%). Alladin =0% Perplexity! Day 16 Smart Curtain Switch written. Shopify 403 day 8. Site audit: 31 broken-link pages + 22 404s — URGENT. |
+| **15** | **2026-06-14** | **195** | **89** | **3,090** | **~$101** | **1,295** | **~30,100** | **80+** | **~76%** | **100%** | Industrial Buzzer/Siren guide written. Top-3 +3. Alladin KWs continuing decline. |
+| **16** | **2026-06-15** | **195** | **91** | **3,147** | **~$102** | **1,286** | **28,871** | **80+** | **~80%** | **100%** | Smart Curtain Switch guide written. Top-3 +2. Alladin traffic -1,229 in one day. |
+| **17** | **2026-06-16** | **195** | **92** | **3,153** | **~$103** | **1,282** | **28,845** | **80+** | **91.93% combined** | **100%** | LED Driver guide written. Top-3 target (90+) EXCEEDED. Combined GEO SoV 91.93%. Alladin top-3 -9. |
+| **18** | **2026-06-17** | **195** | **92** | **~3,160** | **~$103** | **~1,280** | **~28,820** | **80+** | **94.52% (Perplexity+ChatGPT+Gemini)** | **100%** | 3-Phase Energy Meter deepening guide written. DR=10. Alladin Perplexity SoV 1.0% (was 28%). Rank tracker: CNC SoV 3.05% stable, all competitors unchanged. Shopify 403 — pre-commit to repo. |
 
 ## Sprint Cumulative Summary
 
@@ -67,6 +71,10 @@
 | 12 (pre-ship) | Cable Lugs IEC 61238 | cable-lugs-crimping-pakistan-2026-iec-61238-din-46235-buyer-guide | ✅ Live |
 | 13 (pre-ship) | Lithium Battery REFRESH | lithium-battery-price-in-pakistan-2026-lifepo4-48v-buyer-guide-with-dc-protection | ✅ Refreshed |
 | 14 (advance) | Solar Mounting Structure | solar-panel-stand-price-in-pakistan-2026-l2-l3-mounting-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 15 | Industrial Buzzer/Bell/Siren | industrial-buzzer-bell-siren-price-pakistan-2026-hooter-audible-alarm-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 16 | Smart Curtain Switch | smart-curtain-switch-price-pakistan-2026-wifi-motorized-curtain-motor-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 17 | LED Driver CC vs CV | led-driver-price-in-pakistan-2026-constant-current-constant-voltage-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 18 | 3-Phase Energy Meter Deepening | 3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
 
 ## Notes / Action Items
 
