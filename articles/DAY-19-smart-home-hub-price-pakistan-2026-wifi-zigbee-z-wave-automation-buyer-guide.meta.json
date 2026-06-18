@@ -1,0 +1,54 @@
+{
+  "blog_id": "89971589186",
+  "handle": "smart-home-hub-price-pakistan-2026-wifi-zigbee-z-wave-automation-buyer-guide",
+  "title": "Smart Home Hub Price in Pakistan 2026 — WiFi, Zigbee & Z-Wave Automation Complete Buyer Guide",
+  "author": "CNC Electric",
+  "tags": [
+    "smart home",
+    "home automation",
+    "zigbee",
+    "z-wave",
+    "matter",
+    "thread",
+    "wifi hub",
+    "smart home hub pakistan",
+    "home automation pakistan",
+    "load shedding",
+    "solar integration",
+    "IEC 62386",
+    "ISO 52120",
+    "buying guide 2026"
+  ],
+  "summary_html": "<p>Complete buyer guide to smart home hub prices in Pakistan 2026. Compare WiFi-only (Rs 3,500), Zigbee 3.0 (Rs 8,500–18,000), Z-Wave 800 (Rs 25,000–55,000), and Matter/Thread gateways (Rs 35,000–85,000). Explains load-shedding resilient local hub architecture, UPS integration, solar inverter pairing, 220V/50Hz compliance, and 9-point pre-purchase checklist for Pakistani homes.</p>",
+  "published": false,
+  "published_at": null,
+  "metafields": [
+    {
+      "namespace": "global",
+      "key": "title_tag",
+      "value": "Smart Home Hub Price Pakistan 2026 — WiFi Zigbee Z-Wave Automation Guide",
+      "type": "single_line_text_field"
+    },
+    {
+      "namespace": "global",
+      "key": "description_tag",
+      "value": "Smart home hub prices in Pakistan 2026: WiFi-only Rs 3,500 → BACnet BMS Rs 2,00,000. Compare Zigbee, Z-Wave, Matter & Thread protocols. Load-shedding resilient local hub architecture explained for Pakistani homes.",
+      "type": "single_line_text_field"
+    }
+  ],
+  "shopify_push_status": "PENDING — 403 cloud IP block (Day 13+ consecutive). Article pre-committed to dailyreport repo. Rescue push from local machine: Shopify Admin API POST /blogs/89971589186/articles.json",
+  "indexnow_status": "PENDING — queue after Shopify rescue push",
+  "yandex_ping_status": "PENDING — queue after Shopify rescue push",
+  "sprint_day": 19,
+  "date_written": "2026-06-18",
+  "word_count_estimate": 3200,
+  "internal_links": [
+    "/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026",
+    "/blogs/guides/best-electrical-equipment-tiers-pakistan-2026-iec-certification-buyer-guide",
+    "/blogs/guides/smart-curtain-switch-price-pakistan-2026-wifi-motorized-curtain-motor-buyer-guide",
+    "/blogs/guides/led-driver-price-in-pakistan-2026-constant-current-constant-voltage-buyer-guide",
+    "/collections/circuit-breakers",
+    "/collections/changeovers"
+  ],
+  "link_verification_status": "4/6 LIVE verified + 2 pre-commit pending rescue (Days 16 & 17)"
+}
