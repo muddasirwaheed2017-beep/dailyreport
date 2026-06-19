@@ -37,12 +37,12 @@ jobs:
         env:
           SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
         run: |
-          if [ -z "$SHOPIFY_TOKEN" ]; then
-            echo "::error::SHOPIFY_TOKEN secret is not set. Add it in Settings → Secrets → Actions."
-            exit 1
-          fi
           ARGS=""
           if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ github.event.inputs.dry_run }}" != "true" ] && [ -z "$SHOPIFY_TOKEN" ]; then
+            echo "::error::SHOPIFY_TOKEN secret is not set. Add it in Settings → Secrets and variables → Actions."
+            exit 1
+          fi
           if [ -n "${{ github.event.inputs.only }}" ]; then ARGS="$ARGS --only ${{ github.event.inputs.only }}"; fi
           echo "Running: node publish-and-verify.js $ARGS"
           node publish-and-verify.js $ARGS
