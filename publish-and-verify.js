@@ -76,7 +76,7 @@ function seoTags(meta) {
 }
 
 async function handleExists(handle) {
-  const url = `https://${SHOP}/admin/api/${API}/blogs/${BLOG_ID}/articles.json?handle=${encodeURIComponent(handle)}&fields=id,handle`;
+  const url = `https://${SHOP}/admin/api/${API}/blogs/${BLOG_ID}/articles.json?handle=${encodeURIComponent(handle)}&fields=id,handle,published_at`;
   const res = await fetch(url, { headers: adminHeaders });
   if (!res.ok) return null;
   const data = await res.json();
@@ -105,15 +105,25 @@ async function createArticle(a) {
   return { ok: res.ok, status: res.status, body: text };
 }
 
-// Verify the public URL actually returns 200 (real proof it's live)
+// Verify the article is actually published. Primary proof = Admin API
+// (published_at set); secondary = public URL returns 200 (may 403 from
+// datacenter IPs behind Shopify's WAF, so it's informational only).
 async function verifyLive(handle) {
   const url = `${PUBLIC_BASE}/${handle}`;
+  let adminLive = false, adminId = null;
+  try {
+    const a = await handleExists(handle);
+    if (a && a.id) {
+      adminId = a.id;
+      adminLive = !!a.published_at; // published_at present = live on storefront
+    }
+  } catch (_) { /* fall through */ }
+  let publicStatus = null;
   try {
     const res = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 publish-verify' }, redirect: 'follow' });
-    return { url, status: res.status, live: res.status === 200 };
-  } catch (e) {
-    return { url, status: 'ERR', live: false, error: e.message };
-  }
+    publicStatus = res.status;
+  } catch (e) { publicStatus = 'ERR'; }
+  return { url, live: adminLive, adminId, status: publicStatus };
 }
 
 (async () => {

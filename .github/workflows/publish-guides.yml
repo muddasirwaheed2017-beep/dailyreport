@@ -1,0 +1,48 @@
+name: Publish CNC guides to Shopify
+
+# Manually triggered: publishes every articles/*.meta.json (with matching .html)
+# to the Shopify "guides" blog and verifies each via the Admin API.
+# Runs on GitHub's runners, whose IPs can reach Shopify (unlike the Claude
+# cloud container, which is firewalled out).
+#
+# REQUIRED ONE-TIME SETUP (you, in GitHub UI):
+#   Repo → Settings → Secrets and variables → Actions → New repository secret
+#   Name: SHOPIFY_TOKEN   Value: shpat_xxxxxxxx  (your Admin API token)
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Optional filename filter (e.g. DAY-20). Leave blank for ALL."
+        required: false
+        default: ""
+      dry_run:
+        description: "Set to true to preview without publishing"
+        required: false
+        default: "false"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Publish + verify
+        env:
+          SHOPIFY_TOKEN: ${{ secrets.SHOPIFY_TOKEN }}
+        run: |
+          if [ -z "$SHOPIFY_TOKEN" ]; then
+            echo "::error::SHOPIFY_TOKEN secret is not set. Add it in Settings → Secrets → Actions."
+            exit 1
+          fi
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ -n "${{ github.event.inputs.only }}" ]; then ARGS="$ARGS --only ${{ github.event.inputs.only }}"; fi
+          echo "Running: node publish-and-verify.js $ARGS"
+          node publish-and-verify.js $ARGS
