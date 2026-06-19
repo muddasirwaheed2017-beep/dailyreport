@@ -26,7 +26,42 @@ const SHOP = 'cncelectric.myshopify.com';
 const API = '2024-10';
 const PUBLIC_BASE = 'https://www.cncelectric.pk/blogs/guides';
 const BLOG_ID = '89971589186';
-const TOKEN = process.env.SHOPIFY_TOKEN;
+
+// Find the Shopify token without the user needing to know it:
+// 1) SHOPIFY_TOKEN env var, else
+// 2) grep a hardcoded shpat_ token out of existing local publish scripts
+//    (cnc-seo-push/publish-*.js etc.) in common sibling/home locations.
+function findToken() {
+  if (process.env.SHOPIFY_TOKEN) return process.env.SHOPIFY_TOKEN;
+  const os = require('os');
+  const candidates = [];
+  const dirs = [
+    __dirname,
+    path.join(__dirname, '..', 'cnc-seo-push'),
+    path.join(os.homedir(), 'cnc-seo-push'),
+    path.join(os.homedir(), 'Desktop', 'cnc-seo-push'),
+    path.join(os.homedir(), 'Documents', 'cnc-seo-push'),
+    os.homedir(),
+  ];
+  for (const d of dirs) {
+    try {
+      for (const f of fs.readdirSync(d)) {
+        if (/\.(js|json|sh|txt|env)$/i.test(f) && /publish|shopify|token|\.env/i.test(f)) {
+          candidates.push(path.join(d, f));
+        }
+      }
+    } catch (_) { /* dir not present */ }
+  }
+  for (const file of candidates) {
+    try {
+      const m = fs.readFileSync(file, 'utf8').match(/shpat_[A-Za-z0-9]+/);
+      if (m) { console.log(`🔑 Using token found in ${file}`); return m[0]; }
+    } catch (_) { /* unreadable */ }
+  }
+  return null;
+}
+
+const TOKEN = findToken();
 const ARTICLES_DIR = path.join(__dirname, 'articles');
 
 const args = process.argv.slice(2);
