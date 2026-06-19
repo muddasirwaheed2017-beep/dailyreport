@@ -1,0 +1,53 @@
+{
+  "blog_id": "89971589186",
+  "handle": "solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide",
+  "title": "Solar Pump Controller Price in Pakistan 2026 — DC, MPPT & VFD Complete Buyer Guide",
+  "author": "CNC Electric",
+  "tags": [
+    "solar pump controller",
+    "solar pump controller price in pakistan",
+    "solar water pump controller",
+    "mppt solar pump inverter",
+    "vfd solar pump",
+    "dc solar pump controller",
+    "solar tubewell pakistan",
+    "solar pump vfd price",
+    "agricultural solar pump",
+    "off grid solar pump",
+    "IEC 62253",
+    "IEC 62109",
+    "buying guide 2026"
+  ],
+  "summary_html": "<p>Complete buyer guide to solar pump controller prices in Pakistan 2026. Compare DC controllers (Rs 15,000), MPPT solar pump VFDs (Rs 55,000–1,80,000), and 15–22 kW drives (Rs 2,00,000+). Covers the AC-VFD vs DC-controller decision, PV array sizing rule (kWp ≈ 1.3–1.5 × motor kW), MPPT voltage-window matching, dual-supply solar+WAPDA operation, dry-run and surge protection, NEPRA off-grid rules, and a 10-point checklist for agricultural tubewells.</p>",
+  "published": false,
+  "published_at": null,
+  "metafields": [
+    {
+      "namespace": "global",
+      "key": "title_tag",
+      "value": "Solar Pump Controller Price in Pakistan 2026 — DC, MPPT & VFD Guide",
+      "type": "single_line_text_field"
+    },
+    {
+      "namespace": "global",
+      "key": "description_tag",
+      "value": "Solar pump controller price in Pakistan 2026: DC Rs 15,000, MPPT solar pump VFD Rs 55,000–1,80,000, 15–22kW drives Rs 2,00,000+. AC vs DC pumps, MPPT array sizing rule, IEC 62253 & dry-run protection for tubewells.",
+      "type": "single_line_text_field"
+    }
+  ],
+  "shopify_push_status": "PENDING — 403 cloud IP block. Article pre-committed to dailyreport repo. Rescue push from local machine: Shopify Admin API POST /blogs/89971589186/articles.json",
+  "indexnow_status": "PENDING — queue after Shopify rescue push",
+  "yandex_ping_status": "PENDING — queue after Shopify rescue push",
+  "sprint_day": 21,
+  "date_written": "2026-06-19",
+  "word_count_estimate": 1850,
+  "internal_links": [
+    "/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026",
+    "/blogs/guides/best-electrical-equipment-tiers-pakistan-2026-iec-certification-buyer-guide",
+    "/blogs/guides/tubewell-pump-control-panel-price-pakistan-2026-dol-star-delta-auto-start-buyer-guide",
+    "/collections/circuit-breakers",
+    "/collections/changeovers",
+    "/collections/voltage-protectors"
+  ],
+  "link_verification_status": "5/6 confirmed live (2 guides + 3 collections); tubewell-control-panel is the Day-20 sibling (pre-commit, push Day 20 before Day 21)"
+}

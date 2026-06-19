@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Ahrefs__public-domain-rating-free",
+      "mcp__Ahrefs__site-explorer-metrics",
+      "mcp__Ahrefs__site-explorer-metrics-history",
+      "mcp__Ahrefs__site-explorer-organic-keywords",
+      "mcp__Ahrefs__site-explorer-pages-by-traffic",
+      "mcp__Ahrefs__site-explorer-top-pages",
+      "mcp__Ahrefs__site-explorer-total-search-volume-history",
+      "mcp__Ahrefs__site-explorer-organic-competitors",
+      "mcp__Ahrefs__rank-tracker-overview",
+      "mcp__Ahrefs__site-audit-issues",
+      "mcp__Ahrefs__brand-radar-sov-overview",
+      "mcp__Ahrefs__brand-radar-sov-overview-entities",
+      "mcp__Ahrefs__management-projects",
+      "mcp__Ahrefs__management-brand-radar-reports",
+      "mcp__Ahrefs__render-scorecard",
+      "mcp__Ahrefs__render-data-table",
+      "mcp__Ahrefs__doc"
+    ]
+  }
+}

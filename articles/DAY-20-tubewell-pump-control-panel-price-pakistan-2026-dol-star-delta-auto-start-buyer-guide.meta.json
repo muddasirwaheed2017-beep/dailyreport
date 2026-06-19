@@ -1,0 +1,54 @@
+{
+  "blog_id": "89971589186",
+  "handle": "tubewell-pump-control-panel-price-pakistan-2026-dol-star-delta-auto-start-buyer-guide",
+  "title": "Tubewell Pump Control Panel Price in Pakistan 2026 — DOL, Star-Delta & Auto-Start Complete Buyer Guide",
+  "author": "CNC Electric",
+  "tags": [
+    "tubewell control panel",
+    "tubewell control panel price in pakistan",
+    "motor control panel pakistan",
+    "submersible pump control panel",
+    "dol starter",
+    "star delta starter",
+    "auto start tubewell panel",
+    "single phasing preventer",
+    "dry run protection",
+    "motor starter pakistan",
+    "IEC 61439",
+    "IEC 60947-4-1",
+    "buying guide 2026"
+  ],
+  "summary_html": "<p>Complete buyer guide to tubewell pump control panel prices in Pakistan 2026. Compare DOL (Rs 8,000), star-delta (Rs 25,000), auto-start with protections (Rs 35,000+), and VFD/soft-start panels. Covers DOL vs star-delta vs VFD starting, the four mandatory protections (single-phasing preventer, overload, dry-run, over/under-voltage), contactor and breaker sizing rule (FLC ≈ HP × 1.5 A), enclosure IP selection, and an 11-point pre-purchase checklist for WAPDA 3-phase tubewells.</p>",
+  "published": false,
+  "published_at": null,
+  "metafields": [
+    {
+      "namespace": "global",
+      "key": "title_tag",
+      "value": "Tubewell Control Panel Price in Pakistan 2026 — DOL, Star-Delta & Auto-Start",
+      "type": "single_line_text_field"
+    },
+    {
+      "namespace": "global",
+      "key": "description_tag",
+      "value": "Tubewell control panel price in Pakistan 2026: DOL Rs 8,000, star-delta Rs 25,000, auto-start with single-phasing & dry-run protection Rs 35,000+. IEC 61439 panel guide, motor sizing rule & protection checklist.",
+      "type": "single_line_text_field"
+    }
+  ],
+  "shopify_push_status": "PENDING — 403 cloud IP block. Article pre-committed to dailyreport repo. Rescue push from local machine: Shopify Admin API POST /blogs/89971589186/articles.json",
+  "indexnow_status": "PENDING — queue after Shopify rescue push",
+  "yandex_ping_status": "PENDING — queue after Shopify rescue push",
+  "sprint_day": 20,
+  "date_written": "2026-06-19",
+  "word_count_estimate": 1900,
+  "internal_links": [
+    "/blogs/guides/best-electrical-equipment-tiers-pakistan-2026-iec-certification-buyer-guide",
+    "/blogs/guides/power-factor-capacitor-bank-price-pakistan",
+    "/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026",
+    "/blogs/guides/solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide",
+    "/collections/circuit-breakers",
+    "/collections/changeovers",
+    "/collections/voltage-protectors"
+  ],
+  "link_verification_status": "5/7 confirmed live (3 guides + 3 collections); solar-pump-controller is the Day-21 sibling (pre-commit, push Day 20 before Day 21)"
+}
