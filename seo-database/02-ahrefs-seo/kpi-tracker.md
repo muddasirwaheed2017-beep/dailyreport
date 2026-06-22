@@ -21,6 +21,7 @@
 | **20** | **2026-06-19** | **197** | **92** | **2,626** | **$95.98** | **1,256** | **28,801** | **91+** | **🔥 100% ALL SURFACES (Perplexity 100% + ChatGPT 100% + Gemini 100%)** | **100%** | Tubewell Pump Control Panel guide written (3-phase DOL, star-delta, phase failure relay, IP65, commissioning). PERFECT GEO SWEEP — first 100% combined SoV. Site audit errors ↓ 84→68 URLs (-19%). Alladin 0% on Perplexity/ChatGPT. Traffic dip -531 flagged (Ahrefs recalibration likely). Rescue queue: 11 articles pending local push. |
 | **21** | **2026-06-20** | **197** | **94** 🔥 | **2,669** | **$96.07** | **1,241** | **29,241** | **92+** | **🔥🔥 100% ALL SURFACES (Day 2 clean sweep)** | **100%** | Solar Pump Controller (DC/MPPT/VFD) — 21st and FINAL sprint guide written + pre-committed. DR=**12** 🔥 SPRINT TARGET HIT. Pos 1–3 NEW HIGH (94). Traffic recovery confirmed (+43 vs Day 20). Alladin -15 KWs today (-99 total during sprint). Combined GEO SoV 100% for 2nd consecutive day. Site audit stable: 68 errors, HS 98. Rescue queue: 12 articles pending local push. **SPRINT COMPLETE.** |
 | **22** | **2026-06-21** | **~197** | **~94** | **~2,669** | **~$96** | **~1,241** | **~29,241** | **92+** | **🔥🔥🔥 100% ALL SURFACES (Day 3 clean sweep)** | **100%** | POST-SPRINT Day 1. Automatic Changeover Switch guide written (fills /collections/changeovers gap, targets "change over switch" pos 6 regression). DR=12 (stable). ⚠️ Industry Parts at 12.34% ChatGPT SoV — first competitor to appear on ChatGPT this sprint — watch. Alladin 0% on Perplexity + ChatGPT. Site audit: 68 errors stable. Rescue queue: 13 articles. |
+| **23** | **2026-06-22** | **~197** | **~94** | **~2,669** | **~$96** | **~1,241** | **~29,241** | **92+** | **🔥🔥🔥🔥 100% ALL SURFACES (Day 4 clean sweep)** | **100%** | POST-SPRINT Day 2. MCB Price Pakistan 2026 — 1P/2P/3P/4P Buyer Guide written. Targets highest-volume electrical protection query; zero quality competition. DR=12 stable. Industry Parts ChatGPT SoV stable 12.34% (no growth). Site audit: 68 errors unchanged. Rescue queue: 10 articles (Days 14–23). |
 
 ## Sprint Cumulative Summary
 
@@ -64,6 +65,16 @@
 | 2026-06-09 | 43.2% | 53.3% | Day 10 |
 | 2026-06-10 | 43.2% | 53.3% | Day 11 |
 | **2026-06-11** | **42.06%** | **51.86%** | Day 12 — both slightly down. Not statistically significant but monitor. |
+| **2026-06-13** | **🚀 65.78%** | **~0%** | Day 14 — BREAKOUT. Alladin eliminated from Perplexity. |
+| **2026-06-14** | **~76%** | **0%** | Day 15 |
+| **2026-06-15** | **~80%** | **0%** | Day 16 |
+| **2026-06-16** | **~91.93% combined** | **0%** | Day 17 — 3-surface combined SoV |
+| **2026-06-17** | **94.52% combined** | **0%** | Day 18 — Alladin Perplexity SoV 1.0% |
+| **2026-06-18** | **90.99% avg** | **0%** | Day 19 — Alladin eliminated Perplexity + ChatGPT |
+| **2026-06-19** | **🔥 100% ALL SURFACES** | **0%** | Day 20 — FIRST PERFECT SWEEP |
+| **2026-06-20** | **🔥 100% ALL SURFACES** | **0%** | Day 21 — Day 2 sweep |
+| **2026-06-21** | **🔥 100% ALL SURFACES** | **0%** | Day 22 — Day 3 sweep. ⚠️ Industry Parts 12.34% ChatGPT |
+| **2026-06-22** | **🔥 100% ALL SURFACES** | **0%** | Day 23 — Day 4 sweep. Industry Parts ChatGPT stable at 12.34% |
 
 ## Buying Guides Published (Sprint)
 
@@ -82,6 +93,12 @@
 | 16 | Smart Curtain Switch | smart-curtain-switch-price-pakistan-2026-wifi-motorized-curtain-motor-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
 | 17 | LED Driver CC vs CV | led-driver-price-in-pakistan-2026-constant-current-constant-voltage-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
 | 18 | 3-Phase Energy Meter Deepening | 3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 19 | Smart Home Hub Pakistan | smart-home-hub-price-pakistan-2026-wifi-zigbee-z-wave-automation-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 20a | Tubewell Pump Control Panel (3P/1P) | tubewell-pump-control-panel-price-pakistan-2026-3-phase-single-phase-motor-starter-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 20b | Tubewell Pump Control Panel (DOL/Star-Delta) | tubewell-pump-control-panel-price-pakistan-2026-dol-star-delta-auto-start-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 21 | Solar Pump Controller DC/MPPT/VFD | solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 22 | Automatic & Manual Changeover Switch | automatic-changeover-switch-price-pakistan-2026-ats-manual-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
+| 23 | MCB 1P/2P/3P/4P Buyer Guide | mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide | ⚠️ Pre-commit only (403 cloud IP) |
 
 ## Notes / Action Items
 
