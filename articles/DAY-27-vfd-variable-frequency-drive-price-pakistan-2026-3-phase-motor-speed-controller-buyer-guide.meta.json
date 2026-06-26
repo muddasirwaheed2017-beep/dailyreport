@@ -1,0 +1,33 @@
+{
+  "day": 27,
+  "date": "2026-06-26",
+  "blog_id": "89971589186",
+  "handle": "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+  "title": "VFD Price in Pakistan 2026 — Variable Frequency Drive 3-Phase Motor Speed Controller Complete Buyer Guide",
+  "summary_html": "Complete VFD (variable frequency drive) price list Pakistan 2026: 0.75 kW to 75 kW in PKR, single-phase-input models, sizing rules, DOL vs VFD comparison, WAPDA fault settings, fault code solutions, and installation requirements for Pakistani grid conditions.",
+  "meta_description": "VFD price in Pakistan 2026: 0.75kW Rs 8,000 to 75kW Rs 530,000+. Single-phase input VFDs for tubewells, sizing guide, WAPDA settings, fault codes. Free buyer guide.",
+  "tags": ["vfd", "variable frequency drive", "ac drive", "inverter drive", "motor speed controller", "frequency converter", "single phase vfd", "3 phase motor controller", "pakistan electrical", "buying guide 2026"],
+  "author": "CNC Electric Pakistan",
+  "published_at": "2026-06-26T08:00:00+05:00",
+  "image_alt": "VFD variable frequency drive price in Pakistan 2026 motor speed controller buyer guide",
+  "internal_links": {
+    "verified_live": [
+      "/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026",
+      "/blogs/guides/power-factor-capacitor-bank-price-pakistan",
+      "/blogs/guides/cable-lugs-crimping-pakistan-2026-iec-61238-din-46235-buyer-guide"
+    ],
+    "pre_commit_only_not_verified_live": [
+      "/blogs/guides/solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide",
+      "/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide",
+      "/blogs/guides/mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide"
+    ],
+    "collection_unverifiable": [
+      "/collections/vfd-variable-frequency-drives"
+    ],
+    "verification_status": "Shopify API returned 403 from cloud IP. Used KPI tracker as proxy. 3/7 links confirmed live (Days 7, 11, 12). 3/7 links to pre-commit-only articles (Days 21, 23, 26 — not yet published on Shopify). 1/7 collection link unverifiable. PUBLISH DEPENDENCY: rescue-push Days 21, 23, 26 from local machine before publishing this article."
+  },
+  "word_count_estimate": 2800,
+  "h2_count": 12,
+  "schema_types": ["Article", "FAQPage"],
+  "shopify_status": "pre-commit (403 cloud IP — rescue push required from local machine)"
+}
