@@ -1,0 +1,36 @@
+{
+  "day": 28,
+  "date": "2026-06-27",
+  "blog_id": "89971589186",
+  "handle": "phase-sequence-relay-price-pakistan-2026-phase-monitoring-under-voltage-protection-buyer-guide",
+  "title": "Phase Sequence Relay Price in Pakistan 2026 — Phase Monitoring & Under-Voltage Protection Complete Buyer Guide",
+  "meta_description": "Phase sequence relay price in Pakistan 2026: basic PSR Rs 800, multi-function phase monitoring Rs 7,000. Protect motors from WAPDA phase failure, phase reversal & voltage drops. Free buyer guide.",
+  "meta_description_length": 191,
+  "tags": ["phase sequence relay", "phase monitoring relay", "under voltage protection", "phase failure relay", "motor protection", "WAPDA protection", "3-phase motor Pakistan", "tubewell motor protection", "electrical equipment Pakistan"],
+  "schema_types": ["Article", "FAQPage"],
+  "faq_count": 6,
+  "internal_links": [
+    {
+      "url": "/blogs/guides/power-factor-capacitor-bank-price-pakistan",
+      "text": "power factor correction for pump motors in Pakistan",
+      "status": "VERIFIED_LIVE_DAY11"
+    },
+    {
+      "url": "/blogs/guides/cable-lugs-crimping-pakistan-2026-iec-61238-din-46235-buyer-guide",
+      "text": "cable lugs for motor terminal connections",
+      "status": "VERIFIED_LIVE_DAY12"
+    },
+    {
+      "url": "/blogs/guides/hybrid-vs-on-grid-vs-off-grid-solar-inverter-price-pakistan-2026",
+      "text": "guide to evaluating electrical equipment suppliers in Pakistan",
+      "status": "VERIFIED_LIVE_DAY7"
+    }
+  ],
+  "internal_link_verification": "3/3 valid — all links verified against KPI tracker confirmed-live handles (Days 7, 11, 12). No broken links.",
+  "word_count_estimate": 2900,
+  "summary_html": "Phase sequence relay price in Pakistan 2026: from Rs 800 (basic) to Rs 35,000+ (motor protection relay). Covers phase monitoring, under-voltage protection, WAPDA settings, wiring guide, and troubleshooting table. Protect your 3-phase motors from WAPDA phase failure, reversal, and low voltage.",
+  "summary_html_length": 295,
+  "shopify_status": "PRE-COMMIT (403 from cloud IP — rescue push required from local machine)",
+  "cluster": "motor-protection",
+  "related_days": [20, 23, 24, 26, 27]
+}
