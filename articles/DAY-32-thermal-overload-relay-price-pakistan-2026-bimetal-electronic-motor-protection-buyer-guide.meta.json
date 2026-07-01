@@ -1,0 +1,34 @@
+{
+  "day": 32,
+  "date": "2026-07-01",
+  "blog_id": "89971589186",
+  "handle": "thermal-overload-relay-price-pakistan-2026-bimetal-electronic-motor-protection-buyer-guide",
+  "title": "Thermal Overload Relay Price in Pakistan 2026 — Bimetal, Electronic & Solid State Motor Protection Complete Buyer Guide",
+  "meta_description": "Thermal overload relay price in Pakistan 2026: bimetal, electronic & solid state from Rs 450–8,500. Motor HP sizing table, trip class guide & FLC setting.",
+  "summary_html": "Complete buyer guide to thermal overload relay prices in Pakistan 2026 — bimetal, electronic and solid state types, motor HP sizing table, trip class selection (Class 10/20/30), FLC adjustment dial guide, WAPDA under-voltage compensation, contactor pairing for motor starter panels, and Pakistan-specific applications: tubewell motors, industrial compressors, HVAC chillers, submersible pumps.",
+  "summary_html_length": 271,
+  "tags": ["thermal overload relay", "overload relay price in pakistan", "bimetal relay", "electronic overload relay", "motor protection relay", "motor starter", "contactor overload relay", "trip class", "FLC setting", "motor protection pakistan"],
+  "internal_links": [
+    {
+      "href": "/blogs/guides/switch-board-price-in-pakistan-2026-distribution-board-msb-buyer-guide",
+      "anchor": "Distribution Board / DB Panel Price in Pakistan 2026 — Complete Buyer Guide",
+      "verified": true,
+      "source": "Day 11a — confirmed live multi-session"
+    },
+    {
+      "href": "/blogs/guides/hybrid-inverter-price-in-pakistan-2026-complete-buyer-guide",
+      "anchor": "Hybrid Inverter Price in Pakistan 2026 — Complete Buyer Guide",
+      "verified": true,
+      "source": "Day 7 — confirmed live all sessions"
+    }
+  ],
+  "internal_links_verified": "2/2 valid",
+  "schema_types": ["Article", "FAQPage"],
+  "faq_count": 6,
+  "word_count_estimate": 3250,
+  "price_tables": 1,
+  "technical_tables": 4,
+  "shopify_status": "pre-commit (Shopify API blocked from cloud IP — rescue push required from local machine)",
+  "topic_cluster": "Motor Control / Motor Starter",
+  "cluster_context": "Completes motor starter cluster: Magnetic Contactor (Day 26) + Thermal Overload Relay (Day 32). Pakistan-specific angles: WAPDA under-voltage FLC compensation, HP-to-relay sizing table for Chinese and locally-assembled motors, Class 20 as Pakistan default, submersible pump critical protection, summer ambient de-rating."
+}
