@@ -1,0 +1,35 @@
+{
+  "day": 33,
+  "date": "2026-07-02",
+  "blog_id": "89971589186",
+  "handle": "soft-starter-price-pakistan-2026-reduced-voltage-motor-starter-buyer-guide",
+  "title": "Soft Starter Price in Pakistan 2026 — AC Motor Soft Starter, Reduced Voltage Starter Complete Buyer Guide",
+  "summary_html": "<p>Soft starter prices in Pakistan 2026 range from <strong>PKR 25,000 (10HP/7.5kW)</strong> to <strong>PKR 480,000 (100HP/75kW)</strong>. Covers soft starter vs DOL vs star-delta vs VFD, HP/kW sizing table with Pakistan ambient de-rating, WAPDA feeder compliance, water hammer prevention for tubewell systems, brand comparison (Siemens, ABB, Schneider, CHINT, LS), panel wiring guide, and parameter settings for pumps, mills, and HVAC.</p>",
+  "tags": ["soft starter", "motor soft starter Pakistan", "reduced voltage starter", "soft starter price Pakistan", "soft starter for pump", "AC motor soft starter", "motor starting Pakistan", "WAPDA current limit", "water hammer prevention", "tubewell soft starter", "soft starter vs VFD", "soft starter vs star delta", "Siemens 3RW Pakistan", "CHINT NJR2 Pakistan", "motor starter Pakistan 2026"],
+  "seo_title": "Soft Starter Price in Pakistan 2026 — AC Motor Soft Starter, Reduced Voltage Starter Complete Buyer Guide",
+  "seo_description": "Soft starter price in Pakistan 2026: PKR 25,000–480,000 by HP/kW rating. Compare soft starter vs DOL vs star-delta vs VFD for pumps, HVAC, mills. WAPDA current limits, sizing table, brands, and buying guide.",
+  "internal_links": [
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+    "/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide",
+    "/blogs/guides/thermal-overload-relay-price-pakistan-2026-bimetal-electronic-motor-protection-buyer-guide",
+    "/blogs/guides/tubewell-pump-control-panel-price-pakistan-2026-dol-star-delta-auto-start-buyer-guide",
+    "/blogs/guides/phase-sequence-relay-price-pakistan-2026-phase-monitoring-under-voltage-protection-buyer-guide"
+  ],
+  "word_count_approx": 3800,
+  "target_keywords": [
+    "soft starter price in Pakistan",
+    "soft starter Pakistan 2026",
+    "AC motor soft starter Pakistan",
+    "reduced voltage starter Pakistan",
+    "soft starter for pump Pakistan",
+    "motor soft start Pakistan"
+  ],
+  "cluster": "motor_control_cluster",
+  "shopify_push_status": "pre-commit only (HTTP 403 cloud IP block)",
+  "v7_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 448,
+    "summary_html_ok": true,
+    "title_duplicate": false
+  }
+}
