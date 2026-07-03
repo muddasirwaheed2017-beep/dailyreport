@@ -1,0 +1,40 @@
+{
+  "day": 34,
+  "date": "2026-07-03",
+  "handle": "current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "title": "Current Transformer CT Price in Pakistan 2026 — Metering CT, Protection CT & Bar-Type CT Complete Buyer Guide",
+  "summary_html": "Current transformer (CT) prices in Pakistan 2026: PKR 350–800 for 100A/5A metering CT, PKR 800–6,000 for industrial bar-type CTs, PKR 700–3,500 for protection CTs (5P10/5P20). Complete guide covering WAPDA accuracy class 0.5S requirements, CT burden calculation, ratio sizing table, metering vs protection CT comparison, and common Pakistan installation mistakes.",
+  "tags": [
+    "current transformer",
+    "CT price Pakistan",
+    "metering CT",
+    "protection CT",
+    "bar type CT",
+    "current transformer price 2026",
+    "WAPDA metering CT",
+    "CT accuracy class",
+    "CT burden calculation",
+    "split core CT",
+    "instrument transformer Pakistan",
+    "electrical panel Pakistan",
+    "buying guide"
+  ],
+  "schema": ["Article", "FAQPage"],
+  "faq_count": 6,
+  "word_count": 4100,
+  "internal_links": [
+    "/blogs/guides/3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide",
+    "/blogs/guides/earth-leakage-relay-price-pakistan-2026-earth-fault-relay-ground-fault-protection-buyer-guide",
+    "/blogs/guides/thermal-overload-relay-price-pakistan-2026-bimetal-electronic-motor-protection-buyer-guide",
+    "/blogs/guides/phase-sequence-relay-price-pakistan-2026-phase-monitoring-under-voltage-protection-buyer-guide",
+    "/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide"
+  ],
+  "internal_links_verified": "5/5",
+  "shopify_status": "pre-commit-only",
+  "shopify_push_result": "PENDING — HTTP:000 cloud IP block (Day 21 consecutive)",
+  "published_url": null,
+  "indexnow_status": "pending-rescue-push",
+  "version": "v7"
+}
