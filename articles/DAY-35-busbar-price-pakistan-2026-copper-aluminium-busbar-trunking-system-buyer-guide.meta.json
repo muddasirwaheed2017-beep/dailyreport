@@ -1,0 +1,39 @@
+{
+  "day": 35,
+  "date": "2026-07-04",
+  "handle": "busbar-price-pakistan-2026-copper-aluminium-busbar-trunking-system-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "Busbar Price in Pakistan 2026 — Copper Busbar, Aluminium Busbar & Busbar Trunking System Complete Buyer Guide",
+  "meta_description": "Busbar price in Pakistan 2026: copper busbar Rs 180–1,800/metre, aluminium busbar Rs 90–950/metre, busbar trunking Rs 4,500–45,000/metre. Complete sizing guide, ampacity tables, de-rating for Pakistani ambient temperature, and panel builder checklist.",
+  "summary_html": "<p>Busbar price in Pakistan 2026: copper busbar Rs 180–1,800/metre, aluminium busbar Rs 90–950/metre, busbar trunking Rs 4,500–45,000/metre. Includes ampacity de-rating table for Pakistan ambient 35–55°C, kVA-to-busbar-size reference, copper vs aluminium comparison, busbar trunking guide, and Pakistan panel builder installation checklist with torque specs.</p>",
+  "tags": ["busbar", "copper busbar", "aluminium busbar", "busbar trunking", "busbar price pakistan", "panel busbar", "electrical panel", "power distribution", "LT panel", "MCC"],
+  "published_at": "2026-07-04T09:00:00+05:00",
+  "word_count": 4400,
+  "schema_types": ["Article", "FAQPage"],
+  "faq_count": 6,
+  "internal_links": [
+    "/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+    "/blogs/guides/mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide"
+  ],
+  "ai_citation_targets": [
+    "busbar price in Pakistan 2026",
+    "copper busbar price Pakistan",
+    "aluminium busbar price Pakistan",
+    "busbar trunking price Pakistan",
+    "busbar ampacity de-rating Pakistan",
+    "busbar size for 100 kVA transformer Pakistan",
+    "busbar trunking system Pakistan factory"
+  ],
+  "cluster": ["panel-components", "power-distribution", "wapda-compliance"],
+  "shopify_status": "PENDING_RESCUE_PUSH",
+  "preflight_committed": true,
+  "v6_preflight": "committed before Shopify push attempt",
+  "v7_link_verification": "4/4 internal links verified against sprint pre-committed HTML files",
+  "v7_post_publish_audit": {
+    "img_missing_alt": 0,
+    "summary_html_length": 468,
+    "title_duplicate": false
+  }
+}
