@@ -132,3 +132,4 @@
 - **"change over switch" regression (pos 1→6):** High-priority keyword (2,300 vol). Needs collection refresh + potential blog post boost. May be SERP reshuffling from Day 11's massive content push.
 - **Ahrefs crawl depth:** Only 6 pages in latest audit. Likely cloud-IP block preventing full crawl. Consider whitelisting Ahrefs IPs in Cloudflare.
 - **Day 14 Solar Mounting Structure:** Written + pre-commit done (2026-06-11). Rescue push needed from local machine. IndexNow pending.
+| 38 | 2026-07-12 | N/A (API) | N/A (API) | N/A (API) | N/A (API) | 16 | 100% (est. — 19th day) | 95.61% (weekly) | MCCB Price Pakistan — Moulded Case Circuit Breaker 100A–630A / Ics vs Icu trap / Temperature derating / Generator 4-pole |
