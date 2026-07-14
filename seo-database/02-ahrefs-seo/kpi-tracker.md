@@ -134,3 +134,4 @@
 - **Day 14 Solar Mounting Structure:** Written + pre-commit done (2026-06-11). Rescue push needed from local machine. IndexNow pending.
 | 38 | 2026-07-12 | N/A (API) | N/A (API) | N/A (API) | N/A (API) | 16 | 100% (est. — 19th day) | 95.61% (weekly) | MCCB Price Pakistan — Moulded Case Circuit Breaker 100A–630A / Ics vs Icu trap / Temperature derating / Generator 4-pole |
 | 39 | 2026-07-13 | N/A (API) | N/A (API) | N/A (API) | N/A (API) | 16 | 100% (est. — 20th day) | 95.61% (weekly) | Terminal Block & Wiring Duct Price Pakistan — Spring-clamp vs screw-clamp / WAPDA panel inspection / thermal cycling / ferrule crimping |
+| 40 | 2026-07-14 | N/A (API) | N/A (API) | N/A (API) | N/A (API) | 16 | 100% (est. — 21st day) | 95.61% (weekly) | PVC/GI/Flexible Conduit Price Pakistan — UV cracking / WAPDA GI compliance / motor flexible conduit / load-shedding expansion / 35% fill ratio |

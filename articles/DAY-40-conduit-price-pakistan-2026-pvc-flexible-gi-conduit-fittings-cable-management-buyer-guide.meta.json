@@ -1,0 +1,45 @@
+{
+  "day": 40,
+  "date": "2026-07-14",
+  "blog_id": "89971589186",
+  "handle": "conduit-price-pakistan-2026-pvc-flexible-gi-conduit-fittings-cable-management-buyer-guide",
+  "title": "Conduit Price in Pakistan 2026 — PVC, GI & Flexible Conduit, Fittings & Cable Management Complete Buyer Guide",
+  "summary_html": "<p>Conduit price in Pakistan 2026: PVC conduit 20mm Rs. 45–140/m, GI conduit 20mm Rs. 110–320/m, flexible conduit 20mm Rs. 90–180/m. 5 price tables: PVC (16mm–63mm), GI (16mm–50mm), flexible (16mm–50mm), conduit fittings (bends/junctions/couplings/saddles), and conduit tools. Pakistan-specific guidance: UV/heat degradation of standard PVC in 45–50°C summers, WAPDA commercial metering GI requirement, load-shedding thermal cycling expansion stress, flexible conduit at motor terminal boxes, and 35% fill-ratio rule for Pakistan thermal conditions. FAQPage schema. Cross-links: Cable Tray, Cable Gland, Terminal Block, VFD, MCB guides.</p>",
+  "tags": ["conduit", "pvc conduit", "gi conduit", "flexible conduit", "conduit price pakistan", "conduit fittings", "cable management", "wapda conduit", "electrical conduit pakistan", "conduit 2026"],
+  "author": "CNC Electric Pakistan",
+  "published_at": "2026-07-14T09:00:00+05:00",
+  "metafields": {
+    "title_tag": "Conduit Price in Pakistan 2026 — PVC, GI & Flexible Conduit Buyer Guide",
+    "description_tag": "Conduit price in Pakistan 2026: PVC conduit Rs. 45–190/m, GI conduit Rs. 110–320/m, flexible conduit Rs. 90–180/m. 5 price tables, WAPDA compliance, UV heat guide, VFD motor wiring, Pakistan selection criteria."
+  },
+  "word_count_approx": 4800,
+  "schema_types": ["Article", "FAQPage"],
+  "faq_count": 6,
+  "price_tables": 5,
+  "internal_links": [
+    {"handle": "cable-tray-price-in-pakistan-2026-iec-61537-buyer-guide", "anchor": "Cable Tray Price in Pakistan 2026"},
+    {"handle": "cable-gland-price-pakistan-2026-metal-plastic-armoured-ip68-buyer-guide", "anchor": "Cable Gland Price Pakistan 2026"},
+    {"handle": "terminal-block-price-pakistan-2026-din-rail-wiring-duct-panel-wiring-accessories-buyer-guide", "anchor": "Terminal Block & Wiring Duct Price Pakistan 2026"},
+    {"handle": "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide", "anchor": "VFD Price Pakistan 2026"},
+    {"handle": "mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide", "anchor": "MCB Price Pakistan 2026"}
+  ],
+  "cluster": "cable-management",
+  "pakistan_angles": [
+    "PVC conduit UV and heat degradation (45-50°C ambient, 65-75°C wall surface) — brittleness in 3-5 years",
+    "Load-shedding thermal cycling expansion stress — 37mm expansion per 15m run, expansion couplings required",
+    "WAPDA commercial/industrial metering GI conduit compliance requirement",
+    "Flexible conduit at motor terminal boxes — vibration fracture prevention",
+    "35% fill ratio rule for Pakistan 45°C+ ambient temperature"
+  ],
+  "ai_citation_targets": [
+    "conduit price in pakistan 2026",
+    "pvc conduit price pakistan",
+    "gi conduit price pakistan",
+    "flexible conduit price pakistan",
+    "wapda conduit requirement",
+    "conduit size selection pakistan"
+  ],
+  "shopify_status": "pre-committed — rescue push pending (HTTP:000 cloud IP block, Day 27 consecutive)",
+  "v6_preflight": "committed to dailyreport repo before push attempt",
+  "v7_link_verification": "pending — see daily report Step 4.6"
+}
