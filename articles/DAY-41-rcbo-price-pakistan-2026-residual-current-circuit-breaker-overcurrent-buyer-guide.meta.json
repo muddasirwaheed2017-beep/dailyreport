@@ -1,0 +1,65 @@
+{
+  "day": 41,
+  "date": "2026-07-15",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "handle": "rcbo-price-pakistan-2026-residual-current-circuit-breaker-overcurrent-buyer-guide",
+  "title": "RCBO Price in Pakistan 2026 — Residual Current Circuit Breaker with Overcurrent Protection Complete Buyer Guide",
+  "summary_html": "<p>Complete RCBO price guide for Pakistan 2026. Type AC RCBO (B-curve 30mA) from Rs. 850–Rs. 3,200 per piece. Type A RCBO (solar/VFD/EV circuits) from Rs. 2,200–Rs. 6,500. 2-Pole generator RCBO from Rs. 1,400–Rs. 4,800. Includes RCBO vs MCB+RCCB comparison, Type A vs Type AC selection for Pakistan solar and EV charger circuits, B-curve vs C-curve guide, Pakistan DB space calculation, bathroom circuit compliance, and EV charger RCBO specification. Prices for Karachi, Lahore, and Islamabad markets — July 2026.</p>",
+  "tags": ["rcbo", "rcbo price pakistan", "residual current circuit breaker", "combined mcb rcd", "type a rcbo", "type ac rcbo", "rcbo ev charger", "rcbo solar inverter", "bathroom circuit protection", "earth leakage protection", "electrical safety pakistan", "buying guide 2026"],
+  "seo_title": "RCBO Price in Pakistan 2026 — Rs. 850–Rs. 6,500 | Type AC, Type A, B/C Curve, EV Charger",
+  "seo_description": "RCBO price in Pakistan 2026: Type AC Rs. 850–Rs. 3,200, Type A (solar/EV) Rs. 2,200–Rs. 6,500, 2P generator Rs. 1,400–Rs. 4,800. Type A vs AC selection, EV charger spec, bathroom compliance, Pakistan DB space guide.",
+  "target_keywords": [
+    "rcbo price in pakistan 2026",
+    "rcbo price pakistan",
+    "type a rcbo pakistan",
+    "rcbo ev charger pakistan",
+    "rcbo vs rccb pakistan",
+    "combined mcb rcd pakistan",
+    "bathroom rcbo pakistan",
+    "rcbo solar inverter pakistan"
+  ],
+  "word_count_approx": 4700,
+  "internal_links": [
+    {
+      "handle": "mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+      "anchor": "MCB",
+      "source_day": 23,
+      "verified": true
+    },
+    {
+      "handle": "rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+      "anchor": "RCCB",
+      "source_day": 24,
+      "verified": true
+    },
+    {
+      "handle": "spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+      "anchor": "SPD Surge Protection Device",
+      "source_day": 25,
+      "verified": true
+    },
+    {
+      "handle": "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+      "anchor": "VFD",
+      "source_day": 27,
+      "verified": true
+    },
+    {
+      "handle": "earth-leakage-relay-price-pakistan-2026-earth-fault-relay-ground-fault-protection-buyer-guide",
+      "anchor": "Earth Leakage Relay",
+      "source_day": 30,
+      "verified": true
+    }
+  ],
+  "cluster": "Protection cluster — MCB (D23) + RCCB (D24) + SPD (D25) + Earth Leakage Relay (D30) + RCBO (D41)",
+  "v7_link_verification": "5/5 VALID — verified against pre-committed article files",
+  "v7_post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 487,
+    "summary_html_ok": true,
+    "title_duplicate_check": "RCBO guide — unique topic, no prior RCBO article in sprint"
+  },
+  "shopify_push_status": "PENDING — HTTP:000 cloud IP block (Day 28 consecutive). Rescue push required from local machine.",
+  "preflight_commit": "Step 4.5 complete — files pre-committed to dailyreport repo before push attempt"
+}
