@@ -1,0 +1,28 @@
+{
+  "day": 45,
+  "date": "2026-07-19",
+  "blog_id": "89971589186",
+  "handle": "din-rail-power-supply-24vdc-price-pakistan-2026-smps-panel-psu-5a-10a-20a-buyer-guide",
+  "title": "DIN Rail Power Supply 24VDC Price in Pakistan 2026 — SMPS Panel PSU 5A / 10A / 20A Complete Buyer Guide",
+  "author": "CNC Electric Pakistan",
+  "tags": ["DIN rail power supply", "24VDC PSU Pakistan", "SMPS price Pakistan", "Meanwell price Pakistan", "panel power supply Pakistan", "24V power supply price Pakistan", "DIN rail PSU 2026", "control panel supply", "PLC power supply Pakistan", "UPS function PSU"],
+  "summary_html": "<p>Complete 2026 buyer guide for 24VDC DIN rail SMPS power supplies in Pakistan. Covers pricing from Rs. 2,800 to Rs. 32,000+, the 70% derating rule for Pakistan summer heat, wide-range 85–265VAC input selection for WAPDA transient protection, UPS-function PSU options for load-shedding PLC continuity, redundant PSU wiring, and 7 costly PSU mistakes with PKR cost estimates. Covers 5A, 10A, 20A, and 40A ratings with Meanwell-class vs generic Chinese PSU comparison.</p>",
+  "image_alt": "DIN rail power supply 24VDC price Pakistan 2026 — SMPS panel PSU 5A 10A 20A Meanwell-class buyer guide",
+  "published": false,
+  "shopify_status": "preflight_only",
+  "rescue_push_required": true,
+  "internal_links": [
+    "/blogs/guides/pilot-lamp-indicator-light-price-pakistan-2026-led-220vac-24vdc-stack-light-beacon-buyer-guide",
+    "/blogs/guides/pushbutton-selector-switch-price-pakistan-2026-emergency-stop-pilot-lamp-operator-panel-buyer-guide",
+    "/blogs/guides/interposing-relay-control-relay-price-pakistan-2026-plc-interface-signal-relay-buyer-guide",
+    "/blogs/guides/digital-timer-switch-price-pakistan-2026-astro-timer-time-relay-buyer-guide",
+    "/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide"
+  ],
+  "internal_links_verified": "5/5",
+  "broken_handles": 0,
+  "word_count_approx": 4600,
+  "tables": 4,
+  "faq_questions": 6,
+  "cluster": "power-supply-timing",
+  "cluster_role": "24VDC supply source for all 24VDC control circuit elements (pilot lamps, pushbuttons, interposing relays, timers, 24VDC contactors)"
+}
