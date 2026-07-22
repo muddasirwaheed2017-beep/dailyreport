@@ -1,0 +1,338 @@
+<!-- DAY-48 | Phase Failure Relay Price Pakistan 2026 — Voltage Asymmetry, WAPDA Summer Sag & Motor Protection Buyer Guide -->
+<!-- Handle: phase-failure-relay-price-pakistan-2026-voltage-monitoring-under-voltage-asymmetry-buyer-guide -->
+<!-- Published: 2026-07-22 | Author: CNC Electric Pakistan -->
+
+<h1>Phase Failure Relay Price Pakistan 2026 — Voltage Asymmetry, WAPDA Summer Sag & Motor Protection Buyer Guide</h1>
+
+<p><strong>Voltage asymmetry is the number one cause of 3-phase motor burnout in Pakistan — and most thermal overload relays miss it entirely.</strong> When WAPDA's summer load pressure pushes one phase to 380 V while another sags to 340 V, the voltage asymmetry can exceed 5 %. At 5 % asymmetry, motor current unbalance reaches 25–50 %, rotor temperatures spike by 25 °C, and winding insulation begins to degrade. A thermal overload relay set correctly for full load current sees nothing unusual — until the motor has already been burning for months.</p>
+
+<p>A phase failure relay (also called a voltage monitoring relay or 3-phase monitoring relay) watches voltage directly: it measures R-Y-B phase voltages, calculates asymmetry, and trips the contactor within 0.1–5 seconds when any threshold is crossed. This guide covers what to set, what to buy, what it costs in Pakistan 2026 (PKR), and the seven mistakes that make phase failure relay installations fail.</p>
+
+<p><em>This guide extends the <a href="/blogs/guides/phase-sequence-relay-price-pakistan-2026-phase-monitoring-under-voltage-protection-buyer-guide">Phase Sequence Relay &amp; Phase Monitoring Buyer Guide (2026)</a>. Read that first if you need basics on phase sequence and phase loss detection.</em></p>
+
+<hr>
+
+<h2>What Voltage Asymmetry Actually Does to a Motor</h2>
+
+<p>Three-phase motors are designed for balanced voltages — R, Y, and B within ±1 % of each other. In practice, Pakistan's WAPDA grid supplies industrial feeders at 380–415 V (3-phase) with asymmetry that varies from &lt;1 % at night to 4–8 % during summer peak hours (June–September, 14:00–22:00).</p>
+
+<p>The physics is counterintuitive: a <em>small</em> voltage unbalance produces a <em>large</em> current unbalance. The National Electrical Manufacturers Association (NEMA) rule of thumb: 1 % voltage asymmetry → 6–10 % current asymmetry. At 5 % voltage asymmetry, one winding can carry 30–50 % more current than the others. This is localised heating — the thermal overload relay, which averages across all three phases using a bimetal strip, misses the hot winding entirely.</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Voltage Asymmetry (%)</th><th>Current Asymmetry (est.)</th><th>Rotor Temp Rise (above rated)</th><th>Expected Motor Life Reduction</th><th>NEMA/IEC Guidance</th></tr></thead>
+<tbody>
+<tr><td>&lt;1 %</td><td>&lt;6 %</td><td>+2–5 °C</td><td>Negligible</td><td>Normal operation</td></tr>
+<tr><td>1–2 %</td><td>6–15 %</td><td>+5–10 °C</td><td>10–15 % reduction</td><td>Acceptable — monitor</td></tr>
+<tr><td>2–3 %</td><td>15–25 %</td><td>+10–18 °C</td><td>25–35 % reduction</td><td>NEMA: derate to 95 %</td></tr>
+<tr><td>3–5 %</td><td>25–40 %</td><td>+18–30 °C</td><td>35–60 % reduction</td><td>Trip or derate to 85 %</td></tr>
+<tr><td>&gt;5 %</td><td>&gt;40 %</td><td>&gt;30 °C</td><td>&gt;60 % reduction</td><td>Trip immediately</td></tr>
+</tbody>
+</table>
+
+<p><strong>Pakistan reality:</strong> Sialkot, Faisalabad, and Lahore industrial feeders routinely hit 3–5 % asymmetry during July–August. Motors running at this condition every summer lose roughly half their expected winding life per year of exposure.</p>
+
+<hr>
+
+<h2>WAPDA Summer Voltage Sag — What It Is and How to Set Your Relay</h2>
+
+<p>Pakistan's WAPDA summer peak (June–September) combines maximum industrial load, agricultural tubewell load, and air conditioning load. The result is a predictable daily voltage sag pattern on most industrial feeders:</p>
+
+<ul>
+<li><strong>Night (23:00–07:00):</strong> 400–415 V, asymmetry &lt;1.5 %. Voltage is closest to specification.</li>
+<li><strong>Morning (07:00–12:00):</strong> 390–405 V, asymmetry 1–3 %. Acceptable for most motors.</li>
+<li><strong>Afternoon peak (12:00–22:00):</strong> 350–385 V on heavily loaded feeders, asymmetry 3–8 %. This is the damage window.</li>
+</ul>
+
+<h3>Under-Voltage Trip Setting</h3>
+
+<p>The standard Pakistan under-voltage trip threshold is <strong>85 % of nominal</strong> (IEC 60038 and most relay manufacturers). For a 380 V system: 85 % × 380 V = 323 V. However, for Pakistan's WAPDA conditions, a more protective setting is recommended:</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Installation Type</th><th>Recommended Under-V Trip</th><th>Rationale</th><th>Pakistan Context</th></tr></thead>
+<tbody>
+<tr><td>Continuous process (textile, paper)</td><td>340 V (89 % of 380 V)</td><td>Motor efficiency collapses below 340 V</td><td>Sialkot/Faisalabad summer norm: 350–365 V</td></tr>
+<tr><td>DOL-started motors ≤15 kW</td><td>330 V (87 %)</td><td>DOL starting current manageable above 330 V</td><td>Common tubewell + general industry</td></tr>
+<tr><td>Star-delta or soft-starter motors</td><td>320 V (84 %)</td><td>Reduced-voltage starting tolerates lower supply</td><td>Larger motors, compressors</td></tr>
+<tr><td>VFD-controlled motors</td><td>300 V (79 %)</td><td>VFD DC bus regulation absorbs sag to ≈300 V</td><td>See <a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD guide</a> for detail</td></tr>
+<tr><td>Sensitive CNC / pump with ΔP control</td><td>350 V (92 %)</td><td>Process accuracy requires tighter voltage window</td><td>Lahore engineering workshops</td></tr>
+</tbody>
+</table>
+
+<h3>Asymmetry Trip Setting</h3>
+
+<p>Most phase failure relays offer asymmetry trip from 2 % to 10 %. For Pakistan, set <strong>3 % for motors ≥11 kW</strong> and <strong>5 % for motors ≤7.5 kW</strong>. Motors &lt;7.5 kW are less sensitive to asymmetry damage because winding mass relative to current is higher.</p>
+
+<h3>Time Delay Setting</h3>
+
+<p>Set the trip time delay to <strong>3–5 seconds</strong> (not zero). Why: WAPDA switching events during load shedding create momentary voltage dips that recover within 1–2 seconds. A zero-delay relay trips on every switching event — causing nuisance trips and wear on the contactor. A 3-second delay filters switching transients while still catching genuine sustained asymmetry. Exception: for motors already running hot (above 70 % rated temperature by thermostat), use 1-second delay.</p>
+
+<hr>
+
+<h2>Auto-Restart vs Manual-Reset — Pakistan Motor Application Guide</h2>
+
+<p>Phase failure relays offer two output modes after a trip: automatic restart (relay re-energises when voltage recovers) or manual reset (operator must press reset button). This choice has PKR consequences.</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Mode</th><th>When to Use</th><th>When NOT to Use</th><th>Pakistan Scenario</th></tr></thead>
+<tbody>
+<tr><td><strong>Auto-restart</strong></td><td>Unattended pumps, HVAC fans, conveyor systems</td><td>Any machine with a rotating blade, spindle, or cutting tool</td><td>Rooftop cooling tower fans, irrigation pumps, cooling water pumps — auto-restart restores after load-shedding recovery without operator</td></tr>
+<tr><td><strong>Manual reset</strong></td><td>Machine tools, compressors, grinders, anything with safety interlocks</td><td>Remote or hard-to-access installations</td><td>Lathe, mill, shaper — NEQS and ILO safety guidelines require manual reset for machines with rotating tooling. Unexpected restart = injury risk</td></tr>
+<tr><td><strong>Auto with delay (5–20 s)</strong></td><td>Process pumps, boiler feed, cooling water — where loss of flow &gt;20 s causes damage</td><td>Not suitable for single-phase motors</td><td>Chiller condenser water pumps in Karachi textile finishing — process temperature rises within 30 s of pump loss; auto-restart with 10 s delay standard practice</td></tr>
+</tbody>
+</table>
+
+<p><strong>Load-shedding interaction:</strong> In Pakistan, load-shedding returns with a surge — voltage may temporarily overshoot to 430–440 V for 2–3 cycles before settling. Set the <strong>over-voltage trip</strong> to 115 % of nominal (437 V) with a 5-second delay to catch sustained over-voltage while ignoring the return surge transient.</p>
+
+<hr>
+
+<h2>Time Delay Coordination with Motor Starter</h2>
+
+<p>Phase failure relay trip delay must coordinate with the starter type — otherwise the relay may trip during normal DOL starting (which causes a brief voltage dip on the feeder) or during star-delta transition (which causes a brief interruption).</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Starter Type</th><th>Starting Event</th><th>Typical Dip Duration</th><th>Relay Trip Delay Minimum</th><th>Recommended Setting</th></tr></thead>
+<tbody>
+<tr><td>DOL (≤7.5 kW)</td><td>Inrush 6–7× FLC causes feeder voltage dip</td><td>0.5–1.5 s</td><td>2 s</td><td>3 s</td></tr>
+<tr><td>DOL (7.5–22 kW)</td><td>Larger inrush, bigger dip</td><td>1–2.5 s</td><td>3 s</td><td>4–5 s</td></tr>
+<tr><td>Star-delta (open transition)</td><td>Transition causes 1–2 cycle interruption</td><td>0.1–0.3 s (plus starting dip)</td><td>5 s (covers starting + transition)</td><td>5 s</td></tr>
+<tr><td>Star-delta (closed transition)</td><td>Smooth transition via resistor</td><td>Starting dip only (0.5–1.5 s)</td><td>2 s</td><td>3 s</td></tr>
+<tr><td>Soft starter</td><td>Ramp up over 5–15 s; low inrush</td><td>Minimal dip (&lt;0.5 s)</td><td>1 s</td><td>2–3 s (see <a href="/blogs/guides/soft-starter-price-pakistan-2026-reduced-voltage-motor-starter-buyer-guide">Soft Starter guide</a>)</td></tr>
+<tr><td>VFD</td><td>DC bus charges; no line dip during start</td><td>None</td><td>1 s</td><td>2 s (see <a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD guide</a>)</td></tr>
+</tbody>
+</table>
+
+<p><strong>Wiring note:</strong> Connect the phase failure relay to the supply side of the <a href="/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide">contactor</a> (the 3-phase bus), not the load side. The relay must see supply voltage, not motor back-EMF during a coast-down.</p>
+
+<hr>
+
+<h2>Phase Failure Relay vs Thermal Overload Relay — What Each Catches</h2>
+
+<p>A common Pakistan panel builder mistake is to assume the <a href="/blogs/guides/thermal-overload-relay-price-pakistan-2026-bimetal-electronic-motor-protection-buyer-guide">thermal overload relay</a> covers everything. It does not.</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Fault Condition</th><th>Thermal Overload Relay</th><th>Phase Failure Relay</th><th>Winner</th></tr></thead>
+<tbody>
+<tr><td>Mechanical overload (blocked rotor)</td><td>✅ Trips in 2–20 s</td><td>⚠️ May trip on phase loss after motor stall</td><td>Thermal OL</td></tr>
+<tr><td>Phase loss (complete phase failure)</td><td>⚠️ Trips eventually (slow — motor continues on 2 phases)</td><td>✅ Trips in &lt;1 s (direct voltage measurement)</td><td>Phase Failure Relay</td></tr>
+<tr><td>Voltage asymmetry 3–5 %</td><td>❌ Does not detect (current average looks normal)</td><td>✅ Trips in 3–5 s (direct asymmetry measurement)</td><td>Phase Failure Relay only</td></tr>
+<tr><td>Under-voltage sustained</td><td>❌ Does not detect (current may even appear light if motor is lightly loaded)</td><td>✅ Trips per set threshold</td><td>Phase Failure Relay only</td></tr>
+<tr><td>Over-voltage sustained</td><td>❌ Does not detect</td><td>✅ Trips per set threshold</td><td>Phase Failure Relay only</td></tr>
+<tr><td>Wrong phase sequence (wiring error)</td><td>❌ Does not detect</td><td>✅ Trips on phase reversal (most models include sequence check)</td><td>Phase Failure Relay only</td></tr>
+<tr><td>Overheating from ambient temp</td><td>✅ Ambient-compensated bimetal responds</td><td>❌ Does not detect</td><td>Thermal OL</td></tr>
+</tbody>
+</table>
+
+<p><strong>Conclusion:</strong> Use both. The thermal overload relay protects against mechanical overload. The phase failure relay protects against supply quality faults. They are complementary, not redundant. Total cost of adding a phase failure relay: PKR 800–3,500 per motor starter.</p>
+
+<hr>
+
+<h2>Phase Failure Relay Price Pakistan 2026 — PKR Price Tables</h2>
+
+<h3>Table 1 — Basic Phase Failure / Monitoring Relays (DIN Rail)</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Type</th><th>Functions</th><th>Output</th><th>Price Range (PKR)</th><th>Best Use</th></tr></thead>
+<tbody>
+<tr><td>Phase loss relay (basic)</td><td>Phase loss only</td><td>1× SPDT relay</td><td>800 – 1,500</td><td>Small motors ≤5.5 kW on clean feeders</td></tr>
+<tr><td>Phase monitoring relay (phase loss + sequence)</td><td>Phase loss + wrong sequence</td><td>1× SPDT relay</td><td>1,200 – 2,200</td><td>Standard Pakistan DOL starters</td></tr>
+<tr><td>Voltage monitoring relay (full protection)</td><td>Phase loss + sequence + under-V + over-V + asymmetry</td><td>1× DPDT relay (or 2× SPDT)</td><td>2,500 – 5,500</td><td>Motors ≥7.5 kW, WAPDA summer exposure</td></tr>
+<tr><td>Voltage monitoring relay + time delay (adjustable)</td><td>Full protection + adjustable trip and return delays</td><td>1× DPDT relay</td><td>3,500 – 7,500</td><td>Process pumps, compressors, critical loads</td></tr>
+<tr><td>Multifunction relay with display</td><td>Full protection + LCD display of live voltages + event log</td><td>2× relay outputs</td><td>7,000 – 18,000</td><td>MCC panels, large motors &gt;30 kW</td></tr>
+</tbody>
+</table>
+
+<h3>Table 2 — By Voltage Range (Pakistan-Specific)</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Voltage Range</th><th>Typical Supply</th><th>Price Range (PKR)</th><th>Note</th></tr></thead>
+<tbody>
+<tr><td>3 × 220 V (Y connected, LV)</td><td>Pakistan single-phase 220 V × 3 from 3 separate phases</td><td>1,500 – 4,000</td><td>Small workshop distribution panels</td></tr>
+<tr><td>3 × 380–415 V (standard)</td><td>Standard Pakistan WAPDA 3-phase industrial supply</td><td>2,500 – 7,500</td><td>Most common — confirm before ordering</td></tr>
+<tr><td>3 × 440–500 V</td><td>Some industrial feeders in FESCO / LESCO HV consumers</td><td>3,000 – 9,000</td><td>Rare — check your transformer tap</td></tr>
+<tr><td>Wide-range (180–480 V auto-detect)</td><td>Any Pakistan supply</td><td>4,500 – 12,000</td><td>Best for variable transformer tap sites</td></tr>
+</tbody>
+</table>
+
+<h3>Table 3 — By Brand Tier</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Tier</th><th>Characteristics</th><th>Price (Full Monitoring, PKR)</th><th>Warranty</th></tr></thead>
+<tbody>
+<tr><td>Economy (Asian OEM, DIN rail)</td><td>Phase loss + sequence, fixed thresholds, no display</td><td>800 – 2,500</td><td>6–12 months</td></tr>
+<tr><td>Mid-range (Pakistan stocking brands)</td><td>Full voltage monitoring, adjustable thresholds, DPDT output</td><td>2,500 – 7,000</td><td>12–18 months</td></tr>
+<tr><td>Premium (IEC-listed European/Japanese)</td><td>Full monitoring + display + event log + CAT III measurement</td><td>7,000 – 25,000</td><td>24–36 months</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>7 Pakistan Phase Failure Relay Installation Mistakes (With PKR Repair Costs)</h2>
+
+<ol>
+<li>
+<strong>Installing on the load side of the contactor.</strong> The relay must measure supply voltage, not motor back-EMF. Load-side connection gives a false voltage reading during motor coast-down and misses supply faults entirely. PKR repair cost if caught late: PKR 3,000–12,000 (motor rewind if asymmetry damage accumulates).
+</li>
+<li>
+<strong>Setting 5-second delay on a zero-delay relay output (using default).</strong> Most economy relays ship with a 0-second trip delay factory default. First WAPDA switching event (common in load-shedding areas) causes nuisance trip. Operator disables the relay entirely. PKR consequence: relay renders worthless after first nuisance trip. PKR 1,200–3,000 for relay replacement + rewiring time.
+</li>
+<li>
+<strong>Using a phase-loss-only relay and assuming it catches asymmetry.</strong> A phase-loss relay only trips when one phase drops to zero (complete failure). Voltage asymmetry of 4 % — which causes 25 °C extra rotor heating — is invisible to it. PKR consequence: motor rewind (PKR 15,000–80,000 depending on kW) after 2–3 Pakistan summers.
+</li>
+<li>
+<strong>Setting under-voltage threshold too low (below 85 %).</strong> Setting the trip at 300 V (79 %) instead of 330 V (87 %) lets the motor run at highly depressed voltage where torque is reduced by the square of voltage. A motor running at 300 V when it should cut out runs at 78 % of rated torque — it can stall on normal load, drawing locked-rotor current silently until the thermal OL trips (too late). PKR consequence: thermal OL trips, motor restarts, stalls again — winding insulation failure within weeks.
+</li>
+<li>
+<strong>Not connecting the relay output to the contactor coil control circuit.</strong> The relay trip output (NC contact) must be wired in series with the start/stop control circuit so that tripping the relay drops the contactor. Installers sometimes wire the relay and forget to connect its output, leaving the relay as a light display with no protective action. PKR consequence: full motor burnout with no protection.
+</li>
+<li>
+<strong>Using auto-restart on machine tools.</strong> As noted above: a lathe or grinder that auto-restarts after a load-shedding event can cause serious injury. PKR consequence: PSQCA and factory inspection fine PKR 25,000–150,000 + compensation liability. Use manual reset for all machines with rotating tooling.
+</li>
+<li>
+<strong>Single relay on multiple motors from one feeder.</strong> A single phase failure relay on the main incomer protects against supply faults at the feeder level, but not individual motor-level faults (single motor overloaded asymmetrically by unbalanced load). Each motor needs its own relay, or the incomer relay supplemented by per-motor thermal overloads. PKR consequence: PKR 8,000–45,000 per motor rewind for the unprotected motors.
+</li>
+</ol>
+
+<hr>
+
+<h2>Complete Installation Checklist (12-Point)</h2>
+
+<ol>
+<li>☐ Confirm supply voltage range and match to relay input range (380–415 V most common in Pakistan)</li>
+<li>☐ Connect relay sensing terminals to supply side of contactor (not load side)</li>
+<li>☐ Set under-voltage trip: 330–340 V for most Pakistan DOL motors</li>
+<li>☐ Set over-voltage trip: 430–440 V (115 % of 380 V)</li>
+<li>☐ Set asymmetry trip: 3 % for motors ≥11 kW; 5 % for motors ≤7.5 kW</li>
+<li>☐ Set trip time delay: 3–5 seconds (filters WAPDA switching transients)</li>
+<li>☐ Set return delay (hysteresis): 5–10 seconds (prevents re-start cycling on oscillating supply)</li>
+<li>☐ Wire relay NC output contact in series with contactor coil control circuit</li>
+<li>☐ Verify trip function: temporarily short one phase at relay input — relay must drop contactor within set delay</li>
+<li>☐ Label relay settings on panel door: UV trip, OV trip, asymmetry %, time delay</li>
+<li>☐ Set auto/manual reset per machine safety classification (manual for rotating tooling)</li>
+<li>☐ Record baseline voltages per phase (R, Y, B) on commissioning day for future reference</li>
+</ol>
+
+<hr>
+
+<h2>Which Relay to Buy — Pakistan 2026 Decision Tree</h2>
+
+<ul>
+<li><strong>Motor ≤5.5 kW on a stable feeder (Karachi port area, KESC):</strong> Economy phase loss + sequence relay (PKR 800–1,500). Basic protection sufficient.</li>
+<li><strong>Motor 7.5–22 kW on WAPDA industrial feeder (Lahore, Faisalabad, Sialkot):</strong> Full voltage monitoring relay with adjustable thresholds (PKR 3,500–7,500). Asymmetry detection essential for summer protection.</li>
+<li><strong>Motor ≥30 kW, MCC application, or critical process pump:</strong> Multifunction relay with display and event log (PKR 7,000–18,000). Event log enables predictive maintenance and WAPDA supply quality documentation.</li>
+<li><strong>Variable transformer tap site (frequent transformer changes or mixed WAPDA/generator supply):</strong> Wide-range auto-detect relay 180–480 V (PKR 4,500–12,000). Eliminates relay replacement when voltage range changes.</li>
+<li><strong>VFD-controlled motor:</strong> Relay on incomer to VFD panel only (not on motor output). VFD handles motor-level voltage regulation — see <a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD buyer guide</a>.</li>
+</ul>
+
+<hr>
+
+<h2>Frequently Asked Questions (Phase Failure Relay Pakistan)</h2>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a phase failure relay and why do I need one in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A phase failure relay (voltage monitoring relay) measures all three supply voltages and trips the motor contactor if it detects phase loss, wrong phase sequence, under-voltage, over-voltage, or voltage asymmetry. In Pakistan, WAPDA summer voltage sag (June–September) commonly causes voltage asymmetry of 3–8% on industrial feeders, which standard thermal overload relays do not detect. A phase failure relay prevents the motor winding damage that asymmetry causes. Price in Pakistan: PKR 800–18,000 depending on features."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is voltage asymmetry and why is it dangerous for motors?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Voltage asymmetry (also called voltage unbalance) is the percentage difference between the highest and lowest phase voltages in a 3-phase supply. Even 3% voltage asymmetry causes 15–25% current asymmetry, raising rotor temperature by 10–18°C and reducing motor life by 25–35%. In Pakistan's summer months, WAPDA industrial feeders frequently hit 3–5% asymmetry during peak load hours (14:00–22:00). A thermal overload relay averages all three phase currents and misses this localised overheating."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What under-voltage trip setting should I use for WAPDA Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most Pakistan DOL motor starters on standard WAPDA feeders, set the under-voltage trip at 330 V (87% of 380 V nominal). For motors that are lightly loaded or in areas with stable supply (Karachi/KESC), 320 V (84%) is acceptable. For sensitive processes (CNC, precision pump), set at 340 V (89%) to protect against efficiency loss. Always combine with a 3–5 second trip time delay to filter WAPDA switching transients during load-shedding events."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I use auto-restart or manual reset on my phase failure relay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use manual reset for any machine with rotating tooling (lathes, grinders, mills, compressors) where unexpected restart could cause injury. Use auto-restart for unattended pumps, cooling tower fans, and HVAC systems where loss of service for more than a few minutes causes process damage. In Pakistan, auto-restart with a 10–20 second delay is common for irrigation pumps and chiller condenser water pumps so they recover automatically after load-shedding without an operator present."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a phase failure relay and a thermal overload relay?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A thermal overload relay detects mechanical overload (excessive current from blocked rotor or overloaded machine) by measuring average current through bimetal strips. It does not detect voltage asymmetry, phase loss (quickly), under-voltage, or over-voltage. A phase failure relay measures supply voltages directly and detects all voltage quality faults, but does not detect mechanical overload. Both are required for complete motor protection — the thermal OL relay and phase failure relay are complementary, not interchangeable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I wire a phase failure relay into a motor starter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Connect the relay's three voltage sensing terminals (L1, L2, L3) to the supply side of the main contactor — before the contactor, not after it. Wire the relay's NC (normally closed) trip output contact in series with the contactor coil control circuit, between the stop button and the coil. When the relay detects a fault and opens its NC contact, the contactor drops out and the motor stops. Never connect sensing terminals to the motor (load) side of the contactor."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What time delay setting should I use to avoid nuisance trips from WAPDA load-shedding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Set the trip time delay to 3–5 seconds for most Pakistan installations. WAPDA load-shedding switching events cause voltage dips that typically recover within 1–2 seconds. A 3-second delay filters these transients while still tripping on genuine sustained faults (asymmetry, under-voltage, phase loss). Also set a return delay (return hysteresis) of 5–10 seconds so the relay waits for the supply to stabilise before allowing restart after a trip."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does a phase failure relay cost in Pakistan 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Phase failure relay price in Pakistan 2026: basic phase-loss-only relays cost PKR 800–1,500; standard phase monitoring relays (phase loss + sequence) cost PKR 1,200–2,200; full voltage monitoring relays with adjustable asymmetry and under/over-voltage thresholds cost PKR 2,500–7,500; multifunction relays with LCD display and event logging cost PKR 7,000–18,000. For most Pakistan industrial motors (7.5–22 kW), a full voltage monitoring relay at PKR 3,500–5,500 provides the best protection-to-cost ratio."
+      }
+    }
+  ]
+}
+</script>
+
+<dl>
+<dt><strong>What is a phase failure relay and why do I need one in Pakistan?</strong></dt>
+<dd>A phase failure relay (voltage monitoring relay) measures all three supply voltages and trips the motor contactor if it detects phase loss, wrong phase sequence, under-voltage, over-voltage, or voltage asymmetry. In Pakistan, WAPDA summer voltage sag (June–September) commonly causes asymmetry of 3–8 % on industrial feeders, which standard thermal overload relays do not detect. Price: PKR 800–18,000.</dd>
+
+<dt><strong>What is voltage asymmetry and why is it dangerous?</strong></dt>
+<dd>Voltage asymmetry is the percentage difference between the highest and lowest phase voltages. Even 3 % voltage asymmetry causes 15–25 % current asymmetry, raising rotor temperature by 10–18 °C and reducing motor life by 25–35 %. Pakistan's summer industrial feeders routinely hit 3–5 % asymmetry during 14:00–22:00 peak hours.</dd>
+
+<dt><strong>What under-voltage trip setting should I use for WAPDA Pakistan?</strong></dt>
+<dd>Set at 330 V (87 % of 380 V) for most Pakistan DOL motor starters. For sensitive processes, use 340 V (89 %). Always add a 3–5 second time delay to filter WAPDA switching transients.</dd>
+
+<dt><strong>Should I use auto-restart or manual reset?</strong></dt>
+<dd>Use manual reset for any machine with rotating tooling (lathes, grinders, compressors). Use auto-restart for unattended pumps, cooling tower fans, and HVAC systems where loss of service causes process damage. In Pakistan, auto-restart with 10–20 second delay is standard for irrigation and chiller water pumps.</dd>
+
+<dt><strong>What is the difference between a phase failure relay and a thermal overload relay?</strong></dt>
+<dd>Thermal overload relays detect mechanical overload via average current; they miss voltage asymmetry, phase loss (quickly), and supply quality faults. Phase failure relays detect supply voltage faults but not mechanical overload. Both are required for complete motor protection.</dd>
+
+<dt><strong>How do I wire a phase failure relay into a motor starter?</strong></dt>
+<dd>Connect sensing terminals (L1, L2, L3) to the supply side of the main contactor. Wire the relay NC output in series with the contactor coil control circuit. Never connect sensing terminals to the motor side of the contactor.</dd>
+
+<dt><strong>What time delay avoids nuisance trips from load-shedding?</strong></dt>
+<dd>Set trip delay to 3–5 seconds. WAPDA switching events create dips that recover in 1–2 seconds. Also set return delay to 5–10 seconds so the relay waits for supply stabilisation before allowing restart.</dd>
+
+<dt><strong>How much does a phase failure relay cost in Pakistan 2026?</strong></dt>
+<dd>Basic phase-loss relay: PKR 800–1,500. Phase monitoring (loss + sequence): PKR 1,200–2,200. Full voltage monitoring (asymmetry + UV + OV): PKR 2,500–7,500. Multifunction with display: PKR 7,000–18,000. Best value for Pakistan 7.5–22 kW motors: PKR 3,500–5,500.</dd>
+</dl>
+
+<hr>
+
+<p><strong>Related guides:</strong></p>
+<ul>
+<li><a href="/blogs/guides/phase-sequence-relay-price-pakistan-2026-phase-monitoring-under-voltage-protection-buyer-guide">Phase Sequence Relay &amp; Phase Monitoring Pakistan 2026 — Basics Guide</a></li>
+<li><a href="/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide">Contactor &amp; Motor Starter Pakistan 2026 — Buyer Guide</a></li>
+<li><a href="/blogs/guides/thermal-overload-relay-price-pakistan-2026-bimetal-electronic-motor-protection-buyer-guide">Thermal Overload Relay Pakistan 2026 — Bimetal vs Electronic Buyer Guide</a></li>
+<li><a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD / Variable Frequency Drive Pakistan 2026 — Motor Speed Control Buyer Guide</a></li>
+<li><a href="/blogs/guides/soft-starter-price-pakistan-2026-reduced-voltage-motor-starter-buyer-guide">Soft Starter Pakistan 2026 — Reduced Voltage Motor Starter Buyer Guide</a></li>
+</ul>
