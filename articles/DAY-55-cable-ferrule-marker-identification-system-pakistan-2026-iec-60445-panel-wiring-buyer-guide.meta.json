@@ -1,0 +1,101 @@
+{
+  "day": 55,
+  "date": "2026-07-29",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "handle": "cable-ferrule-marker-identification-system-pakistan-2026-iec-60445-panel-wiring-buyer-guide",
+  "title": "Cable Ferrule & Cable Marker Price in Pakistan 2026 — IEC 60445 Terminal Marking, Wire Identification System, Panel Wiring Buyer Guide",
+  "title_tag": "Cable Ferrule & Cable Marker Price Pakistan 2026 — IEC 60445 Terminal Marking, Wire ID System",
+  "meta_description": "Cable ferrule & cable marker price in Pakistan 2026. IEC 60445 terminal marking, DIN 46228-4 ferrule colour coding, 3 PKR-costed marking approaches, WAPDA SDO inspection requirements, 5 most expensive labelling mistakes with PKR costs. Complete panel wiring documentation guide.",
+  "summary_html": "<p>Complete guide to cable ferrules and wire marker systems for Pakistani electrical panels in 2026 — IEC 60445 terminal marking convention, DIN 46228-4 ferrule colour coding by conductor cross-section, three PKR-costed approaches (hand-written vs laser-printed vs heat-shrink), WAPDA SDO inspection wire identification requirements, and five most expensive Pakistani panel labelling mistakes with PKR damage costs. Covers 0.5 mm² PLC signal wire through 16 mm² main incoming feeder ferrule sizing. Pakistan-specific content: 45°C ambient ferrule degradation, legacy vs IEC harmonised colour mixing hazard, and VFD U/V/W phase reversal prevention.</p>",
+  "tags": [
+    "cable ferrule pakistan",
+    "wire marker pakistan",
+    "cable identification system",
+    "IEC 60445 terminal marking",
+    "panel wiring documentation",
+    "ferrule price pakistan 2026",
+    "wire ferrule 1.5mm pakistan",
+    "DIN 46228-4 ferrule colour",
+    "WAPDA panel inspection wiring",
+    "bootlace ferrule pakistan"
+  ],
+  "internal_links": [
+    {
+      "handle": "terminal-block-price-pakistan-2026-din-rail-wiring-duct-panel-wiring-accessories-buyer-guide",
+      "anchor": "terminal block",
+      "verified": true,
+      "source_day": "D39"
+    },
+    {
+      "handle": "motor-control-centre-mcc-panel-wiring-pakistan-2026-dol-star-delta-vfd-feeder-buyer-guide",
+      "anchor": "motor control centre (MCC) for a textile plant",
+      "verified": true,
+      "source_day": "D51"
+    },
+    {
+      "handle": "electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide",
+      "anchor": "industrial control panel",
+      "verified": true,
+      "source_day": "D54"
+    },
+    {
+      "handle": "cable-gland-price-pakistan-2026-metal-plastic-armoured-ip68-buyer-guide",
+      "anchor": "cable glands",
+      "verified": true,
+      "source_day": "D36"
+    },
+    {
+      "handle": "interposing-relay-control-relay-price-pakistan-2026-plc-interface-signal-relay-buyer-guide",
+      "anchor": "interposing relay",
+      "verified": true,
+      "source_day": "D42"
+    },
+    {
+      "handle": "pushbutton-selector-switch-price-pakistan-2026-emergency-stop-pilot-lamp-operator-panel-buyer-guide",
+      "anchor": "pushbutton / pilot lamp / operator station",
+      "verified": true,
+      "source_day": "D43"
+    },
+    {
+      "handle": "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+      "anchor": "VFD",
+      "verified": true,
+      "source_day": "D27"
+    },
+    {
+      "handle": "mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+      "anchor": "MCB",
+      "verified": true,
+      "source_day": "D23"
+    },
+    {
+      "handle": "motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide",
+      "anchor": "motor protection relay",
+      "verified": true,
+      "source_day": "D52"
+    },
+    {
+      "handle": "contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide",
+      "anchor": "contactor",
+      "verified": true,
+      "source_day": "D26"
+    },
+    {
+      "handle": "earth-leakage-relay-price-pakistan-2026-earth-fault-relay-ground-fault-current-tripping-buyer-guide",
+      "anchor": "earth leakage relay",
+      "verified": true,
+      "source_day": "D49"
+    }
+  ],
+  "internal_links_verified": "11/11",
+  "broken_handles": 0,
+  "word_count_estimate": 3600,
+  "standards_cited": ["IEC 60445", "IEC 60446", "DIN 46228-4", "IEC 60947-1", "IEC 60364-5-54", "IEC 60364-5-51", "BS 7671"],
+  "faq_count": 8,
+  "schema_types": ["FAQPage"],
+  "cluster": "panel-documentation",
+  "parent_clusters": ["panel-design", "mcc-wiring", "terminal-wiring"],
+  "shopify_status": "pending_rescue_push",
+  "preflight_committed": true
+}
