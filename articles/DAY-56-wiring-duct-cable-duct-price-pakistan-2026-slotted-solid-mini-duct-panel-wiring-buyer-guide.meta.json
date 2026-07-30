@@ -1,0 +1,31 @@
+{
+  "day": 56,
+  "date": "2026-07-30",
+  "handle": "wiring-duct-cable-duct-price-pakistan-2026-slotted-solid-mini-duct-panel-wiring-buyer-guide",
+  "title": "Wiring Duct / Cable Duct Price in Pakistan 2026 — Slotted vs Solid, Mini Duct, Fill Ratio Rules, Panel Wiring Buyer Guide",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "author": "CNC Electric Pakistan",
+  "tags": ["wiring duct", "cable duct", "panel wiring", "slotted duct", "solid duct", "mini duct", "fill ratio", "WAPDA inspection", "MCC panel", "DIN rail", "Pakistan 2026", "buying guide"],
+  "summary_html": "<p>Wiring duct price in Pakistan 2026 — slotted vs solid cable duct, mini-duct for PLC signal wiring, the 40% fill ratio rule for Pakistan's 45°C ambient, WAPDA SDO 5-point duct inspection checklist, PKR pricing across 3 brand tiers, VFD panel duct separation rules, and the 5 duct mistakes that cost Pakistani panel builders PKR 10,000–80,000. Completes the panel-documentation trilogy: layout → identification → containment.</p>",
+  "cluster": "panel-documentation",
+  "parent_cluster": "panel-design",
+  "standards": ["EN 50085-1", "IEC 61537", "IEC 60364-5-52", "BS EN 50085"],
+  "internal_links": [
+    "/blogs/guides/electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide",
+    "/blogs/guides/cable-ferrule-marker-identification-system-pakistan-2026-iec-60445-panel-wiring-buyer-guide",
+    "/blogs/guides/terminal-block-price-pakistan-2026-din-rail-wiring-duct-panel-wiring-accessories-buyer-guide",
+    "/blogs/guides/motor-control-centre-mcc-panel-wiring-pakistan-2026-dol-star-delta-vfd-feeder-buyer-guide",
+    "/blogs/guides/interposing-relay-control-relay-price-pakistan-2026-plc-interface-signal-relay-buyer-guide",
+    "/blogs/guides/cable-gland-price-pakistan-2026-metal-plastic-armoured-ip68-buyer-guide",
+    "/blogs/guides/mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+    "/blogs/guides/conduit-price-pakistan-2026-pvc-flexible-gi-conduit-fittings-cable-management-buyer-guide"
+  ],
+  "word_count_estimate": 3800,
+  "faq_count": 8,
+  "pkr_price_tables": 4,
+  "published": false,
+  "shopify_blocked": true,
+  "shopify_block_reason": "HTTP 000 - complete TCP block from cloud IP (day 43 of block)"
+}
