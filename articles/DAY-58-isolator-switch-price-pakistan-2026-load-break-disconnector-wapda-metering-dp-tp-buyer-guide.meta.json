@@ -1,0 +1,55 @@
+{
+  "day": 58,
+  "date": "2026-08-01",
+  "handle": "isolator-switch-price-pakistan-2026-load-break-disconnector-wapda-metering-dp-tp-buyer-guide",
+  "title": "Isolator Switch Price in Pakistan 2026 — Load-Break Disconnector, WAPDA Metering DP/TP/4P, LOTO Safety & Fuse-Switch Combination Buyer Guide",
+  "blog_id": "89971589186",
+  "tags": ["isolator switch", "disconnector switch", "load break isolator", "WAPDA metering", "DP isolator", "TP isolator", "4P isolator", "fuse switch isolator", "LOTO Pakistan", "IEC 60947-3", "Pakistan 2026", "electrical panel"],
+  "summary_html": "Pakistan's most comprehensive isolator switch buyer guide 2026: load-break vs no-load-break categories (IEC 60947-3), WAPDA metering DP/TP sealed isolator requirements, NEPRA 4P net metering mandatory switch, LOTO Lockout-Tagout factory safety (Punjab/Sindh/KPK Factories Acts), mechanical endurance M0/M1/M2 class vs Pakistan load-shedding 16–28 ops/day survival analysis, 45°C ambient derating rules, HRC fuse-switch isolator sizing, WAPDA SDO 6-point inspection checklist, 7 costly mistakes (PKR 2,000–250,000), 8 FAQs with JSON-LD schema, 5 PKR price tables for DP/TP/4P/fuse-switch isolators 32A–400A.",
+  "word_count_estimate": 4050,
+  "internal_links": [
+    {
+      "handle": "electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide",
+      "anchor": "electrical panel layout design guide",
+      "status": "VALID"
+    },
+    {
+      "handle": "mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide",
+      "anchor": "MCCB buyer guide",
+      "status": "VALID"
+    },
+    {
+      "handle": "automatic-changeover-switch-price-pakistan-2026-ats-manual-buyer-guide",
+      "anchor": "ATS changeover switch guide",
+      "status": "VALID"
+    },
+    {
+      "handle": "mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+      "anchor": "MCB buyer guide",
+      "status": "VALID"
+    },
+    {
+      "handle": "surge-protection-type-1-type-2-coordination-pakistan-2026-spd-lightning-arrester-mains-panel-buyer-guide",
+      "anchor": "SPD Type 1/2 coordination guide",
+      "status": "VALID"
+    }
+  ],
+  "internal_links_verified": "5/5",
+  "broken_handles": 0,
+  "iec_standards": ["IEC 60947-3"],
+  "faq_count": 8,
+  "price_tables": 5,
+  "pakistan_insights": [
+    "Load-shedding mechanical endurance: M0 fails in 71–125 days; M1/M2 required",
+    "WAPDA metering sealed isolator requirements: 63A minimum DP for 1-phase, TP for 3-phase",
+    "NEPRA net metering mandatory 4P lockable isolator requirement",
+    "LOTO Lockout-Tagout under Factories Acts: PKR 50,000–250,000 fine per violation",
+    "45°C ambient derating: 8–25% derating at Pakistan summer panel temperatures"
+  ],
+  "cluster": "protection-isolation",
+  "cross_links_planned": [
+    "D23 MCB", "D38 MCCB", "D22 ATS", "D54 Panel Layout", "D47 SPD"
+  ],
+  "shopify_status": "PRE-COMMITTED — cloud IP block (HTTP 000). Rescue push from local machine required.",
+  "preflight_commit_status": "COMMITTED"
+}
