@@ -1,0 +1,22 @@
+{
+  "day": 59,
+  "date": "2026-08-02",
+  "blog_id": "89971589186",
+  "handle": "cable-tray-price-pakistan-2026-ladder-tray-perforated-tray-industrial-cable-management-buyer-guide",
+  "title": "Cable Tray Price in Pakistan 2026 — Ladder Tray vs Perforated Tray, Industrial Fill Ratio, Corrosion Selection & Cable Separation Buyer Guide",
+  "author": "CNC Electric Pakistan",
+  "tags": ["cable tray", "ladder tray", "perforated tray", "cable management", "IEC 61537", "industrial electrical", "Pakistan", "2026"],
+  "summary_html": "<p>Pakistan industrial cable tray buyer guide — ladder vs perforated tray selection, 50°C fill ratio correction, coastal corrosion lifetime table (6 cities), WAPDA 300mm cable separation rule, BCP 2021 seismic support spacing for Zone 3/4 (Quetta, KPK), ammonia-environment GRP tray requirement, earth bonding IEC 61537 Section 11, fire barrier NFPA 70/IEC 61537 Annex A, sector-specific selection for textile/sugar/cement/pharmaceutical industries. 3 price tables in PKR (ladder HDG, perforated HDG, fittings), 7 costly mistakes with PKR remediation costs, 8-question FAQ schema. August 2026.</p>",
+  "published": false,
+  "shopify_blocked": true,
+  "shopify_block_reason": "Cloud IP HTTP 000 network block — 46th consecutive day",
+  "preflight_committed": "2026-08-02",
+  "internal_links_verified": "6/6",
+  "broken_handles": 0,
+  "word_count_estimate": 4200,
+  "tables": 7,
+  "faq_count": 8,
+  "standards": ["IEC 61537", "IEC 60364-5-52", "NFPA 70", "BCP 2021", "IEC 61439"],
+  "cluster": "cable-management (D40 conduit → D56 wiring duct → D57 bus duct → D59 cable tray)",
+  "differentiator_from_D8": "D8 (cable-tray-price-in-pakistan-2026-iec-61537-buyer-guide) covers general IEC 61537 introduction. D59 covers industrial distribution-level systems: fill ratio correction for Pakistan 50-60°C ambient, coastal corrosion lifetime table, WAPDA cable separation, seismic support spacing BCP 2021, GRP for ammonia environments, sector-specific selection. Different handle, different keywords, genuinely different content."
+}
