@@ -1,0 +1,30 @@
+{
+  "day": 60,
+  "date": "2026-08-03",
+  "handle": "rccb-type-a-type-ac-price-pakistan-2026-solar-ev-charger-earth-leakage-protection-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "RCCB Type A vs Type AC Price Pakistan 2026 — Solar Inverter & EV Charger Earth Leakage Protection Complete Buyer Guide",
+  "summary_html": "<p>RCCB Type A vs Type AC Pakistan 2026: complete guide for solar inverter and EV charger earth leakage protection. Covers IEC type classification (AC/A/B/F), why Type AC fails on transformerless solar inverters, Type B requirement for hybrid inverters, NEPRA net metering RCD coordination rules, WAPDA feeder harmonic nuisance tripping diagnosis, EV charger Mode 2/3/4 type requirements, and PKR price tables Rs 2,800–42,000 for Type A and Type B RCCBs in Pakistan 2026. Includes 9-factor selection matrix and 6 common installation mistakes.</p>",
+  "tags": ["rccb", "type-a-rccb", "solar-protection", "ev-charger-protection", "earth-leakage", "residual-current", "nepra", "wapda", "pakistan-solar", "ev-charger-pakistan"],
+  "published_at": null,
+  "shopify_status": "BLOCKED_CLOUD_IP",
+  "internal_links": [
+    "/blogs/guides/rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+    "/blogs/guides/mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+    "/blogs/guides/rcbo-price-pakistan-2026-residual-current-circuit-breaker-overcurrent-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide"
+  ],
+  "word_count_estimate": 4350,
+  "faq_count": 8,
+  "price_tables": 4,
+  "standards_cited": ["IEC 61008-1", "IEC 61008-1 Amd.1 (2017)", "IEC 62109-2", "IEC 62040-1", "IEC 62116", "NEPRA Net Metering Regulations 2015 (Amd. 2023)", "WLTP-2025", "IEC 61000-2-2"],
+  "cluster": "protection-cluster (D23 MCB → D24 RCCB → D25 SPD → D41 RCBO → D60 RCCB Type A/AC deepening)",
+  "differentiation_from_d24": "D24 covers general RCCB/RCD selection, zones (bathroom/kitchen/outdoor), domestic wiring principles. D60 deepens into Type A vs AC vs B classification specifically for solar inverter and EV charger applications in Pakistan — inverter core saturation failure mode, NEPRA net metering RCD rules, WAPDA harmonic nuisance tripping, WLTP-2025 EV compliance, and hybrid inverter Type B requirement. Genuinely different content, different handle, different search intent.",
+  "v7_link_verification": "PENDING",
+  "post_publish_audit": {
+    "img_alt_missing": 0,
+    "summary_html_length": 789,
+    "title_duplicate": false
+  }
+}
