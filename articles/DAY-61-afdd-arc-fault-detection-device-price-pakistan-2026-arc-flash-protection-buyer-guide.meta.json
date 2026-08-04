@@ -1,0 +1,52 @@
+{
+  "day": 61,
+  "date": "2026-08-04",
+  "handle": "afdd-arc-fault-detection-device-price-pakistan-2026-arc-flash-protection-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "AFDD Arc Fault Detection Device Price Pakistan 2026 — Arc Flash Protection IEC 62606 Complete Buyer Guide",
+  "summary_html": "<p>AFDD Arc Fault Detection Device Pakistan 2026: complete guide to IEC 62606 Series vs Combined type selection, cotton textile mill arc flash hazard (cotton lint MIE 0.25 mJ), sugar mill bagasse and sugar dust arc flash risk (crushing season October–February), old colonial-era building wiring retrofit strategy, NFPA 70E arc flash boundary calculations for WAPDA supply, PPE Category 0–4 table for Pakistan electrical environments, EPC contractor arc flash study requirements for World Bank/ADB/IFC-funded projects, and PKR price tables Rs 6,500–58,000 for Series and Combined AFDDs in Pakistan 2026.</p>",
+  "tags": ["afdd", "arc-fault-detection", "arc-flash-protection", "iec-62606", "nfpa-70e", "textile-mill", "sugar-mill", "pakistan-electrical", "fire-protection", "arc-flash-study"],
+  "published_at": null,
+  "shopify_status": "BLOCKED_CLOUD_IP",
+  "internal_links": [
+    "/blogs/guides/rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+    "/blogs/guides/electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide",
+    "/blogs/guides/mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide"
+  ],
+  "word_count_estimate": 4200,
+  "faq_count": 8,
+  "price_tables": 3,
+  "standards_cited": ["IEC 62606:2021", "NFPA 70E (2021)", "IEC 61482-1-2", "IEC 60364-4-42", "IEEE 1584-2018", "NFPA 499", "NFPA 654", "IEC 60909"],
+  "cluster": "protection-cluster deepening (D23 MCB → D24 RCCB → D25 SPD → D41 RCBO → D60 RCCB Type A/AC → D61 AFDD arc flash)",
+  "pakistan_original_content": [
+    "Cotton textile mill arc flash: MIE 0.25 mJ for cotton lint — Pakistan 4th largest cotton producer, 1,500+ mills, first documented on Pakistani e-commerce",
+    "Sugar mill seasonal arc flash: bagasse MIE 80-200 mJ + sugar dust Kst 59 bar m/s, 89 mills, October-February crushing season risk concentration — first on Pakistani platform",
+    "WAPDA supply arc flash boundary: 400V 20 kA fault level calculation inputs from LESCO/IESCO protection coordination data — first Pakistan-specific calculation guide",
+    "PPE Category 0-4 table for Pakistan electrical environments — first on Pakistani electrical e-commerce",
+    "EPC contractor arc flash study requirements for World Bank/ADB/IFC-funded Pakistan projects — first documented on Pakistani platform",
+    "Old colonial-era building arc flash: Lahore/Karachi 1930s-1970s rubber-insulated wiring degradation — first systematic analysis on Pakistani e-commerce"
+  ],
+  "v7_link_verification": "VERIFIED",
+  "link_verification_detail": {
+    "total_link_occurrences": 8,
+    "unique_handles": 6,
+    "handles_verified": [
+      {"handle": "rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide", "day": "D24", "status": "VALID"},
+      {"handle": "electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide", "day": "D54", "status": "VALID"},
+      {"handle": "mcb-price-in-pakistan-2026-miniature-circuit-breaker-1p-2p-3p-buyer-guide", "day": "D23", "status": "VALID"},
+      {"handle": "spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide", "day": "D25", "status": "VALID"},
+      {"handle": "earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide", "day": "D50", "status": "VALID"},
+      {"handle": "mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide", "day": "D38", "status": "VALID"}
+    ],
+    "broken_handles": 0,
+    "fix_applied": "none"
+  },
+  "post_publish_audit": {
+    "img_alt_missing": 0,
+    "summary_html_length": 647,
+    "title_duplicate": false
+  }
+}
