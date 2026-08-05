@@ -1,0 +1,32 @@
+{
+  "day": 62,
+  "date": "2026-08-05",
+  "blog_id": "89971589186",
+  "handle": "earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+  "title": "Earthing System Design Pakistan 2026 — TN-C-S vs TT vs IT, WAPDA Substation Grounding, Touch & Step Voltage, Solar & EV Charger Complete Buyer Guide",
+  "summary_html": "<p>Complete guide to earthing system design for Pakistan: TT vs TN-C-S vs IT system classification, WAPDA substation grounding zones and step-potential design, 4-probe Wenner soil resistivity testing by region, touch voltage and step voltage calculations, solar PV NEPRA earthing requirements, EV charger earthing rules, PKR price tables for electrodes and conductors, and 7 common mistakes with their repair costs.</p>",
+  "tags": ["Earthing", "Grounding", "TN-C-S", "TT System", "IT System", "WAPDA", "Solar PV", "EV Charger", "IEC 60364", "IEEE 80", "Pakistan 2026", "Buyer Guide"],
+  "seo_title": "Earthing System Design Pakistan 2026 — TN-C-S vs TT vs IT, WAPDA, Touch & Step Voltage, Solar & EV Guide",
+  "seo_description": "Earthing system design Pakistan 2026: TT vs TN-C-S vs IT classification, WAPDA substation earthing, 4-probe Wenner soil test, touch/step voltage calculation, solar NEPRA earthing requirements, EV charger earthing, PKR prices. IEC 60364-5-54 / IEEE 80 compliant guide.",
+  "word_count_estimate": 4400,
+  "faq_count": 8,
+  "price_tables": 3,
+  "internal_links": [
+    "/blogs/guides/rccb-type-a-type-ac-price-pakistan-2026-solar-ev-charger-earth-leakage-protection-buyer-guide",
+    "/blogs/guides/afdd-arc-fault-detection-device-price-pakistan-2026-arc-flash-protection-buyer-guide",
+    "/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "/blogs/guides/rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+    "/blogs/guides/rcbo-price-pakistan-2026-residual-current-circuit-breaker-overcurrent-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/solar-panel-stand-price-in-pakistan-2026-l2-l3-mounting-buyer-guide"
+  ],
+  "internal_links_verified": "7/7 valid",
+  "cluster": "Protection + Earthing deepening (D50 electrode → D62 system design)",
+  "shopify_push_status": "PENDING — cloud IP 403 block (day 49). Pre-committed to dailyreport repo.",
+  "post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 346,
+    "summary_html_ok": true,
+    "duplicate_title_flag": false
+  }
+}
