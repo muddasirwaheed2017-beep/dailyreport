@@ -1,0 +1,26 @@
+{
+  "day": 63,
+  "date": "2026-08-06",
+  "blog_id": "89971589186",
+  "blog_name": "guides",
+  "handle": "electrical-safety-testing-equipment-price-pakistan-2026-insulation-resistance-earth-rcd-pat-tester-buyer-guide",
+  "title": "Electrical Safety Testing Equipment Price Pakistan 2026 — Insulation Resistance Tester, Earth Resistance Tester, RCD Tester, PAT Tester Complete Buyer Guide",
+  "summary_html": "Pakistan's first complete guide to electrical safety testing instruments: insulation resistance testers (meggers), earth resistance testers, RCD trip-time testers, and PAT testers — IEC-standard test procedures, Pakistan-specific applications, NEPRA SQ&P 2025 compliance requirements, and verified 2026 PKR pricing for all instrument categories.",
+  "tags": ["electrical safety testing", "insulation resistance tester", "megger pakistan", "earth resistance tester", "RCD tester", "PAT tester", "NEPRA net metering", "motor testing pakistan", "electrical commissioning", "IEC 61557"],
+  "published": false,
+  "shopify_push_status": "PENDING_403_RESCUE",
+  "word_count_estimate": 4400,
+  "standards_cited": ["IEC 61557-2", "IEC 61557-5", "IEC 61557-6", "IEC 61557-12", "IEC 60990", "IEC 62368-1", "IEC 60364-6", "IEC 60364-7-710", "IEEE 43-2013", "IEEE Std 80-2013", "BS 7671"],
+  "internal_links": [
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "/blogs/guides/rccb-type-a-type-ac-price-pakistan-2026-solar-ev-charger-earth-leakage-protection-buyer-guide",
+    "/blogs/guides/rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+    "/blogs/guides/earth-leakage-relay-price-pakistan-2026-earth-fault-relay-ground-fault-current-tripping-buyer-guide",
+    "/blogs/guides/motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide"
+  ],
+  "internal_links_verified": "6/6",
+  "price_tables": 4,
+  "faq_count": 8,
+  "cluster": "Protection & Verification cluster — closes D49 (ELR) + D50 (earthing electrode) + D60 (RCCB Type A) + D62 (earthing system design)"
+}
