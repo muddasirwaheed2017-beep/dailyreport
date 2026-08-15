@@ -1,0 +1,34 @@
+{
+  "day": 68,
+  "date": "2026-08-15",
+  "handle": "earthing-pit-construction-soil-treatment-pakistan-2026-step-by-step-installation-testing-field-guide",
+  "title": "Earthing Pit Construction & Soil Treatment Pakistan 2026 — Step-by-Step Earth Electrode Installation, Bentonite Compound & Field Testing Guide",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "author": "CNC Electric Pakistan",
+  "tags": ["earthing", "earth electrode", "earthing pit", "bentonite", "GEM compound", "earth rod", "earthing installation", "fall of potential test", "WAPDA earthing", "NEPRA net metering earthing", "soil treatment", "Pakistan 2026", "IEC 60364"],
+  "summary_html": "Complete field installation guide for earthing pits in Pakistan 2026: step-by-step pit dimensions by application, bentonite vs GEM compound selection and quantities, 8 Pakistan-specific failure modes (black cotton soil rod migration, Karachi pH <4.5 corrosion, Islamabad rock substrate counterpoise, solar farm NEPRA Grid Code Amendment 4), connection methods, commissioning test procedures, 5-year maintenance schedule, and PKR price tables for all materials.",
+  "seo_title": "Earthing Pit Construction Pakistan 2026 — Bentonite Treatment, Earth Rod Installation & Field Testing Guide",
+  "meta_description": "Step-by-step earthing pit construction guide for Pakistan 2026. Pit dimensions by application, bentonite vs GEM compound quantities, 8 Pakistan-specific failure modes, commissioning tests & PKR price tables.",
+  "cluster": "Earthing & Protection — D49 ELR → D50 electrode selection → D62 system design → D68 field installation (this guide)",
+  "internal_links": [
+    "/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/rccb-rcd-price-in-pakistan-2026-earth-leakage-circuit-breaker-residual-current-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/earth-leakage-relay-price-pakistan-2026-earth-fault-relay-ground-fault-current-tripping-buyer-guide"
+  ],
+  "word_count_estimate": 4200,
+  "pakistan_firsts": [
+    "Black cotton soil (Vertisol) rod migration anti-migration clamp procedure — Multan/Bahawalpur/RYK (4.2M hectares coverage)",
+    "Karachi pH<4.5 landfill/reclaimed soil: 316L SS rod + Mg sacrificial anode protocol — first on Pakistani e-commerce",
+    "Margalla Hills rock refusal horizontal counterpoise procedure — Islamabad F/G sectors, Murree Road — first on Pakistani e-commerce",
+    "NEPRA net metering lockable IP55 earthing test point requirement (2024-07-01 mandatory) — extracted from LESCO/IESCO field reports",
+    "Solar farm earthmat <1Ω NEPRA Grid Code Amendment 4 (2023) field sizing guidance — first practical protocol on Pakistani platform",
+    "Khewra/Salt Range high-mineral soil GRP/316L electrode requirement — first Pakistan documentation",
+    "Post-monsoon re-commissioning protocol (IEC 60364-6) — first documented checklist for Pakistan",
+    "Combined bentonite+GEM compound treatment rationale and cost — first Pakistan comparative guide"
+  ],
+  "shopify_push_status": "PENDING — HTTP 000 (connection refused) from cloud IP",
+  "preflight_commit": "COMPLETE — v6 preflight"
+}
