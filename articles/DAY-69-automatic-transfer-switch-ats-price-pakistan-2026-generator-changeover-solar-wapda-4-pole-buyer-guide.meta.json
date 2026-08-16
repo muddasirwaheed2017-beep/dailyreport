@@ -1,0 +1,37 @@
+{
+  "day": 69,
+  "date": "2026-08-16",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "handle": "automatic-transfer-switch-ats-price-pakistan-2026-generator-changeover-solar-wapda-4-pole-buyer-guide",
+  "title": "Automatic Transfer Switch Price Pakistan 2026 — Generator Changeover, 4-Pole Requirement, Solar Anti-Islanding & WAPDA Source Selection Buyer Guide",
+  "summary_html": "<p>Pakistan 2026 complete ATS buyer guide: why 4-pole is mandatory for WAPDA TN-C-S systems, NEPRA Grid Code anti-islanding requirements for solar net metering, voltage-sensing settings for Pakistan feeders, PKR price tables for contactor and motorised MCCB ATS, and 7 costly installation mistakes with PKR estimates.</p>",
+  "tags": ["automatic transfer switch", "ATS", "generator changeover", "AMF panel", "load shedding", "WAPDA", "NEPRA", "solar anti-islanding", "4-pole ATS", "Pakistan 2026", "buying guide"],
+  "seo_title": "Automatic Transfer Switch Price Pakistan 2026 — 4-Pole ATS, Generator ATS, Solar Anti-Islanding",
+  "seo_description": "ATS price Pakistan 2026: 25A–630A 4-pole contactor & motorised MCCB ATS. 4-pole mandatory for WAPDA TN-C-S. NEPRA anti-islanding requirements. PKR price tables. Load-shedding settings guide.",
+  "word_count_estimate": 4500,
+  "internal_links": [
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/isolator-switch-price-pakistan-2026-load-break-disconnector-wapda-metering-dp-tp-buyer-guide",
+    "/blogs/guides/rccb-type-a-type-ac-price-pakistan-2026-solar-ev-charger-earth-leakage-protection-buyer-guide",
+    "/blogs/guides/electrical-safety-testing-equipment-price-pakistan-2026-insulation-resistance-earth-rcd-pat-tester-buyer-guide",
+    "/blogs/guides/earthing-pit-construction-soil-treatment-pakistan-2026-step-by-step-installation-testing-field-guide",
+    "/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide"
+  ],
+  "internal_links_total_hrefs": 7,
+  "internal_links_unique": 6,
+  "internal_links_verified": "6/6",
+  "pakistan_firsts": [
+    "4-pole ATS hazard quantification for Pakistan TN-C-S systems with specific loss estimates",
+    "NEPRA Grid Code Amendment 4 (2023) ATS anti-islanding interlock documentation for solar net metering",
+    "WAPDA-specific ATS voltage sensing settings: UV 195V, OV 258V, retransfer 60-90s based on Pakistan feeder data",
+    "K-Electric 3-phase imbalance >8% ATS setting guidance (10% threshold, 10s delay)",
+    "Generator cold-start time reality check: 30-40s winter Islamabad vs 12-20s summer",
+    "Pakistan ATS switching cycle count: 2,920-6,570/year (vs IEC 1M endurance basis)",
+    "3-source ATS wiring schematic for Pakistan solar net metering (WAPDA + solar + gen priority)",
+    "Turbocharger coking hazard from ATS without cool-down at 45°C Pakistan ambient"
+  ],
+  "shopify_status": "PENDING (HTTP 000 - connection refused from cloud IP)",
+  "preflight_committed": true,
+  "link_verification_method": "articles/ folder handle cross-check (Shopify API unavailable)"
+}
