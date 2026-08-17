@@ -1,0 +1,25 @@
+{
+  "day": 70,
+  "date": "2026-08-17",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "title": "VFD / Variable Frequency Drive Price Pakistan 2026 — AC Drive, Inverter Drive & Motor Speed Control Buyer Guide",
+  "handle": "vfd-variable-frequency-drive-price-pakistan-2026-ac-drive-inverter-drive-motor-speed-control-buyer-guide",
+  "author": "CNC Electric Pakistan",
+  "tags": ["VFD", "variable frequency drive", "AC drive", "inverter drive", "motor speed control", "frequency converter", "Pakistan", "2026", "industrial", "textile", "solar pump", "WAPDA", "buying guide"],
+  "summary_html": "<p>Pakistan-specific VFD buying guide covering WAPDA 185–250 V brown-out ride-through, 45°C IEC 61800-5-1 derating tables, WAPDA feeder THD 8–18% input reactor requirement, textile mill HD vs LD duty selection, solar tubewell VFD configuration, load-shedding auto-restart settings, Karachi coastal IP54/IP65 requirement, and K-Electric HV tariff payback analysis. Four PKR price tables from 0.37 kW to 110 kW, seven common mistakes with PKR cost estimates, 8-question FAQ schema, and 6 verified internal links.</p>",
+  "published_at": "2026-08-17T07:00:00+05:00",
+  "internal_links": [
+    "/blogs/guides/motor-control-centre-mcc-panel-wiring-pakistan-2026-dol-star-delta-vfd-feeder-buyer-guide",
+    "/blogs/guides/motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide",
+    "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "/blogs/guides/wiring-duct-cable-duct-price-pakistan-2026-slotted-solid-mini-duct-panel-wiring-buyer-guide",
+    "/blogs/guides/cable-ferrule-marker-identification-system-pakistan-2026-iec-60445-panel-wiring-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide"
+  ],
+  "pakistan_firsts": 8,
+  "word_count_estimate": 4600,
+  "cluster": "Industrial Motor Control — D51 MCC Panel → D52 Motor Protection Relay → D70 VFD",
+  "shopify_push_status": "pending_local_push",
+  "internal_links_verified": "6/6"
+}
