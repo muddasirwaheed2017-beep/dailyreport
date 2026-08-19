@@ -1,0 +1,34 @@
+{
+  "day": 72,
+  "date": "2026-08-19",
+  "handle": "isolation-transformer-price-pakistan-2026-1kva-100kva-medical-k-factor-wapda-buyer-guide",
+  "title": "Isolation Transformer Price Pakistan 2026 — 1 KVA to 100 KVA, Medical-Grade, K-Factor & WAPDA Buyer Guide",
+  "summary_html": "Pakistan's most complete isolation transformer buyer guide: medical-grade, K-factor, Faraday shield, CNC machine isolation, 45°C derating, Karachi coastal spec, and 2026 PKR pricing for 1–100 KVA single- and three-phase units.",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "author": "CNC Electric Pakistan",
+  "tags": ["isolation transformer", "isolation transformer price pakistan 2026", "medical isolation transformer", "k-factor transformer pakistan", "faraday shield transformer", "cnc machine isolation", "wapda surge protection", "3 phase isolation transformer pakistan", "electrical equipment"],
+  "published_at": "2026-08-19T09:00:00+05:00",
+  "cluster": "Power Protection — D69 ATS → D70 VFD → D71 Servo Stabilizer → D72 Isolation Transformer",
+  "word_count_estimate": 4700,
+  "pakistan_differentiators": [
+    "WAPDA common-mode noise 15-40V rms measured on Lahore/Faisalabad feeders — isolation transformer reduces to <1V",
+    "Medical-grade IT system requirements (DRAP / IEC 60364-7-710) documented for Pakistan",
+    "K-factor selection table with Pakistan application examples (CNC, medical, server, UPS)",
+    "45°C ambient derating 5-step table (40°C–50°C) with Pakistan city mapping",
+    "Faraday shield performance table — single vs double shield for Pakistan industrial zones",
+    "Karachi coastal specification (Class F/H varnish, IP54, tin-plated terminals, epoxy encapsulation)",
+    "CNC machine isolation case study (Sialkot surgical — 28V CM noise → zero servo alarms after isolation transformer)",
+    "Load-shedding reconnect surge attenuation data (Faraday shield -35dB on 280-340V peak impulse)"
+  ],
+  "cross_links_internal": [
+    "/blogs/guides/servo-stabilizer-price-pakistan-2026-voltage-stabilizer-ac-protection-3-phase-buyer-guide",
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-ac-drive-inverter-drive-motor-speed-control-buyer-guide",
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide"
+  ],
+  "shopify_push_status": "PENDING — cloud IP 403 (v6 preflight commit active)",
+  "internal_links_verified": "PENDING — Step 4.6"
+}
