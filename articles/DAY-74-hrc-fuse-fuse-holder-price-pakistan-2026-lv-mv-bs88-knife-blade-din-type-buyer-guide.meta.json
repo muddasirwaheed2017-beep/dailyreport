@@ -1,0 +1,28 @@
+{
+  "day": 74,
+  "date": "2026-08-21",
+  "blog_id": "89971589186",
+  "blog_name": "guides",
+  "handle": "hrc-fuse-fuse-holder-price-pakistan-2026-lv-mv-bs88-knife-blade-din-type-buyer-guide",
+  "title": "HRC Fuse & Fuse Holder Price in Pakistan 2026 — LV, MV, BS88, Knife-Blade & DIN-Type Buyer Guide",
+  "summary_html": "Complete 2026 buyer guide for HRC (High Rupturing Capacity) fuses and fuse holders in Pakistan: BS 88, DIN NH, cylindrical, aR semiconductor types; fuse carrier, base, and NH fuse switch disconnectors; breaking capacity sizing for WAPDA transformer fault levels; ambient derating at 40–50°C for Pakistan summer; motor feeder aM/gG selection; price table in PKR; PSQCA/WAPDA compliance notes.",
+  "tags": ["HRC fuse", "fuse holder", "fuse base", "NH fuse", "BS88 fuse", "gG fuse", "aM fuse", "fuse price Pakistan", "electrical protection Pakistan", "switchgear Pakistan", "MCC panel Pakistan", "WAPDA transformer protection", "LV switchgear Pakistan"],
+  "author": "CNC Electric Team",
+  "published": false,
+  "shopify_push_attempted": false,
+  "shopify_push_result": "PENDING_403_EXPECTED",
+  "internal_links_verified": "16/16",
+  "internal_links_broken": 0,
+  "word_count_estimate": 4800,
+  "cluster": "Protection Devices — D74: HRC Fuse (new cluster start after Power Protection D69-D73)",
+  "pakistan_differentiators": [
+    "WAPDA 11kV transformer LV fault level sizing table (5 transformer sizes, 200kVA–2000kVA)",
+    "Pakistan ambient temperature derating table (6 temperature zones, city mapping)",
+    "WAPDA 11kV dropdown fuse cutout selection guidance",
+    "PSCC calculation guidance for Pakistan industrial areas",
+    "Pakistan market BS88 vs DIN NH coverage — which system is used where",
+    "aM motor fuse sizing table (8 motor ratings 2.2–110kW)",
+    "Type 1 vs Type 2 coordination — Pakistan industrial context",
+    "PSQCA/NEPRA compliance notes for import verification"
+  ]
+}
