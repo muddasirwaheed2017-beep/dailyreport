@@ -92,6 +92,13 @@ export const SEEDS = {
   }
 };
 
+// ─── Pairing ─────────────────────────────────────────────────
+// Set WA_PAIR_PHONE (international format, digits only, e.g. 923001234567)
+// to link with an 8-character code typed into the phone instead of scanning a
+// QR. It is a different registration path on WhatsApp's side, so it is worth
+// trying when QR pairing is being refused.
+export const PAIR_PHONE = (process.env.WA_PAIR_PHONE || '').replace(/[^0-9]/g, '');
+
 // ─── Buffering ───────────────────────────────────────────────
 export const FLUSH_QUIET_MS = Number(process.env.WA_FLUSH_QUIET_MS || 90_000);
 export const FLUSH_MAX_MESSAGES = Number(process.env.WA_FLUSH_MAX || 10);

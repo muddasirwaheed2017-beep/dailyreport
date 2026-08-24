@@ -249,6 +249,8 @@ async function main() {
 
   switch (command) {
     case 'listen': {
+      // `npm start -- --pair 923001234567` links with a code instead of a QR.
+      if (flags.pair && flags.pair !== true) process.env.WA_PAIR_PHONE = String(flags.pair);
       const { start } = await import('./listener.js');
       await start();
       // Hold the process open with a referenced timer. A pending promise is
@@ -282,7 +284,7 @@ async function main() {
     default:
       process.stdout.write(
         'wa-notify <command>\n\n' +
-        '  listen                              run the WhatsApp listener\n' +
+        '  listen [--pair <number>]            run the listener; --pair links by code\n' +
         '  catchup <groupName> [--from TS]     re-analyse from a point in time\n' +
         '                      [--dry-run]     ...without pushing or moving the cursor\n' +
         '  import <groupName> <file.jsonl>     merge pasted messages into the store\n' +

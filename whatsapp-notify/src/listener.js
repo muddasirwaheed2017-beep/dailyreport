@@ -17,7 +17,7 @@
 // at a time, stale sockets are torn down and their events ignored, and retries
 // back off.
 // ═══════════════════════════════════════════════════════════════
-import { PATHS } from './config.js';
+import { PATHS, PAIR_PHONE } from './config.js';
 import * as store from './store.js';
 import * as checkpoint from './checkpoint.js';
 import * as registry from './registry.js';
@@ -142,6 +142,31 @@ async function connect(deps, buffer) {
 
   sock.ev.on('creds.update', saveCreds);
 
+  // Pairing-code login. WhatsApp treats this as a different registration path
+  // from the QR, so it can succeed where the QR is being refused. Only ever
+  // requested once, and never for an already-registered device.
+  if (PAIR_PHONE && !paired) {
+    const timer = setTimeout(async () => {
+      if (!isCurrent()) return;
+      try {
+        const code = await sock.requestPairingCode(PAIR_PHONE);
+        const pretty = String(code).match(/.{1,4}/g)?.join('-') || code;
+        line('');
+        line('┌─────────────────────────────────────────────────┐');
+        line(`│  PAIRING CODE:  ${pretty.padEnd(31)}│`);
+        line('│                                                 │');
+        line('│  On the phone: WhatsApp > Settings >            │');
+        line('│  Linked Devices > Link a Device >               │');
+        line('│  "Link with phone number instead"               │');
+        line('└─────────────────────────────────────────────────┘');
+        line(`enter it for +${PAIR_PHONE} — the code expires in about a minute`);
+      } catch (err) {
+        warn(`could not get a pairing code: ${err.message}`);
+      }
+    }, 4_000);
+    if (typeof timer.unref === 'function') timer.unref();
+  }
+
   // After a restart the store may already hold post-cursor messages that were
   // captured but never analysed (shutdown mid-buffer, or a crash). Sweep once
   // on connect so they are not stranded until the next live message arrives.
@@ -174,6 +199,7 @@ async function connect(deps, buffer) {
 
     const { connection, lastDisconnect, qr } = update;
 
+    if (qr && PAIR_PHONE) return; // pairing by code — the QR is not the route
     if (qr) {
       line('');
       line('┌─────────────────────────────────────────────────┐');
