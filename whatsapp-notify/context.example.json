@@ -1,0 +1,79 @@
+{
+  "_comment": "Copy to context.json and replace every value. Delete this key. Nothing here is required — fill in what you know, leave the rest.",
+
+  "company": {
+    "us": "Malik Sons / Cognitive Solutions, Lahore",
+    "supplier": "CNC / Zhejiang Changcheng",
+    "forwarder": "Qasim — Dynamic Logistics",
+    "route": "Ningbo -> Karachi"
+  },
+
+  "people": {
+    "Zoe": "supplier sales contact at CNC — sends PI, PL, FTA and B/L",
+    "Qasim": "freight forwarder — vessel booking, ETD/ETA, clearing",
+    "Shahid": "our side — documents and bank submission",
+    "Ahmed": "our side — shipment tracking"
+  },
+
+  "shipments": {
+    "A": {
+      "status": "arrived Karachi 23 Aug, cleared",
+      "po": "PO26-A",
+      "vessel": "",
+      "etd": "",
+      "eta": "2026-08-23",
+      "notes": "delivered, nothing outstanding"
+    },
+    "B": {
+      "status": "in transit",
+      "po": "PO26-B",
+      "vessel": "",
+      "etd": "",
+      "eta": "2026-09-03",
+      "notes": "FTA certificate still outstanding from supplier"
+    },
+    "C": {
+      "status": "unknown",
+      "notes": ""
+    },
+    "PO27": {
+      "status": "PI stage — packing list being marked against CNC OEM numbers",
+      "po": "PO27",
+      "notes": "PI had a formula error in totals/pcs; only Zoe's latest post-loading PI/PL is valid"
+    }
+  },
+
+  "open_discrepancies": [
+    {
+      "what": "Invoice wording still reads $29,221 against the agreed amount",
+      "amount": "$29,221",
+      "raised": "2026-08-20",
+      "status": "unresolved — reconcile before paying"
+    },
+    {
+      "what": "PI 27 formula error — wrong totals and piece counts",
+      "amount": "",
+      "raised": "2026-08-24",
+      "status": "superseded by Zoe's post-loading PI/PL, confirm before bank submission"
+    }
+  ],
+
+  "payments": [
+    {
+      "what": "Freight — invoice 103.pdf",
+      "amount": "",
+      "due": "",
+      "to": "Dynamic Logistics, Bank Al Habib, IBAN PK75BAHL5535008100017001",
+      "status": "awaiting verification then payment"
+    },
+    {
+      "what": "PO26-B balance to supplier",
+      "amount": "",
+      "due": "",
+      "to": "CNC / Zhejiang Changcheng",
+      "status": ""
+    }
+  ],
+
+  "recent_briefs": []
+}

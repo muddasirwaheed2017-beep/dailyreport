@@ -211,6 +211,20 @@ function doctor() {
   say(`ANTHROPIC_API_KEY   ${process.env.ANTHROPIC_API_KEY ? `set, ${process.env.ANTHROPIC_API_KEY.length} chars` : 'NOT SET — no briefs can be written'}`);
 
   say();
+  say('═══ GROUNDING (context.json) ═══');
+  const g = context.grounding();
+  say(`  company fields   ${g.company}/4`);
+  say(`  people named     ${g.people}`);
+  say(`  shipments known  ${g.shipmentsKnown}/${g.shipmentsTotal}`);
+  say(`  discrepancies    ${g.discrepancies}`);
+  say(`  payments tracked ${g.payments}`);
+  say(`  brief history    ${g.briefs}`);
+  if (g.shipmentsKnown === 0 && g.discrepancies === 0 && g.payments === 0) {
+    say('  EMPTY — briefs will describe what happened but cannot connect it to');
+    say('  your open items. Copy context.example.json to context.json and fill it in.');
+  }
+
+  say();
   say('═══ PAIRING ═══');
   let creds = null;
   try {

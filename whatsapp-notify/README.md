@@ -145,6 +145,31 @@ wa-notify catchup "CNC Shipments" --from "2026-08-22T00:00:00+05:00"
 `--dry-run` to see the batch size without pushing or moving anything. Group
 names match case-insensitively on a substring, so `catchup shipments` works.
 
+## Grounding (context.json)
+
+Briefs work without it, but `context.json` is what lets Claude connect a
+message to something you already care about. Without it a brief can say
+"the invoice arrived"; with it, "the invoice arrived — this is the one still
+showing $29,221".
+
+```bash
+cp context.example.json context.json
+open -e context.json      # replace every value, delete the "_comment" key
+npm run doctor            # confirms how much is filled in
+```
+
+| Section | What it buys you |
+|---|---|
+| `company` | who we are, who the supplier and forwarder are, the route |
+| `people` | briefs say "Zoe" instead of "the supplier contact" |
+| `shipments` | a message gets attached to the shipment it affects |
+| `open_discrepancies` | a known mismatch gets flagged when a related document arrives |
+| `payments` | warnings about a due date nobody has mentioned lately |
+| `recent_briefs` | continuity between batches — maintained automatically, don't edit |
+
+Everything is optional; fill in what you know. `doctor` reports how grounded
+you are and says so plainly when it is empty.
+
 ## Daily digest
 
 The live briefs answer "something just happened". The digest answers "what

@@ -7,14 +7,35 @@
 import { PATHS, CONTEXT_HISTORY_LIMIT } from './config.js';
 import { readJson, writeJsonAtomic, isoOf } from './util.js';
 
+// The grounding handed to Claude on every call. Everything here is optional —
+// the briefs work without it — but each section changes what Claude can notice:
+//
+//   people             lets it say "Zoe" instead of "the supplier"
+//   shipments          lets it connect a message to the shipment it affects
+//   open_discrepancies lets it flag a known mismatch when a related doc arrives
+//   payments           lets it warn about a due date nobody mentioned
+//   recent_briefs      continuity across batches (maintained automatically)
 const TEMPLATE = {
+  company: {
+    us: '',           // e.g. "Malik Sons / Cognitive Solutions, Lahore"
+    supplier: '',     // e.g. "CNC / Zhejiang Changcheng"
+    forwarder: '',    // e.g. "Qasim — Dynamic Logistics"
+    route: ''         // e.g. "Ningbo -> Karachi"
+  },
+  // Who is who, so briefs use names rather than roles.
+  people: {},         // { "Zoe": "supplier sales contact at CNC", ... }
+  // Keyed however you refer to them in conversation (A, B, C, PO27, ...).
   shipments: {
     A: { status: 'unknown', notes: '' },
     B: { status: 'unknown', notes: '' },
     C: { status: 'unknown', notes: '' },
     PO27: { status: 'unknown', notes: '' }
   },
-  open_discrepancies: [],
+  // Anything unresolved that a new message might bear on.
+  open_discrepancies: [], // [{ what, amount, raised, status }]
+  // Due dates nobody may mention again until they are late.
+  payments: [],           // [{ what, amount, due, to, status }]
+  // Maintained by the app — do not hand-edit.
   recent_briefs: []
 };
 
@@ -24,11 +45,16 @@ export function load(file = PATHS.context) {
     writeJsonAtomic(file, TEMPLATE);
     return structuredClone(TEMPLATE);
   }
-  return {
-    ...structuredClone(TEMPLATE),
-    ...data,
-    recent_briefs: Array.isArray(data.recent_briefs) ? data.recent_briefs : []
-  };
+  const merged = structuredClone(TEMPLATE);
+  for (const [k, v] of Object.entries(data)) {
+    // Objects are merged so a partially-filled file keeps the template's keys;
+    // arrays and scalars are taken wholesale.
+    merged[k] = (v && typeof v === 'object' && !Array.isArray(v))
+      ? { ...merged[k], ...v }
+      : v;
+  }
+  merged.recent_briefs = Array.isArray(merged.recent_briefs) ? merged.recent_briefs : [];
+  return merged;
 }
 
 /** What actually goes into the API call — history capped, newest last. */
@@ -54,4 +80,19 @@ export function recordBrief({ group, summary, pushed, at = Date.now() }, file = 
   }
   writeJsonAtomic(file, data);
   return data.recent_briefs.length;
+}
+
+/** How much real grounding exists — used by `doctor` and the digest warning. */
+export function grounding(file = PATHS.context) {
+  const c = load(file);
+  const shipments = Object.entries(c.shipments || {});
+  return {
+    company: Object.values(c.company || {}).filter(Boolean).length,
+    people: Object.keys(c.people || {}).length,
+    shipmentsKnown: shipments.filter(([, v]) => v?.status && v.status !== 'unknown').length,
+    shipmentsTotal: shipments.length,
+    discrepancies: (c.open_discrepancies || []).length,
+    payments: (c.payments || []).length,
+    briefs: (c.recent_briefs || []).length
+  };
 }
