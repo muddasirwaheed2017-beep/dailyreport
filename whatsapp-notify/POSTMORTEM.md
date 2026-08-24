@@ -354,19 +354,42 @@ showing a code number and timestamp.
 
 ---
 
-## 11. Still open
+## 11. Outcome
 
-- `context.json` is empty. Briefs work but stay generic — they can't reference
-  A/B/C/PO27 status or known discrepancies until real data is in it.
-- Always-on setup (`deploy/install-launchd.sh`) is written but not yet
-  installed; the listener currently dies when its Terminal window closes.
-- End-to-end live test (a real group message producing a real email) not yet
-  confirmed at time of writing.
-- `tools/probe-wwebjs.mjs` is kept deliberately: it proved a browser-driven
-  fallback pairs successfully, which is the escape hatch if Baileys is blocked
-  again.
+Live at 2026-08-24 ~21:00 PKT. Running under launchd (`com.maliksons.wa-notify`),
+paired as MWM, watching 2 of the account's 147 groups, 842 messages backfilled,
+briefs emailing.
 
----
+The first two real briefs, written with an **empty** `context.json`:
+
+```
+📦 SUMMARY: Old shipment arrived 23 Aug; new shipment ETA 3 Sep; forwarder
+   shared invoice and bank details for payment.
+✅ DO: Confirm receipt of old shipment, verify invoice (103.pdf), and process
+   payment to Dynamic Logistics (Bank Al Habib, IBAN PK75BAHL5535008100017001).
+
+📦 SUMMARY: PO26-B PI, PL & FTA all shared and acknowledged; team now marking
+   PO27 PL items against CNC OEM numbers.
+✅ DO: Send supplier the dated/numbered PI, PL & FTA for final bank-submission
+   check; then await PO27 marked PL.
+⚠️ CAUTION: PI formula error flagged (wrong totals/pcs) — use only Miss Zoe's
+   latest post-loading PI/PL.
+```
+
+The CAUTION line was inferred from the thread alone, with no grounding data —
+worth knowing when judging how much `context.json` actually buys.
+
+### Still open
+
+- `context.json` is empty. Briefs are already good; grounding would mainly add
+  continuity across batches and awareness of open items not discussed in the
+  current window.
+- The two 20:15 briefs were accepted by Gmail (`pushed=true`) but were hard to
+  find in the mailbox. Searching a phrase from the brief text works where
+  searching the sender does not. A `+alias` recipient plus a Gmail filter is the
+  durable fix.
+- One 408 disconnect lasting ~13 minutes, self-recovered. Nothing was lost —
+  capture is durable and history sync backfills — but worth watching.
 
 ## 12. The one-sentence version
 
