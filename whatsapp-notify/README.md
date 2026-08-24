@@ -113,6 +113,8 @@ wa-notify listen                          # run the listener
 wa-notify status                          # cursors + how much is unanalysed
 wa-notify groups                          # watch scope + JID <-> name registry
 wa-notify test-email                      # one-shot email deliverability check
+wa-notify test-brief                      # sample batch -> Claude -> your inbox
+wa-notify listen --pair 923001234567      # link by typed code instead of a QR
 wa-notify catchup <groupName> [--from TS] # re-run analysis from a point in time
 wa-notify import <groupName> <file.jsonl> # merge pasted messages into the store
 ```
@@ -211,15 +213,90 @@ A missing PID in `launchctl list`, or a `status` whose `unanalysed` count keeps
 climbing, both mean it is not processing. Stop it with
 `launchctl unload -w ~/Library/LaunchAgents/com.maliksons.wa-notify.plist`.
 
+## Troubleshooting
+
+### Endless `connection closed (428)` and no QR ever appears
+
+The client identity is claiming to be a native desktop app. Baileys derives
+what it reports to WhatsApp from the browser tuple:
+
+```js
+PLATFORM_MAP = { 'Mac OS': DARWIN, Windows: WIN32 }
+if (syncFullHistory && PLATFORM_MAP[browser[0]]) webSubPlatform = ...
+```
+
+With `syncFullHistory: true` and a `browser[0]` of `'Mac OS'` or `'Windows'`,
+the handshake announces itself as the desktop app, and WhatsApp terminates the
+socket a few hundred milliseconds in — before any QR is issued. `Browsers.appropriate()`
+resolves to `'Mac OS'` on a Mac, so it hits this too.
+
+`BROWSER` in `src/config.js` is therefore `['Ubuntu', 'Chrome', '22.04.4']`,
+which is absent from that map and reports `WEB_BROWSER`. **Do not change
+`BROWSER[0]` to `'Mac OS'` or `'Windows'`.** A test pins this, because the
+symptom — an infinite reconnect loop with no QR — points nowhere near a browser
+string. Confirm what is being sent with `WA_LOG_LEVEL=debug npm start` and look
+for `webSubPlatform` in the `"not logged in, attempting registration..."` line.
+
+The device appears in WhatsApp's Linked Devices as **Google Chrome (Ubuntu)**.
+
+### The QR will not scan
+
+Terminal QRs are dense and frequently unreadable. `npm start` also writes
+`whatsapp-qr.html` and opens it in the browser — scan that. The page refreshes
+itself because WhatsApp rotates the code every ~30s, and a stale code fails
+silently with no feedback. If it still will not read: zoom in (`Cmd +`),
+brightness up, and check the phone is actually past Face ID and showing the
+camera.
+
+Failing that, link by typed code instead — a different registration path:
+
+```bash
+npm start -- --pair 923001234567     # your number, digits only, no +
+```
+
+### `wa-status` says "no groups seen yet"
+
+Either nothing has arrived yet, or the group names do not match. On connect the
+listener prints every group on the account and which ones matched:
+
+```
+groups on this account: 14
+WATCHING (2): CNC Shipments | CNC Import matters
+```
+
+If it says `WATCHING: none matched!` it lists every name it found — compare
+them against `WATCHED_GROUPS` in `src/config.js`. Matching is
+case-insensitive and substring-based, so `cnc shipments` matches
+"CNC Shipments 2026" but not "CNC Shipment".
+
+### `.env` values read as unset on Node 20.11
+
+`process.loadEnvFile` only exists on Node 20.12+. Older Node falls back to a
+built-in parser, so this works — but if you see
+`could not load .env: process.loadEnvFile is not a function`, you are running
+code from before that fix. Pull.
+
+### Pull fails with "local changes would be overwritten"
+
+`npm install <pkg>` edits `package.json` and `package-lock.json`. Discard those
+edits and pull:
+
+```bash
+git checkout -- package.json package-lock.json
+git pull
+npm install
+```
+
 ## Tests
 
 ```bash
 npm test
 ```
 
-24 tests covering capture and de-duplication, the watch scope (invoice groups
-must stay unwatched), the seeding rules, read-ahead not moving the cursor, the
-filler gate, all five pipeline outcomes, the email subject line, the flush
+26 tests covering capture and de-duplication, the watch scope (invoice groups
+must stay unwatched), the client identity that WhatsApp will accept, the
+seeding rules, read-ahead not moving the cursor, the filler gate, all five
+pipeline outcomes, markdown stripping, the email subject line, the flush
 triggers, Baileys message normalisation, and the catch-up round trip. The
 Anthropic client and the push transport are stubbed, so no network or
 credentials are needed.
