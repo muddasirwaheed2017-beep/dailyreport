@@ -114,6 +114,9 @@ wa-notify status                          # cursors + how much is unanalysed
 wa-notify groups                          # watch scope + JID <-> name registry
 wa-notify test-email                      # one-shot email deliverability check
 wa-notify test-brief                      # sample batch -> Claude -> your inbox
+wa-notify digest                          # today's recap, one email per group
+wa-notify digest "CNC Shipments" --date 2026-08-24
+wa-notify doctor                          # full diagnostic dump
 wa-notify listen --pair 923001234567      # link by typed code instead of a QR
 wa-notify catchup <groupName> [--from TS] # re-run analysis from a point in time
 wa-notify import <groupName> <file.jsonl> # merge pasted messages into the store
@@ -141,6 +144,28 @@ wa-notify catchup "CNC Shipments" --from "2026-08-22T00:00:00+05:00"
 `--from` is the only operation allowed to move a cursor **backwards**. Add
 `--dry-run` to see the batch size without pushing or moving anything. Group
 names match case-insensitively on a substring, so `catchup shipments` works.
+
+## Daily digest
+
+The live briefs answer "something just happened". The digest answers "what
+happened today" — a fuller recap of one calendar day, one email per group:
+
+```bash
+npm run digest                            # today, every watched group
+npm run digest -- "CNC Shipments"         # one group
+npm run digest -- --date 2026-08-23       # a specific day
+npm run digest -- --no-email              # print only
+```
+
+Days are local (`WA_TZ_OFFSET`, default `+05:00`), so "today" means today in
+Karachi, not UTC.
+
+**The digest never moves the checkpoint.** It is a report over the store, not
+an analysis run — otherwise asking for a recap would mark messages as seen and
+silently suppress the next real brief.
+
+It can only summarise what was captured, so a day before the listener was
+running has nothing to report. Use `import` + `catchup` to backfill those.
 
 ## Relevance gate
 

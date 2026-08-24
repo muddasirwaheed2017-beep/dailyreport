@@ -28,6 +28,7 @@ const { gate, isFiller, keywordsIn } = await import('../src/filter.js');
 const { FlushBuffer } = await import('../src/buffer.js');
 const { normalize } = await import('../src/normalize.js');
 const { runAnalysis } = await import('../src/pipeline.js');
+const { buildDigest, messagesForDay, todayLocal } = await import('../src/digest.js');
 const { WATCHED_GROUPS, INVOICE_GROUP_PATTERNS, BROWSER, REJECTED_PLATFORMS } = await import('../src/config.js');
 
 const SHIPMENTS = '111111111-1600000000@g.us';
@@ -437,6 +438,59 @@ test('context: brief history is capped and pushes are logged', () => {
   assert.ok(log.some((e) => e.status === 'pushed' && e.brief));
   assert.ok(log.some((e) => e.status === 'filler' && e.pushed === false));
   assert.ok(log.some((e) => e.status === 'error'));
+});
+
+// ═══════════════════════════════════════════════════════════
+test('digest: selects one local day and never moves the checkpoint', async () => {
+  reset();
+  const jid = 'digest-run@g.us';
+  registry.remember(jid, 'CNC Shipments');
+  store.appendMessages(jid, [
+    // 2026-08-19 23:30 PKT — the day before, must be excluded
+    { id: 'd0', ts: Date.parse('2026-08-19T23:30:00+05:00'), sender: 'Zoe', text: 'yesterday', hasMedia: false, mediaName: null },
+    // inside 2026-08-20 PKT
+    { id: 'd1', ts: Date.parse('2026-08-20T00:05:00+05:00'), sender: 'Zoe', text: 'PI 27 revised', hasMedia: false, mediaName: null },
+    { id: 'd2', ts: Date.parse('2026-08-20T14:00:00+05:00'), sender: 'Qasim', text: 'ETD 26 Aug', hasMedia: false, mediaName: null },
+    { id: 'd3', ts: Date.parse('2026-08-20T23:50:00+05:00'), sender: 'MWM', text: 'noted', hasMedia: false, mediaName: null },
+    // 2026-08-21 00:10 PKT — the day after, must be excluded
+    { id: 'd4', ts: Date.parse('2026-08-21T00:10:00+05:00'), sender: 'Zoe', text: 'tomorrow', hasMedia: false, mediaName: null }
+  ]);
+
+  assert.deepEqual(
+    messagesForDay(jid, '2026-08-20', '+05:00').map((m) => m.id),
+    ['d1', 'd2', 'd3'],
+    'local-day boundaries, not UTC'
+  );
+
+  checkpoint.repoint(jid, Date.parse('2026-08-01T00:00:00+05:00'), { name: 'CNC Shipments' });
+  const before = checkpoint.get(jid);
+
+  const result = await buildDigest(jid, '2026-08-20', {
+    client: { messages: { create: async () => ({ content: [{ type: 'text', text: '📋 WHAT HAPPENED\nPI 27 revised; ETD set to 26 Aug.' }] }) } }
+  });
+
+  assert.equal(result.count, 3);
+  assert.equal(result.group, 'CNC Shipments');
+  assert.match(result.text, /WHAT HAPPENED/);
+  // A report must not affect what the alerting side still considers unread.
+  assert.deepEqual(checkpoint.get(jid), before, 'digest must not move the cursor');
+});
+
+test('digest: a day with no captured messages is reported, not invented', async () => {
+  const jid = 'digest-run@g.us';
+  const result = await buildDigest(jid, '2026-01-01', {
+    client: { messages: { create: async () => { throw new Error('must not call the model'); } } }
+  });
+  assert.equal(result.empty, true);
+  assert.equal(result.count, 0);
+  assert.equal(result.text, null);
+});
+
+test('digest: todayLocal respects the configured offset', () => {
+  // 2026-08-20T20:00Z is already the 21st in Karachi (+05:00).
+  const t = Date.parse('2026-08-20T20:00:00Z');
+  assert.equal(todayLocal('+05:00', t), '2026-08-21');
+  assert.equal(todayLocal('+00:00', t), '2026-08-20');
 });
 
 test.after(() => fs.rmSync(TMP, { recursive: true, force: true }));

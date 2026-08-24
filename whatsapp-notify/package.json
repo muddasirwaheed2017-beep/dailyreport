@@ -15,7 +15,8 @@
     "test-email": "node src/cli.js test-email",
     "status": "node src/cli.js status",
     "test-brief": "node src/cli.js test-brief",
-    "doctor": "node src/cli.js doctor"
+    "doctor": "node src/cli.js doctor",
+    "digest": "node src/cli.js digest"
   },
   "engines": {
     "node": ">=20.0.0"

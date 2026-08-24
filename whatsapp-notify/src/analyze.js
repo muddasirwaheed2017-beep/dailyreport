@@ -13,6 +13,11 @@ export function setClient(instance) {
   client = instance;
 }
 
+/** The shared client, so digest.js uses the same one tests stub out. */
+export function getClientForDigest() {
+  return getClient();
+}
+
 function getClient() {
   // Credentials resolve from the environment (ANTHROPIC_API_KEY,
   // ANTHROPIC_AUTH_TOKEN, or an `ant auth login` profile).

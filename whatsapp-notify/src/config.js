@@ -111,6 +111,9 @@ export const BROWSER = ['Ubuntu', 'Chrome', '22.04.4'];
 // Names that make Baileys claim to be a native desktop app; see above.
 export const REJECTED_PLATFORMS = ['Mac OS', 'Windows'];
 
+// Local timezone offset, used for "what counts as today" in digests.
+export const TZ_OFFSET = process.env.WA_TZ_OFFSET || '+05:00';
+
 // ─── Pairing ─────────────────────────────────────────────────
 // Set WA_PAIR_PHONE (international format, digits only, e.g. 923001234567)
 // to link with an 8-character code typed into the phone instead of scanning a

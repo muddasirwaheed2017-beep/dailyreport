@@ -19,6 +19,8 @@ import * as analyze from './analyze.js';
 import * as context from './context.js';
 import { gate } from './filter.js';
 import { runAnalysis } from './pipeline.js';
+import { buildDigest, todayLocal } from './digest.js';
+import { logPush } from './logger.js';
 import { toMs, isoOf } from './util.js';
 
 function parseFlags(argv) {
@@ -272,6 +274,70 @@ function doctor() {
   process.stdout.write(`${out.join('\n')}\n`);
 }
 
+// ─── digest ──────────────────────────────────────────────────
+// A day's recap per group, emailed separately. Read-only: it never moves the
+// checkpoint, so asking for a digest cannot suppress the next real brief.
+async function digestCmd(positional, flags) {
+  const date = flags.date && flags.date !== true ? String(flags.date) : todayLocal();
+
+  // Which groups: a named one, or every watched group we have actually seen.
+  let jids;
+  if (positional[0]) {
+    jids = [mustResolve(positional[0])];
+  } else {
+    jids = Object.keys(registry.all());
+    if (jids.length === 0) throw new Error('no groups seen yet — run `listen` first');
+  }
+
+  const failures = [];
+  for (const jid of jids) {
+    const entry = registry.entryFor(jid) || {};
+    const label = entry.name || jid;
+    process.stdout.write(`\n${'─'.repeat(60)}\n${label} — ${date}\n${'─'.repeat(60)}\n`);
+
+    let result;
+    try {
+      result = await buildDigest(jid, date);
+    } catch (err) {
+      failures.push(`${label}: ${err.message}`);
+      process.stderr.write(`  FAILED: ${err.message}\n`);
+      continue;
+    }
+
+    if (result.empty) {
+      process.stdout.write('no messages captured for this date — nothing to summarise\n');
+      continue;
+    }
+
+    process.stdout.write(`${result.count} message(s)\n\n${result.text}\n`);
+
+    if (flags['no-email']) {
+      process.stdout.write('\n(--no-email: not sent)\n');
+      continue;
+    }
+
+    // One email per group, as separate messages — not a combined digest.
+    const delivery = await push.send(
+      `${result.text}\n\n— ${result.count} messages from ${label} on ${date}`,
+      { title: `${label} — ${date}` }
+    );
+    const delivered = delivery.results.filter((r) => r.ok && !r.skipped);
+    if (delivered.length) {
+      process.stdout.write(`\nemailed \u2713 (${delivered.map((r) => r.provider).join(', ')})\n`);
+      logPush({ jid, group: label, status: 'digest', date, batch: result.count, pushed: true, brief: result.text });
+    } else {
+      const why = delivery.results.map((r) => `${r.provider}: ${r.error || 'sent nothing'}`).join('; ');
+      failures.push(`${label}: not delivered — ${why}`);
+      process.stderr.write(`\nNOT DELIVERED — ${why}\n`);
+      logPush({ jid, group: label, status: 'digest', date, batch: result.count, pushed: false, error: why });
+    }
+  }
+
+  if (failures.length) {
+    throw new Error(`${failures.length} group(s) had problems:\n  ${failures.join('\n  ')}`);
+  }
+}
+
 // ─── status / groups ──────────────────────────────────────────
 function status() {
   const cursors = checkpoint.all();
@@ -357,6 +423,9 @@ async function main() {
     case 'doctor':
       doctor();
       break;
+    case 'digest':
+      await digestCmd(positional, flags);
+      break;
     case 'groups':
       groups();
       break;
@@ -375,6 +444,8 @@ async function main() {
         '  import <groupName> <file.jsonl>     merge pasted messages into the store\n' +
         '  status                              cursors and unanalysed counts\n' +
         '  doctor                              full diagnostic dump\n' +
+        '  digest [group] [--date YYYY-MM-DD]  email a day\u2019s recap per group\n' +
+        '                 [--no-email]         ...printed only\n' +
         '  groups                              watch scope + JID <-> name registry\n' +
         '  test-email                          send a one-shot test email\n' +
         '  test-brief [--no-email]             run a sample batch through Claude + email it\n\n' +
