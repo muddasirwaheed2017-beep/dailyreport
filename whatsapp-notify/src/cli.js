@@ -214,8 +214,11 @@ function doctor() {
   try {
     creds = JSON.parse(fs.readFileSync(path.join(PATHS.auth, 'creds.json'), 'utf8'));
   } catch { /* not paired */ }
+  // creds.registered is only set on the pairing-code path; after a QR pairing it
+  // stays false forever. creds.me is the identity Baileys fills in on login.
+  const linked = Boolean(creds?.me?.id || creds?.registered);
   say(creds
-    ? `paired: ${creds.registered ? 'YES' : 'no (creds exist but not registered)'}  as ${creds.me?.name || creds.me?.id || '?'}`
+    ? `paired: ${linked ? 'YES' : 'no (creds exist but no identity)'}  as ${creds.me?.name || creds.me?.id || '?'}`
     : `paired: NO — ${PATHS.auth} has no creds.json`);
 
   say();
@@ -257,6 +260,9 @@ function doctor() {
     for (const l of lines) {
       const e = JSON.parse(l);
       say(`  ${e.at}  ${e.status.padEnd(12)} ${e.group}  pushed=${e.pushed}${e.error ? `  ERROR: ${e.error}` : ''}`);
+      if (e.brief) {
+        for (const bl of String(e.brief).split('\n')) say(`      | ${bl}`);
+      }
     }
     if (!lines[0]) say('  (empty — no analysis run has ever completed)');
   } catch {
