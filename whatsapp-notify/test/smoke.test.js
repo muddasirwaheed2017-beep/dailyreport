@@ -471,7 +471,7 @@ test('digest: selects one local day and never moves the checkpoint', async () =>
 
   assert.equal(result.count, 3);
   assert.equal(result.group, 'CNC Shipments');
-  assert.match(result.text, /WHAT HAPPENED/);
+  assert.match(result.text, /PI 27/);
   // A report must not affect what the alerting side still considers unread.
   assert.deepEqual(checkpoint.get(jid), before, 'digest must not move the cursor');
 });

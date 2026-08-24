@@ -148,7 +148,8 @@ names match case-insensitively on a substring, so `catchup shipments` works.
 ## Daily digest
 
 The live briefs answer "something just happened". The digest answers "what
-happened today" — a fuller recap of one calendar day, one email per group:
+happened today" — a plain-English account of one calendar day, written as prose
+rather than a report, one email per group:
 
 ```bash
 npm run digest                            # today, every watched group
