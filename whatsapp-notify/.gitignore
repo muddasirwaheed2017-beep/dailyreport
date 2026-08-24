@@ -1,0 +1,9 @@
+# Runtime state — belongs on the deploy host, not in git
+store/
+auth/
+logs/
+checkpoint.json
+context.json
+groups.json
+*.corrupt-*
+.env
