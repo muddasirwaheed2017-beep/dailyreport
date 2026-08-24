@@ -38,22 +38,48 @@ const client = new Client({
 const t0 = Date.now();
 const at = () => `${((Date.now() - t0) / 1000).toFixed(1)}s`;
 
-// A terminal QR is dense and often will not scan — wrong font, wrapping, low
-// contrast. Write a large PNG as well and open it in Preview, which always
-// scans cleanly.
+// A terminal QR is dense and often will not scan — font, wrapping and contrast
+// all break it. Write an HTML page instead and open it in the browser.
+//
+// The page reloads itself every 4s, which matters: WhatsApp rotates the code
+// roughly every 30s, and a stale code silently fails to scan. A plain PNG in
+// Preview shows whichever image it opened with, so it goes stale without any
+// visible sign. This always shows the current code.
+let qrOpened = false;
+let qrCount = 0;
+
 async function showQr(qr) {
-  console.log(`\n[${at()}] SCAN THIS — WhatsApp > Settings > Linked Devices > Link a Device\n`);
+  qrCount += 1;
+  console.log(`\n[${at()}] QR #${qrCount} — WhatsApp > Settings > Linked Devices > Link a Device\n`);
   qrcode.generate(qr, { small: true });
 
   try {
     const { default: QRCode } = await import('qrcode');
-    const file = path.resolve('whatsapp-qr.png');
-    await QRCode.toFile(file, qr, { width: 900, margin: 3, errorCorrectionLevel: 'M' });
-    console.log(`\nIf the code above will not scan, a large one just opened in Preview:`);
-    console.log(`  ${file}`);
-    execFile('open', [file], () => {}); // macOS; harmless failure elsewhere
+    const dataUrl = await QRCode.toDataURL(qr, { width: 800, margin: 2, errorCorrectionLevel: 'M' });
+    const file = path.resolve('whatsapp-qr.html');
+    fs.writeFileSync(file, `<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="4">
+<title>Scan to link WhatsApp</title>
+<body style="margin:0;display:flex;flex-direction:column;align-items:center;
+             justify-content:center;height:100vh;background:#fff;
+             font:16px -apple-system,sans-serif;color:#111">
+  <img src="${dataUrl}" width="420" height="420" alt="WhatsApp QR">
+  <p style="margin:18px 0 4px"><b>WhatsApp &rsaquo; Settings &rsaquo; Linked Devices &rsaquo; Link a Device</b></p>
+  <p style="margin:0;color:#666">code #${qrCount}, refreshed ${new Date().toLocaleTimeString()} — this page updates itself, just leave it open</p>
+</body>`);
+
+    if (!qrOpened) {
+      qrOpened = true;
+      console.log(`\nA scannable QR just opened in your browser. Leave that tab open —`);
+      console.log(`it refreshes itself, so you can always scan whatever it is showing.`);
+      console.log(`  ${file}`);
+      execFile('open', [file], () => {});
+    } else {
+      console.log(`(browser tab updated to code #${qrCount})`);
+    }
   } catch (err) {
-    console.log(`(could not write the PNG: ${err.message})`);
+    console.log(`(could not write the QR page: ${err.message})`);
   }
 }
 

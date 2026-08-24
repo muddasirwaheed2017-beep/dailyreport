@@ -10,5 +10,6 @@ groups.json
 
 # probe artefacts
 whatsapp-qr.png
+whatsapp-qr.html
 .wwebjs_auth/
 .wwebjs_cache/
