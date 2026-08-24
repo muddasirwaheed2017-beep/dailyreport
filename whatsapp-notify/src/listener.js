@@ -28,6 +28,16 @@ import { isAfter, ensureDir } from './util.js';
 import { line, warn } from './logger.js';
 
 const subjects = new Map(); // jid -> subject
+const announcedUnwatched = new Set(); // subjects we have already reported ignoring
+
+// A group whose name does not match WATCHED_GROUPS is skipped in silence,
+// which is indistinguishable from "nothing is arriving". Say it once per group.
+function noteUnwatched(subject) {
+  const name = String(subject || '').trim();
+  if (!name || announcedUnwatched.has(name)) return;
+  announcedUnwatched.add(name);
+  line(`ignoring group "${name}" (not in WATCHED_GROUPS — edit src/config.js if this should be watched)`);
+}
 
 // ─── connection lifecycle state ──────────────────────────────
 let generation = 0;        // increments per connection attempt
@@ -106,6 +116,38 @@ export async function start({ analyse = runAnalysis } = {}) {
 
   const deps = { makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason, Browsers, pino, qrcode };
   return connect(deps, buffer);
+}
+
+// Ask WhatsApp for every group this account is in and say which are matched.
+// Without this, a group name that is one character off from WATCHED_GROUPS is
+// invisible — it just looks like no messages are arriving.
+async function listAllGroups(sock) {
+  const all = await sock.groupFetchAllParticipating();
+  const entries = Object.entries(all || {});
+  if (entries.length === 0) {
+    warn('this account is not in any groups?');
+    return;
+  }
+  const matched = [];
+  const ignored = [];
+  for (const [jid, meta] of entries) {
+    const subject = meta?.subject || '(no name)';
+    subjects.set(jid, subject);
+    if (registry.classify(subject)) {
+      registry.remember(jid, subject);
+      matched.push(subject);
+    } else {
+      ignored.push(subject);
+    }
+  }
+  line(`groups on this account: ${entries.length}`);
+  line(matched.length ? `WATCHING (${matched.length}): ${matched.join(' | ')}` : 'WATCHING: none matched!');
+  if (!matched.length || process.env.WA_LIST_ALL_GROUPS) {
+    line(`not watched (${ignored.length}): ${ignored.join(' | ')}`);
+    if (!matched.length) {
+      warn('no group name matched WATCHED_GROUPS in src/config.js — compare the names above');
+    }
+  }
 }
 
 async function connect(deps, buffer) {
@@ -226,10 +268,7 @@ async function connect(deps, buffer) {
       backoffMs = 1_000;
       consecutiveFailures = 0;
       line('connected to WhatsApp');
-      const watched = Object.values(registry.all()).map((g) => g.name);
-      line(watched.length
-        ? `watching: ${watched.join(', ')}`
-        : 'watching: (groups are identified as their first message arrives)');
+      listAllGroups(sock).catch((err) => warn(`could not list groups: ${err.message}`));
       sweep();
     }
 
@@ -276,7 +315,7 @@ async function connect(deps, buffer) {
 
       const subject = await subjectFor(sock, jid);
       const group = registry.classify(subject);
-      if (!group) continue; // not one of the watched groups
+      if (!group) { noteUnwatched(subject); continue; }
 
       registry.remember(jid, subject);
 
@@ -316,7 +355,7 @@ async function connect(deps, buffer) {
     for (const [jid, records] of perGroup) {
       const subject = await subjectFor(sock, jid);
       const group = registry.classify(subject);
-      if (!group) continue;
+      if (!group) { noteUnwatched(subject); continue; }
       registry.remember(jid, subject);
 
       const written = store.appendMessages(jid, records);
