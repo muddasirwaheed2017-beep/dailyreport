@@ -124,7 +124,10 @@ async function connect(deps, buffer) {
   const isCurrent = () => myGeneration === generation && !stopping;
 
   const { state, saveCreds } = await useMultiFileAuthState(PATHS.auth);
-  const { version } = await fetchLatestBaileysVersion();
+  const { version, isLatest } = await fetchLatestBaileysVersion();
+  const paired = Boolean(state.creds?.registered);
+  line(`WhatsApp Web v${version.join('.')}${isLatest ? '' : ' (not latest)'} · `
+    + `credentials: ${paired ? 'already paired' : 'none yet, expecting a QR'}`);
 
   const sock = makeWASocket({
     version,
