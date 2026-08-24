@@ -120,14 +120,18 @@ async function testEmail() {
   const status = push.emailStatus();
   process.stdout.write(
     'email config\n' +
-    `  transports     ${status.transports.join(', ') || '(none)'}\n` +
-    `  smtp           ${status.host}\n` +
-    `  GMAIL_USER     ${status.user}\n` +
-    `  APP_PASSWORD   ${status.appPassword}\n` +
-    `  NOTIFY_EMAIL_TO ${status.to}\n\n`
+    `  transports          ${status.transports.join(', ') || '(none)'}\n` +
+    `  smtp                ${status.host}\n` +
+    `  GMAIL_USER          ${status.user}\n` +
+    `  GMAIL_APP_PASSWORD  ${status.appPassword}\n` +
+    `  NOTIFY_EMAIL_TO     ${status.to}\n\n`
   );
   if (status.missing.length) {
-    throw new Error(`cannot send — missing ${status.missing.join(', ')} (put them in whatsapp-notify/.env)`);
+    const n = status.missing.length;
+    throw new Error(
+      `cannot send — missing ${status.missing.join(', ')}; `
+      + `set ${n === 1 ? 'it' : 'them'} in whatsapp-notify/.env`
+    );
   }
 
   const result = await push.sendTestEmail();
