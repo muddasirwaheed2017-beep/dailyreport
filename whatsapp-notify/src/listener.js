@@ -142,12 +142,16 @@ async function connect(deps, buffer) {
 
   sock.ev.on('creds.update', saveCreds);
 
-  // Pairing-code login. WhatsApp treats this as a different registration path
-  // from the QR, so it can succeed where the QR is being refused. Only ever
-  // requested once, and never for an already-registered device.
+  // Pairing-code login. This MUST win the race against Baileys' own automatic
+  // QR registration: setting creds.pairingCode/creds.me is what switches the
+  // handshake to the link_code route. Baileys fires its QR registration around
+  // 550ms in and WhatsApp closes the socket around 770ms, so we start asking
+  // almost immediately and retry fast until the socket accepts the node.
   if (PAIR_PHONE && !paired) {
-    const timer = setTimeout(async () => {
-      if (!isCurrent()) return;
+    let attempts = 0;
+    const askForCode = async () => {
+      if (!isCurrent() || sock.authState?.creds?.registered) return;
+      attempts += 1;
       try {
         const code = await sock.requestPairingCode(PAIR_PHONE);
         const pretty = String(code).match(/.{1,4}/g)?.join('-') || code;
@@ -159,12 +163,19 @@ async function connect(deps, buffer) {
         line('│  Linked Devices > Link a Device >               │');
         line('│  "Link with phone number instead"               │');
         line('└─────────────────────────────────────────────────┘');
-        line(`enter it for +${PAIR_PHONE} — the code expires in about a minute`);
+        line(`enter it for +${PAIR_PHONE} — expires in about a minute`);
       } catch (err) {
-        warn(`could not get a pairing code: ${err.message}`);
+        // The websocket is usually just not writable yet on the first tries.
+        if (attempts < 12 && isCurrent()) {
+          const t = setTimeout(askForCode, 120);
+          if (typeof t.unref === 'function') t.unref();
+        } else if (isCurrent()) {
+          warn(`could not get a pairing code after ${attempts} attempts: ${err.message}`);
+        }
       }
-    }, 4_000);
-    if (typeof timer.unref === 'function') timer.unref();
+    };
+    const first = setTimeout(askForCode, 120);
+    if (typeof first.unref === 'function') first.unref();
   }
 
   // After a restart the store may already hold post-cursor messages that were
