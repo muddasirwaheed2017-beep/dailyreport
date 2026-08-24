@@ -32,20 +32,35 @@ echo "  module $MODULE"
 echo
 
 # Loading is not the same as running — a bad path or a crash on boot both leave
-# it loaded but dead, so confirm rather than assume.
-sleep 3
-if launchctl list | grep -q "$LABEL"; then
-  STATUS="$(launchctl list | grep "$LABEL")"
+# it loaded but dead, so confirm rather than assume. launchctl can take a few
+# seconds to report a freshly bootstrapped agent, so poll instead of checking
+# once and declaring failure.
+STATUS=""
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+  STATUS="$(launchctl list 2>/dev/null | grep -F "$LABEL" || true)"
+  [ -n "$STATUS" ] && break
+  sleep 1
+done
+
+if [ -n "$STATUS" ]; then
   PID="$(echo "$STATUS" | awk '{print $1}')"
   EXIT="$(echo "$STATUS" | awk '{print $2}')"
   if [ "$PID" != "-" ]; then
     echo "RUNNING — pid $PID"
   else
-    echo "NOT RUNNING — last exit code $EXIT"
-    echo "look at: $MODULE/logs/listener.err.log"
+    echo "loaded, but not currently running (last exit code $EXIT)"
+    echo "It may still be starting. Check again in a few seconds with:"
+    echo "  launchctl list | grep wa-notify"
+    echo "If it stays '-', read: $MODULE/logs/listener.err.log"
   fi
 else
-  echo "WARNING: $LABEL is not in launchctl list — the load did not take"
+  # Do not call this a failure: the agent often is running by now and simply
+  # has not surfaced in the listing yet.
+  echo "could not confirm from launchctl yet — this does not mean it failed."
+  echo "Check in a few seconds with:"
+  echo "  launchctl list | grep wa-notify"
+  echo "and confirm work is happening with:"
+  echo "  cd $MODULE && npm run doctor"
 fi
 
 echo
