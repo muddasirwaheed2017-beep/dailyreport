@@ -251,6 +251,14 @@ async function main() {
     case 'listen': {
       const { start } = await import('./listener.js');
       await start();
+      // Hold the process open with a referenced timer. A pending promise is
+      // NOT enough — Node exits once no referenced handle remains, regardless
+      // of unsettled promises, so without this the listener could exit 0 with
+      // no output the moment the socket dropped. SIGINT/SIGTERM, handled in
+      // listener.js, are what actually stop it.
+      process.stdout.write('listener running — press Ctrl-C to stop\n');
+      setInterval(() => {}, 1 << 30);
+      await new Promise(() => {});
       break;
     }
     case 'catchup':
