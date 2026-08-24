@@ -48,6 +48,10 @@ never analysed, so it must stay unread.
 
 ## Setup
 
+Requires Node 20 or newer (tested on 20.11 and 22). No Node feature newer
+than 20.0 is relied on: `.env` loading uses `process.loadEnvFile` where it
+exists (Node 20.12+) and a built-in parser otherwise.
+
 ```bash
 cd whatsapp-notify
 npm install

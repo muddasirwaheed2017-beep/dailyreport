@@ -3,17 +3,41 @@
 // Every path is resolved relative to the module root so the listener
 // behaves the same whatever directory it is started from.
 // ═══════════════════════════════════════════════════════════════
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(here, '..');
 
-// Load <module root>/.env before any setting below is read. Node's built-in
-// loader never overwrites a variable already set in the real environment, so
-// an explicit `FOO=x npm start` still wins over the file.
+// Load <module root>/.env before any setting below is read. A real environment
+// variable always wins over the file, so `FOO=x npm start` still overrides it.
+function loadDotEnv(file) {
+  // process.loadEnvFile only exists on Node >= 20.12 / 21.7. On anything older
+  // it is undefined, and without this fallback the .env would be silently
+  // ignored — the listener would start with no credentials and no explanation.
+  if (typeof process.loadEnvFile === 'function') {
+    process.loadEnvFile(file);
+    return;
+  }
+  const text = fs.readFileSync(file, 'utf8');
+  for (const raw of text.split('\n')) {
+    const line = raw.trim();
+    if (!line || line.startsWith('#')) continue;
+    const eq = line.indexOf('=');
+    if (eq < 1) continue;
+    const key = line.slice(0, eq).replace(/^export\s+/, '').trim();
+    let value = line.slice(eq + 1).trim();
+    if ((value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+    }
+    if (!(key in process.env)) process.env[key] = value;
+  }
+}
+
 try {
-  process.loadEnvFile(path.join(ROOT, '.env'));
+  loadDotEnv(path.join(ROOT, '.env'));
 } catch (err) {
   // ENOENT just means "no .env" — fine, everything can come from the
   // environment. Anything else (a malformed file) is worth surfacing.

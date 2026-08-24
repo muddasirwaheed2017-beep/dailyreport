@@ -11,12 +11,12 @@
   "scripts": {
     "start": "node src/cli.js listen",
     "catchup": "node src/cli.js catchup",
-    "test": "node --test \"test/*.test.js\"",
+    "test": "node --test test/*.test.js",
     "test-email": "node src/cli.js test-email",
     "status": "node src/cli.js status"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.70.0",
