@@ -144,16 +144,19 @@ async function connect(deps, buffer) {
 
   // Pairing-code login. This MUST win the race against Baileys' own automatic
   // QR registration: setting creds.pairingCode/creds.me is what switches the
-  // handshake to the link_code route. Baileys fires its QR registration around
-  // 550ms in and WhatsApp closes the socket around 770ms, so we start asking
-  // almost immediately and retry fast until the socket accepts the node.
+  // handshake to the link_code route. Baileys fires its QR registration a few
+  // hundred ms in, so we start asking immediately and retry fast until the
+  // socket accepts the node.
+  let pairAttempts = 0;
+  let pairLastError = null;
+  let pairGotCode = false;
   if (PAIR_PHONE && !paired) {
-    let attempts = 0;
     const askForCode = async () => {
-      if (!isCurrent() || sock.authState?.creds?.registered) return;
-      attempts += 1;
+      if (!isCurrent() || pairGotCode || sock.authState?.creds?.registered) return;
+      pairAttempts += 1;
       try {
         const code = await sock.requestPairingCode(PAIR_PHONE);
+        pairGotCode = true;
         const pretty = String(code).match(/.{1,4}/g)?.join('-') || code;
         line('');
         line('┌─────────────────────────────────────────────────┐');
@@ -165,16 +168,14 @@ async function connect(deps, buffer) {
         line('└─────────────────────────────────────────────────┘');
         line(`enter it for +${PAIR_PHONE} — expires in about a minute`);
       } catch (err) {
-        // The websocket is usually just not writable yet on the first tries.
-        if (attempts < 12 && isCurrent()) {
-          const t = setTimeout(askForCode, 120);
+        pairLastError = err.message;
+        if (pairAttempts < 20 && isCurrent()) {
+          const t = setTimeout(askForCode, 100);
           if (typeof t.unref === 'function') t.unref();
-        } else if (isCurrent()) {
-          warn(`could not get a pairing code after ${attempts} attempts: ${err.message}`);
         }
       }
     };
-    const first = setTimeout(askForCode, 120);
+    const first = setTimeout(askForCode, 60);
     if (typeof first.unref === 'function') first.unref();
   }
 
@@ -251,6 +252,9 @@ async function connect(deps, buffer) {
 
       consecutiveFailures += 1;
       warn(`connection closed (${status ?? 'unknown'})`);
+      if (PAIR_PHONE && !paired && !pairGotCode) {
+        warn(`pairing code not obtained — ${pairAttempts} attempt(s), last error: ${pairLastError || 'never ran'}`);
+      }
 
       // A run of 428s with no successful open almost always means the stored
       // credentials are half-written from an interrupted pairing.
