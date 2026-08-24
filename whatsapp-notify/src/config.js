@@ -9,6 +9,19 @@ import { fileURLToPath } from 'node:url';
 const here = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(here, '..');
 
+// Load <module root>/.env before any setting below is read. Node's built-in
+// loader never overwrites a variable already set in the real environment, so
+// an explicit `FOO=x npm start` still wins over the file.
+try {
+  process.loadEnvFile(path.join(ROOT, '.env'));
+} catch (err) {
+  // ENOENT just means "no .env" — fine, everything can come from the
+  // environment. Anything else (a malformed file) is worth surfacing.
+  if (err?.code !== 'ENOENT') {
+    process.emitWarning(`could not load .env: ${err.message}`);
+  }
+}
+
 export const PATHS = {
   root: ROOT,
   store: process.env.WA_STORE_DIR || path.join(ROOT, 'store'),
@@ -20,39 +33,38 @@ export const PATHS = {
 };
 
 // ─── Watched groups ──────────────────────────────────────────
-// `kind` drives the checkpoint seed rule only:
-//   shipping → seeded from SEEDS below
-//   invoice  → seeded to the deployment timestamp (start fresh)
+// SCOPE: the two shipping groups ONLY. The invoice / payment side is
+// deliberately NOT watched here — it stays on the existing Meta-API route in
+// ../whatsapp-webhook-v1.js, which this module must not duplicate or disturb.
 // `match` entries are compared case-insensitively against the group subject.
 export const WATCHED_GROUPS = [
   { name: 'CNC Shipments',      kind: 'shipping', match: ['cnc shipments'] },
-  { name: 'CNC Import matters', kind: 'shipping', match: ['cnc import matters'] },
-  { name: 'CNC Invoices',       kind: 'invoice',  match: ['cnc invoices', 'cnc invoice'] },
-  { name: 'CNC Payments',       kind: 'invoice',  match: ['cnc payments', 'cnc payment'] }
+  { name: 'CNC Import matters', kind: 'shipping', match: ['cnc import matters'] }
 ];
 
-// Any group subject matching one of these is treated as an invoice/payment
-// group even if it is not listed above — keeps new payment groups covered.
-export const INVOICE_GROUP_PATTERNS = [/invoice/i, /payment/i, /paygate/i];
+// Deliberately empty: there is no invoice/payment catch-all. A group is
+// watched only if it matches WATCHED_GROUPS above. Do not repopulate this
+// without also confirming it will not double-handle invoice traffic.
+export const INVOICE_GROUP_PATTERNS = [];
 
 // ─── Checkpoint seeds (first deploy only) ────────────────────
-// The brief the user gave us dates these to the day, not the minute. We seed
-// to the END of that day in Asia/Karachi so a same-day message that was
-// already read is never replayed. Override per group with WA_SEED_<SLUG>.
-export const SEED_TZ_OFFSET = process.env.WA_TZ_OFFSET || '+05:00';
-
+// Exact instants, not dates. Override per group with WA_SEED_<SLUG>.
+//
+// CNC Import matters is seeded to the START of 23 Aug on purpose: it
+// guarantees nothing after Shahid's "first thing tomorrow" line is skipped.
+// Re-analysing that short exchange once is the accepted cost.
 export const SEEDS = {
-  'CNC Import matters': {
-    date: '2026-08-23',
-    text: "I'll share first thing tomorrow",
-    sender: 'Shahid'
-  },
   'CNC Shipments': {
-    date: '2026-08-21',
+    at: '2026-08-21T23:59:59+05:00',
     text: 'OLD SHIPMENT TRACKING',
     sender: 'Ahmed',
     hasMedia: true,
     mediaName: 'image'
+  },
+  'CNC Import matters': {
+    at: '2026-08-23T00:00:00+05:00',
+    text: "I'll share first thing tomorrow",
+    sender: 'Shahid'
   }
 };
 
@@ -94,8 +106,26 @@ export const TRIAGE_PROMPT = `You triage WhatsApp traffic for a freight importer
 Reply with exactly one word: PUSH or SKIP.`;
 
 // ─── Push transport ──────────────────────────────────────────
-// telegram | pushover | both | none
-export const PUSH_PROVIDER = (process.env.WA_PUSH_PROVIDER || 'telegram').toLowerCase();
+// Comma-separated list of transports: email, telegram, pushover, none.
+// Email (Gmail SMTP) is the live channel.
+export const PUSH_PROVIDER = (process.env.WA_PUSH_PROVIDER || 'email').toLowerCase();
+
+export const PUSH_TRANSPORTS = PUSH_PROVIDER
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+// Gmail SMTP. GMAIL_APP_PASSWORD must be a 16-character Google App Password
+// (Google account > Security > 2-Step Verification > App passwords) — a normal
+// account password is rejected by smtp.gmail.com.
+export const EMAIL = {
+  host: process.env.GMAIL_SMTP_HOST || 'smtp.gmail.com',
+  port: Number(process.env.GMAIL_SMTP_PORT || 465),
+  secure: true,
+  user: process.env.GMAIL_USER || '',
+  appPassword: (process.env.GMAIL_APP_PASSWORD || '').replace(/\s+/g, ''),
+  to: process.env.NOTIFY_EMAIL_TO || ''
+};
 
 export const TELEGRAM = {
   botToken: process.env.TELEGRAM_BOT_TOKEN || '',

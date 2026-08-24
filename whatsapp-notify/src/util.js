@@ -47,13 +47,6 @@ export function isAfter(message, cursor) {
   return compareMessages(message, cursor) > 0;
 }
 
-// "2026-08-23" + "+05:00" -> epoch ms at the last instant of that local day.
-export function endOfDayMs(isoDate, tzOffset = '+00:00') {
-  const ms = Date.parse(`${isoDate}T23:59:59.999${tzOffset}`);
-  if (Number.isNaN(ms)) throw new Error(`Cannot parse date "${isoDate}" with offset "${tzOffset}"`);
-  return ms;
-}
-
 // Accepts epoch ms, epoch seconds, or anything Date.parse understands.
 export function toMs(value) {
   if (value == null || value === '') return null;

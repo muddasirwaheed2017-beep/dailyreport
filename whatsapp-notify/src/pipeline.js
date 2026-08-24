@@ -90,7 +90,7 @@ export async function runAnalysis(jid, { name, kind, dryRun = false } = {}) {
     }
 
     let delivery = { ok: true, results: [{ ok: true, provider: 'dry-run', skipped: true }] };
-    if (!dryRun) delivery = await push.send(result.text, { title: `🚢 ${label}` });
+    if (!dryRun) delivery = await push.send(result.text, { title: label });
     if (!delivery.ok) warn(`${label}: push failed — ${JSON.stringify(delivery.results)}`);
 
     // The cursor advances whether or not the transport accepted it: the batch

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd agent for wa-notify.
+
+  Install:
+    cp deploy/com.maliksons.wa-notify.plist ~/Library/LaunchAgents/
+    # edit the two REPLACE_ME paths below first
+    launchctl load -w ~/Library/LaunchAgents/com.maliksons.wa-notify.plist
+
+  `caffeinate -is` is the first argument on purpose: it keeps the Mac from
+  sleeping for exactly as long as the listener runs, and stops holding the
+  system awake the moment it exits.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.maliksons.wa-notify</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/usr/bin/caffeinate</string>
+    <string>-is</string>
+    <string>REPLACE_ME_NODE_PATH</string>
+    <string>src/cli.js</string>
+    <string>listen</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>REPLACE_ME_MODULE_PATH</string>
+
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>REPLACE_ME_MODULE_PATH/logs/listener.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>REPLACE_ME_MODULE_PATH/logs/listener.err.log</string>
+</dict>
+</plist>

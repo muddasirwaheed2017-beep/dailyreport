@@ -14,7 +14,6 @@ process.env.WA_CHECKPOINT = path.join(TMP, 'checkpoint.json');
 process.env.WA_CONTEXT = path.join(TMP, 'context.json');
 process.env.WA_GROUPS = path.join(TMP, 'groups.json');
 process.env.WA_LOG_DIR = path.join(TMP, 'logs');
-process.env.WA_TZ_OFFSET = '+05:00';
 process.env.WA_PUSH_PROVIDER = 'none';
 
 const store = await import('../src/store.js');
@@ -23,11 +22,12 @@ const registry = await import('../src/registry.js');
 const context = await import('../src/context.js');
 const analyze = await import('../src/analyze.js');
 const push = await import('../src/push.js');
+const { subjectFor } = push;
 const { gate, isFiller, keywordsIn } = await import('../src/filter.js');
 const { FlushBuffer } = await import('../src/buffer.js');
 const { normalize } = await import('../src/normalize.js');
 const { runAnalysis } = await import('../src/pipeline.js');
-const { endOfDayMs } = await import('../src/util.js');
+const { WATCHED_GROUPS, INVOICE_GROUP_PATTERNS } = await import('../src/config.js');
 
 const SHIPMENTS = '111111111-1600000000@g.us';
 const IMPORTS = '222222222-1600000000@g.us';
@@ -85,14 +85,31 @@ test('capture: history sync backfill lands in the same store', () => {
 });
 
 // ════════════════════════════════════════════════════════════
+test('scope: ONLY the two shipping groups are watched', () => {
+  assert.ok(registry.classify('CNC Shipments'), 'CNC Shipments is watched');
+  assert.ok(registry.classify('CNC Import matters'), 'CNC Import matters is watched');
+
+  // The invoice / payment side stays on the existing Meta-API route.
+  for (const subject of [
+    'CNC Invoices', 'CNC Payments', 'PayGate Bank Feeds',
+    'Invoice Discussion', 'Payment Confirmations', 'Family', 'Random Group'
+  ]) {
+    assert.equal(registry.classify(subject), null, `${subject} must NOT be watched`);
+  }
+
+  const watched = WATCHED_GROUPS.map((g) => g.name).sort();
+  assert.deepEqual(watched, ['CNC Import matters', 'CNC Shipments']);
+  assert.deepEqual(INVOICE_GROUP_PATTERNS, [], 'no invoice catch-all');
+});
+
 test('checkpoint: shipping groups are seeded from the given values', () => {
   const shipments = checkpoint.ensure(SHIPMENTS, { name: 'CNC Shipments', kind: 'shipping' });
   assert.equal(shipments.text, 'OLD SHIPMENT TRACKING');
-  assert.equal(shipments.ts, endOfDayMs('2026-08-21', '+05:00'));
+  assert.equal(shipments.ts, Date.parse('2026-08-21T23:59:59+05:00'));
 
   const imports = checkpoint.ensure(IMPORTS, { name: 'CNC Import matters', kind: 'shipping' });
   assert.equal(imports.text, "I'll share first thing tomorrow");
-  assert.equal(imports.ts, endOfDayMs('2026-08-23', '+05:00'));
+  assert.equal(imports.ts, Date.parse('2026-08-23T00:00:00+05:00'));
 });
 
 test('checkpoint: invoice groups are seeded to the deployment timestamp', () => {
@@ -188,7 +205,7 @@ test('pipeline: a keyword batch is briefed and pushed', async () => {
   assert.equal(result.status, 'pushed');
   assert.equal(pushed.length, 1);
   assert.match(pushed[0].text, /SUMMARY/);
-  assert.equal(pushed[0].title, '🚢 CNC Shipments');
+  assert.equal(pushed[0].title, 'CNC Shipments');
   assert.equal(checkpoint.get(jid).id, 'b2');
   assert.equal(replies.length, 0, 'media/keyword batch skips the triage call');
 
@@ -266,6 +283,19 @@ test('pipeline: nothing new past the cursor is a no-op', async () => {
 });
 
 // ════════════════════════════════════════════════════════════
+test('email: subject is the SUMMARY sentence, capped, with the group as fallback', () => {
+  assert.equal(
+    subjectFor('\u{1F4E6} SUMMARY: XIN PU DONG sailed today.\n\u2705 DO: Chase the B/L.', 'CNC Shipments'),
+    '\u{1F4E6} XIN PU DONG sailed today. \u2014 wa-notify'
+  );
+  // No SUMMARY line -> fall back to the group name.
+  assert.equal(subjectFor('skip', 'CNC Import matters'), '\u{1F4E6} CNC Import matters \u2014 wa-notify');
+  // Long summaries are truncated so iPhone Mail shows something readable.
+  const long = subjectFor(`\u{1F4E6} SUMMARY: ${'x'.repeat(200)}`, 'CNC Shipments');
+  assert.ok(long.length < 100, `subject was ${long.length} chars`);
+  assert.ok(long.startsWith('\u{1F4E6} ') && long.endsWith(' \u2014 wa-notify'));
+});
+
 test('buffer: flushes at 10 queued messages', async () => {
   const flushes = [];
   const buffer = new FlushBuffer((jid, meta) => flushes.push({ jid, meta }), { quietMs: 60_000, maxMessages: 10 });

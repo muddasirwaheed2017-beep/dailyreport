@@ -1,13 +1,15 @@
 # WhatsApp Smart Notify (with checkpoint)
 
-A Baileys listener for the shipping groups (**CNC Shipments**, **CNC Import
-matters**) and the invoice/payment groups. It captures every message to disk
+A Baileys listener for the two shipping groups — **CNC Shipments** and
+**CNC Import matters**. It captures every message to disk
 before doing anything else, tracks a per-group cursor of what *Claude* has
 analysed, and pushes a short freight brief to your phone when something
 actually happens.
 
-The existing Meta-API invoice routing in `../whatsapp-webhook-v1.js` is
-untouched — this module is additive and runs alongside it.
+**Invoice and payment groups are deliberately NOT watched.** That traffic stays
+on the existing Meta-API route in `../whatsapp-webhook-v1.js`, which this module
+does not touch. `INVOICE_GROUP_PATTERNS` is empty on purpose — a group is watched
+only if it matches `WATCHED_GROUPS` in `src/config.js`.
 
 ## The three guarantees
 
@@ -49,11 +51,38 @@ never analysed, so it must stay unread.
 ```bash
 cd whatsapp-notify
 npm install
-cp .env.example .env      # fill in ANTHROPIC_API_KEY + your push transport
-npm start                 # scan the QR with WhatsApp > Linked devices
+chmod +x src/cli.js
+cp .env.example .env      # fill in the values below
+npm test                  # expect 24/24 before going further
+npm run test-email        # prove email works BEFORE pairing WhatsApp
+npm start                 # scan the QR with WhatsApp > Linked Devices
 ```
 
 The QR only appears on first run; the pairing is stored in `auth/`.
+
+## Email push (Gmail SMTP)
+
+Briefs are delivered by email. `.env` (gitignored) needs:
+
+| Variable | What it is |
+|---|---|
+| `WA_PUSH_PROVIDER` | `email` (comma-separated list; `email,telegram` also works) |
+| `GMAIL_USER` | the sending Gmail address |
+| `GMAIL_APP_PASSWORD` | **16-character Google App Password**, not your normal password |
+| `NOTIFY_EMAIL_TO` | where briefs are delivered |
+| `ANTHROPIC_API_KEY` | for the brief itself |
+
+Getting the App Password: Google Account -> Security -> 2-Step Verification
+(must be ON) -> App passwords -> generate. It is 16 characters; spaces are
+stripped automatically. `wa-notify test-email` refuses to send and says so if
+the value is not 16 characters, because Gmail's own error for a normal password
+is an unhelpful `535`.
+
+Mail goes over implicit TLS to `smtp.gmail.com:465`. Subject lines are
+"📦 <the SUMMARY sentence> — wa-notify" so the brief is readable on a
+locked phone; the body is the full brief. SMTP calls time out after 20s
+(`WA_SMTP_TIMEOUT_MS`) so a network that blocks port 465 fails fast with a clear
+message instead of stalling the listener.
 
 ## Seeding
 
@@ -61,26 +90,25 @@ The QR only appears on first run; the pairing is stored in `auth/`.
 
 | Group | Seeded to |
 |---|---|
-| CNC Import matters | 2026-08-23 — *"I'll share first thing tomorrow"* (Shahid) |
-| CNC Shipments | 2026-08-21 — *"OLD SHIPMENT TRACKING"* (Ahmed, image) |
-| invoice / payment groups | the deployment timestamp (start fresh) |
+| CNC Shipments | `2026-08-21T23:59:59+05:00` — *"OLD SHIPMENT TRACKING"* (Ahmed, image) |
+| CNC Import matters | `2026-08-23T00:00:00+05:00` — *"I'll share first thing tomorrow"* (Shahid) |
 
-> The two shipping seeds are dated to the **day**, not the minute, so they are
-> anchored to the last instant of that day in Asia/Karachi
-> (`2026-08-21T23:59:59+05:00`). That guarantees nothing already read is
-> replayed. If a message later on that same day still needs analysing, set the
-> exact time instead: `WA_SEED_CNC_SHIPMENTS=2026-08-21T17:40:00+05:00`.
+> **CNC Import matters is seeded to the START of 23 Aug on purpose.** It
+> guarantees nothing after Shahid's "first thing tomorrow" line is skipped;
+> re-analysing that short exchange once is the accepted cost. Override either
+> with `WA_SEED_CNC_SHIPMENTS` / `WA_SEED_CNC_IMPORT_MATTERS`.
 
-The deployment timestamp is stamped once, into `checkpoint._meta.deployed_at`,
-so an invoice group first seen weeks later still seeds to the original deploy
-instant rather than to the moment it was discovered.
+Any watched group without a seed falls back to a once-stamped deployment
+timestamp in `checkpoint._meta.deployed_at`. Both current groups have explicit
+seeds, so that path is only a safety net.
 
 ## Commands
 
 ```bash
 wa-notify listen                          # run the listener
 wa-notify status                          # cursors + how much is unanalysed
-wa-notify groups                          # JID <-> name registry
+wa-notify groups                          # watch scope + JID <-> name registry
+wa-notify test-email                      # one-shot email deliverability check
 wa-notify catchup <groupName> [--from TS] # re-run analysis from a point in time
 wa-notify import <groupName> <file.jsonl> # merge pasted messages into the store
 ```
@@ -144,9 +172,40 @@ All of these are runtime state and are gitignored. Edit `context.json`'s
 | `src/buffer.js` | the 90s-quiet / 10-message flush scheduler |
 | `src/filter.js` | filler drop + keyword/media gate |
 | `src/analyze.js` | the two Anthropic calls |
-| `src/push.js` | Telegram / Pushover transports |
+| `src/push.js` | email (Gmail SMTP) / Telegram / Pushover transports |
 | `src/pipeline.js` | one analysis run, start to finish |
-| `src/cli.js` | `listen` / `catchup` / `import` / `status` / `groups` |
+| `src/cli.js` | `listen` / `catchup` / `import` / `status` / `groups` / `test-email` |
+
+## Running it persistently (macOS)
+
+The listener must stay running and the Mac must not sleep. `caffeinate -is`
+holds the system awake for exactly as long as the listener lives.
+
+**Quick, for one session** (dies when the terminal closes):
+
+```bash
+cd whatsapp-notify && caffeinate -is npm start
+```
+
+**Permanent** — a launchd agent that starts at login and restarts on crash:
+
+```bash
+bash deploy/install-launchd.sh
+```
+
+**Is it still alive?**
+
+```bash
+launchctl list | grep wa-notify            # PID and last exit code (0 = healthy)
+npm run status                             # cursors + how much is unanalysed
+tail -f logs/listener.out.log              # live connection log
+tail -5 logs/pushes.jsonl                  # what was actually delivered
+pmset -g assertions | grep -i caffeinate   # confirm sleep is being held off
+```
+
+A missing PID in `launchctl list`, or a `status` whose `unanalysed` count keeps
+climbing, both mean it is not processing. Stop it with
+`launchctl unload -w ~/Library/LaunchAgents/com.maliksons.wa-notify.plist`.
 
 ## Tests
 
@@ -154,8 +213,9 @@ All of these are runtime state and are gitignored. Edit `context.json`'s
 npm test
 ```
 
-22 tests covering capture and de-duplication, the seeding rules, read-ahead not
-moving the cursor, the filler gate, all five pipeline outcomes, the flush
+24 tests covering capture and de-duplication, the watch scope (invoice groups
+must stay unwatched), the seeding rules, read-ahead not moving the cursor, the
+filler gate, all five pipeline outcomes, the email subject line, the flush
 triggers, Baileys message normalisation, and the catch-up round trip. The
 Anthropic client and the push transport are stubbed, so no network or
 credentials are needed.

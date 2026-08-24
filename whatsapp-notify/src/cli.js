@@ -9,10 +9,11 @@
 //   import <groupName> <file.jsonl>    merge pasted messages into the store
 // ═══════════════════════════════════════════════════════════════
 import fs from 'node:fs';
-import { PATHS } from './config.js';
+import { PATHS, WATCHED_GROUPS, SEEDS, INVOICE_GROUP_PATTERNS } from './config.js';
 import * as store from './store.js';
 import * as checkpoint from './checkpoint.js';
 import * as registry from './registry.js';
+import * as push from './push.js';
 import { runAnalysis } from './pipeline.js';
 import { toMs, isoOf } from './util.js';
 
@@ -113,6 +114,28 @@ function importFile(positional) {
   );
 }
 
+// ─── test-email ──────────────────────────────────────────────
+// Phase 3a: prove the push channel end-to-end before WhatsApp is involved.
+async function testEmail() {
+  const status = push.emailStatus();
+  process.stdout.write(
+    'email config\n' +
+    `  transports     ${status.transports.join(', ') || '(none)'}\n` +
+    `  smtp           ${status.host}\n` +
+    `  GMAIL_USER     ${status.user}\n` +
+    `  APP_PASSWORD   ${status.appPassword}\n` +
+    `  NOTIFY_EMAIL_TO ${status.to}\n\n`
+  );
+  if (status.missing.length) {
+    throw new Error(`cannot send — missing ${status.missing.join(', ')} (put them in whatsapp-notify/.env)`);
+  }
+
+  const result = await push.sendTestEmail();
+  if (!result.ok) throw new Error(`send failed — ${result.error}`);
+  process.stdout.write(`sent \u2713  accepted by Gmail for: ${(result.accepted || []).join(', ')}\n`);
+  process.stdout.write(`messageId ${result.messageId}\n`);
+}
+
 // ─── status / groups ──────────────────────────────────────────
 function status() {
   const cursors = checkpoint.all();
@@ -139,13 +162,29 @@ function status() {
 }
 
 function groups() {
+  // Configured scope first — this is the answer to "what will it watch?",
+  // and it is available before the device has ever been paired.
+  process.stdout.write('WATCHING (from src/config.js):\n');
+  for (const g of WATCHED_GROUPS) {
+    const seed = SEEDS[g.name];
+    process.stdout.write(
+      `  ${g.name}  [${g.kind}]  seed ${seed ? seed.at : '(deployment timestamp)'}\n`
+    );
+  }
+  process.stdout.write(
+    `  invoice/payment catch-all: ${INVOICE_GROUP_PATTERNS.length === 0
+      ? 'DISABLED — invoice traffic is ignored by this module'
+      : INVOICE_GROUP_PATTERNS.join(', ')}\n\n`
+  );
+
+  process.stdout.write('SEEN (from groups.json):\n');
   const all = registry.all();
   if (Object.keys(all).length === 0) {
-    process.stdout.write('registry empty — run `listen` once so groups are discovered\n');
+    process.stdout.write('  (none yet — run `listen` once so groups are discovered)\n');
     return;
   }
   for (const [jid, entry] of Object.entries(all)) {
-    process.stdout.write(`${entry.name}  [${entry.kind}]  ${jid}\n`);
+    process.stdout.write(`  ${entry.name}  [${entry.kind}]  ${jid}\n`);
   }
 }
 
@@ -172,6 +211,9 @@ async function main() {
     case 'groups':
       groups();
       break;
+    case 'test-email':
+      await testEmail();
+      break;
     default:
       process.stdout.write(
         'wa-notify <command>\n\n' +
@@ -180,7 +222,8 @@ async function main() {
         '                      [--dry-run]     ...without pushing or moving the cursor\n' +
         '  import <groupName> <file.jsonl>     merge pasted messages into the store\n' +
         '  status                              cursors and unanalysed counts\n' +
-        '  groups                              JID <-> name registry\n\n' +
+        '  groups                              watch scope + JID <-> name registry\n' +
+        '  test-email                          send a one-shot test email\n\n' +
         `store: ${PATHS.store}\ncheckpoint: ${PATHS.checkpoint}\n`
       );
       process.exitCode = command ? 1 : 0;

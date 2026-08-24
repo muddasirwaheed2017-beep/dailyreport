@@ -11,7 +11,9 @@
   "scripts": {
     "start": "node src/cli.js listen",
     "catchup": "node src/cli.js catchup",
-    "test": "node --test \"test/*.test.js\""
+    "test": "node --test \"test/*.test.js\"",
+    "test-email": "node src/cli.js test-email",
+    "status": "node src/cli.js status"
   },
   "engines": {
     "node": ">=20"
@@ -19,6 +21,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.70.0",
     "@whiskeysockets/baileys": "^6.7.9",
+    "nodemailer": "^9.0.5",
     "pino": "^9.5.0",
     "qrcode-terminal": "^0.12.0"
   }

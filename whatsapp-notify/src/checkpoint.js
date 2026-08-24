@@ -8,8 +8,8 @@
 // touches this file — the only writers are advance() (after an analysis run
 // finishes, push or no push) and repoint() (the manual `catchup` command).
 // ═══════════════════════════════════════════════════════════════
-import { PATHS, SEEDS, SEED_TZ_OFFSET } from './config.js';
-import { readJson, writeJsonAtomic, endOfDayMs, compareMessages, toMs, isoOf } from './util.js';
+import { PATHS, SEEDS } from './config.js';
+import { readJson, writeJsonAtomic, compareMessages, toMs, isoOf } from './util.js';
 
 function load(file = PATHS.checkpoint) {
   return readJson(file, {});
@@ -50,13 +50,9 @@ function seedFor(name, kind, file) {
 
   const seed = SEEDS[name];
   if (seed) {
-    // The seeds are dated to the day, so anchor at the end of that day in
-    // Asia/Karachi — a message read earlier the same day is never replayed.
-    return {
-      id: `seed:${slug(name).toLowerCase()}`,
-      ts: endOfDayMs(seed.date, SEED_TZ_OFFSET),
-      text: seed.text
-    };
+    const ts = toMs(seed.at);
+    if (ts == null) throw new Error(`Seed for "${name}" has an unparsable "at": ${seed.at}`);
+    return { id: `seed:${slug(name).toLowerCase()}`, ts, text: seed.text };
   }
 
   // Invoice / payment groups (and any watched group without a seed): start
