@@ -28,6 +28,22 @@ function textOf(response) {
     .trim();
 }
 
+/**
+ * The brief is delivered as plain-text email, where markdown is not rendered —
+ * "**SUMMARY:**" arrives on the phone with the asterisks visible. The model
+ * adds them anyway, so strip them rather than editing the agreed system prompt.
+ */
+export function stripMarkdown(text) {
+  return String(text || '')
+    .replace(/\*\*(.+?)\*\*/g, '$1')   // **bold**
+    .replace(/__(.+?)__/g, '$1')       // __bold__
+    .replace(/(^|\s)\*(\S(?:.*?\S)?)\*(?=\s|$)/g, '$1$2') // *italic*
+    .replace(/^#{1,6}\s+/gm, '')       // # headings
+    .replace(/[ \t]+$/gm, '')          // trailing spaces
+    .replace(/\n{3,}/g, '\n\n')        // collapse big gaps
+    .trim();
+}
+
 /** Render a batch the way the model sees it. */
 export function renderMessages(batch) {
   return batch
@@ -91,7 +107,7 @@ export async function brief(contextJson, batch) {
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content }]
     });
-    const text = textOf(response);
+    const text = stripMarkdown(textOf(response));
     return { text, skip: /^['"`]?skip['"`.]?$/i.test(text), error: null };
   } catch (err) {
     return { text: '', skip: false, error: describe(err) };

@@ -21,6 +21,7 @@ const checkpoint = await import('../src/checkpoint.js');
 const registry = await import('../src/registry.js');
 const context = await import('../src/context.js');
 const analyze = await import('../src/analyze.js');
+const { stripMarkdown } = analyze;
 const push = await import('../src/push.js');
 const { subjectFor } = push;
 const { gate, isFiller, keywordsIn } = await import('../src/filter.js');
@@ -283,6 +284,16 @@ test('pipeline: nothing new past the cursor is a no-op', async () => {
 });
 
 // ════════════════════════════════════════════════════════════
+test('brief: markdown is stripped so plain-text email reads cleanly', () => {
+  const raw = '\u{1F4E6} **SUMMARY:** Vessel sailed.\n\n\u2705 **DO:** Verify the B/L.\n\n\n\u26A0\uFE0F __CAUTION:__ *check* the NTN.';
+  assert.equal(
+    stripMarkdown(raw),
+    '\u{1F4E6} SUMMARY: Vessel sailed.\n\n\u2705 DO: Verify the B/L.\n\n\u26A0\uFE0F CAUTION: check the NTN.'
+  );
+  // A lone asterisk in prose is left alone.
+  assert.equal(stripMarkdown('rate is 3.5 * 2 per unit'), 'rate is 3.5 * 2 per unit');
+});
+
 test('email: subject is the SUMMARY sentence, capped, with the group as fallback', () => {
   assert.equal(
     subjectFor('\u{1F4E6} SUMMARY: XIN PU DONG sailed today.\n\u2705 DO: Chase the B/L.', 'CNC Shipments'),
