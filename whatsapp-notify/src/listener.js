@@ -17,7 +17,7 @@
 // at a time, stale sockets are torn down and their events ignored, and retries
 // back off.
 // ═══════════════════════════════════════════════════════════════
-import { PATHS, PAIR_PHONE } from './config.js';
+import { PATHS, PAIR_PHONE, BROWSER } from './config.js';
 import * as store from './store.js';
 import * as checkpoint from './checkpoint.js';
 import * as registry from './registry.js';
@@ -81,7 +81,7 @@ function teardown(sock) {
 export async function start({ analyse = runAnalysis } = {}) {
   const baileys = await import('@whiskeysockets/baileys');
   const makeWASocket = baileys.default?.default || baileys.default || baileys.makeWASocket;
-  const { useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason, Browsers } = baileys;
+  const { useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason } = baileys;
   const { default: pino } = await import('pino');
   const { default: qrcode } = await import('qrcode-terminal');
 
@@ -114,7 +114,7 @@ export async function start({ analyse = runAnalysis } = {}) {
     process.once('SIGTERM', () => shutdown('SIGTERM'));
   }
 
-  const deps = { makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason, Browsers, pino, qrcode };
+  const deps = { makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason, pino, qrcode };
   return connect(deps, buffer);
 }
 
@@ -153,7 +153,7 @@ async function listAllGroups(sock) {
 async function connect(deps, buffer) {
   const {
     makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion,
-    DisconnectReason, Browsers, pino, qrcode
+    DisconnectReason, pino, qrcode
   } = deps;
 
   if (stopping) return null;
@@ -175,7 +175,7 @@ async function connect(deps, buffer) {
     version,
     auth: state,
     logger: pino({ level: process.env.WA_LOG_LEVEL || 'silent' }),
-    browser: Browsers.macOS('Desktop'),
+    browser: BROWSER, // must not be 'Mac OS'/'Windows' — see config.js
     // Ask WhatsApp for the backlog so a reconnect refills the store.
     syncFullHistory: true,
     markOnlineOnConnect: false // reading in the app must not be affected

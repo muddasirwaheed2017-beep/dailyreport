@@ -92,6 +92,25 @@ export const SEEDS = {
   }
 };
 
+// ─── Client identity ─────────────────────────────────────────
+// Baileys derives the `webSubPlatform` it reports to WhatsApp from this tuple:
+//
+//   if (syncFullHistory && PLATFORM_MAP[browser[0]]) webSubPlatform = ...
+//   PLATFORM_MAP = { 'Mac OS': DARWIN, Windows: WIN32 }
+//
+// With syncFullHistory on and browser[0] of 'Mac OS' or 'Windows', it claims to
+// be the native desktop app. WhatsApp refuses that identity — the socket is
+// terminated a few hundred ms into the handshake, before any QR is issued,
+// surfacing as an endless 428 loop.
+//
+// Anything not in that map (here, 'Ubuntu') reports WEB_BROWSER and is
+// accepted, and unlike turning syncFullHistory off it keeps the history
+// backfill the store relies on. Do not change [0] to 'Mac OS' or 'Windows'.
+export const BROWSER = ['Ubuntu', 'Chrome', '22.04.4'];
+
+// Names that make Baileys claim to be a native desktop app; see above.
+export const REJECTED_PLATFORMS = ['Mac OS', 'Windows'];
+
 // ─── Pairing ─────────────────────────────────────────────────
 // Set WA_PAIR_PHONE (international format, digits only, e.g. 923001234567)
 // to link with an 8-character code typed into the phone instead of scanning a

@@ -28,7 +28,7 @@ const { gate, isFiller, keywordsIn } = await import('../src/filter.js');
 const { FlushBuffer } = await import('../src/buffer.js');
 const { normalize } = await import('../src/normalize.js');
 const { runAnalysis } = await import('../src/pipeline.js');
-const { WATCHED_GROUPS, INVOICE_GROUP_PATTERNS } = await import('../src/config.js');
+const { WATCHED_GROUPS, INVOICE_GROUP_PATTERNS, BROWSER, REJECTED_PLATFORMS } = await import('../src/config.js');
 
 const SHIPMENTS = '111111111-1600000000@g.us';
 const IMPORTS = '222222222-1600000000@g.us';
@@ -292,6 +292,18 @@ test('brief: markdown is stripped so plain-text email reads cleanly', () => {
   );
   // A lone asterisk in prose is left alone.
   assert.equal(stripMarkdown('rate is 3.5 * 2 per unit'), 'rate is 3.5 * 2 per unit');
+});
+
+test('client identity: never claims to be a native desktop app', () => {
+  // Baileys maps browser[0] of 'Mac OS'/'Windows' to a desktop-app
+  // webSubPlatform when syncFullHistory is on, and WhatsApp terminates the
+  // handshake for that identity before issuing a QR. Regressing this is an
+  // endless 428 loop with no QR, which is very hard to diagnose from symptoms.
+  assert.ok(Array.isArray(BROWSER) && BROWSER.length === 3, 'browser is a 3-tuple');
+  assert.ok(
+    !REJECTED_PLATFORMS.includes(BROWSER[0]),
+    `browser[0] is "${BROWSER[0]}" — that identity is refused by WhatsApp`
+  );
 });
 
 test('email: subject is the SUMMARY sentence, capped, with the group as fallback', () => {
