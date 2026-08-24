@@ -13,7 +13,8 @@
     "catchup": "node src/cli.js catchup",
     "test": "node --test test/*.test.js",
     "test-email": "node src/cli.js test-email",
-    "status": "node src/cli.js status"
+    "status": "node src/cli.js status",
+    "test-brief": "node src/cli.js test-brief"
   },
   "engines": {
     "node": ">=20.0.0"

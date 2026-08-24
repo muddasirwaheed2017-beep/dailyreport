@@ -14,6 +14,9 @@ import * as store from './store.js';
 import * as checkpoint from './checkpoint.js';
 import * as registry from './registry.js';
 import * as push from './push.js';
+import * as analyze from './analyze.js';
+import * as context from './context.js';
+import { gate } from './filter.js';
 import { runAnalysis } from './pipeline.js';
 import { toMs, isoOf } from './util.js';
 
@@ -140,6 +143,53 @@ async function testEmail() {
   process.stdout.write(`messageId ${result.messageId}\n`);
 }
 
+// ─── test-brief ──────────────────────────────────────────────
+// Proves the whole chain — Anthropic API -> brief -> email — on a canned
+// batch, before WhatsApp is ever paired. Touches no store and no checkpoint.
+const SAMPLE_BATCH = [
+  { id: 'sample-1', sender: 'Zoe',    text: 'XIN PU DONG sailed today, sending final B/L', hasMedia: false, mediaName: null },
+  { id: 'sample-2', sender: 'Zoe',    text: '',       hasMedia: true,  mediaName: 'BL A92GX23404.pdf' },
+  { id: 'sample-3', sender: 'Shahid', text: 'thanks', hasMedia: false, mediaName: null }
+];
+
+async function testBrief(flags) {
+  const now = Date.now();
+  const batch = SAMPLE_BATCH.map((m, i) => ({ ...m, ts: now - (SAMPLE_BATCH.length - i) * 60_000 }));
+
+  const gated = gate(batch);
+  process.stdout.write(
+    `batch: ${batch.length} message(s) — kept ${gated.kept}, dropped ${gated.dropped}\n` +
+    `media ${gated.hasMedia} · keywords [${gated.keywords.join(', ')}] · ` +
+    `${gated.forced ? 'straight to the brief (no triage call)' : 'triage first'}\n\n`
+  );
+
+  const grounding = context.forPrompt();
+  const grounded = Object.values(grounding.shipments || {}).some((v) => v?.status && v.status !== 'unknown');
+  if (!grounded) {
+    process.stdout.write(
+      'NOTE: context.json has no real shipment status yet, so the brief cannot\n' +
+      '      mention specific discrepancies. Fill it in for grounded briefs.\n\n'
+    );
+  }
+
+  const result = await analyze.brief(grounding, gated.messages);
+  if (result.error) throw new Error(`the model call failed — ${result.error}`);
+  if (result.skip) {
+    process.stdout.write("Claude replied 'skip' — nothing would be pushed.\n");
+    return;
+  }
+
+  process.stdout.write(`--- brief ---\n${result.text}\n-------------\n\n`);
+
+  if (flags['no-email']) {
+    process.stdout.write('(--no-email: not sent)\n');
+    return;
+  }
+  const delivery = await push.send(result.text, { title: 'CNC Shipments (test)' });
+  if (!delivery.ok) throw new Error(`brief written but not delivered — ${JSON.stringify(delivery.results)}`);
+  process.stdout.write('emailed \u2713 — this is exactly what a real brief will look like\n');
+}
+
 // ─── status / groups ──────────────────────────────────────────
 function status() {
   const cursors = checkpoint.all();
@@ -218,6 +268,9 @@ async function main() {
     case 'test-email':
       await testEmail();
       break;
+    case 'test-brief':
+      await testBrief(flags);
+      break;
     default:
       process.stdout.write(
         'wa-notify <command>\n\n' +
@@ -227,7 +280,8 @@ async function main() {
         '  import <groupName> <file.jsonl>     merge pasted messages into the store\n' +
         '  status                              cursors and unanalysed counts\n' +
         '  groups                              watch scope + JID <-> name registry\n' +
-        '  test-email                          send a one-shot test email\n\n' +
+        '  test-email                          send a one-shot test email\n' +
+        '  test-brief [--no-email]             run a sample batch through Claude + email it\n\n' +
         `store: ${PATHS.store}\ncheckpoint: ${PATHS.checkpoint}\n`
       );
       process.exitCode = command ? 1 : 0;
