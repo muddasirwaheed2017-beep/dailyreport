@@ -26,6 +26,7 @@ import { normalize, groupJidOf } from './normalize.js';
 import { runAnalysis } from './pipeline.js';
 import { isAfter, ensureDir } from './util.js';
 import { line, warn } from './logger.js';
+import { showQr, clearQrPage } from './qr.js';
 
 const subjects = new Map(); // jid -> subject
 const announcedUnwatched = new Set(); // subjects we have already reported ignoring
@@ -254,20 +255,13 @@ async function connect(deps, buffer) {
     const { connection, lastDisconnect, qr } = update;
 
     if (qr && PAIR_PHONE) return; // pairing by code — the QR is not the route
-    if (qr) {
-      line('');
-      line('┌─────────────────────────────────────────────────┐');
-      line('│  Scan with WhatsApp:                            │');
-      line('│  Settings > Linked Devices > Link a Device      │');
-      line('└─────────────────────────────────────────────────┘');
-      qrcode.generate(qr, { small: true });
-      line('waiting for the scan — a new code appears if this one expires');
-    }
+    if (qr) showQr(qr).catch((err) => warn(`could not show the QR: ${err.message}`));
 
     if (connection === 'open') {
       backoffMs = 1_000;
       consecutiveFailures = 0;
       line('connected to WhatsApp');
+      clearQrPage();
       listAllGroups(sock).catch((err) => warn(`could not list groups: ${err.message}`));
       sweep();
     }
