@@ -91,18 +91,37 @@ export async function runAnalysis(jid, { name, kind, dryRun = false } = {}) {
 
     let delivery = { ok: true, results: [{ ok: true, provider: 'dry-run', skipped: true }] };
     if (!dryRun) delivery = await push.send(result.text, { title: label });
-    if (!delivery.ok) warn(`${label}: push failed — ${JSON.stringify(delivery.results)}`);
+
+    // A transport that was configured away (WA_PUSH_PROVIDER=none) reports
+    // success while sending nothing. That is legitimate for testing but must
+    // never read as "delivered".
+    const delivered = delivery.results.filter((r) => r.ok && !r.skipped);
+    const skipped = delivery.results.filter((r) => r.skipped);
 
     // The cursor advances whether or not the transport accepted it: the batch
     // WAS analysed, and the brief is preserved in logs/pushes.jsonl.
     advanceCursor();
-    record({ group: label, summary: result.text, pushed: delivery.ok });
+    record({ group: label, summary: result.text, pushed: delivered.length > 0 });
     log({
       jid, group: label, status: 'pushed', batch: batch.length, analysed: gated.messages.length,
-      keywords: gated.keywords, hasMedia: gated.hasMedia, pushed: delivery.ok,
-      transports: delivery.results, brief: result.text
+      keywords: gated.keywords, hasMedia: gated.hasMedia,
+      pushed: delivered.length > 0, transports: delivery.results, brief: result.text
     });
-    line(`${label}: pushed brief for ${gated.messages.length}/${batch.length} message(s)`);
+
+    // Say what actually happened. Reporting "pushed" for a brief that was
+    // written but never delivered sends you looking in the wrong place.
+    if (delivered.length > 0) {
+      line(`${label}: brief EMAILED (${delivered.map((r) => r.provider).join(', ')}) `
+        + `for ${gated.messages.length}/${batch.length} message(s)`);
+    } else if (skipped.length > 0) {
+      warn(`${label}: brief written but NOT SENT — transport is "${skipped.map((r) => r.provider).join(', ')}". `
+        + 'Set WA_PUSH_PROVIDER=email in .env to actually deliver it.');
+      line(`--- brief that was not sent ---\n${result.text}\n-------------------------------`);
+    } else {
+      warn(`${label}: brief written but DELIVERY FAILED — `
+        + delivery.results.map((r) => `${r.provider}: ${r.error || 'unknown error'}`).join('; '));
+      line(`--- brief that was not sent ---\n${result.text}\n-------------------------------`);
+    }
 
     return { status: 'pushed', jid, group: label, batch: batch.length, brief: result.text, delivery };
   });

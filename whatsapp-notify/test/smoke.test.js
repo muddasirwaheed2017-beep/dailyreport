@@ -276,6 +276,27 @@ test('pipeline: a dry run leaves no trace', async () => {
   assert.equal(store.readSince(jid, checkpoint.get(jid)).length, 1, 'the message is still pending');
 });
 
+test('pipeline: a transport that sends nothing is not reported as delivered', async () => {
+  reset();
+  replies = ['\u{1F4E6} SUMMARY: Vessel sailed.'];
+  const jid = 'not-sent@g.us';
+  checkpoint.repoint(jid, AUG(1), { name: 'CNC Shipments', kind: 'shipping' });
+  store.appendMessages(jid, [msg('n1', AUG(2), 'ETA now 12 Sep')]);
+
+  // WA_PUSH_PROVIDER=none reports ok:true while sending nothing. That must not
+  // be recorded as a delivered brief, or you go looking in the wrong inbox.
+  push.setTransport(async () => ({ ok: true, results: [{ ok: true, provider: 'none', skipped: true }] }));
+  const result = await runAnalysis(jid, { name: 'CNC Shipments', kind: 'shipping' });
+  assert.equal(result.status, 'pushed', 'the batch was still analysed');
+  assert.equal(context.load().recent_briefs.at(-1).pushed, false, 'not recorded as delivered');
+
+  // Restore the stub the other tests rely on.
+  push.setTransport(async (text, opts) => {
+    pushed.push({ text, ...opts });
+    return { ok: true, results: [{ ok: true, provider: 'stub' }] };
+  });
+});
+
 test('pipeline: nothing new past the cursor is a no-op', async () => {
   reset();
   const result = await runAnalysis('brief-run@g.us', { name: 'CNC Shipments', kind: 'shipping' });
