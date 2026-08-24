@@ -1,0 +1,17 @@
+{
+  "day": 77,
+  "date": "2026-08-24",
+  "handle": "scada-price-pakistan-2026-supervisory-control-data-acquisition-industrial-automation-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "SCADA Price in Pakistan 2026 — Supervisory Control & Data Acquisition, RTU Telemetry, Industrial HMI SCADA System Buyer Guide",
+  "summary_html": "<p>Complete 2026 buyer guide for SCADA (Supervisory Control and Data Acquisition) systems in Pakistan. Covers SCADA types, RTU and communication hardware pricing in PKR, IEC 60870-5-104/IEC 61850 protocols, NEPRA 2026 captive power mandate, WASA Lahore/Karachi water treatment telemetry, PIPIP drip-irrigation RTU spec, cement mill conformal coating requirements, and HS 8537.10 customs duty with DTRE/SRO 450 exemption. Updated August 2026.</p>",
+  "tags": ["SCADA", "supervisory control", "data acquisition", "RTU", "SCADA Pakistan", "industrial automation", "MODBUS", "DNP3", "OPC UA", "WAPDA SCADA", "NEPRA 2026", "Pakistan 2026", "IEC 60870", "PLC SCADA", "HMI SCADA"],
+  "published": false,
+  "shopify_result": "PENDING_MANUAL_RESCUE — Cloud IP block (HTTP 000 expected; article committed to repo for manual rescue)",
+  "cluster": "Industrial Automation",
+  "cluster_day": "D77 — Completes cluster: VFD D70 → Soft Starter → PLC D75 → HMI D76 → SCADA D77",
+  "word_count_estimate": 5000,
+  "internal_links_verified": "9/9 valid",
+  "faq_count": 8,
+  "pakistan_differentiators": 8
+}
