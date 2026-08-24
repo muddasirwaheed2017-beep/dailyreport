@@ -37,7 +37,12 @@ function noteUnwatched(subject) {
   const name = String(subject || '').trim();
   if (!name || announcedUnwatched.has(name)) return;
   announcedUnwatched.add(name);
-  line(`ignoring group "${name}" (not in WATCHED_GROUPS — edit src/config.js if this should be watched)`);
+  // On an account with 147 groups this is a wall of text that buries the lines
+  // that matter. The connect-time summary already gives the counts, and
+  // `wa-notify doctor` gives the detail, so stay quiet unless asked.
+  if (process.env.WA_LIST_ALL_GROUPS) {
+    line(`ignoring group "${name}" (not in WATCHED_GROUPS — edit src/config.js if this should be watched)`);
+  }
 }
 
 // ─── connection lifecycle state ──────────────────────────────
@@ -65,7 +70,8 @@ async function subjectFor(sock, jid) {
     if (subject) subjects.set(jid, subject);
     return subject;
   } catch (err) {
-    warn(`could not fetch metadata for ${jid}: ${err.message}`);
+    // Common and harmless on groups this account cannot read metadata for.
+    if (process.env.WA_LIST_ALL_GROUPS) warn(`could not fetch metadata for ${jid}: ${err.message}`);
     return '';
   }
 }
@@ -168,9 +174,16 @@ async function connect(deps, buffer) {
 
   const { state, saveCreds } = await useMultiFileAuthState(PATHS.auth);
   const { version, isLatest } = await fetchLatestBaileysVersion();
-  const paired = Boolean(state.creds?.registered);
+  // creds.registered is only set on the pairing-code path — after a QR pairing
+  // it stays false forever, so it is useless as "are we linked?". creds.me is
+  // the account identity Baileys fills in on a successful login, which is the
+  // signal that actually means something.
+  const identity = state.creds?.me?.id;
+  const paired = Boolean(identity || state.creds?.registered);
   line(`WhatsApp Web v${version.join('.')}${isLatest ? '' : ' (not latest)'} · `
-    + `credentials: ${paired ? 'already paired' : 'none yet, expecting a QR'}`);
+    + (paired
+      ? `linked as ${state.creds?.me?.name || identity}`
+      : 'no credentials yet, expecting a QR'));
 
   const sock = makeWASocket({
     version,

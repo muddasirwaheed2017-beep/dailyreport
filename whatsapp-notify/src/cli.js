@@ -9,7 +9,8 @@
 //   import <groupName> <file.jsonl>    merge pasted messages into the store
 // ═══════════════════════════════════════════════════════════════
 import fs from 'node:fs';
-import { PATHS, WATCHED_GROUPS, SEEDS, INVOICE_GROUP_PATTERNS } from './config.js';
+import path from 'node:path';
+import { PATHS, WATCHED_GROUPS, SEEDS, INVOICE_GROUP_PATTERNS, BROWSER, REJECTED_PLATFORMS } from './config.js';
 import * as store from './store.js';
 import * as checkpoint from './checkpoint.js';
 import * as registry from './registry.js';
@@ -190,6 +191,81 @@ async function testBrief(flags) {
   process.stdout.write('emailed \u2713 — this is exactly what a real brief will look like\n');
 }
 
+// ─── doctor ──────────────────────────────────────────────────
+// Everything needed to diagnose "nothing happened", in one output.
+function doctor() {
+  const out = [];
+  const say = (l = '') => out.push(l);
+
+  say('═══ CONFIG ═══');
+  say(`node                ${process.version}`);
+  say(`browser identity    ${JSON.stringify(BROWSER)}  ${REJECTED_PLATFORMS.includes(BROWSER[0]) ? '<-- BAD, WhatsApp refuses this' : 'ok'}`);
+  say(`watching            ${WATCHED_GROUPS.map((g) => g.name).join(' | ')}`);
+  const st = push.emailStatus();
+  say(`push transports     ${st.transports.join(', ') || '(none)'}`);
+  say(`GMAIL_USER          ${st.user}`);
+  say(`GMAIL_APP_PASSWORD  ${st.appPassword}`);
+  say(`NOTIFY_EMAIL_TO     ${st.to}`);
+  say(`ANTHROPIC_API_KEY   ${process.env.ANTHROPIC_API_KEY ? `set, ${process.env.ANTHROPIC_API_KEY.length} chars` : 'NOT SET — no briefs can be written'}`);
+
+  say();
+  say('═══ PAIRING ═══');
+  let creds = null;
+  try {
+    creds = JSON.parse(fs.readFileSync(path.join(PATHS.auth, 'creds.json'), 'utf8'));
+  } catch { /* not paired */ }
+  say(creds
+    ? `paired: ${creds.registered ? 'YES' : 'no (creds exist but not registered)'}  as ${creds.me?.name || creds.me?.id || '?'}`
+    : `paired: NO — ${PATHS.auth} has no creds.json`);
+
+  say();
+  say('═══ GROUPS SEEN ═══');
+  const groups = registry.all();
+  if (!Object.keys(groups).length) {
+    say('NONE — the listener has not matched any group yet.');
+    say('If it is connected, its startup output lists every group on the account;');
+    say('compare those names against "watching" above.');
+  } else {
+    for (const [jid, g] of Object.entries(groups)) say(`  ${g.name}  [${g.kind}]  ${jid}`);
+  }
+
+  say();
+  say('═══ CURSORS & CAPTURE ═══');
+  const cursors = checkpoint.all();
+  const jids = new Set([...Object.keys(cursors), ...store.listStoredGroups()]);
+  if (!jids.size) {
+    say('nothing captured yet');
+  } else {
+    for (const jid of jids) {
+      const entry = registry.entryFor(jid);
+      const cur = cursors[jid]?.last_analyzed;
+      const captured = store.readMessages(jid);
+      const pending = cur ? store.readSince(jid, cur).length : captured.length;
+      say(`  ${entry?.name || jid}`);
+      say(`    captured ${captured.length}, unanalysed ${pending}`);
+      say(`    cursor   ${cur ? isoOf(cur.ts) : '(not seeded)'}`);
+      const last = captured.at(-1);
+      if (last) say(`    newest   ${isoOf(last.ts)} ${last.sender}: ${JSON.stringify(String(last.text).slice(0, 60))}`);
+    }
+  }
+
+  say();
+  say('═══ LAST 5 RUNS (logs/pushes.jsonl) ═══');
+  try {
+    const lines = fs.readFileSync(path.join(PATHS.logs, 'pushes.jsonl'), 'utf8')
+      .trim().split('\n').slice(-5);
+    for (const l of lines) {
+      const e = JSON.parse(l);
+      say(`  ${e.at}  ${e.status.padEnd(12)} ${e.group}  pushed=${e.pushed}${e.error ? `  ERROR: ${e.error}` : ''}`);
+    }
+    if (!lines[0]) say('  (empty — no analysis run has ever completed)');
+  } catch {
+    say('  no log yet — no analysis run has ever completed');
+  }
+
+  process.stdout.write(`${out.join('\n')}\n`);
+}
+
 // ─── status / groups ──────────────────────────────────────────
 function status() {
   const cursors = checkpoint.all();
@@ -272,6 +348,9 @@ async function main() {
     case 'status':
       status();
       break;
+    case 'doctor':
+      doctor();
+      break;
     case 'groups':
       groups();
       break;
@@ -289,6 +368,7 @@ async function main() {
         '                      [--dry-run]     ...without pushing or moving the cursor\n' +
         '  import <groupName> <file.jsonl>     merge pasted messages into the store\n' +
         '  status                              cursors and unanalysed counts\n' +
+        '  doctor                              full diagnostic dump\n' +
         '  groups                              watch scope + JID <-> name registry\n' +
         '  test-email                          send a one-shot test email\n' +
         '  test-brief [--no-email]             run a sample batch through Claude + email it\n\n' +
