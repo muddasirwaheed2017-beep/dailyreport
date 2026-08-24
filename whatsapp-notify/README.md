@@ -215,6 +215,12 @@ climbing, both mean it is not processing. Stop it with
 
 ## Troubleshooting
 
+> A full account of how this was built, every wrong assumption made along the
+> way, and what to check first next time is in [POSTMORTEM.md](POSTMORTEM.md).
+> If you are debugging a connection problem, read §3 and §5 there before
+> changing any code.
+
+
 ### Endless `connection closed (428)` and no QR ever appears
 
 The client identity is claiming to be a native desktop app. Baileys derives
