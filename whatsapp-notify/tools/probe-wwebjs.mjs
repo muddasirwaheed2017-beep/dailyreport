@@ -12,6 +12,9 @@
 // Success looks like: a QR in the terminal, then "PAIRED SUCCESSFULLY".
 // It writes its session to .wwebjs_auth/ so a later run reconnects silently.
 // ═══════════════════════════════════════════════════════════════
+import fs from 'node:fs';
+import path from 'node:path';
+import { execFile } from 'node:child_process';
 import qrcode from 'qrcode-terminal';
 
 let pkg;
@@ -35,10 +38,26 @@ const client = new Client({
 const t0 = Date.now();
 const at = () => `${((Date.now() - t0) / 1000).toFixed(1)}s`;
 
-client.on('qr', (qr) => {
+// A terminal QR is dense and often will not scan — wrong font, wrapping, low
+// contrast. Write a large PNG as well and open it in Preview, which always
+// scans cleanly.
+async function showQr(qr) {
   console.log(`\n[${at()}] SCAN THIS — WhatsApp > Settings > Linked Devices > Link a Device\n`);
   qrcode.generate(qr, { small: true });
-});
+
+  try {
+    const { default: QRCode } = await import('qrcode');
+    const file = path.resolve('whatsapp-qr.png');
+    await QRCode.toFile(file, qr, { width: 900, margin: 3, errorCorrectionLevel: 'M' });
+    console.log(`\nIf the code above will not scan, a large one just opened in Preview:`);
+    console.log(`  ${file}`);
+    execFile('open', [file], () => {}); // macOS; harmless failure elsewhere
+  } catch (err) {
+    console.log(`(could not write the PNG: ${err.message})`);
+  }
+}
+
+client.on('qr', (qr) => { showQr(qr).catch(() => {}); });
 
 client.on('authenticated', () => console.log(`[${at()}] authenticated`));
 client.on('auth_failure', (m) => console.error(`[${at()}] AUTH FAILED: ${m}`));

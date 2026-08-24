@@ -7,3 +7,8 @@ context.json
 groups.json
 *.corrupt-*
 .env
+
+# probe artefacts
+whatsapp-qr.png
+.wwebjs_auth/
+.wwebjs_cache/
