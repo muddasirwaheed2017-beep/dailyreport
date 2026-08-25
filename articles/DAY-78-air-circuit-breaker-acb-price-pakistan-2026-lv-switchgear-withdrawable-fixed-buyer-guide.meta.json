@@ -1,0 +1,36 @@
+{
+  "day": 78,
+  "date": "2026-08-25",
+  "blog_id": "89971589186",
+  "handle": "air-circuit-breaker-acb-price-pakistan-2026-lv-switchgear-withdrawable-fixed-buyer-guide",
+  "title": "Air Circuit Breaker (ACB) Price in Pakistan 2026 — LV Switchgear, Withdrawable & Fixed Type, MCC Incomer Buyer Guide",
+  "summary_html": "<p>Complete 2026 buyer guide for air circuit breakers (ACBs) in Pakistan: fixed vs withdrawable types, ETU classes, WAPDA/DISCO fault level tables by zone, 45°C ambient derating for 5 cities, NEPRA net metering ≥200 kW requirements, selective coordination with MCCBs, load-shedding inrush ACB settings, industry applications (textile, cement, sugar, data centre), 11 PKR price tables, 9-factor selection matrix, 7 costly mistakes, and 8 FAQ entries.</p>",
+  "tags": ["ACB", "Air Circuit Breaker", "LV Switchgear", "Pakistan Electrical", "MCC Incomer", "WAPDA", "NEPRA", "IEC 60947-2", "Withdrawable ACB", "Fixed ACB"],
+  "cluster": "LV Switchgear",
+  "cluster_day": 1,
+  "internal_links_verified": "8/8",
+  "broken_links": [],
+  "shopify_status": "PENDING_MANUAL_RESCUE",
+  "shopify_error": "HTTP 000 (cloud IP block — Day 12 of block streak)",
+  "word_count_approx": 5000,
+  "sections": 12,
+  "faq_count": 8,
+  "tables": 3,
+  "pakistan_differentiators": [
+    "WAPDA/DISCO fault level table by zone (LESCO/K-Electric/IESCO/FESCO/MEPCO/PESCO) — first Pakistan-specific ACB fault level reference on e-commerce",
+    "45°C ambient derating 5-city table (Islamabad/Lahore/Faisalabad/Karachi/Multan) per IEC 60947-2 Annex K",
+    "NEPRA 2024 Amendment 4 ACB requirements for net metering ≥200 kW (ETU-20 min, shunt trip, MODBUS for ≥500 kW)",
+    "LESCO 2025 SQ&P ACB inspection findings (undersized MCCBs on ≥100 kW metering flagged and red-tagged)",
+    "Pakistan load-shedding 3–8/day reconnect inrush ACB settings (Ii ≥12×In for motor-dominant MCCs)",
+    "Faisalabad ring-main customer: 38–55 kA LT fault level (textile mill 5,000 kVA dual incomer scheme)",
+    "K-Electric Karachi central 60–100 kA LT fault current documentation (first on Pakistani e-commerce)",
+    "Karachi coastal Pollution Degree 3: silver contacts, conformal coat, IP31+ ACB spec (18–24 month copper contact failure)"
+  ],
+  "cross_links_to_add_in_related_articles": [
+    "mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide",
+    "motor-control-centre-mcc-panel-wiring-pakistan-2026-dol-star-delta-vfd-feeder-buyer-guide",
+    "busbar-price-pakistan-2026-copper-aluminium-busbar-trunking-system-buyer-guide",
+    "automatic-transfer-switch-ats-price-pakistan-2026-generator-changeover-solar-wapda-4-pole-buyer-guide",
+    "scada-price-pakistan-2026-supervisory-control-data-acquisition-industrial-automation-buyer-guide"
+  ]
+}
