@@ -1,0 +1,39 @@
+{
+  "day": 79,
+  "date": "2026-08-26",
+  "handle": "vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "VCB & RMU Price in Pakistan 2026 — Vacuum Circuit Breaker, 11kV Ring Main Unit & MV Switchgear Indoor Buyer Guide",
+  "meta_description": "VCB and RMU price in Pakistan 2026. Vacuum circuit breakers 12kV–24kV, ring main units 2L+1T to 4L, WAPDA 11kV fault level by DISCO zone, K-Electric Karachi SF6-free RMU, NEPRA Distribution Code Chapter 7, captive power directional OC relay, and 45°C derating table. Expert MV switchgear buyer guide from CNC Electric Pakistan.",
+  "cluster": "LV/MV Switchgear — Day 2 (VCB/RMU follows D78 ACB)",
+  "word_count_approx": 5100,
+  "sections": 14,
+  "tables": 8,
+  "faq_count": 8,
+  "internal_links_total": 10,
+  "internal_links_valid": 10,
+  "internal_links_broken": 0,
+  "pakistan_firsts": [
+    "WAPDA 11kV fault level by DISCO zone (LESCO/K-Electric/IESCO/FESCO/MEPCO/PESCO) — first comprehensive table on Pakistani e-commerce",
+    "IEC 62271-100 VCB derating at 45°C — 6-city Pakistan table (Islamabad/Lahore/Karachi/Faisalabad/Multan/Quetta)",
+    "NEPRA Distribution Code Chapter 7 insulation coordination for 12kV VCB — first documented on Pakistani e-commerce",
+    "K-Electric Karachi underground cable RMU SS316L specification — first documented on Pakistani e-commerce",
+    "WAPDA Protection Grading TSG-1: IDMT OC/EF relay time-grading cascade for 11kV feeder-to-transformer VCB selectivity",
+    "Pakistan captive power: directional OC relay (67/67N) for generator feeder VCB — NEPRA Captive Power Regulation 2015 Clause 12.4",
+    "Load-shedding operation count impact on VCB interrupter life — 3–8 ops/day = 10,000 ops in 3.5–4.5 years (Class M2 recommendation)",
+    "Auto-reclose prohibition on underground cable feeders — NEPRA Distribution Code Clause 7.9.2 (first documented on Pakistani e-commerce)"
+  ],
+  "iec_standards": [
+    "IEC 62271-100", "IEC 62271-1", "IEC 62271-200", "IEC 60071-1",
+    "IEC 60255-151", "IEC 60815", "ISO 9223", "IEC 62116"
+  ],
+  "shopify_push_status": "PENDING_MANUAL_RESCUE",
+  "shopify_push_error": "HTTP 000 — connection refused from cloud IP (Day 13 of streak D67–D79)",
+  "preflight_committed": true,
+  "link_verification_status": "10/10 valid",
+  "post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length_check": "N/A — article not yet live on Shopify",
+    "duplicate_title_check": "No existing VCB or Ring Main Unit article in corpus — CLEAR"
+  }
+}
