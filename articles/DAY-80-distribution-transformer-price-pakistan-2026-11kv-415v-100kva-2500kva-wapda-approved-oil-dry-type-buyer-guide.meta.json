@@ -1,0 +1,43 @@
+{
+  "day": 80,
+  "date": "2026-08-27",
+  "handle": "distribution-transformer-price-pakistan-2026-11kv-415v-100kva-2500kva-wapda-approved-oil-dry-type-buyer-guide",
+  "title": "Distribution Transformer Price in Pakistan 2026 — 11kV/415V, 100kVA–2500kVA, WAPDA-Approved Oil-Type & Dry-Type Complete Buyer Guide",
+  "blog_id": "89971589186",
+  "author": "CNC Electric Pakistan",
+  "tags": ["distribution transformer", "transformer price pakistan", "11kV transformer", "415V transformer", "WAPDA transformer", "100kVA transformer", "500kVA transformer", "1000kVA transformer", "oil type transformer", "dry type transformer", "DISCO approved", "PSQCA certificate", "transformer pakistan 2026"],
+  "summary_html": "<p>Distribution transformer price in Pakistan 2026: 100kVA–2500kVA, 11kV/415V, WAPDA-approved oil-type and dry-type. DISCO ratings table, 45°C derating by city, NEPRA tap changer zone settings, load-shedding thermal cycling impact, Karachi coastal specification, WAPDA metering package requirements, and complete PKR price guide. 8 Pakistan-first technical disclosures including DISCO fault level table, MEPCO/PESCO tap changer settings, K-Electric coastal SS316 specification, and load-shedding life reduction data.</p>",
+  "cluster": "LV/MV Switchgear — Day 3 (D78=ACB, D79=VCB/RMU, D80=Distribution Transformer)",
+  "internal_links_verified": "10/10",
+  "internal_links": [
+    "vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide",
+    "air-circuit-breaker-acb-price-pakistan-2026-lv-switchgear-withdrawable-fixed-buyer-guide",
+    "mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide",
+    "current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+    "hrc-fuse-fuse-holder-price-pakistan-2026-lv-mv-bs88-knife-blade-din-type-buyer-guide",
+    "busbar-price-pakistan-2026-copper-aluminium-busbar-trunking-system-buyer-guide",
+    "motor-control-centre-mcc-panel-wiring-pakistan-2026-dol-star-delta-vfd-feeder-buyer-guide",
+    "power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "isolation-transformer-price-pakistan-2026-1kva-100kva-medical-k-factor-wapda-buyer-guide"
+  ],
+  "broken_links": [],
+  "pakistan_firsts": [
+    "WAPDA/DISCO standard ratings table with LESCO/K-Electric/IESCO/FESCO/MEPCO/PESCO approval status (first on Pakistani e-commerce)",
+    "45°C ambient derating table IEC 60076-2 per city (Islamabad/Lahore/Karachi/Faisalabad/Multan/Quetta) with practical loading rules",
+    "LT fault level by DISCO zone table for ACB breaking capacity selection (first on Pakistani e-commerce)",
+    "NEPRA tap changer setting recommendations by DISCO zone (LESCO/K-E/IESCO/FESCO/MEPCO/PESCO) — first on Pakistani e-commerce",
+    "Load-shedding thermal cycling life reduction table by DISCO zone (1,095–4,380 events/year vs IEC 365 design cycles)",
+    "Karachi K-Electric coastal transformer specification — SS316 bolts, 3-layer coating, SiR composite bushings, GRP metering kiosk (first documented on Pakistani e-commerce)",
+    "WAPDA metering package CT class requirements table by consumer tariff category (0.5S vs 0.5 vs 0.2S) — first on Pakistani e-commerce",
+    "DISCO-specific transformer selection matrix with 6 city/industry case studies including kVA calculations with derating"
+  ],
+  "word_count_approx": 5200,
+  "sections": 14,
+  "faq_count": 8,
+  "tables": 9,
+  "structured_data": ["Article", "FAQPage", "BreadcrumbList"],
+  "shopify_push_status": "PENDING — HTTP 000 cloud IP block (Day 14 streak D67–D80)",
+  "v6_preflight": "committed",
+  "v7_link_verify": "10/10 valid — all from local meta.json registry"
+}
