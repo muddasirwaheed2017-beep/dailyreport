@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numerical Protection Relay Price in Pakistan 2026 — Overcurrent, Earth Fault, Differential &amp; Distance Relay for 11kV MV/HV Switchgear | Buyer's Guide</title>
+<meta name="description" content="Complete 2026 buyer's guide for numerical protection relays in Pakistan: overcurrent (51/50), earth fault (51N/50N), differential (87), distance (21), and busbar relays for 11kV VCB panels. Prices in PKR, DISCO coordination settings, IEC 60255 compliance, LESCO/K-Electric/FESCO/IESCO requirements, and commissioning checklist.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Numerical Protection Relay Price in Pakistan 2026 — Overcurrent, Earth Fault, Differential & Distance Relay for 11kV MV/HV Switchgear Buyer's Guide",
+  "description": "Complete 2026 buyer's guide for numerical protection relays in Pakistan: overcurrent, earth fault, differential, and distance relays for 11kV VCB panels. Prices in PKR, DISCO coordination settings, IEC 60255 compliance.",
+  "author": {"@type": "Organization", "name": "CNC Electric Pakistan"},
+  "publisher": {"@type": "Organization", "name": "CNC Electric Pakistan", "url": "https://www.cncelectric.pk"},
+  "datePublished": "2026-09-01",
+  "dateModified": "2026-09-01",
+  "mainEntityOfPage": {"@type": "WebPage", "@id": "https://www.cncelectric.pk/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide"},
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.cncelectric.pk/"},
+      {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://www.cncelectric.pk/blogs/guides"},
+      {"@type": "ListItem", "position": 3, "name": "Numerical Protection Relay Pakistan 2026"}
+    ]
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the price of a numerical protection relay in Pakistan 2026?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Numerical protection relay prices in Pakistan (2026) range from PKR 25,000–55,000 for a basic single-function overcurrent/earth fault relay (ANSI 51/51N), PKR 55,000–120,000 for a multi-function feeder protection relay (50/51/51N/67/79/46), PKR 120,000–280,000 for a transformer differential relay (87T), and PKR 180,000–450,000 for a distance relay (21). Prices depend on relay generation (Gen 1 vs IEC 61850-capable), CT/VT input count, communication port (RS485, GOOSE/GSSE Ethernet), and supply voltage (110V AC or 24/48/110/220V DC)."}
+    },
+    {
+      "@type": "Question",
+      "name": "What ANSI relay function codes do I need for an 11kV feeder panel in Pakistan?",
+      "acceptedAnswer": {"@type": "Answer", "text": "For a standard 11kV outgoing feeder VCB panel in Pakistan (LESCO, K-Electric, FESCO, IESCO), minimum relay functions required are: ANSI 51 (IDMT overcurrent), ANSI 51N (IDMT earth fault), ANSI 50 (instantaneous overcurrent), ANSI 50N (instantaneous earth fault). DISCO specifications often also require ANSI 79 (auto-reclose) and ANSI 27/59 (under/over-voltage supervision). For incomer or transformer feeders, ANSI 87T (differential) is required. Confirm the exact relay schedule from the relevant DISCO's Technical Standards for HV/MV systems."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is IDMT and why does it matter for Pakistani DISCOs?",
+      "acceptedAnswer": {"@type": "Answer", "text": "IDMT stands for Inverse Definite Minimum Time — the relay operating time reduces as fault current increases, which ensures upstream breakers trip before downstream breakers for close-in faults (discrimination/selectivity). Pakistani DISCOs (LESCO, K-Electric, FESCO, IESCO) use IEC 60255-151 Standard Inverse (SI) or Very Inverse (VI) IDMT curves coordinated with their 11kV grid protection. Most DISCOs issue Protection Relay Settings Letters specifying Plug Setting (PS %), Time Multiplier Setting (TMS), and Instantaneous Setting (IS). Never commission a relay without submitting your protection settings to the DISCO for approval."}
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use a relay without a battery backup (auxiliary DC supply) for an 11kV panel?",
+      "acceptedAnswer": {"@type": "Answer", "text": "No. An 11kV panel numerical relay requires a dedicated auxiliary DC supply (typically 110V DC or 48V DC from a sealed lead-acid or VRLA battery bank with charger). During a fault, the 11kV AC supply may collapse — the relay must still trip the VCB using stored DC energy. Using AC auxiliary alone fails this fundamental requirement. For small installations, a DC UPS or a dedicated 24V DC SMPS with battery can be used, but the relay and VCB trip coil ratings must match."}
+    },
+    {
+      "@type": "Question",
+      "name": "What CT ratio should I use with a protection relay for an 11kV feeder?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Current transformer (CT) ratio for protection relays depends on the feeder's full-load current and the relay's CT input standard (1A or 5A secondary). Calculate full-load current: I = kVA / (√3 × 11kV). Select CT primary ratio to the next standard size above full-load current (e.g. 100A FLC → use 150/1A or 200/5A CT). Protection CTs must be class P or PS (IEC 61869-2) — do NOT use measuring class (0.5, 1, 3) CTs for protection relays. CT accuracy limit factor (ALF) must be sufficient to pass rated relay operating current without saturation — minimum ALF = 10 for overcurrent relays."}
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between a protection relay and a motor protection relay?",
+      "acceptedAnswer": {"@type": "Answer", "text": "A protection relay (also called a feeder or system protection relay) is designed for 11kV/33kV circuit breakers protecting feeders, transformers, and busbars — it handles high-voltage system faults using inputs from 11kV CTs and VTs. A motor protection relay is designed for LT motors (415V or 690V) — it handles overcurrent, phase failure, thermistor, under-voltage, and Earth-fault protection at motor terminal level. Do not interchange them: MV feeder relays operate at high fault current levels and require IEC 60255 compliance, while LT motor relays are typically to IEC 60947-4-1."}
+    },
+    {
+      "@type": "Question",
+      "name": "Do Pakistani DISCOs require IEC 61850 communication for 11kV protection relays?",
+      "acceptedAnswer": {"@type": "Answer", "text": "As of 2026, IEC 61850 is mandatory for new grid substation protection relays (132kV and above) but is OPTIONAL for most 11kV consumer substations and industrial switchgear in Pakistan. However, LESCO and K-Electric are progressively requiring IEC 61850 GOOSE messaging for new 11kV feeder relays in their network. For industrial 11kV consumer substations, IEC 61850 is currently optional — Modbus RTU / RS485 is still accepted. Verify with your DISCO during the Protection & Control (P&C) approval stage."}
+    },
+    {
+      "@type": "Question",
+      "name": "What commissioning tests are required for a protection relay before 11kV energization?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Mandatory protection relay commissioning tests in Pakistan (DISCO requirement) include: (1) Relay injection test — primary and secondary injection to verify operating characteristics (IDMT curve, pick-up current, TMS, instantaneous setting); (2) CT polarity and continuity test — verify no open-circuit CT secondary with current flowing; (3) Trip circuit continuity test — verify relay output contact reaches VCB trip coil; (4) VCB trip test — relay-to-VCB trip time measurement (should be <80ms for 11kV); (5) Auto-reclose functional test (if 79 fitted); (6) Event log review — confirm relay records fault inception, relay pick-up, and VCB trip timestamp. A Protection Commissioning Test Report (PCTR) must be submitted to the DISCO before energization is permitted."}
+    }
+  ]
+}
+</script>
+<style>
+  body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 1100px; margin: 0 auto; padding: 20px; line-height: 1.7; color: #1a1a1a; background: #fff; }
+  h1 { font-size: 2em; color: #c0392b; margin-bottom: 0.3em; }
+  h2 { font-size: 1.4em; color: #b71c1c; border-left: 4px solid #c0392b; padding-left: 12px; margin-top: 2em; }
+  h3 { font-size: 1.15em; color: #333; margin-top: 1.5em; }
+  .hero-box { background: #fff8f8; border: 2px solid #c0392b; border-radius: 8px; padding: 22px 24px; margin: 1.5em 0; }
+  .hero-box .price { font-size: 1.6em; font-weight: 700; color: #c0392b; }
+  .hero-box .sub { color: #555; font-size: 0.95em; margin-top: 6px; }
+  table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: 0.93em; overflow-x: auto; display: block; }
+  th { background: #c0392b; color: #fff; padding: 10px 12px; text-align: left; }
+  td { border: 1px solid #ddd; padding: 9px 12px; }
+  tr:nth-child(even) td { background: #fdf5f5; }
+  .tip { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 12px 16px; border-radius: 4px; margin: 1em 0; }
+  .warn { background: #fff3e0; border-left: 4px solid #e65100; padding: 12px 16px; border-radius: 4px; margin: 1em 0; }
+  .critical { background: #fce4ec; border-left: 4px solid #c0392b; padding: 12px 16px; border-radius: 4px; margin: 1em 0; }
+  ul, ol { padding-left: 1.4em; }
+  li { margin: 0.3em 0; }
+  a { color: #c0392b; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .faq-section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 2em 0; }
+  .faq-item { margin-bottom: 1.5em; }
+  .faq-q { font-weight: 700; color: #b71c1c; margin-bottom: 0.4em; }
+  .badge { display: inline-block; background: #c0392b; color: #fff; border-radius: 4px; padding: 2px 8px; font-size: 0.8em; font-weight: 700; margin-right: 4px; }
+  .badge-green { background: #2e7d32; }
+  .toc { background: #f5f5f5; padding: 18px 24px; border-radius: 6px; margin: 1.5em 0; }
+  .toc h3 { margin-top: 0; }
+  .toc ol { margin: 0; }
+</style>
+</head>
+<body>
+
+<article>
+
+<h1>Numerical Protection Relay Price in Pakistan 2026 — Overcurrent, Earth Fault, Differential &amp; Distance Relay for 11kV MV/HV Switchgear: Complete Buyer's Guide</h1>
+
+<p><em>Updated: September 2026 | By CNC Electric Pakistan | IEC 60255-151, IEC 61850, IEEE C37.90 compliant selection guide for Pakistani industry, DISCOs, and substations.</em></p>
+
+<div class="hero-box">
+  <div class="price">PKR 25,000 – 4,50,000+</div>
+  <div class="sub">Numerical protection relay price range in Pakistan (2026): basic overcurrent/earth fault relay to advanced distance/differential relay with IEC 61850 communications. Price depends on relay type, function count, CT/VT inputs, communication protocol, and auxiliary supply voltage. All prices include 18% GST.</div>
+</div>
+
+<div class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#what-is">What Is a Numerical Protection Relay?</a></li>
+    <li><a href="#ansi-codes">ANSI Function Codes: Pakistan Quick Reference</a></li>
+    <li><a href="#types">Types of Numerical Protection Relays</a></li>
+    <li><a href="#prices">2026 Price Table — All Types (PKR)</a></li>
+    <li><a href="#idmt">IDMT Curves: IEC 60255-151 Pakistan DISCO Standard</a></li>
+    <li><a href="#disco-requirements">DISCO Protection Requirements (LESCO, K-Electric, FESCO, IESCO)</a></li>
+    <li><a href="#ct-selection">CT &amp; VT Selection for Protection Relays</a></li>
+    <li><a href="#auxiliary-supply">Auxiliary DC Supply — Battery &amp; Charger Sizing</a></li>
+    <li><a href="#iec61850">IEC 61850 vs Modbus: Pakistan 2026 Communication Choice</a></li>
+    <li><a href="#commissioning">Commissioning Checklist (DISCO Compliance)</a></li>
+    <li><a href="#common-mistakes">6 Expensive Mistakes Pakistani Installers Make</a></li>
+    <li><a href="#selection-matrix">Selection Matrix: Which Relay for Which Application?</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ol>
+</div>
+
+<!-- SECTION 1 -->
+<h2 id="what-is">1. What Is a Numerical Protection Relay?</h2>
+
+<p>A <strong>numerical protection relay</strong> (also called a <em>digital protection relay</em> or <em>microprocessor-based relay</em>) is an electronic device that continuously monitors current, voltage, power flow, and frequency on a medium-voltage (MV) or high-voltage (HV) electrical system. When a fault or abnormal condition exceeds the relay's set thresholds, it issues a trip signal to the associated circuit breaker — typically a <a href="/blogs/guides/vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide">11kV Vacuum Circuit Breaker (VCB)</a> — to isolate the fault within milliseconds, protecting equipment worth crores of rupees and preventing hazards to personnel.</p>
+
+<p>Unlike older electromechanical relays (IDMT disc relays, attracted armature relays) and static analog relays, numerical relays offer:</p>
+
+<ul>
+  <li><strong>Multi-function in one chassis</strong> — one relay replaces 3–5 separate electromechanical relays (overcurrent + earth fault + auto-reclose + measurement + event log)</li>
+  <li><strong>Self-monitoring</strong> — continuous hardware self-test detects internal relay failure and flags a watchdog alarm</li>
+  <li><strong>Event logging &amp; fault records</strong> — stores last 100–1000 fault events with timestamp, fault current magnitude, and pre-fault waveform (disturbance recorder)</li>
+  <li><strong>Easy setting</strong> — settings via front-panel keypad or PC software (USB/RS485), not physical plug-and-socket links</li>
+  <li><strong>Communication</strong> — Modbus RTU, IEC 61850 GOOSE, DNP3 for SCADA integration</li>
+  <li><strong>Accurate measurement</strong> — metering accuracy ±1% (replaces separate meters)</li>
+</ul>
+
+<div class="critical">
+  <strong>🚨 Pakistan-Specific Warning:</strong> In Pakistan, protection relay selection is subject to DISCO (LESCO, K-Electric, FESCO, IESCO) <strong>Type Approval</strong>. Always confirm your relay model is on the relevant DISCO's Approved Vendor List (AVL) before purchase. Installing a non-AVL relay will result in DISCO rejection during pre-energization inspection and the relay must be replaced at full cost.
+</div>
+
+<!-- SECTION 2 -->
+<h2 id="ansi-codes">2. ANSI Function Codes: Pakistan Quick Reference</h2>
+
+<p>Pakistani DISCOs and protection engineers use IEEE/ANSI C37.2 device function numbers to specify relay requirements. The most common codes for 11kV systems in Pakistan:</p>
+
+<table>
+  <thead><tr><th>ANSI Code</th><th>Function Name</th><th>Application in Pakistan</th><th>Typical Setting Range</th></tr></thead>
+  <tbody>
+    <tr><td><strong>50</strong></td><td>Instantaneous Overcurrent</td><td>11kV feeder, transformer HV side</td><td>4–20× CT primary (2,000–10,000A)</td></tr>
+    <tr><td><strong>51</strong></td><td>IDMT Overcurrent</td><td>All 11kV feeders (mandatory)</td><td>PS 50–200%, TMS 0.025–1.2</td></tr>
+    <tr><td><strong>50N</strong></td><td>Instantaneous Earth Fault</td><td>11kV feeders, transformer HV</td><td>10–40% of CT primary</td></tr>
+    <tr><td><strong>51N</strong></td><td>IDMT Earth Fault</td><td>All 11kV feeders (mandatory)</td><td>PS 10–40%, TMS 0.025–1.0</td></tr>
+    <tr><td><strong>67</strong></td><td>Directional Overcurrent</td><td>Ring mains, parallel feeders</td><td>As per 51, with directional element</td></tr>
+    <tr><td><strong>79</strong></td><td>Auto-Reclose</td><td>Overhead-line feeders (DISCO std.)</td><td>1–3 shot, dead time 0.5–30s</td></tr>
+    <tr><td><strong>87T</strong></td><td>Transformer Differential</td><td>All power transformers &gt;1 MVA</td><td>Slope 15–40%, Is2 set 1.5–10×</td></tr>
+    <tr><td><strong>87B</strong></td><td>Busbar Differential</td><td>Main busbars, 11kV/33kV</td><td>Biased differential, IStab 0.5–1.5</td></tr>
+    <tr><td><strong>21</strong></td><td>Distance (Impedance)</td><td>11kV/33kV transmission lines</td><td>Z1/Z2/Z3 zones, mho/quadrilateral</td></tr>
+    <tr><td><strong>27</strong></td><td>Under-Voltage</td><td>Load shedding, motor protection</td><td>80–85% of rated voltage</td></tr>
+    <tr><td><strong>59</strong></td><td>Over-Voltage</td><td>Capacitor bank, generator protection</td><td>110–115% of rated voltage</td></tr>
+    <tr><td><strong>46</strong></td><td>Negative Sequence / Phase Balance</td><td>Motor feeders, generator</td><td>Unbalance threshold 10–25%</td></tr>
+    <tr><td><strong>81U/O</strong></td><td>Under/Over-Frequency</td><td>Generator, grid-tie solar, island detection</td><td>47.5 Hz / 51.5 Hz (NEPRA)</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 3 -->
+<h2 id="types">3. Types of Numerical Protection Relays</h2>
+
+<h3>3.1 Overcurrent &amp; Earth Fault Relay (OC/EF) — ANSI 50/51/51N</h3>
+<p>The most common relay in Pakistan's 11kV systems. Provides <strong>IDMT overcurrent</strong> and <strong>instantaneous overcurrent</strong> plus earth fault protection. Usually includes 3× phase CT inputs and 1× residual earth CT input (or calculated 3I₀). Used for all outgoing 11kV feeders supplying industrial consumers, distribution transformers, and cable feeders.</p>
+
+<h3>3.2 Multi-Function Feeder Protection Relay (50/51/51N/67/79/46/27/59)</h3>
+<p>Combines overcurrent, earth fault, directional, auto-reclose, voltage, and frequency protection in one chassis. These relays are now the <strong>Pakistani DISCO standard for new 11kV feeder installations</strong> — they eliminate the need for separate auto-reclose relays, directional relays, and voltage relays. Recommended for any new 11kV switchgear installation (consumer substations, bulk supply points, ring main units).</p>
+
+<h3>3.3 Transformer Differential Relay (87T)</h3>
+<p>Provides unit protection for power transformers by comparing current entering and leaving the transformer. Trips only for internal faults (inter-turn, inter-winding, earth) while remaining stable for external faults and magnetising inrush. <strong>Required by all Pakistani DISCOs for transformers ≥1 MVA</strong>. Must be configured with correct CT ratio compensation and vector group matching (e.g. Dyn11 = 30° phase shift compensation).</p>
+
+<h3>3.4 Busbar Differential Relay (87B)</h3>
+<p>Protects 11kV/33kV busbars by comparing the algebraic sum of all feeder currents (which should be zero in steady state). Used in main substations, switching stations, and large industrial plants with multiple 11kV feeders. Requires extremely fast operation (&lt;20ms) to prevent busbar fault from propagating.</p>
+
+<h3>3.5 Distance Relay (21)</h3>
+<p>Measures the impedance of the protected line and trips when the measured impedance falls within a defined zone (Z1 = 80% of line length, Z2 = 120%, Z3 = 150%). Used on 11kV/33kV overhead transmission and sub-transmission lines. Less common in Pakistan for 11kV consumer substations; mainly used by WAPDA/DISCOs for their own network protection.</p>
+
+<h3>3.6 Motor Feeder Protection Relay (50/51/51N/46/49/66)</h3>
+<p>Specialist relay for high-voltage motor feeders (3.3kV, 6.6kV, 11kV motors). Adds thermal overload (49), start inhibit (66 starts-per-hour), and negative sequence (46) to the standard overcurrent functions. Note: this is distinct from the <a href="/blogs/guides/motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide">LT motor protection relay</a> used for 415V motors.</p>
+
+<!-- SECTION 4 -->
+<h2 id="prices">4. Numerical Protection Relay Prices in Pakistan 2026 (PKR)</h2>
+
+<table>
+  <thead><tr><th>Relay Type</th><th>Key ANSI Functions</th><th>Price Range (PKR, incl. GST)</th><th>Typical Use</th></tr></thead>
+  <tbody>
+    <tr><td>Basic OC/EF Relay (single function)</td><td>51, 51N only</td><td>25,000 – 55,000</td><td>Small consumer sub, retrofit</td></tr>
+    <tr><td>OC/EF Relay with Inst. (standard)</td><td>50, 51, 50N, 51N</td><td>45,000 – 90,000</td><td>Standard 11kV feeder, DISCO standard</td></tr>
+    <tr><td>Multi-Function Feeder Relay</td><td>50/51/51N/67/79/46/27/59</td><td>85,000 – 1,80,000</td><td>New DISCO-spec 11kV panel</td></tr>
+    <tr><td>Multi-Function + IEC 61850</td><td>Above + GOOSE/MMS Ethernet</td><td>1,50,000 – 2,80,000</td><td>LESCO/K-Electric new substations</td></tr>
+    <tr><td>Transformer Differential (87T)</td><td>87T, 50/51, 87BF</td><td>1,20,000 – 2,80,000</td><td>All transformers ≥1 MVA</td></tr>
+    <tr><td>Busbar Differential (87B)</td><td>87B, 87BF, check-zone</td><td>1,80,000 – 3,50,000</td><td>Main busbars, switching stations</td></tr>
+    <tr><td>Distance Relay (21)</td><td>21, 67, 85, 79, SOTF</td><td>1,80,000 – 4,50,000</td><td>Overhead lines, grid substations</td></tr>
+    <tr><td>HV Motor Feeder Relay</td><td>50/51/51N/49/46/66</td><td>90,000 – 2,00,000</td><td>3.3–11kV motor feeders</td></tr>
+    <tr><td>Auxiliary/Interposing Relay (protection grade)</td><td>Trip/close coil output</td><td>8,000 – 25,000</td><td>VCB trip coil interface</td></tr>
+    <tr><td>Test &amp; commissioning plug block</td><td>CT secondary shorting</td><td>5,000 – 18,000</td><td>Commissioning, relay testing</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <strong>⚠️ Import &amp; Currency Note (September 2026):</strong> Most numerical protection relays sold in Pakistan are imported (UK, Germany, France, Spain, India). Prices fluctuate with USD/PKR exchange rate. The ranges above reflect typical market rates in September 2026. Budget an additional 3–8% price protection margin for large projects with a long procurement lead time.
+</div>
+
+<!-- SECTION 5 -->
+<h2 id="idmt">5. IDMT Curves — IEC 60255-151 Pakistan DISCO Standard</h2>
+
+<p>IDMT (<strong>Inverse Definite Minimum Time</strong>) is the operating characteristic where relay operating time <em>decreases</em> as fault current <em>increases</em>. IEC 60255-151 defines the standard curve families used in Pakistani DISCO protection coordination studies:</p>
+
+<table>
+  <thead><tr><th>Curve Type</th><th>IEC 60255-151 Name</th><th>k (constant)</th><th>α (exponent)</th><th>Pakistan DISCO Use</th></tr></thead>
+  <tbody>
+    <tr><td><strong>SI</strong></td><td>Standard Inverse</td><td>0.14</td><td>0.02</td><td>Most common — LESCO, FESCO, IESCO 11kV standard</td></tr>
+    <tr><td><strong>VI</strong></td><td>Very Inverse</td><td>13.5</td><td>1.0</td><td>Cable feeders, K-Electric preferred for close-in discrimination</td></tr>
+    <tr><td><strong>EI</strong></td><td>Extremely Inverse</td><td>80.0</td><td>2.0</td><td>Fuse coordination, short cable runs</td></tr>
+    <tr><td><strong>LI</strong></td><td>Long-Time Inverse</td><td>120</td><td>1.0</td><td>Motor starting coordination, not typical in DISCO specs</td></tr>
+    <tr><td><strong>DT</strong></td><td>Definite Time</td><td>—</td><td>—</td><td>Grading with fixed-time relays, busbar protection backup</td></tr>
+  </tbody>
+</table>
+
+<p>The operating time formula (IEC 60255-151):<br>
+<strong>t = TMS × [k / ((I/Is)^α − 1)]</strong><br>
+where: <em>t</em> = operating time (seconds), <em>TMS</em> = Time Multiplier Setting, <em>I</em> = measured fault current, <em>Is</em> = pick-up current (PS% × CT primary), <em>k, α</em> = curve constants from table above.</p>
+
+<div class="tip">
+  <strong>💡 Pakistan DISCO Coordination Rule:</strong> A grading margin of minimum <strong>0.4 seconds</strong> between consecutive relay operating times (upstream minus downstream) is the standard adopted by LESCO and most Pakistani DISCOs, accounting for: relay overshoot time (40–100ms), breaker operating time (50–80ms), CT error (up to 10%), relay timing error (IEC class E up to 5%), and safety margin (150–200ms).
+</div>
+
+<!-- SECTION 6 -->
+<h2 id="disco-requirements">6. DISCO Protection Requirements — Pakistan 2026</h2>
+
+<p>Each DISCO has its own <strong>Protection &amp; Control (P&amp;C) Technical Standards</strong>. The following table summarises what Pakistani DISCOs typically require for a new consumer substation 11kV incomer/feeder panel as of 2026:</p>
+
+<table>
+  <thead><tr><th>Requirement</th><th>LESCO</th><th>K-Electric</th><th>FESCO</th><th>IESCO</th></tr></thead>
+  <tbody>
+    <tr><td>Min relay functions (feeder)</td><td>50/51/50N/51N/79</td><td>50/51/50N/51N/67/79</td><td>50/51/50N/51N/79</td><td>50/51/50N/51N/79</td></tr>
+    <tr><td>Transformer relay (≥1 MVA)</td><td>87T mandatory</td><td>87T mandatory</td><td>87T mandatory</td><td>87T mandatory</td></tr>
+    <tr><td>Auto-reclose</td><td>Required for OH lines</td><td>Required (67/79)</td><td>Required for OH lines</td><td>Required for OH lines</td></tr>
+    <tr><td>Aux. DC supply</td><td>110V DC battery</td><td>110V DC battery</td><td>110V DC or 48V DC</td><td>110V DC battery</td></tr>
+    <tr><td>IEC 61850 / GOOSE</td><td>New subs only</td><td>Preferred (Ethernet)</td><td>Optional</td><td>Optional</td></tr>
+    <tr><td>CT class (protection)</td><td>Class 5P20 or PS</td><td>Class 5P20 or PS</td><td>Class 5P20 or PS</td><td>Class 5P20 or PS</td></tr>
+    <tr><td>Relay AVL (approved list)</td><td>LESCO AVL required</td><td>K-Electric AVL required</td><td>FESCO AVL required</td><td>IESCO AVL required</td></tr>
+    <tr><td>Settings approval</td><td>Pre-energization</td><td>Pre-energization</td><td>Pre-energization</td><td>Pre-energization</td></tr>
+    <tr><td>Commissioning report</td><td>PCTR required</td><td>PCTR required</td><td>PCTR required</td><td>PCTR required</td></tr>
+  </tbody>
+</table>
+
+<div class="critical">
+  <strong>🚨 Critical:</strong> DISCO AVL (Approved Vendor List) requirements differ between DISCOs and are updated periodically. Always obtain the latest AVL from your relevant DISCO's Protection &amp; Control department <em>before purchasing relays</em>. A relay not on the AVL = rejected installation = project delay + full replacement cost.
+</div>
+
+<!-- SECTION 7 -->
+<h2 id="ct-selection">7. CT &amp; VT Selection for Numerical Protection Relays</h2>
+
+<h3>7.1 Current Transformer (CT) Requirements</h3>
+
+<table>
+  <thead><tr><th>Parameter</th><th>Protection CT Requirement</th><th>Common Mistake (Pakistan)</th></tr></thead>
+  <tbody>
+    <tr><td>Accuracy class</td><td>5P (IEC 61869-2) or PS (special purpose)</td><td>Using measuring class (0.5, 1, 3) CTs — they saturate under fault, relay fails to operate</td></tr>
+    <tr><td>Accuracy Limit Factor (ALF)</td><td>Minimum ALF10 (preferred ALF20 for IDMT relays)</td><td>Specifying ALF5 — relay loses accuracy at 5× fault current which is too low for discrimination</td></tr>
+    <tr><td>Burden (VA)</td><td>CT VA rating ≥ relay burden + lead burden</td><td>Undersized CT VA: CT saturates under fault, relay operates slowly or fails</td></tr>
+    <tr><td>Secondary rating</td><td>1A or 5A — must match relay input</td><td>Connecting 5A secondary CT to a 1A relay input: factor-25 overcurrent on relay, immediate damage</td></tr>
+    <tr><td>Open circuit protection</td><td>CT secondary must NEVER be open-circuited under primary current</td><td>Disconnecting CT secondary leads while panel is live: lethal voltage spike on CT secondary</td></tr>
+    <tr><td>Residual connection (51N)</td><td>3 CTs Holmgreen connection OR dedicated residual CT core</td><td>Using only one phase CT for earth fault — misses phase-to-phase faults, non-compliant</td></tr>
+  </tbody>
+</table>
+
+<h3>7.2 Voltage Transformer (VT) Requirements</h3>
+<p>For relays with voltage inputs (27, 59, 67, 21, 81):</p>
+<ul>
+  <li><strong>Secondary voltage:</strong> 110V AC (line-to-line) standard in Pakistan (57.7V line-to-neutral)</li>
+  <li><strong>Accuracy class:</strong> 3P (protection class, IEC 61869-3)</li>
+  <li><strong>Fusing:</strong> HV primary fuse on each VT plus LV secondary MCB on each phase — if VT fuse blows, relay sees "loss of VT" (ANSI 60) and should block directional/voltage functions</li>
+  <li><strong>Earthing:</strong> VT star-point earthed at one point only (secondary neutral earth) — double earthing causes circulating current and CT saturation-like effects</li>
+</ul>
+
+<!-- SECTION 8 -->
+<h2 id="auxiliary-supply">8. Auxiliary DC Supply — Battery &amp; Charger Sizing</h2>
+
+<p>Every 11kV numerical protection relay and <a href="/blogs/guides/vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide">VCB trip coil</a> requires a <strong>dedicated auxiliary DC supply</strong> with battery backup. The DC system must be capable of operating through a complete AC mains failure (WAPDA/DISCO outage) and still trip the VCB to clear a fault.</p>
+
+<table>
+  <thead><tr><th>DC System Component</th><th>Standard for Pakistan 11kV</th><th>Price Range (PKR)</th></tr></thead>
+  <tbody>
+    <tr><td>Battery (VRLA sealed lead-acid)</td><td>110V DC / 12Ah–100Ah (depending on load)</td><td>18,000 – 95,000</td></tr>
+    <tr><td>Battery charger (float/equalise)</td><td>110V DC / 3A–20A, IU characteristic</td><td>25,000 – 80,000</td></tr>
+    <tr><td>DC distribution board (DCDB)</td><td>110V DC MCBs, earth fault monitor (EFM)</td><td>15,000 – 45,000</td></tr>
+    <tr><td>Earth fault monitor (EFM)</td><td>Monitors DC system isolation (high-resistance earth)</td><td>8,000 – 22,000</td></tr>
+    <tr><td>Battery autonomy (DISCO standard)</td><td>Minimum 8 hours standby (30 minutes full load)</td><td>—</td></tr>
+    <tr><td>Battery testing</td><td>Annual capacity test + monthly impedance test</td><td>Service: 5,000–15,000/year</td></tr>
+  </tbody>
+</table>
+
+<div class="warn">
+  <strong>⚠️ Pakistan Climate Warning:</strong> VRLA batteries in Pakistan (especially Karachi, Punjab plains) suffer accelerated aging in high ambient temperatures (&gt;35°C). Battery room/cabinet temperature should be maintained at 20–25°C for rated battery life. At 40°C ambient, battery life reduces to ~50% of rated capacity (typically 3–5 years instead of 7–10 years). Use temperature-compensated chargers (−4mV/°C/cell compensation).
+</div>
+
+<!-- SECTION 9 -->
+<h2 id="iec61850">9. IEC 61850 vs Modbus RTU — Pakistan 2026 Communication Choice</h2>
+
+<table>
+  <thead><tr><th>Feature</th><th>Modbus RTU (RS485)</th><th>IEC 61850 (GOOSE/MMS)</th></tr></thead>
+  <tbody>
+    <tr><td>Speed</td><td>1–115 kbps serial</td><td>100 Mbps Ethernet, GOOSE &lt;4ms</td></tr>
+    <tr><td>Interlocking</td><td>Requires hardwiring</td><td>GOOSE: software interlocks over Ethernet</td></tr>
+    <tr><td>Wiring</td><td>2-wire RS485 (simple, cheap)</td><td>Cat6 Ethernet (Managed switch required)</td></tr>
+    <tr><td>Pakistan DISCO mandate</td><td>Accepted for consumer substations</td><td>Mandatory for new LESCO/K-Electric grid subs</td></tr>
+    <tr><td>Cost premium</td><td>Baseline</td><td>+40–80% relay cost, +managed switch cost</td></tr>
+    <tr><td>Configuration tool</td><td>Relay vendor software</td><td>IEC CID/SCL file, SCD configuration, IEDScout</td></tr>
+    <tr><td>Cyber security</td><td>No encryption</td><td>IEC 62351 encryption available</td></tr>
+    <tr><td>Recommend for Pakistan 2026</td><td>Industrial consumer sub (most cases)</td><td>New DISCO-owned substations, large industrial HT consumers &gt;5 MW</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 10 -->
+<h2 id="commissioning">10. Protection Relay Commissioning Checklist — Pakistan DISCO Compliance</h2>
+
+<p>Before a new 11kV installation can be energised in Pakistan, the DISCO's Protection &amp; Control engineer inspects and approves a <strong>Protection Commissioning Test Report (PCTR)</strong>. Use this checklist to prepare:</p>
+
+<table>
+  <thead><tr><th>#</th><th>Test / Check</th><th>Accept Criterion</th><th>DISCO Required?</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Relay visual inspection &amp; model verification vs AVL</td><td>Match DISCO AVL entry</td><td>Yes — all DISCOs</td></tr>
+    <tr><td>2</td><td>Relay settings verification vs approved settings letter</td><td>Exact match (PS, TMS, IS, curve type)</td><td>Yes — all DISCOs</td></tr>
+    <tr><td>3</td><td>CT polarity check (phase A, B, C, residual)</td><td>All CTs correct polarity (P1→S1)</td><td>Yes</td></tr>
+    <tr><td>4</td><td>CT continuity and shorting check (no open circuit)</td><td>CT secondary resistance &lt;0.5 Ω/core</td><td>Yes</td></tr>
+    <tr><td>5</td><td>Primary injection test (overcurrent element, each phase)</td><td>Operating time within ±5% of calculated IDMT time</td><td>Yes</td></tr>
+    <tr><td>6</td><td>Earth fault injection test (residual element)</td><td>Operating time within ±5% of calculated EF time</td><td>Yes</td></tr>
+    <tr><td>7</td><td>Instantaneous element (50/50N) pick-up test</td><td>Operates at 100–120% of instantaneous threshold</td><td>Yes</td></tr>
+    <tr><td>8</td><td>Trip circuit integrity (from relay output contact to VCB trip coil)</td><td>Continuity confirmed, no open circuit</td><td>Yes</td></tr>
+    <tr><td>9</td><td>VCB trip time measurement (relay initiation to contact separation)</td><td>&lt;80ms (11kV VCB standard)</td><td>Yes</td></tr>
+    <tr><td>10</td><td>Auto-reclose functional test (if 79 fitted)</td><td>Correct dead time, shot count, final lockout</td><td>Yes (if fitted)</td></tr>
+    <tr><td>11</td><td>DC auxiliary supply voltage verification (battery &amp; charger)</td><td>110V DC ±10% on battery; charger float voltage 115–117V DC</td><td>Yes</td></tr>
+    <tr><td>12</td><td>Relay self-monitoring watchdog output test</td><td>Watchdog relay de-energises on relay failure simulation</td><td>LESCO/K-E</td></tr>
+    <tr><td>13</td><td>Event log clear and timestamp synchronisation</td><td>Relay time matches UTC (GPS or NTP sync preferred)</td><td>Good practice</td></tr>
+    <tr><td>14</td><td>Protection commissioning test report (PCTR) signed</td><td>Signed by installer, verified by DISCO P&amp;C engineer</td><td>Yes — all DISCOs</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 11 -->
+<h2 id="common-mistakes">11. Six Expensive Mistakes Pakistani Installers Make with Protection Relays</h2>
+
+<ol>
+  <li>
+    <strong>Buying a relay not on the DISCO AVL.</strong><br>
+    Checking the AVL takes 10 minutes. Not checking it costs the full relay price + project delay. Every Pakistani DISCO maintains a current AVL — obtain it from their P&amp;C section before purchasing. Some DISCOs update their AVL annually.
+  </li>
+  <li>
+    <strong>Using a measuring-class CT (0.5, 1, 3) instead of protection-class (5P, PS).</strong><br>
+    Measuring-class CTs saturate at 1.5–3× rated current. Under a fault, the CT output is distorted and the relay either fails to operate in time or misoperates. Protection-class CTs must not saturate up to rated accuracy limit factor (ALF) × rated current.
+  </li>
+  <li>
+    <strong>Commissioning without DISCO settings approval.</strong><br>
+    Installing arbitrary relay settings is a DISCO violation in Pakistan. The DISCO protection engineer must approve the Plug Setting (PS%), Time Multiplier Setting (TMS), and Instantaneous Setting (IS) before energisation. Non-approved settings = DISCO can require de-energisation and protection redesign at the consumer's cost.
+  </li>
+  <li>
+    <strong>No battery autonomy calculation for DC auxiliary supply.</strong><br>
+    Sizing the battery based on "what fits in the panel" rather than calculating relay burden + VCB trip coil power × required standby hours. An undersized battery fails to trip the VCB during a prolonged WAPDA/DISCO outage + subsequent fault — the most dangerous scenario.
+  </li>
+  <li>
+    <strong>Incorrect vector group compensation for 87T differential relay.</strong><br>
+    A transformer with Dyn11 vector group introduces a 30° phase shift between HV and LV currents. The relay must compensate for this in software (or historically via external CTs with delta/star winding). Incorrect setting causes the relay to misoperate on transformer energisation inrush or fail to operate on a real internal fault.
+  </li>
+  <li>
+    <strong>Open-circuiting a live CT secondary during maintenance.</strong><br>
+    Removing a relay from a live panel without first short-circuiting the CT secondary causes the CT to develop kilovolt-level voltage on the secondary — lethal to personnel, destructive to CT insulation. Always use CT secondary shorting plugs before disconnecting any relay. Never assume the panel is de-energised: verify with a live-line indicator on the 11kV side.
+  </li>
+</ol>
+
+<!-- SECTION 12 -->
+<h2 id="selection-matrix">12. Selection Matrix — Which Relay for Which Application?</h2>
+
+<table>
+  <thead><tr><th>Application</th><th>Min. Relay Type</th><th>Key Functions</th><th>Typical Pakistan Price (PKR)</th></tr></thead>
+  <tbody>
+    <tr><td>11kV cable feeder to consumer</td><td>Multi-function feeder</td><td>50/51/50N/51N/79</td><td>85,000–1,80,000</td></tr>
+    <tr><td>11kV overhead line feeder</td><td>Multi-function + directional</td><td>50/51/50N/51N/67/79</td><td>1,20,000–2,20,000</td></tr>
+    <tr><td>11kV/0.415kV distribution transformer (≥1 MVA)</td><td>Differential + OC/EF backup</td><td>87T/50/51/51N/49</td><td>1,50,000–3,20,000</td></tr>
+    <tr><td>Bus coupler / section switch</td><td>Directional OC/EF</td><td>67/51/51N/25 (sync check)</td><td>1,20,000–2,50,000</td></tr>
+    <tr><td>11kV motor feeder (&gt;200 kW)</td><td>HV motor protection relay</td><td>50/51/51N/49/46/66</td><td>90,000–2,00,000</td></tr>
+    <tr><td>Capacitor bank feeder</td><td>Multi-function + unbalance</td><td>50/51/51N/59/27/60/46N</td><td>1,00,000–2,00,000</td></tr>
+    <tr><td>Generator incomer (11kV)</td><td>Generator protection relay</td><td>21/27/59/81U/O/40/46/87G</td><td>1,80,000–3,50,000</td></tr>
+    <tr><td>Main busbar (11kV switching station)</td><td>Busbar differential</td><td>87B/87BF/check-zone</td><td>1,80,000–3,50,000</td></tr>
+    <tr><td>Incomer (consumer HT metering)</td><td>OC/EF with metering</td><td>50/51/50N/51N/kWh</td><td>65,000–1,40,000</td></tr>
+    <tr><td>Ring Main Unit (RMU) feeder</td><td>OC/EF (compact)</td><td>50/51/50N/51N</td><td>45,000–90,000</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 13 -->
+<h2 id="faq">FAQ — Numerical Protection Relay Pakistan 2026</h2>
+
+<div class="faq-section">
+  <div class="faq-item">
+    <div class="faq-q">Q: What is the price of a numerical protection relay in Pakistan 2026?</div>
+    <p>Numerical protection relay prices in Pakistan (2026) range from PKR 25,000–55,000 for a basic single-function overcurrent/earth fault relay (ANSI 51/51N), PKR 55,000–1,80,000 for a multi-function feeder protection relay (50/51/51N/67/79/46), PKR 1,20,000–2,80,000 for a transformer differential relay (87T), and PKR 1,80,000–4,50,000 for a distance relay (21). All prices include 18% GST and are based on September 2026 import rates.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: What ANSI relay function codes do I need for an 11kV feeder panel in Pakistan?</div>
+    <p>For a standard 11kV outgoing feeder VCB panel in Pakistan, minimum relay functions are: ANSI 51 (IDMT overcurrent), 51N (IDMT earth fault), 50 (instantaneous OC), 50N (instantaneous EF). DISCO specs also require 79 (auto-reclose) for overhead-line feeders. For transformer/incomer feeders, add 87T (differential). Confirm exact requirements from your DISCO's P&amp;C department.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: What is IDMT and why does it matter for Pakistani DISCOs?</div>
+    <p>IDMT (Inverse Definite Minimum Time) means relay operating time decreases as fault current increases, ensuring downstream fuses/breakers clear before upstream ones — called discrimination or selectivity. Pakistani DISCOs use IEC 60255-151 Standard Inverse (SI) or Very Inverse (VI) curves and issue Protection Relay Settings Letters specifying Plug Setting, TMS, and IS. Never commission without DISCO settings approval.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: Can I use a relay without a battery backup (auxiliary DC supply) for an 11kV panel?</div>
+    <p>No. An 11kV panel numerical relay requires a dedicated auxiliary DC supply (110V DC or 48V DC from VRLA battery with charger). During a fault, the 11kV AC supply may collapse — the relay must still trip the VCB using stored DC energy. Using AC auxiliary alone fails this fundamental safety requirement.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: What CT ratio should I use with a protection relay for an 11kV feeder?</div>
+    <p>Calculate full-load current: I = kVA / (√3 × 11kV). Select CT primary ratio to the next standard size above FLC. Use protection class CT (5P20 or PS, IEC 61869-2) — not measuring class. CT secondary must match relay input (1A or 5A). ALF ≥ 10 required for overcurrent relays. CT VA rating must exceed relay burden + lead burden to avoid saturation.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: What is the difference between a protection relay and a motor protection relay?</div>
+    <p>An MV protection relay (this guide) is for 11kV/33kV circuit breakers protecting MV feeders, transformers, and busbars — IEC 60255 compliant, high CT input levels, complex coordination requirements. A <a href="/blogs/guides/motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide">motor protection relay</a> is for 415V/690V LT motors — IEC 60947-4-1, handles thermal overload, phase failure, thermistor input. Do not interchange.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: Do Pakistani DISCOs require IEC 61850 communication for 11kV protection relays?</div>
+    <p>As of 2026, IEC 61850 is mandatory for new grid substation protection relays (132kV+) but optional for most 11kV consumer substations. LESCO and K-Electric are progressively requiring IEC 61850 GOOSE for new 11kV feeder relays in their own network. For industrial 11kV consumer substations, Modbus RTU/RS485 is still accepted — verify with your DISCO P&amp;C department during the protection approval stage.</p>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: What commissioning tests are required for a protection relay before 11kV energization?</div>
+    <p>Mandatory commissioning tests: (1) Relay injection test — IDMT curve, pick-up current, TMS, instantaneous; (2) CT polarity and continuity test; (3) Trip circuit continuity — relay contact to VCB trip coil; (4) VCB trip test — &lt;80ms; (5) Auto-reclose functional test (if fitted); (6) DC battery voltage and autonomy verification; (7) Event log review. A Protection Commissioning Test Report (PCTR) signed by installer and DISCO P&amp;C engineer is required before energization.</p>
+  </div>
+</div>
+
+<!-- CROSS-LINKS -->
+<h2>Complete Your 11kV Switchgear System</h2>
+<p>This guide is part of CNC Electric's 11kV MV/HV switchgear cluster. Build out your complete system:</p>
+<ul>
+  <li><a href="/blogs/guides/vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide">VCB Vacuum Circuit Breaker &amp; RMU Price Pakistan 2026</a> — the breaker your relay protects</li>
+  <li><a href="/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-100kva-2500kva-wapda-approved-oil-dry-type-buyer-guide">Distribution Transformer Price Pakistan 2026</a> — transformer requiring 87T differential protection</li>
+  <li><a href="/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide">Current Transformer (CT) Price Pakistan 2026</a> — select the right CT for your relay</li>
+  <li><a href="/blogs/guides/air-circuit-breaker-acb-price-pakistan-2026-lv-switchgear-withdrawable-fixed-buyer-guide">Air Circuit Breaker (ACB) Price Pakistan 2026</a> — LV switchgear on transformer secondary</li>
+  <li><a href="/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide">Main Distribution Board (MDB) Price Pakistan 2026</a> — downstream LT distribution</li>
+  <li><a href="/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide">Earthing System Design Pakistan 2026</a> — substation earthing for fault current dissipation</li>
+  <li><a href="/blogs/guides/electrical-safety-testing-equipment-price-pakistan-2026-insulation-resistance-earth-rcd-pat-tester-buyer-guide">Electrical Safety Testing Equipment Pakistan 2026</a> — relay test &amp; commissioning instruments</li>
+  <li><a href="/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide">SPD &amp; Lightning Arrester Price Pakistan 2026</a> — surge protection for substation equipment</li>
+  <li><a href="/blogs/guides/motor-protection-relay-pakistan-2026-digital-3-phase-thermal-overload-phase-failure-buyer-guide">Motor Protection Relay Pakistan 2026</a> — LT motor protection (vs. MV relay in this guide)</li>
+  <li><a href="/collections/all">Browse all electrical products at CNC Electric Pakistan</a></li>
+</ul>
+
+<hr>
+<p><em>CNC Electric Pakistan — authorised supplier of IEC-compliant numerical protection relays for industrial consumers, DISCO contractors, and EPC firms across Pakistan. Contact us for DISCO AVL verification, protection settings consultation, and relay commissioning support.</em></p>
+
+</article>
+
+</body>
+</html>

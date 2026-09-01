@@ -1,0 +1,29 @@
+{
+  "day": 85,
+  "date": "2026-09-01",
+  "handle": "numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "Numerical Protection Relay Price in Pakistan 2026 — Overcurrent, Earth Fault, Differential & Distance Relay for 11kV MV/HV Switchgear: Complete Buyer's Guide",
+  "summary_html": "Pakistan's first comprehensive numerical protection relay buyer guide (2026): ANSI function codes for 11kV systems, IDMT curve selection (IEC 60255-151 SI/VI/EI), DISCO protection requirements per LESCO/K-Electric/FESCO/IESCO, CT & VT selection (class 5P20/PS, ALF criteria), auxiliary DC battery sizing, IEC 61850 vs Modbus RTU for Pakistan 2026, overcurrent/earth fault/differential/distance relay price table in PKR, Protection Commissioning Test Report (PCTR) 14-step checklist, 6 expensive installer mistakes, and relay-to-application selection matrix. Covers relay types from basic 50/51/51N to 87T transformer differential to 21 distance relay.",
+  "tags": ["numerical protection relay", "protection relay Pakistan", "overcurrent relay Pakistan", "earth fault relay Pakistan", "differential relay Pakistan 2026", "11kV protection relay", "IDMT relay Pakistan", "ANSI 50 51 relay", "transformer protection relay", "distance relay Pakistan", "LESCO protection relay", "K-Electric protection relay", "FESCO protection relay", "VCB relay coordination", "IEC 60255 Pakistan"],
+  "cluster": "11kV MV/HV Switchgear — Day 7 (D79=VCB/RMU, D80=Distribution Transformer, D81=MDB, D82=LT Cable, D83=MV Cable Accessories, D84=Cable Jointing, D85=Protection Relay)",
+  "word_count": 5100,
+  "sections": 13,
+  "faq_count": 8,
+  "tables": 12,
+  "internal_links": 10,
+  "shopify_status": "PENDING_PREFLIGHT_COMMITTED",
+  "published": false,
+  "iec_standards": ["IEC 60255-151", "IEC 61850", "IEC 61869-2", "IEC 61869-3", "IEEE C37.90", "IEC 62351"],
+  "pakistan_firsts": [
+    "DISCO AVL verification requirement documented on Pakistani e-commerce (first)",
+    "IDMT grading margin table per Pakistan DISCO standard (0.4s) — first on Pakistani e-commerce",
+    "DISCO-by-DISCO protection requirements table (LESCO/K-Electric/FESCO/IESCO) — first documented",
+    "IEC 60255-151 curve constants table with Pakistan DISCO use mapping — first on Pakistani e-commerce",
+    "87T vector group compensation Pakistan warning (Dyn11) — first documented on Pakistani e-commerce",
+    "Battery temperature derating for Pakistan climate (Karachi/Punjab 40°C) — first on Pakistani e-commerce",
+    "Protection Commissioning Test Report (PCTR) 14-step checklist vs Pakistani DISCO requirements — first",
+    "CT open-circuit hazard specific to Pakistan live panel maintenance — first documented on Pakistani e-commerce"
+  ],
+  "next_suggested": "D86 = Arc Flash Risk Assessment & PPE Guide Pakistan 2026 (PPE Cat 0-4, NFPA 70E, Pakistan OSHA, incident energy calculation, arc flash labelling for 11kV panels — completes MV/HV substation safety cluster)"
+}
