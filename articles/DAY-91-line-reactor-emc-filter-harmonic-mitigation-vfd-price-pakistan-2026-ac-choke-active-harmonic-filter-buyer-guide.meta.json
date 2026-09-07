@@ -1,0 +1,26 @@
+{
+  "day": 91,
+  "date": "2026-09-07",
+  "handle": "line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide",
+  "title": "Line Reactor, EMC Filter & Harmonic Mitigation for VFD Drives — Pakistan 2026 Buyer Guide",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "cluster": "Industrial Motor Control — Day 2 (D91)",
+  "summary_html": "Complete Pakistan 2026 buyer guide to line reactors, EMC/RFI filters, DC link chokes, active harmonic filters and common-mode chokes for VFD drives. Covers Pakistan Grid Code THDi limits for all 11 DISCOs, KE AMI automated enforcement (Jan 2025), weak-grid ACL sizing for PESCO/TESCO/QESCO, PKR price table, SRD import duties (HS codes), VFD motor bearing damage mitigation, and 7 Pakistan-exclusive data points. CNC Electric Pakistan.",
+  "tags": ["VFD", "harmonic mitigation", "line reactor", "EMC filter", "active harmonic filter", "power quality", "Pakistan", "industrial electrical", "motor control", "DISCO compliance"],
+  "word_count_approx": 3900,
+  "internal_links": 7,
+  "tables": 5,
+  "shopify_status": "pending (cloud IP block — commit to repo)",
+  "internal_link_verification": "7/7 verified",
+  "w11stop_compliance": {
+    "pakistan_differentiators": true,
+    "pkr_price_table": true,
+    "disco_comparison_table": true,
+    "regulatory_section": true,
+    "selection_checklist": true,
+    "common_mistakes_7": true,
+    "faq_section": true,
+    "generic_descriptors_only": true
+  }
+}
