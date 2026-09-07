@@ -1,0 +1,28 @@
+{
+  "day": 87,
+  "date": "2026-09-03",
+  "blog_id": "89971589186",
+  "handle": "solar-battery-storage-system-bess-price-pakistan-2026-lifepo4-lithium-lead-acid-nepra-buyer-guide",
+  "title": "Solar Battery Storage System (BESS) Price Pakistan 2026 — LiFePO4 vs Lead-Acid, NEPRA Net Metering, BMS Complete Buyer Guide",
+  "title_tag": "Solar Battery Storage BESS Price Pakistan 2026 — LiFePO4, NEPRA Net Metering, BMS Buyer Guide",
+  "description_tag": "Pakistan's most complete solar BESS buyer guide 2026: LiFePO4 vs AGM/Gel lead-acid comparison, NEPRA DG/NEM 2025 storage rules, BMS requirements, DoD cycles, temperature derating, and PKR price table for 5kWh–20kWh systems.",
+  "summary_html": "<p>Pakistan's most complete solar BESS buyer guide 2026: LiFePO4 vs AGM/Gel vs flooded lead-acid chemistry comparison, NEPRA DG/NEM Policy 2025 storage configuration rules, BMS protection requirements for Pakistan's grid voltage fluctuations and 45°C+ summer ambient, DoD-based sizing methodology with four Pakistan worked examples, and PKR 2026 price table (5kWh–20kWh). Cluster start: Solar + Storage Deepening.</p>",
+  "tags": "solar battery storage pakistan, bess price pakistan, lifepo4 battery price pakistan, lithium battery solar pakistan, nepra net metering storage, solar battery backup pakistan 2026, agm battery solar pakistan, gel battery solar pakistan, bms lifepo4 pakistan, depth of discharge pakistan solar, solar battery sizing pakistan, hybrid inverter battery pakistan, battery energy storage system pakistan, solar storage system price pakistan",
+  "author": "CNC Electric Pakistan",
+  "cluster": "Solar + Storage Deepening (D87 = Cluster Start)",
+  "word_count_estimate": 5500,
+  "sections": 10,
+  "faq_count": 8,
+  "table_count": 10,
+  "standards_cited": ["IEC 62116", "IEEE 1547", "IEEE 1635", "BS EN 50272", "NEPRA DG/NEM Policy 2023 (amended 2025)"],
+  "internal_links": [
+    "/blogs/guides/spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide",
+    "/blogs/guides/automatic-changeover-switch-price-pakistan-2026-ats-manual-buyer-guide",
+    "/blogs/guides/solar-panel-stand-price-in-pakistan-2026-l2-l3-mounting-buyer-guide",
+    "/blogs/guides/solar-pump-controller-price-pakistan-2026-dc-mppt-vfd-buyer-guide",
+    "/collections/all"
+  ],
+  "internal_links_verified": "5/5 valid (all confirmed against articles folder handle list)",
+  "shopify_status": "PREFLIGHT_COMMITTED — Shopify push pending (cloud IP 403 expected)",
+  "preflight_commit": "Step 4.5 — committed before Shopify push attempt"
+}

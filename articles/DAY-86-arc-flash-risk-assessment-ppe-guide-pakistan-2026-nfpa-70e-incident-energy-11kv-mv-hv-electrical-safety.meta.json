@@ -1,0 +1,30 @@
+{
+  "day": 86,
+  "date": "2026-09-02",
+  "blog_id": "89971589186",
+  "handle": "arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety",
+  "title": "Arc Flash Risk Assessment & PPE Guide Pakistan 2026 — NFPA 70E Incident Energy, 11kV MV/HV Electrical Safety, IEC 60903 Gloves Buyer Guide",
+  "title_tag": "Arc Flash PPE Guide Pakistan 2026 — NFPA 70E, IEC 60903 Gloves, 11kV Safety",
+  "description_tag": "Complete arc flash risk assessment guide Pakistan 2026: NFPA 70E categories, IEEE 1584-2018 incident energy calculation for 11kV DISCO systems, IEC 60903 gloves, PPE prices in PKR.",
+  "summary_html": "<p>Pakistan's most complete arc flash risk assessment and PPE guide for 2026: NFPA 70E hazard categories (0–4), IEEE 1584-2018 incident energy calculation for LESCO/K-Electric 11kV feeders, IEC 60903 insulating glove classes, arc flash suit ATPV ratings, label requirements, and Pakistan PPE price table in PKR.</p>",
+  "tags": "arc flash pakistan, arc flash ppe pakistan, nfpa 70e pakistan, iec 60903 gloves pakistan, insulating gloves 11kv pakistan, arc flash suit price pakistan, electrical safety equipment pakistan, 11kv switchgear safety pakistan, incident energy calculation pakistan, ieee 1584 pakistan, arc flash label pakistan, lesco arc flash, k-electric arc flash safety",
+  "author": "CNC Electric Pakistan",
+  "cluster": "11kV MV/HV Substation Safety (D79–D86)",
+  "word_count_estimate": 5200,
+  "sections": 10,
+  "faq_count": 8,
+  "table_count": 11,
+  "standards_cited": ["NFPA 70E-2024", "IEEE 1584-2018", "IEC 61482-1-2", "IEC 60903", "IEC 60900", "IEC 60895", "ASTM D120", "ASTM F1506", "ASTM F2178", "ANSI Z87.1", "ANSI Z535.4"],
+  "internal_links": [
+    "/blogs/guides/vcb-vacuum-circuit-breaker-rmu-price-pakistan-2026-11kv-mv-switchgear-indoor-buyer-guide",
+    "/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide",
+    "/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-100kva-2500kva-wapda-approved-oil-dry-type-buyer-guide",
+    "/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/electrical-safety-testing-equipment-price-pakistan-2026-insulation-resistance-earth-rcd-pat-tester-buyer-guide",
+    "/blogs/guides/cable-jointing-field-guide-pakistan-2026-11kv-lt-xlpe-heat-shrink-cold-shrink-step-by-step",
+    "/collections/all"
+  ],
+  "shopify_status": "PREFLIGHT_COMMITTED — Shopify push pending (cloud IP 403 expected)",
+  "preflight_commit": "Step 4.5 — committed before Shopify push attempt"
+}
