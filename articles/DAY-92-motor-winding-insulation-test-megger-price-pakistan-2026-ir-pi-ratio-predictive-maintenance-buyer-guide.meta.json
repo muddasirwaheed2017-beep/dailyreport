@@ -1,0 +1,25 @@
+{
+  "day": 92,
+  "date": "2026-09-08",
+  "blog_id": "89971589186",
+  "handle": "motor-winding-insulation-test-megger-price-pakistan-2026-ir-pi-ratio-predictive-maintenance-buyer-guide",
+  "title": "Motor Winding Insulation Test (Megger) — Pakistan 2026 Buyer Guide",
+  "summary_html": "Complete Pakistan 2026 guide to motor winding insulation testing using meggers. Covers PI/DAR ratios, IEEE 43-2013 vs PS:596 test voltages, temperature correction for Pakistan's 45-55°C summer ambient, PKR tester prices, SRD import duty, and 7 Pakistan-specific insulation failure risks including loadshedding thermal cycling, rewound motor baseline problem, cotton-dust contamination, and VFD common-mode voltage attack. Essential for predictive maintenance in Pakistani factories.",
+  "tags": ["motor insulation test", "megger Pakistan", "PI ratio", "DAR", "IEEE 43", "motor testing", "predictive maintenance", "insulation resistance", "motor winding", "Pakistan electrical"],
+  "author": "CNC Electric",
+  "published_at": null,
+  "cluster": "Industrial Motor Control",
+  "cluster_day": 3,
+  "shopify_push_status": "PENDING_MANUAL",
+  "internal_links_verified": "8/8",
+  "word_count_approx": 4200,
+  "w11stop_compliance": {
+    "pakistan_differentiators": 7,
+    "pkr_price_table": true,
+    "regulatory_section": true,
+    "selection_checklist": true,
+    "common_mistakes": 7,
+    "faq_section": true,
+    "generic_descriptors_only": true
+  }
+}
