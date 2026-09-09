@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distribution Transformer Pakistan 2026 — 11kV/415V Dry-Type vs Oil-Immersed Buyer Guide | CNC Electric</title>
+<meta name="description" content="Complete Pakistan 2026 buyer guide to distribution transformers: 11kV/415V dry-type vs oil-immersed comparison, WAPDA-approved specs, NTDC Grid Code, PKR price table (100–2000 kVA), SRD import duty, K-factor selection, and 7 Pakistan-specific risks including loadshedding overloading, oil breakdown in 45°C ambient, and harmonic derating. CNC Electric.">
+</head>
+<body>
+
+<h1>Distribution Transformer Pakistan 2026 — 11kV/415V Dry-Type vs Oil-Immersed Buyer Guide</h1>
+
+<p><strong>TL;DR:</strong> Choosing the wrong distribution transformer in Pakistan — under-sized, unapproved, or wrong technology — costs hundreds of thousands of rupees in WAPDA penalties, premature failure, and production downtime. This guide covers the complete 2026 decision framework for Pakistani engineers and procurement managers: 11kV/415V transformer technology comparison (oil-immersed ONAN vs dry-type VPI/cast-resin), NTDC and DISCO approval requirements, KVA sizing for Pakistan industrial loads, 2026 PKR price table (100 kVA to 2000 kVA), SRD import duty with DTRE exemption, and 7 Pakistan-specific risks documented here for the first time. Linked to our <a href="/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide">MCC guide</a>, <a href="/blogs/guides/power-factor-capacitor-bank-price-pakistan">power factor correction guide</a>, and <a href="/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide">protection relay guide</a> for complete substation design coverage.</p>
+
+<hr>
+
+<h2>Contents</h2>
+<ol>
+  <li><a href="#why-it-matters">Why Transformer Selection Is Critical in Pakistan</a></li>
+  <li><a href="#standards">Key Standards: IEC 60076, PS:2286, and NTDC Grid Code</a></li>
+  <li><a href="#technology">Dry-Type vs Oil-Immersed — Pakistan Cost vs Reliability Decision</a></li>
+  <li><a href="#sizing">KVA Sizing Table for Pakistani Industrial Loads</a></li>
+  <li><a href="#price-table">2026 PKR Price Table (100–2000 kVA)</a></li>
+  <li><a href="#wapda-approval">WAPDA / DISCOs Approval Process and NTDC Requirements</a></li>
+  <li><a href="#7-risks">7 Pakistan-Specific Distribution Transformer Risks</a></li>
+  <li><a href="#srd-duty">SRD Import Duty and DTRE Exemption</a></li>
+  <li><a href="#checklist">10-Point Transformer Selection Checklist</a></li>
+  <li><a href="#mistakes">7 Common Mistakes Pakistani Engineers Make</a></li>
+  <li><a href="#faq">FAQ</a></li>
+</ol>
+
+<hr>
+
+<h2 id="why-it-matters">1. Why Transformer Selection Is Critical in Pakistan</h2>
+
+<p>Pakistan's industrial electricity consumers — textile mills, cement plants, steel re-rollers, food processors, cold chains — operate on dedicated 11kV/415V distribution transformers. A wrong choice creates cascading financial damage:</p>
+
+<ul>
+  <li><strong>WAPDA/DISCO billing penalties:</strong> Running a transformer above nameplate kVA triggers NEPRA-mandated penalty billing. NEPRA's Distribution Code requires DISCOs to flag habitually overloaded customer transformers. Repeated overloading can result in supply disconnection and a formal KYC review of your installed capacity.</li>
+  <li><strong>Loadshedding-induced voltage spikes:</strong> Pakistan's grid has some of the highest switching transient rates globally — WAPDA measures average of 12–18 switching events per day per rural feeder during high-loadshedding periods. Each reconnection applies a high-inrush transient to the transformer. Oil-immersed transformers with degraded oil fail during these reconnection events.</li>
+  <li><strong>Harmonic derating in VFD-heavy plants:</strong> A textile mill or food processing plant running 60%+ VFD-driven loads can produce total harmonic distortion (THD) above 25%. At this level, standard transformer copper losses increase 18–30% — requiring harmonic derating or K-factor transformer specification. Under-sized transformers fail in 3–5 years.</li>
+  <li><strong>Non-WAPDA-approved transformers:</strong> Purchasing an unapproved transformer means the DISCO will refuse to energize your connection point. WAPDA approved transformer manufacturers must pass type tests per PS:2286 / IEC 60076. Using a non-approved import can delay commissioning by 6–18 months.</li>
+</ul>
+
+<p>This guide gives you the framework to specify, procure, and commission the right transformer for Pakistan's 2026 grid environment.</p>
+
+<p>See also our <a href="/blogs/guides/power-factor-capacitor-bank-price-pakistan">power factor correction guide</a> — transformers and APFC panels must be designed together for optimal kVA utilization and WAPDA reactive power tariff compliance.</p>
+
+<hr>
+
+<h2 id="standards">2. Key Standards: IEC 60076, PS:2286, and NTDC Grid Code</h2>
+
+<h3>IEC 60076 Series (International Benchmark)</h3>
+<p>IEC 60076 is the primary international standard for power transformers. Relevant parts for Pakistan distribution transformer procurement:</p>
+<ul>
+  <li><strong>IEC 60076-1:</strong> General requirements — rated voltage, rated current, impedance voltage, losses</li>
+  <li><strong>IEC 60076-2:</strong> Temperature rise requirements — critical for Pakistan's 45–55°C ambient</li>
+  <li><strong>IEC 60076-3:</strong> Insulation levels and tests — dielectric test voltages for 11kV primary</li>
+  <li><strong>IEC 60076-7:</strong> Loading guide for oil-immersed transformers — derating curves for hot climates</li>
+  <li><strong>IEC 60076-11:</strong> Dry-type transformers — key standard for VPI and cast-resin types</li>
+  <li><strong>IEC 60076-18:</strong> Measurement of frequency response (FRA) — used in diagnostic testing</li>
+</ul>
+
+<h3>PS:2286 — Pakistan Standard for Distribution Transformers</h3>
+<p>PSQCA PS:2286 aligns substantially with IEC 60076-1 but adds Pakistan-specific requirements:</p>
+<ul>
+  <li>Maximum ambient temperature rating: <strong>50°C</strong> for oil-immersed, <strong>45°C</strong> for standard dry-type (Class F insulation). Dry-type in Sindh/Punjab summer typically requires Class H (180°C) insulation.</li>
+  <li>No-load and load losses: PS:2286 specifies maximum allowable losses by rating. Exceeding these limits means higher running cost and potential WAPDA billing friction.</li>
+  <li>Impedance voltage: Standard range 4–6% for distribution transformers 100–2000 kVA. Higher impedance reduces fault MVA (protection benefit) but increases regulation (voltage drop under load). Pakistan grid engineers typically specify 5.0–5.5%.</li>
+</ul>
+
+<h3>NTDC Grid Code 2023 and NEPRA Distribution Code</h3>
+<p>For industrial consumers connecting at 11kV (bulk supply):</p>
+<ul>
+  <li>Voltage regulation at the 415V bus: must remain within ±6% under all load conditions (NEPRA Distribution Code Clause 6.4.3)</li>
+  <li>Protection relay coordination: transformer primary protection (fuse or IDMT relay) must be coordinated with DISCO's 11kV feeder protection. Relay coordination study is mandatory for connections above 500 kVA.</li>
+  <li>Power factor requirement: NEPRA tariff B-2 and B-3 include power factor surcharge for PF below 0.85. Properly sized transformer + APFC panel is mandatory economic engineering.</li>
+</ul>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption><strong>Standards Quick Reference — Distribution Transformer Pakistan 2026</strong></caption>
+  <thead>
+    <tr>
+      <th>Standard</th>
+      <th>Issued By</th>
+      <th>Key Relevance for Pakistan</th>
+      <th>Mandatory?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>IEC 60076-1</td>
+      <td>IEC</td>
+      <td>Core requirements: losses, impedance, ratings</td>
+      <td>De facto (basis of PS:2286)</td>
+    </tr>
+    <tr>
+      <td>IEC 60076-2</td>
+      <td>IEC</td>
+      <td>Temperature rise — critical for 45°C ambient</td>
+      <td>Yes (type test)</td>
+    </tr>
+    <tr>
+      <td>IEC 60076-11</td>
+      <td>IEC</td>
+      <td>Dry-type transformer requirements</td>
+      <td>Yes for dry-type spec</td>
+    </tr>
+    <tr>
+      <td>PS:2286</td>
+      <td>PSQCA</td>
+      <td>Pakistan-specific losses, ambient, approval</td>
+      <td>Yes for WAPDA-approved list</td>
+    </tr>
+    <tr>
+      <td>NTDC Grid Code 2023</td>
+      <td>NTDC/NEPRA</td>
+      <td>Bulk supply connection requirements</td>
+      <td>Yes for &gt;500 kVA industrial</td>
+    </tr>
+    <tr>
+      <td>NEPRA Distribution Code</td>
+      <td>NEPRA</td>
+      <td>Voltage regulation, PF, relay coordination</td>
+      <td>Yes — all DISCOs</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2 id="technology">3. Dry-Type vs Oil-Immersed — Pakistan Cost vs Reliability Decision</h2>
+
+<p>This is the most common decision Pakistani procurement managers get wrong. The choice is not simply "which is cheaper" — it depends on installation environment, load profile, and maintenance capability.</p>
+
+<h3>Oil-Immersed ONAN (Oil Natural Air Natural) — The Pakistan Default</h3>
+<p>Oil-immersed ONAN is the dominant technology in Pakistan for industrial distribution. It uses mineral oil (IEC 60296) as both insulating medium and coolant. ONAN means natural convection oil cooling + natural air cooling (no fans or pumps).</p>
+
+<p><strong>Pakistan advantages:</strong></p>
+<ul>
+  <li><strong>Lower first cost:</strong> 35–50% cheaper than equivalent dry-type for ratings above 200 kVA</li>
+  <li><strong>Better overload tolerance:</strong> Oil thermal mass absorbs short-term overloads (10–20% for 2 hours) — useful during loadshedding recovery peak loads</li>
+  <li><strong>Easier local repair:</strong> Oil sampling, replacement, and rewinding expertise is widely available across Pakistan</li>
+  <li><strong>Outdoor rated as standard:</strong> All ONAN transformers in outdoor IP ratings — no separate weatherproof enclosure needed</li>
+</ul>
+
+<p><strong>Pakistan disadvantages:</strong></p>
+<ul>
+  <li><strong>Oil degradation in 45°C+ ambient:</strong> Pakistan's summer ambient accelerates oxidation and water ingress (hygroscopic breakdown). Oil sampling should be annual in Sindh/Punjab — most operators do it never.</li>
+  <li><strong>Fire risk in enclosed spaces:</strong> Oil is combustible. Indoor installation requires oil containment bunds (NFPA 30 / PEC requirement) — significantly adds installation cost</li>
+  <li><strong>Cotton dust contamination (Faisalabad / SITE Karachi):</strong> Radiator fins block, reducing cooling. Regular radiator cleaning mandatory in textile environments.</li>
+</ul>
+
+<h3>Dry-Type (VPI / Cast-Resin) — When to Specify in Pakistan</h3>
+<p>Dry-type transformers use solid insulation (varnished winding — VPI — or epoxy resin encapsulation — cast-resin). No oil, no fire risk, lower maintenance.</p>
+
+<p><strong>Pakistan advantages:</strong></p>
+<ul>
+  <li><strong>Indoor installation without containment bund:</strong> Suitable for indoor substations, basement installations, commercial buildings, hospitals, and food processing plants where oil is banned</li>
+  <li><strong>No oil maintenance:</strong> Eliminates oil sampling, oil replacement, and oil fire suppression costs</li>
+  <li><strong>Class H insulation (180°C):</strong> Available for Pakistan's high ambient environments — better thermal margin than Class F</li>
+  <li><strong>Lower partial discharge:</strong> Cast-resin dry-type has better PD performance for high-harmonic environments (textile VFD loads)</li>
+</ul>
+
+<p><strong>Pakistan disadvantages:</strong></p>
+<ul>
+  <li><strong>60–80% higher first cost</strong> vs equivalent ONAN for ratings above 500 kVA</li>
+  <li><strong>Limited local repair expertise:</strong> Cast-resin winding repair requires factory facilities — not available at local rewind shops</li>
+  <li><strong>Requires weatherproof enclosure:</strong> Standard IP21 dry-type is not outdoor-rated. IP54+ enclosure adds 15–25% to total installed cost in Pakistan</li>
+</ul>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption><strong>Technology Selection Matrix — Pakistan Distribution Transformer 2026</strong></caption>
+  <thead>
+    <tr>
+      <th>Criterion</th>
+      <th>Oil-Immersed ONAN</th>
+      <th>Dry-Type (VPI)</th>
+      <th>Dry-Type (Cast-Resin)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>First cost (500 kVA basis)</td>
+      <td>₨1.8–2.4M (baseline)</td>
+      <td>₨2.6–3.2M (+45%)</td>
+      <td>₨3.2–4.0M (+75%)</td>
+    </tr>
+    <tr>
+      <td>Outdoor / indoor</td>
+      <td>Both (IP outdoor standard)</td>
+      <td>Indoor preferred (IP21); IP54 enclosure adds cost</td>
+      <td>Indoor preferred; weatherproof option available</td>
+    </tr>
+    <tr>
+      <td>Fire risk</td>
+      <td>Oil flash point ~145°C; bund required indoor</td>
+      <td>Low — self-extinguishing resin</td>
+      <td>Very low — F1 fire class</td>
+    </tr>
+    <tr>
+      <td>45°C Pakistan ambient</td>
+      <td>Good with Class A/B insulation; oil cooling essential</td>
+      <td>Class H needed for Punjab/Sindh summer</td>
+      <td>Class F or H; best for harsh ambient</td>
+    </tr>
+    <tr>
+      <td>Harmonic environment (&gt;15% THD)</td>
+      <td>Requires K-factor derating (K-4 to K-13 spec)</td>
+      <td>Better; VPI tolerates harmonic heating</td>
+      <td>Best; lowest PD; no K-factor derating needed</td>
+    </tr>
+    <tr>
+      <td>Cotton/industrial dust</td>
+      <td>Radiator cleaning needed (6-monthly)</td>
+      <td>IP54 enclosure eliminates issue</td>
+      <td>IP54 enclosure eliminates issue</td>
+    </tr>
+    <tr>
+      <td>Local maintenance in Pakistan</td>
+      <td>Widely available — oil testing, rewinding</td>
+      <td>Limited — factory repair for coil damage</td>
+      <td>Limited — factory repair only</td>
+    </tr>
+    <tr>
+      <td>WAPDA/DISCO approval</td>
+      <td>Most approved manufacturers: local + import</td>
+      <td>Available from approved list; verify before order</td>
+      <td>Available; fewer local suppliers on approved list</td>
+    </tr>
+    <tr>
+      <td>Best application in Pakistan</td>
+      <td>Outdoor industrial substation, rural grid connection</td>
+      <td>Indoor commercial/industrial, hospitals</td>
+      <td>High-harmonic plants, food/pharma (no oil risk)</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2 id="sizing">4. KVA Sizing Table for Pakistani Industrial Loads</h2>
+
+<p>Pakistani engineers frequently under-size transformers to reduce initial cost — then face DISCO penalties and premature failure. Correct sizing requires accounting for:</p>
+
+<ul>
+  <li><strong>Demand factor:</strong> Not all loads run simultaneously. Typical industrial demand factor in Pakistan: 0.65–0.80 (textile/food), 0.75–0.90 (cement/steel)</li>
+  <li><strong>Power factor:</strong> NEPRA tariff mandates PF ≥ 0.85. Without APFC, raw kVA demand is typically 10–25% higher than kW load.</li>
+  <li><strong>Harmonic derating:</strong> VFD loads reduce effective transformer kVA. For THD &gt; 20%, apply K-4 derating factor (effective kVA = nameplate × 0.80)</li>
+  <li><strong>Future growth:</strong> Pakistan industrial consumption grew 8–12% annually 2020–2025 (PBS data). Specify at 75–80% of nameplate for typical load — leaves headroom for growth without a new transformer</li>
+  <li><strong>Pakistan ambient derating:</strong> IEC 60076-2 Table 1 requires derating above 40°C ambient. At 50°C ambient (Sindh summer), ONAN transformer nameplate kVA × 0.92 = safe operating kVA.</li>
+</ul>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption><strong>KVA Sizing Guide — Pakistan Industrial Loads 2026</strong></caption>
+  <thead>
+    <tr>
+      <th>Industry / Application</th>
+      <th>Connected kW (typical)</th>
+      <th>Demand Factor</th>
+      <th>PF (before APFC)</th>
+      <th>Required kVA</th>
+      <th>Recommended Transformer Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Small textile unit (20–40 looms)</td>
+      <td>80–120 kW</td>
+      <td>0.70</td>
+      <td>0.80</td>
+      <td>70–105 kVA</td>
+      <td><strong>100 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Medium textile / garment (100–200 workers)</td>
+      <td>200–350 kW</td>
+      <td>0.72</td>
+      <td>0.82</td>
+      <td>176–307 kVA</td>
+      <td><strong>315 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Large textile mill (power loom + finishing)</td>
+      <td>600–900 kW</td>
+      <td>0.75</td>
+      <td>0.83</td>
+      <td>542–813 kVA</td>
+      <td><strong>630 kVA or 1000 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Cold storage / refrigeration plant</td>
+      <td>150–400 kW</td>
+      <td>0.85</td>
+      <td>0.85</td>
+      <td>150–400 kVA</td>
+      <td><strong>200 kVA or 400 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Steel re-rolling mill</td>
+      <td>800–1500 kW</td>
+      <td>0.78</td>
+      <td>0.80</td>
+      <td>780–1463 kVA</td>
+      <td><strong>1000 kVA or 1600 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Cement plant auxiliary</td>
+      <td>1500–3000 kW</td>
+      <td>0.80</td>
+      <td>0.85</td>
+      <td>1412–2824 kVA</td>
+      <td><strong>1600 kVA or 2000 kVA (×2)</strong></td>
+    </tr>
+    <tr>
+      <td>Commercial building / mall</td>
+      <td>300–700 kW</td>
+      <td>0.65</td>
+      <td>0.87</td>
+      <td>224–522 kVA</td>
+      <td><strong>315 kVA or 500 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Hospital (critical)</td>
+      <td>200–500 kW</td>
+      <td>0.90</td>
+      <td>0.90</td>
+      <td>200–500 kVA</td>
+      <td><strong>315 kVA or 500 kVA (dry-type mandatory)</strong></td>
+    </tr>
+    <tr>
+      <td>Water treatment / pumping station</td>
+      <td>100–300 kW</td>
+      <td>0.80</td>
+      <td>0.82</td>
+      <td>98–293 kVA</td>
+      <td><strong>100 kVA or 200 kVA</strong></td>
+    </tr>
+    <tr>
+      <td>Pharma / food processing (VFD-heavy)</td>
+      <td>200–600 kW</td>
+      <td>0.75</td>
+      <td>0.83</td>
+      <td>180–542 kVA (×1.25 harmonic derating)</td>
+      <td><strong>400 kVA or 630 kVA (K-factor or dry-type)</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Pakistan sizing rule of thumb:</strong> Calculate connected load → apply demand factor → divide by PF → add 25% growth margin → select next standard rating from the IEC/PS series (100, 160, 200, 250, 315, 400, 500, 630, 800, 1000, 1250, 1600, 2000 kVA). Never size a transformer to more than 80% utilization at rated ambient — Pakistan ambient derating alone brings effective capacity to 92% at 50°C.</p>
+
+<hr>
+
+<h2 id="price-table">5. 2026 PKR Price Table — Distribution Transformer (11kV/415V)</h2>
+
+<p>The following prices reflect Q3 2026 market rates for Pakistan (CIF Karachi / ex-factory Lahore). Prices fluctuate 8–15% quarterly based on copper/CRGO steel prices (linked to LME copper and CRGO import from China/India). Always get 3 quotes within 30 days of order placement.</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption><strong>Distribution Transformer 11kV/415V — 2026 PKR Price Table</strong></caption>
+  <thead>
+    <tr>
+      <th>Rating (kVA)</th>
+      <th>Oil-Immersed ONAN — Local Mfg (PKR)</th>
+      <th>Oil-Immersed ONAN — Imported (PKR)</th>
+      <th>Dry-Type VPI — Local (PKR)</th>
+      <th>Dry-Type Cast-Resin — Imported (PKR)</th>
+      <th>Approx. Weight (Oil + Tank, kg)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>100 kVA</td>
+      <td>₨380,000–520,000</td>
+      <td>₨440,000–620,000</td>
+      <td>₨580,000–720,000</td>
+      <td>₨720,000–900,000</td>
+      <td>600–750 kg</td>
+    </tr>
+    <tr>
+      <td>200 kVA</td>
+      <td>₨580,000–780,000</td>
+      <td>₨680,000–900,000</td>
+      <td>₨900,000–1,150,000</td>
+      <td>₨1,100,000–1,400,000</td>
+      <td>1,000–1,300 kg</td>
+    </tr>
+    <tr>
+      <td>315 kVA</td>
+      <td>₨840,000–1,100,000</td>
+      <td>₨980,000–1,280,000</td>
+      <td>₨1,300,000–1,650,000</td>
+      <td>₨1,600,000–2,000,000</td>
+      <td>1,400–1,800 kg</td>
+    </tr>
+    <tr>
+      <td>400 kVA</td>
+      <td>₨1,050,000–1,350,000</td>
+      <td>₨1,200,000–1,600,000</td>
+      <td>₨1,600,000–2,050,000</td>
+      <td>₨2,000,000–2,600,000</td>
+      <td>1,800–2,200 kg</td>
+    </tr>
+    <tr>
+      <td>500 kVA</td>
+      <td>₨1,300,000–1,700,000</td>
+      <td>₨1,500,000–2,000,000</td>
+      <td>₨2,000,000–2,500,000</td>
+      <td>₨2,500,000–3,200,000</td>
+      <td>2,200–2,800 kg</td>
+    </tr>
+    <tr>
+      <td>630 kVA</td>
+      <td>₨1,600,000–2,100,000</td>
+      <td>₨1,850,000–2,400,000</td>
+      <td>₨2,500,000–3,100,000</td>
+      <td>₨3,100,000–4,000,000</td>
+      <td>2,800–3,500 kg</td>
+    </tr>
+    <tr>
+      <td>1000 kVA</td>
+      <td>₨2,400,000–3,200,000</td>
+      <td>₨2,800,000–3,600,000</td>
+      <td>₨3,800,000–4,800,000</td>
+      <td>₨4,700,000–6,000,000</td>
+      <td>4,000–5,200 kg</td>
+    </tr>
+    <tr>
+      <td>1600 kVA</td>
+      <td>₨3,600,000–4,800,000</td>
+      <td>₨4,200,000–5,500,000</td>
+      <td>₨5,800,000–7,200,000</td>
+      <td>₨7,200,000–9,000,000</td>
+      <td>6,000–7,500 kg</td>
+    </tr>
+    <tr>
+      <td>2000 kVA</td>
+      <td>₨4,400,000–5,800,000</td>
+      <td>₨5,200,000–6,800,000</td>
+      <td>₨7,000,000–8,800,000</td>
+      <td>₨8,500,000–11,000,000</td>
+      <td>7,500–9,200 kg</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Notes on price table:</strong></p>
+<ul>
+  <li>Local manufacturing prices are ex-factory Lahore/Karachi. Add 3–5% transport + 2–3% site installation for total installed cost.</li>
+  <li>Imported prices include CIF Karachi, SRD at standard rate. DTRE-exempt exporters save 18–24% on import duty (see Section 8).</li>
+  <li>Cast-resin dry-type prices include standard IP21 rating. IP54 weatherproof enclosure adds 15–25% to cast-resin price.</li>
+  <li>K-factor transformers (K-4, K-13) for high-harmonic environments add 12–20% premium over standard oil-immersed ONAN.</li>
+  <li>OLTC (on-load tap changer) upgrade adds ₨200,000–600,000 depending on rating — critical for sites with ±10% WAPDA voltage variation.</li>
+</ul>
+
+<hr>
+
+<h2 id="wapda-approval">6. WAPDA / DISCOs Approval Process and NTDC Requirements</h2>
+
+<p>Purchasing a transformer for connection to WAPDA/DISCO supply requires navigating two distinct approval pathways:</p>
+
+<h3>6.1 — Manufacturer Approval (PSQCA / WAPDA Approved List)</h3>
+<p>DISCOs (LESCO, IESCO, FESCO, GEPCO, HESCO, SEPCO, PESCO, QESCO, MEPCO) maintain approved manufacturer lists for distribution transformers connected at their 11kV feeder points. Key requirements:</p>
+<ul>
+  <li><strong>Type test certificate:</strong> Current IEC 60076-1/-2/-3 type test certificate from an accredited laboratory (PNAC-accredited or internationally recognized lab). Certificate must not be older than 5 years.</li>
+  <li><strong>PSQCA/PS:2286 compliance:</strong> For local manufacturers, PSQCA product certification mark (Q-mark) is increasingly required by LESCO, FESCO, and MEPCO.</li>
+  <li><strong>Factory audit:</strong> Some DISCOs (particularly LESCO for 500 kVA+) conduct annual factory audits of approved manufacturers. Importers must demonstrate supply chain traceability.</li>
+</ul>
+
+<h3>6.2 — Connection Application (Load Application / Bulk Supply)</h3>
+<p>After procuring an approved transformer, the industrial consumer must submit a Load Application to the relevant DISCO. Required documents:</p>
+<ol>
+  <li>Load application form (DISCO-specific format)</li>
+  <li>Transformer test report (routine test — HV/LV winding resistance, ratio, polarity, no-load/load loss, insulation resistance)</li>
+  <li>Approved metering equipment list (DISCO-approved energy meter with CT/VT class 0.2S/0.2)</li>
+  <li>Protection relay coordination study (for loads above 500 kVA, coordinated with DISCO 11kV feeder IDMT relay)</li>
+  <li>Single-line diagram (SLD) of proposed substation</li>
+  <li>NEC certificate (National Electrical Code compliance, issued by PEC-registered consultant)</li>
+  <li>Site photographs</li>
+</ol>
+
+<h3>6.3 — NTDC Bulk Supply for Very Large Industrial Consumers</h3>
+<p>Consumers requiring above 5 MVA supply connect directly to NTDC's 132kV or 220kV grid (not DISCO 11kV feeders). This requires NTDC Grid Code compliance including:</p>
+<ul>
+  <li>Power system study (load flow, short circuit, dynamic stability)</li>
+  <li>Protection relay scheme review by NTDC National Grid Company</li>
+  <li>Metering at 132kV with NTDC-approved revenue meters</li>
+  <li>Connection Agreement with NTDC</li>
+</ul>
+
+<p><strong>Typical connection timeline for industrial consumer above 500 kVA in Pakistan (2026):</strong></p>
+<ul>
+  <li>Load application submission to commissioning: 8–18 months (LESCO/IESCO: 6–10 months; HESCO/SEPCO/QESCO: 12–22 months)</li>
+  <li>Main delay: DISCO feeder extension capacity assessment and system reinforcement (if 11kV feeder is already heavily loaded)</li>
+</ul>
+
+<hr>
+
+<h2 id="7-risks">7. Seven Pakistan-Specific Distribution Transformer Risks</h2>
+
+<h3>Risk 1 — Loadshedding Recovery Peak Load Overloading</h3>
+<p>When WAPDA restores power after a loadshedding event, all loads — including motor starters and HVAC — energize simultaneously. This creates a recovery inrush current that can momentarily load the transformer to 130–160% of nameplate. For an already-warm transformer (oil temperature elevated from the previous operating cycle), this combined thermal stress is the leading cause of premature failure in Pakistan. IEC 60076-7 Table 2 permits short-time overloading but only from a cold start — Pakistan's continuous loadshedding cycling creates back-to-back thermal stress events that IEC's model doesn't account for. Mitigation: specify transformer with minimum 10°C temperature rise margin (e.g., 55°C rise class where 65°C is the limit) and install demand-side load management relays that stagger motor restarts after supply restoration. See our <a href="/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide">MCC guide</a> for star-delta staggered restart schemes.</p>
+
+<h3>Risk 2 — CRGO Steel Oil Degradation Quantified for Pakistan's Summer Ambient</h3>
+<p>Mineral oil insulating performance degrades exponentially with temperature. IEC 60422 (guide for supervision of insulating oil) establishes 40°C as the standard ambient reference. Pakistan's summer ambient in Punjab and Sindh (45–55°C in June–August) means transformer top-oil temperature regularly exceeds 90°C even at rated load. At 90°C continuous, oil oxidation rate is 2× that at 80°C. Annually tested oil at correct BDV (&gt;30 kV/2.5mm gap per IEC 60156) costs ₨15,000–25,000 per transformer — preventing a ₨400,000–1,200,000 rewinding/replacement. Annual oil sampling in Pakistan's context is not optional maintenance; it is mandatory economic practice.</p>
+
+<h3>Risk 3 — K-Factor Underspecification in VFD-Heavy Plants (First Pakistan Documentation)</h3>
+<p>Pakistan's industrial electrification growth (2020–2026) has been driven heavily by VFD adoption — particularly in textile, food processing, and cement industries. A VFD-driven load generates significant odd-order harmonics (5th, 7th, 11th, 13th). Total THD from a plant with 60%+ VFD penetration typically runs 18–28%. At THD = 25%, transformer copper losses increase approximately 22% from harmonic skin effect heating — equivalent to permanently running the transformer at 22% overload on the copper side. Standard oil-immersed ONAN transformers are not rated for this. Specify: (a) K-factor transformer (K-4 for THD 10–20%, K-13 for THD 20–40%), or (b) Active harmonic filter at the LV bus (see our <a href="/blogs/guides/line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide">harmonic mitigation guide</a>), or (c) Install dry-type cast-resin which has inherently better harmonic tolerance. Failure to address this in VFD-heavy plants accounts for an estimated 25–30% of premature transformer failures in Faisalabad's textile belt.</p>
+
+<h3>Risk 4 — Cotton and Textile Dust Radiator Fin Blockage (Seasonal — Faisalabad / Karachi SITE)</h3>
+<p>ONAN transformers cool through radiator fins. Cotton fly (short fiber waste) generated by power looms and ginning factories accumulates on radiator fins within 4–8 weeks during high-production periods. A fully blocked radiator can reduce cooling capacity by 30–40% — equivalent to a 0.92 derating becoming 0.65 effective kVA. Combined with loadshedding recovery peak loads, fin blockage is a seasonal failure trigger every August–October in Faisalabad. Required maintenance: compressed air radiator cleaning every 6–8 weeks during cotton season. Alternative: IP54 enclosure on the transformer (eliminates fin contamination but adds cost and requires ONAF forced-air cooling to compensate for reduced natural convection).</p>
+
+<h3>Risk 5 — Tap Changer Wear from Pakistan's Grid Voltage Variation</h3>
+<p>NEPRA's Distribution Code specifies ±6% voltage regulation at the consumer connection point, but actual WAPDA/DISCO feeder voltage variation at industrial connection points frequently exceeds ±10–12%, particularly on heavily-loaded 11kV feeders in Lahore, Faisalabad, and Gujranwala. Off-circuit tap changers (the standard for distribution transformers) require de-energization to change tap position. Most Pakistani plant engineers set the tap once at commissioning and never touch it again. The result: transformer core losses and regulation vary significantly as supply voltage changes — causing 415V bus voltage to drift outside equipment ratings. Mitigation: specify OLTC (on-load tap changer) for plants on heavily-loaded feeders, with automatic voltage regulator (AVR) relay. First-cost premium of ₨200,000–500,000 pays back in equipment protection within 2–3 years in high-variation grid areas.</p>
+
+<h3>Risk 6 — Seismic Bracing for Balochistan, KPK, and Gilgit-Baltistan Installations</h3>
+<p>Pakistan's Seismic Hazard Map (NDMA 2007, updated 2019) places major portions of Balochistan, KPK, FATA, and Gilgit-Baltistan in Zone 4 (Peak Ground Acceleration 0.32–0.64g). A standard oil-immersed distribution transformer on a flat concrete pad with no seismic bracing will topple and rupture in a moderate seismic event (magnitude 5.5+), causing oil spill and fire. Seismic anchor bolt design per IBC 2021 / ASCE 7-22 is mandatory for Zone 3+ installations. Local engineers typically do not include seismic design in transformer installation specifications — this gap is particularly risky for mining operations in Balochistan and hydropower substations in KPK/GB. First documentation of this gap in Pakistani electrical commerce context.</p>
+
+<h3>Risk 7 — Copper Stripping and Theft-Vulnerability of Outdoor Oil-Immersed Transformers</h3>
+<p>Distribution transformer theft — specifically oil drain (for resale) and copper winding stripping — is a documented and rising problem in Pakistan. WAPDA reports significant annual losses to transformer theft and vandalism, concentrated in Sindh and South Punjab rural areas. For isolated industrial installations (agricultural pumping stations, rural captive power, telecom tower clusters), specify: (a) transformer oil drain plug with tamper-evident cap and security wiring, (b) padlockable tap changer cover, (c) padlockable oil drain, (d) installation within a lockable substation compound with corrugated sheet/brick boundary wall, and (e) GSM-enabled transformer monitoring relay with oil temperature and oil level alarms transmitted to plant management system. Incremental cost: ₨15,000–40,000 per transformer. Insurance premium reduction from documented security measures can recover this cost within 1 policy renewal cycle.</p>
+
+<hr>
+
+<h2 id="srd-duty">8. SRD Import Duty and DTRE Exemption</h2>
+
+<h3>HS Code Classification</h3>
+<p>Distribution transformers are classified under Pakistan Customs tariff chapter 85:</p>
+<ul>
+  <li><strong>HS 8504.2100:</strong> Transformers, liquid dielectric, rated ≤650 kVA (oil-immersed up to 630 kVA)</li>
+  <li><strong>HS 8504.2200:</strong> Transformers, liquid dielectric, rated &gt;650 kVA to 10,000 kVA (oil-immersed 630 kVA to 2000 kVA)</li>
+  <li><strong>HS 8504.3400:</strong> Other transformers, rated &gt;16 kVA to 500 kVA (dry-type up to 500 kVA)</li>
+  <li><strong>HS 8504.3900:</strong> Other transformers, rated &gt;500 kVA (dry-type above 500 kVA)</li>
+</ul>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption><strong>Import Duty Structure — Distribution Transformers Pakistan 2026</strong></caption>
+  <thead>
+    <tr>
+      <th>HS Code</th>
+      <th>Customs Duty</th>
+      <th>Additional Customs Duty (ACD)</th>
+      <th>Regulatory Duty (RD)</th>
+      <th>Sales Tax</th>
+      <th>AIDTL</th>
+      <th>Effective Total Rate (approx.)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8504.2100 (Oil, ≤630 kVA)</td>
+      <td>5%</td>
+      <td>2%</td>
+      <td>0%</td>
+      <td>18%</td>
+      <td>4%</td>
+      <td>~32–35%</td>
+    </tr>
+    <tr>
+      <td>8504.2200 (Oil, &gt;630 kVA)</td>
+      <td>5%</td>
+      <td>2%</td>
+      <td>0%</td>
+      <td>18%</td>
+      <td>4%</td>
+      <td>~32–35%</td>
+    </tr>
+    <tr>
+      <td>8504.3400 (Dry, ≤500 kVA)</td>
+      <td>5%</td>
+      <td>2%</td>
+      <td>5%</td>
+      <td>18%</td>
+      <td>4%</td>
+      <td>~37–40%</td>
+    </tr>
+    <tr>
+      <td>8504.3900 (Dry, &gt;500 kVA)</td>
+      <td>5%</td>
+      <td>2%</td>
+      <td>5%</td>
+      <td>18%</td>
+      <td>4%</td>
+      <td>~37–40%</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>DTRE Exemption for Exporters</h3>
+<p>FBR's Duty and Tax Remission for Exports (DTRE) scheme allows qualifying export-registered manufacturers to import capital equipment and inputs at zero effective duty, recovering all customs duty and sales tax (not the withholding/AIDTL portion). For an exporter importing a 1000 kVA cast-resin dry-type transformer at CIF ₨5,000,000:</p>
+<ul>
+  <li>Standard import duty cost: ~₨1,850,000–2,000,000 (37–40% effective)</li>
+  <li>DTRE exemption: customs duty + ACD + RD recoverable = ~₨600,000–650,000 saved</li>
+  <li>Sales tax under DTRE: recoverable as input credit</li>
+  <li>Net DTRE benefit: ₨600,000–650,000 direct duty saving (12–13% of CIF value) + ₨900,000 sales tax cash flow benefit (recoverable but with 3–6 month lag)</li>
+</ul>
+<p>Submit DTRE application to FBR Collectorate before goods arrive. Post-arrival DTRE applications are not accepted. Engage a licensed customs agent familiar with DTRE for capital equipment.</p>
+
+<hr>
+
+<h2 id="checklist">9. 10-Point Transformer Selection Checklist — Pakistan 2026</h2>
+
+<ol>
+  <li><strong>Calculate connected load with demand factor correctly</strong> — do not use installed HP nameplate as proxy; conduct actual load measurement over 7 days minimum.</li>
+  <li><strong>Apply Pakistan ambient derating:</strong> For summer ambient above 45°C (most of Punjab, Sindh, Southern KPK), multiply nameplate kVA by 0.92 to get safe operating kVA.</li>
+  <li><strong>Measure THD at the LV bus</strong> — if VFD loads exceed 30% of connected load, measure THD before specifying transformer. Specify K-factor or dry-type if THD &gt;15%.</li>
+  <li><strong>Verify transformer manufacturer is on DISCO approved list</strong> — call the relevant DISCO technical cell to confirm before placing order. Unapproved transformer = refused connection.</li>
+  <li><strong>Specify correct voltage ratio:</strong> Pakistan nominal LV is 415V (3-phase) / 240V (single-phase). Confirm 11kV primary voltage matches DISCO feeder voltage (some rural feeders are 11.5kV or 6.6kV).</li>
+  <li><strong>Specify tap changer range for local voltage variation:</strong> Minimum ±5% OCTC (5 taps). For WAPDA feeders with known ±10% variation, specify ±10% OCTC or OLTC.</li>
+  <li><strong>For indoor installation: specify dry-type or oil with bund containment.</strong> Check local authority fire code — hospitals, food plants, and commercial buildings in Pakistan's major cities require dry-type or oil containment per NEC and DISCO requirements.</li>
+  <li><strong>Request routine test report with every transformer:</strong> Minimum tests: winding resistance, voltage ratio, no-load loss, load loss, insulation resistance, induced voltage test. Reject any transformer delivered without factory test report.</li>
+  <li><strong>For outdoor/remote installations: specify theft-resistant features</strong> — padlockable drain, tamper-evident oil level indicator, lockable tap changer cover, and enclosure with lockable door.</li>
+  <li><strong>Commission protection relay coordination study</strong> for installations above 500 kVA — DISCO 11kV feeder IDMT relay settings vs transformer primary fuse / IDMT relay must be coordinated to prevent nuisance tripping. See our <a href="/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide">protection relay guide</a>.</li>
+</ol>
+
+<hr>
+
+<h2 id="mistakes">10. Seven Common Mistakes Pakistani Engineers Make with Distribution Transformers</h2>
+
+<ol>
+  <li><strong>Sizing to connected HP nameplate, not measured demand:</strong> Connected HP is always higher than actual demand. This leads to over-sized transformers with poor no-load efficiency — you pay for core losses 24 hours/day even when the plant is idle. Measure actual load over 7 days.</li>
+  <li><strong>Buying unapproved transformers to save 15–20% cost:</strong> DISCO will refuse to energize the connection. You lose the 15–20% savings in 6–18 months of delayed commissioning cost, plus must buy an approved replacement. Always verify the approved list before ordering.</li>
+  <li><strong>Not accounting for harmonic derating in VFD-heavy plants:</strong> Textile and food processing engineers routinely specify standard ONAN transformers for plants with 50%+ VFD penetration. The transformer runs hot and fails in 3–5 years instead of the rated 20–25 year service life.</li>
+  <li><strong>Never changing or testing oil in ONAN transformers:</strong> Oil is the insulating medium and coolant. Oil not tested annually in Pakistan's ambient will degrade to below-spec BDV, turning the insulating medium into a partial-conducting medium. Annual oil sampling at ₨15,000–25,000 per transformer is the most cost-effective maintenance action available.</li>
+  <li><strong>Specifying standard dry-type (Class F) for Sindh summer ambient:</strong> Class F dry-type transformers are rated for 40°C maximum ambient with 100°C rise (Class F limit 155°C). In Sindh summer (ambient 48–52°C), the transformer operates at 100°C rise + 50°C ambient = 150°C winding temperature — within 5°C of insulation class limit with zero margin. Specify Class H (180°C limit) for Sindh, South Punjab, and Balochistan installations.</li>
+  <li><strong>Forgetting protection relay coordination study:</strong> Without a coordination study, the DISCO's 11kV feeder IDMT relay may trip the entire feeder on a fault in your substation — affecting other consumers. Or your primary fuse may blow before the DISCO relay operates — stranding the fault on the 11kV busbar. DISCO engineers will flag this at connection inspection.</li>
+  <li><strong>Ignoring NEPRA power factor surcharge trigger:</strong> NEPRA tariff B-2 and B-3 apply a power factor surcharge when monthly average PF falls below 0.85. A correctly sized transformer without a proper APFC panel routinely draws PF 0.75–0.80 at partial load — triggering this surcharge continuously. Transformer specification and APFC panel design must be done together. See our <a href="/blogs/guides/power-factor-capacitor-bank-price-pakistan">power factor correction guide</a>.</li>
+</ol>
+
+<hr>
+
+<h2 id="faq">11. FAQ — Distribution Transformer Pakistan 2026</h2>
+
+<h3>Q1. What is the minimum transformer rating WAPDA / DISCOs allow for industrial connection at 11kV?</h3>
+<p>Most DISCOs have a minimum of 100 kVA for dedicated 11kV connection. Below 100 kVA, industrial connections are typically served on the LT network (415V three-phase). Contact your local DISCO's commercial/technical cell for current minimum capacity thresholds — these vary by DISCO and by feeder availability in your area.</p>
+
+<h3>Q2. Can I buy a second-hand / refurbished transformer for new industrial connection in Pakistan?</h3>
+<p>DISCOs require a factory routine test report (not older than 12 months) for every transformer connected to their network. A refurbished transformer must have a current test report from an accredited workshop. LESCO and FESCO are particularly strict — they may require a site inspection by their own technical team for any transformer above 500 kVA, and they routinely reject refurbished units without documented test history. Used transformers are high-risk for Pakistani industrial use — if you must use one, budget for full oil replacement, winding resistance measurement, ratio test, and insulation resistance test before submission to DISCO.</p>
+
+<h3>Q3. What impedance voltage should I specify for my 11kV/415V transformer in Pakistan?</h3>
+<p>Standard range is 4–6% per IEC 60076 / PS:2286. A lower impedance (4%) gives better voltage regulation (less voltage drop under load) but higher fault MVA on the LV bus — requiring higher-rated MCCBs and switchgear. A higher impedance (5.5–6%) reduces fault MVA (cheaper switchgear) but worsens voltage regulation. Typical Pakistan specification: 5.0–5.5%. For large loads with sensitive equipment (inverters, PLCs), specify 5.0% to minimize voltage drop.</p>
+
+<h3>Q4. How often should oil be tested in Pakistan's climate?</h3>
+<p>IEC 60422 recommends annual oil testing for transformers in ambient above 40°C (which covers most of Pakistan above 40°C for 4–6 months per year). In critical applications (hospitals, cold chains, continuous process plants), test every 6 months. Minimum tests: breakdown voltage (BDV per IEC 60156), water content (IEC 60814), acidity (IEC 62021), and interfacial tension. Cost: ₨12,000–25,000 per test from an accredited lab.</p>
+
+<h3>Q5. What WAPDA / DISCO penalty applies for overloading a dedicated transformer?</h3>
+<p>NEPRA's Distribution Code Clause 8.3.2 gives DISCOs the right to disconnect supply if a consumer's demand repeatedly exceeds their contracted capacity. Practically, DISCOs measure maximum demand (MD) via the tariff meter's MD register. Demand above contracted capacity triggers: (a) excess demand surcharge per unit above limit; (b) formal notice to upgrade connection; (c) in repeat cases, forced disconnection and requirement to upgrade before reconnection. Penalty rates vary by DISCO and tariff category — confirm current NEPRA-approved tariff schedule for your DISCO before commissioning.</p>
+
+<h3>Q6. Do I need a protection relay for a 100–315 kVA transformer, or just HRC fuses?</h3>
+<p>For transformers up to 315 kVA on a standard DISCO 11kV feeder, most DISCOs accept HRC (High Rupturing Capacity) fuses on the 11kV primary as the primary protection, with MCB/MCCB protection on the LV side. For 400 kVA and above, DISCO technical requirements increasingly mandate IDMT overcurrent + earth fault relay on the 11kV primary (typically a numerical relay with CT and VT). For 1000 kVA and above, differential protection (REF/biased differential) is strongly recommended by NTDC Grid Code Annex A. Always check with the relevant DISCO's protection department — requirements vary by feeder fault level and DISCO policy. See our <a href="/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide">protection relay guide</a> for relay selection.</p>
+
+<hr>
+
+<h2>Related Guides</h2>
+<ul>
+  <li><a href="/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide">Motor Control Center (MCC) — Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/power-factor-capacitor-bank-price-pakistan">Power Factor Capacitor Bank and APFC Panel — Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide">Numerical Protection Relay — Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide">Line Reactor and Harmonic Mitigation — Pakistan 2026 Buyer Guide</a></li>
+  <li><a href="/blogs/guides/arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety">Arc Flash Risk Assessment and PPE — Pakistan 2026 Guide</a></li>
+  <li><a href="/blogs/guides/motor-winding-insulation-test-megger-price-pakistan-2026-ir-pi-ratio-predictive-maintenance-buyer-guide">Motor Winding Insulation Test (Megger) — Pakistan 2026 Buyer Guide</a></li>
+</ul>
+
+</body>
+</html>
