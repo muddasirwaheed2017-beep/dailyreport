@@ -1,0 +1,42 @@
+{
+  "day": 95,
+  "date": "2026-09-11",
+  "handle": "transformer-protection-scheme-pakistan-2026-differential-ref-buchholz-relay-oltc-11kv-415v-buyer-guide",
+  "title": "Transformer Protection Scheme Pakistan 2026 — 87T Differential, REF, Buchholz & OLTC Relay Complete Buyer Guide",
+  "blog_id": "89971589186",
+  "author": "CNC Electric Pakistan",
+  "tags": [
+    "transformer protection",
+    "87T differential relay",
+    "restricted earth fault REF",
+    "buchholz relay",
+    "OLTC protection",
+    "numerical protection relay",
+    "11kV 415V protection",
+    "NTDC grid code 2023",
+    "NEPRA distribution code",
+    "IEC 60255",
+    "Pakistan electrical 2026",
+    "distribution transformer protection",
+    "buying guide"
+  ],
+  "summary_html": "<p>Complete transformer protection scheme guide for Pakistan 2026: 87T differential relay, REF, Buchholz relay, OLTC protection. IEC 60255 + NTDC Grid Code 2023 settings, CT specifications, 7 Pakistan-first risks (sympathetic inrush, cotton-fiber breather blockage, highland cold-start false alarms, OLTC grease failure, protection blind window, vector group mismatch), PKR price table (PKR 35K–3.2M), 10-point checklist, 7 common mistakes, 6-question FAQ. For 11kV/415V distribution transformers 100 kVA–2,500 kVA.</p>",
+  "cluster": "Transformer & Switchgear — Day 3",
+  "word_count_approx": 4900,
+  "internal_links": [
+    "/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide",
+    "/blogs/guides/ring-main-unit-outdoor-rmu-price-pakistan-2026-disco-wapda-sf6-solid-insulated-feeder-protection-buyer-guide",
+    "/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide",
+    "/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+    "/blogs/guides/arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide"
+  ],
+  "shopify_push_status": "PENDING — cloud IP block active (Day 51+)",
+  "step_46_verification": "6/6 internal links verified against local handle list",
+  "step_115_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 644,
+    "summary_html_ok": true,
+    "title_duplicate": false
+  }
+}
