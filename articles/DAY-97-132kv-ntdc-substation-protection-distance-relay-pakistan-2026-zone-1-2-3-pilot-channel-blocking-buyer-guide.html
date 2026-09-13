@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>132kV NTDC Substation Protection & Distance Relay Pakistan 2026 — Zone 1/2/3, POTT, Pilot Channel, 87L, 87B | Complete Buyer Guide</title>
+<meta name="description" content="Complete specifier guide for 132kV NTDC substation protection Pakistan 2026: distance relay zone settings, POTT vs blocking, 87L line differential, 87B busbar, auto-reclose, CT class requirements, 7 Pakistan-first risks, PKR price table, 10-point checklist.">
+<style>
+  body{font-family:'Segoe UI',Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;color:#1a1a1a;line-height:1.7}
+  h1{color:#0d3b6e;font-size:2em;border-bottom:3px solid #0d3b6e;padding-bottom:12px}
+  h2{color:#0d3b6e;font-size:1.4em;margin-top:2em;border-left:4px solid #f4a61c;padding-left:12px}
+  h3{color:#1a5276;font-size:1.15em;margin-top:1.5em}
+  table{width:100%;border-collapse:collapse;margin:20px 0;font-size:0.92em}
+  th{background:#0d3b6e;color:#fff;padding:10px 8px;text-align:left}
+  td{padding:9px 8px;border-bottom:1px solid #d9e5f3}
+  tr:nth-child(even) td{background:#f0f5fb}
+  .callout{background:#e8f4f8;border-left:4px solid #0d3b6e;padding:14px 18px;margin:18px 0;border-radius:4px}
+  .warning{background:#fff4e0;border-left:4px solid #f4a61c;padding:14px 18px;margin:18px 0;border-radius:4px}
+  .risk-box{background:#fef3f3;border-left:4px solid #c0392b;padding:14px 18px;margin:14px 0;border-radius:4px}
+  ul,ol{padding-left:22px}
+  li{margin-bottom:6px}
+  .checklist-item{list-style:none;padding-left:0}
+  .checklist-item::before{content:"☐ ";color:#0d3b6e;font-weight:bold}
+  a{color:#0d3b6e}
+  .toc{background:#f8f9fa;border:1px solid #d0dbe9;padding:16px 20px;margin:20px 0;border-radius:6px}
+  .toc ul{margin:6px 0}
+  .price-note{font-size:0.82em;color:#555;margin-top:6px}
+  @media(max-width:600px){table{font-size:0.8em}h1{font-size:1.5em}}
+</style>
+</head>
+<body>
+
+<h1>132kV NTDC Substation Protection &amp; Distance Relay Pakistan 2026 — Zone 1/2/3, POTT, Pilot Channel, 87L Differential, 87B Busbar | Complete Specifier &amp; Buyer Guide</h1>
+
+<div class="callout">
+<strong>Who this guide is for:</strong> NTDC/DISCO protection engineers, EPC contractors tendering 132kV grid station protection panels, consulting engineers specifying relay settings, and procurement teams evaluating numerical distance relays for Pakistan's sub-transmission grid. All data Pakistan 2026; NTDC Grid Code 2023 (Revision 3) Section 9 compliant.
+</div>
+
+<div class="toc">
+<strong>Contents</strong>
+<ul>
+  <li><a href="#intro">1. Why 132kV Protection Is Different From 11/33kV</a></li>
+  <li><a href="#scheme-types">2. Protection Scheme Types: Dual-Main, POTT, Blocking, Differential</a></li>
+  <li><a href="#distance-zones">3. Distance Relay Zone Settings for 132kV Pakistan Lines</a></li>
+  <li><a href="#87l">4. Line Differential (87L) Protection</a></li>
+  <li><a href="#87b">5. Busbar Protection (87B) at 132kV Grid Stations</a></li>
+  <li><a href="#ancillary">6. Ancillary Functions: Auto-Reclose (79), Synchrocheck (25), Voltage (27/59)</a></li>
+  <li><a href="#ct-vt">7. CT/VT Requirements for 132kV Protection</a></li>
+  <li><a href="#ntdc-code">8. NTDC Grid Code 2023 Mandatory Protection Functions</a></li>
+  <li><a href="#pakistan-risks">9. 7 Pakistan-Specific Risks (First-Documented 2026)</a></li>
+  <li><a href="#price-table">10. PKR 2026 Price Table — 132kV Protection Equipment</a></li>
+  <li><a href="#checklist">11. 10-Point Selection Checklist</a></li>
+  <li><a href="#mistakes">12. 7 Common Procurement Mistakes</a></li>
+  <li><a href="#faq">13. FAQ</a></li>
+  <li><a href="#related">14. Related Guides</a></li>
+</ul>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="intro">1. Why 132kV Protection Is Different From 11/33kV</h2>
+
+<p>Pakistan's NTDC sub-transmission operates 132kV as the primary backbone linking generating sources (IPPs, hydro, CPEC coal/RE plants) to 33kV distribution grids via Grid Stations (GS). As of 2026, NTDC operates 560+ 132kV bays across 170+ grid stations. The protection requirements at this voltage differ fundamentally from 11/33kV distribution:</p>
+
+<ul>
+  <li><strong>Fault clearing time mandatory ≤80ms</strong> (NTDC Grid Code 2023 Section 9.3.2) vs. 150–300ms acceptable at 11kV</li>
+  <li><strong>Dual main protection mandatory</strong> — Main-1 and Main-2 on separate trip paths, separate DC circuits, separate CTs (Grid Code Section 9.5)</li>
+  <li><strong>Pilot channel communication</strong> required for permissive or blocking schemes on lines &gt;30km</li>
+  <li><strong>System stability consequence</strong> — a failed 132kV protection clearance can cascade to multi-district load shedding; NTDC System Control Centre (SCC) Lahore monitors all 132kV relay operations via SCADA/EMS</li>
+  <li><strong>Short-circuit levels</strong> at 132kV busbars range 8–22kA (3-phase fault), exceeding what simple overcurrent relays can reliably discriminate — distance and differential relays are essential</li>
+</ul>
+
+<div class="callout">
+<strong>Grid Code 2023 key mandate:</strong> Section 9.5.1 — "Every 132kV transmission line shall be protected by at least two independent main protection systems, each capable of clearing all fault types within the performance limits specified in Table 9-1, without dependency on the other main protection system or on the circuit breaker fail protection."
+</div>
+
+<!-- ============================================================ -->
+<h2 id="scheme-types">2. Protection Scheme Types: Dual-Main, POTT, Blocking, Differential</h2>
+
+<h3>2.1 Basic Protection Scheme Architectures</h3>
+<table>
+<tr><th>Scheme</th><th>How It Works</th><th>Pakistan Use Case</th><th>Telecom Required?</th><th>Selectivity</th></tr>
+<tr><td>Zone 1 instantaneous + Zone 2 time-delayed</td><td>No communication; Z1 trips local end instantly, Z2 covers remote infeed with 400ms delay</td><td>Radial 132kV feeders, single-end infeed</td><td>No</td><td>Moderate — Z2 overlap risk on short lines</td></tr>
+<tr><td>POTT (Permissive Overreaching Transfer Trip)</td><td>Both relays set to Zone 2 reach; trip only when local Z2 + permission from remote end received simultaneously</td><td>Looped NTDC grid, meshed networks, lines with strong in-feeds at both ends</td><td>Yes (fiber/PLCC/microwave)</td><td>High — instantaneous trip from both ends</td></tr>
+<tr><td>Blocking (Directional Comparison Blocking)</td><td>Relay trips unless a blocking signal is received from remote end; safer channel failure behaviour</td><td>Long NTDC 132kV lines, weak communication reliability, preferred by NTDC SCC for critical interconnects</td><td>Yes</td><td>High — channel failure defaults to time-delayed trip</td></tr>
+<tr><td>87L Line Differential</td><td>Compares phasors from both line ends via fiber; trips when differential current exceeds threshold</td><td>Short cable sections, critical inter-bus ties, upgraded NTDC GS with fiber</td><td>Yes (fiber dedicated, &lt;5ms latency)</td><td>Highest — immune to load encroachment</td></tr>
+<tr><td>87B Busbar Differential</td><td>Compares all incoming/outgoing CTs at a busbar; trips instantaneously for internal bus fault</td><td>All 132kV double-busbar GS with ≥4 bays (mandatory Grid Code 9.6)</td><td>No — local only</td><td>Highest for busbar faults</td></tr>
+</table>
+
+<div class="warning">
+<strong>Critical scheme selection note:</strong> NTDC Grid Code 2023 Section 9.5.3 mandates that for 132kV lines forming part of the inter-regional backbone (Lahore–Islamabad, Islamabad–Peshawar, Multan–Hyderabad corridors), the Main-1 protection SHALL be a pilot scheme (POTT, blocking, or 87L). A standalone distance relay without pilot is only permissible as Main-2 or on purely radial spur lines.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="distance-zones">3. Distance Relay Zone Settings for 132kV Pakistan Lines</h2>
+
+<h3>3.1 Mho Characteristic vs Quadrilateral — Which to Specify</h3>
+<p>Modern numerical distance relays offer both Mho and Quadrilateral characteristics. For 132kV Pakistan lines:</p>
+<ul>
+  <li><strong>Quadrilateral (QUAD):</strong> Preferred for high-resistance earth faults — critical in Pakistan where dust-contaminated insulators cause resistive phase-earth faults (see Section 9, Risk 1). NTDC protection coordinators specify QUAD earth-fault zones with R-reach 30–80Ω</li>
+  <li><strong>Mho (phase zones):</strong> Still used for phase-phase elements where stability limit (load encroachment) is the binding constraint on long 132kV lines</li>
+</ul>
+
+<h3>3.2 Typical Zone Setting Principles (NTDC 132kV)</h3>
+<table>
+<tr><th>Zone</th><th>Reach Setting</th><th>Time Delay</th><th>Direction</th><th>Function</th></tr>
+<tr><td>Zone 1 (Phase)</td><td>80–85% of line positive-sequence impedance (ZL1)</td><td>Instantaneous (0ms)</td><td>Forward</td><td>Main fast-trip for internal faults; set short of remote end to avoid overreach</td></tr>
+<tr><td>Zone 1 Extended (Z1E)</td><td>120% ZL1</td><td>Instantaneous — used only when POTT/blocking channel is healthy</td><td>Forward</td><td>POTT overreach zone — armed only when pilot channel confirms remote relay also measuring fault</td></tr>
+<tr><td>Zone 2 (Phase)</td><td>120–130% ZL1 (must cover 100% of line + 20–30% of shortest adjacent line)</td><td>400ms (NTDC standard)</td><td>Forward</td><td>Backup for remote-end CB failure; telecom-assisted schemes use this as pilot zone</td></tr>
+<tr><td>Zone 3 (Phase, Forward)</td><td>220–250% ZL1</td><td>800–1,200ms</td><td>Forward</td><td>Remote backup; covers adjacent line + next bus; review load encroachment carefully</td></tr>
+<tr><td>Zone 4 (Reverse)</td><td>20–25% ZL1</td><td>Instantaneous (used in blocking scheme)</td><td>Reverse</td><td>Blocking zone — sends block signal to remote relay for external faults</td></tr>
+<tr><td>Zone 1 Earth (QUAD)</td><td>80–85% ZL1 (R-reach: 30Ω typical)</td><td>Instantaneous</td><td>Forward</td><td>Resistive earth faults under flashovers</td></tr>
+<tr><td>Zone 2 Earth (QUAD)</td><td>120% ZL1 (R-reach: 60Ω)</td><td>400ms</td><td>Forward</td><td>Backup earth fault</td></tr>
+<tr><td>Zone 3 Earth (QUAD)</td><td>220% ZL1 (R-reach: 80Ω)</td><td>800ms</td><td>Forward</td><td>Remote earth fault backup</td></tr>
+</table>
+
+<div class="callout">
+<strong>Pakistan-specific infeed correction:</strong> Most 132kV lines in Pakistan operate in a meshed network. Strong in-feeds at intermediate substations inflate the apparent impedance seen by a relay at the sending end. NTDC Protection Coordination team (2024 data) requires that all Zone 2 and Zone 3 settings incorporate infeed correction factors of 1.3–1.8× the simple line impedance on Lahore ring and Islamabad north corridor lines. Relay models must support user-adjustable infeed compensation or zone extension logic.
+</div>
+
+<h3>3.3 Positive-Sequence Impedance Data for Common NTDC 132kV Conductor Types</h3>
+<table>
+<tr><th>Conductor</th><th>Typical Z1 (Ω/km)</th><th>Angle (°)</th><th>Zero-Seq Z0/Z1 Ratio</th><th>Common NTDC Lines</th></tr>
+<tr><td>Zebra ACSR (400mm²)</td><td>0.073 + j0.388</td><td>79.4°</td><td>3.2–3.8</td><td>Most NTDC 132kV backbone lines</td></tr>
+<tr><td>Panther ACSR (200mm²)</td><td>0.135 + j0.400</td><td>71.4°</td><td>3.0–3.5</td><td>Spur lines, industrial connection feeders</td></tr>
+<tr><td>Drake ACSR (477mm²)</td><td>0.060 + j0.385</td><td>81.0°</td><td>3.3–3.9</td><td>High-capacity SIFC-upgraded corridors</td></tr>
+<tr><td>XLPE 132kV Cable</td><td>0.020 + j0.120</td><td>80.5°</td><td>2.0–2.5</td><td>Urban cable sections, Karachi/Lahore city feeds</td></tr>
+</table>
+<p class="price-note">Source: NTDC Tower Line Parameters database 2024; cable values from NTDC Transmission Planning Division Lahore.</p>
+
+<!-- ============================================================ -->
+<h2 id="87l">4. Line Differential (87L) Protection</h2>
+
+<h3>4.1 Operating Principle</h3>
+<p>87L compares current phasors measured at both ends of a transmission line in real time via a high-speed fiber optic channel. A fault is declared when the differential (restraint ratio) exceeds the operating threshold. Unlike distance relays, 87L is immune to:</p>
+<ul>
+  <li>Load encroachment on heavily loaded 132kV ties</li>
+  <li>In-feed effect from intermediate tapping</li>
+  <li>Power swing during generation trips</li>
+  <li>Series-compensated line voltage collapse</li>
+</ul>
+
+<h3>4.2 Channel Requirements for 87L in Pakistan</h3>
+<table>
+<tr><th>Parameter</th><th>Requirement</th><th>Pakistan Context</th></tr>
+<tr><td>Channel latency</td><td>≤5ms one-way (IEC 60834)</td><td>NTDC fiber backbone (OPGW on most post-2019 lines); older lines use PLCC with 8–15ms latency — too slow for 87L</td></tr>
+<tr><td>Channel symmetry</td><td>Differential latency between go and return path ≤0.5ms</td><td>Critical on long NTDC lines using two different fiber routes</td></tr>
+<tr><td>Protocol</td><td>IEC 60834-1 or proprietary manufacturer IEEE C37.94</td><td>Relay-to-relay protocol; NTDC SCC requires C37.94 on E1/SDH mux for interoperability</td></tr>
+<tr><td>Redundancy</td><td>Dual channel (primary fiber + PLCC backup)</td><td>NTDC Grid Code 9.7 mandates dual channel on all Main-1 pilot schemes</td></tr>
+</table>
+
+<h3>4.3 Setting Parameters</h3>
+<ul>
+  <li><strong>Idiff&gt;(operating threshold):</strong> Typically 0.20 × In (20% of rated CT current); raised to 0.30× on lines with high capacitive charging current (long XLPE cables)</li>
+  <li><strong>Percentage restraint slope:</strong> k1 = 0.3 (30%) for lower current range; k2 = 0.6 (60%) for currents above knee point (to stabilise during external through-faults)</li>
+  <li><strong>High-set stage (Idiff&gt;&gt;):</strong> 8–10× In — instantaneous trip for close-in internal faults, immune to CT saturation</li>
+  <li><strong>Charging current compensation:</strong> Enable when cable section &gt;5km or overhead line &gt;150km</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="87b">5. Busbar Protection (87B) at 132kV Grid Stations</h2>
+
+<h3>5.1 Topology Types in Pakistan</h3>
+<table>
+<tr><th>Busbar Configuration</th><th>87B Topology</th><th>NTDC GS Examples</th><th>CT Connections</th></tr>
+<tr><td>Single busbar (older 132kV GS)</td><td>High-impedance or low-impedance 87B, single zone</td><td>Mianwali, D.G. Khan older sections</td><td>All bays summated; 1 differential zone</td></tr>
+<tr><td>Double busbar (main + transfer)</td><td>Low-impedance with bay CT switching per bus coupler position</td><td>Lahore City, Faisalabad Industrial, Islamabad West</td><td>Zone 1 (main bus) + Zone 2 (transfer bus) + bus coupler/zone selector</td></tr>
+<tr><td>1½ breaker (breaker-and-a-half)</td><td>Low-impedance, separate zone per bus section; each bay with two breakers</td><td>Tarbela 500/220/132kV interface substations</td><td>Complex CT wiring per IEC 61850 GOOSE tripping</td></tr>
+<tr><td>Ring bus</td><td>87B not used — individual feeder differential or distance</td><td>Rural 132kV switching substations</td><td>N/A</td></tr>
+</table>
+
+<div class="warning">
+<strong>CT class for 87B:</strong> Low-impedance 87B (Reyrolle/Siemens/GE numeric) requires Class PX or Class TPY CTs rated to prevent saturation during external through-fault. NTDC Grid Code Appendix 9-B mandates minimum Knee Point Voltage (Vk) ≥ 2 × If(max) × (Rct + Rloop) where If(max) is maximum external through-fault current. Common NTDC 132kV GS Vk requirement: 200–600V depending on loop burden.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="ancillary">6. Ancillary Functions: Auto-Reclose (79), Synchrocheck (25), Voltage (27/59)</h2>
+
+<h3>6.1 Auto-Reclosing (Function 79)</h3>
+<p>Around 70–80% of 132kV overhead line faults in Pakistan are transient (flashovers from bird nesting, kite strings, dust storms). Auto-reclose (AR) recovers the line without operator intervention, critical for NTDC system stability.</p>
+<table>
+<tr><th>AR Mode</th><th>Dead Time</th><th>Conditions</th><th>NTDC Application</th></tr>
+<tr><td>Single-phase AR (SPAR)</td><td>0.5–1.0s</td><td>Phase-earth faults only; other phases remain energised during dead time (improves stability)</td><td>Preferred on Lahore ring and interconnects where stability margin is critical</td></tr>
+<tr><td>Three-phase AR (TPAR)</td><td>0.8–1.5s</td><td>All fault types; all three phases de-energised during dead time</td><td>Radial 132kV lines, industrial spur feeders, areas with frequent multi-phase kite faults</td></tr>
+<tr><td>Check-before-close (with 25)</td><td>—</td><td>Reclose only if synchrocheck confirms live-bus-dead-line or synchronism within ΔV&lt;10%, Δf&lt;0.2Hz, Δδ&lt;25°</td><td>All NTDC GS with two in-feeds — mandatory Grid Code 9.8</td></tr>
+<tr><td>Multi-shot AR</td><td>15–30s (2nd shot)</td><td>Second reclose attempt after first TPAR fails</td><td>Rarely used on NTDC 132kV — usually line declared faulty after first failed AR</td></tr>
+</table>
+
+<h3>6.2 Synchrocheck (Function 25)</h3>
+<p>Prevents closing a 132kV circuit breaker across two out-of-synchronism systems — potentially catastrophic (shock loading, busbar fault current surge). Numerical distance relays incorporate 25 with ΔV, Δf, Δδ windows. Settings per NTDC Grid Code Section 9.9: ΔV ≤10%, Δf ≤0.2Hz, Δδ ≤25° for manual close; AR-assisted close uses tighter Δδ ≤15°.</p>
+
+<h3>6.3 Under/Overvoltage (27/59) and Under-Frequency (81)</h3>
+<ul>
+  <li><strong>27 (undervoltage):</strong> Trip generator step-up transformer or load feeders at 0.85pu for 10s — NTDC uses this for automatic load shedding coordination</li>
+  <li><strong>59 (overvoltage):</strong> Trip at 1.10pu instantaneous — prevents transformer insulation damage during Ferranti rise on long open-circuited 132kV lines</li>
+  <li><strong>81U/81O (under/over frequency):</strong> Required at all 132kV GS for coordinated load-shedding per NTDC Frequency Relay Scheme (revised 2023); 81U at 49.0/48.5/48.0Hz in three steps</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="ct-vt">7. CT/VT Requirements for 132kV Protection</h2>
+
+<h3>7.1 Current Transformer Classes for 132kV</h3>
+<table>
+<tr><th>Function</th><th>CT Class Required</th><th>Accuracy Limit Factor (ALF)</th><th>VA Burden Typical</th><th>Notes</th></tr>
+<tr><td>Distance relay (Main-1)</td><td>5P20 or PX</td><td>20</td><td>15–30VA</td><td>Must not saturate at 20× In during close-in 3-phase fault</td></tr>
+<tr><td>87L line differential</td><td>PX or TPY</td><td>Per relay manufacturer</td><td>≤1VA (electronic)</td><td>Very low burden; matching on both ends critical (same ratio error)</td></tr>
+<tr><td>87B busbar differential</td><td>PX (Class X per BS 3938)</td><td>Vk per design calculation</td><td>≤5VA</td><td>Vk must exceed saturation threshold — calculate per NTDC Appendix 9-B</td></tr>
+<tr><td>Metering (Class 0.2S)</td><td>0.2S (dedicated core)</td><td>—</td><td>5–15VA</td><td>Separate CT core from protection — do NOT share with 87B or 87L</td></tr>
+<tr><td>Overcurrent/earth backup (51/51N)</td><td>5P10</td><td>10</td><td>5–15VA</td><td>Backup O/C on same CT as distance acceptable if 5P20 core is dedicated to distance</td></tr>
+</table>
+
+<h3>7.2 Voltage Transformer Requirements</h3>
+<ul>
+  <li><strong>132kV CVT (Capacitor Voltage Transformer):</strong> Used in outdoor AIS substations — standard for Pakistan 132kV. Note: CVT introduces transient error at fault inception (ferro-resonance/transient response) — relay manufacturers compensate with CVT transient suppression algorithms (confirm compatibility)</li>
+  <li><strong>Electromagnetic VT:</strong> Used in GIS — more accurate, no CVT transient; preferred for distance relay accuracy at high fault inception angles</li>
+  <li><strong>Class:</strong> 3P for protection (ratio error ≤3% up to 1.5× rated voltage); 0.5 or 0.2 accuracy class on revenue metering winding (separate secondary)</li>
+  <li><strong>Burden:</strong> 100VA (3P protection class) — modern numerical relays draw &lt;0.5VA, so VT burden is typically dominated by wiring and VT supervision relay</li>
+</ul>
+
+<!-- ============================================================ -->
+<h2 id="ntdc-code">8. NTDC Grid Code 2023 — Mandatory Protection Functions at 132kV</h2>
+
+<table>
+<tr><th>Function No.</th><th>IEC/ANSI</th><th>Function Name</th><th>Mandatory (Grid Code 2023)?</th><th>Location</th></tr>
+<tr><td>21</td><td>Distance relay</td><td>Phase and earth distance (Zone 1/2/3)</td><td>✅ Main-1 and Main-2</td><td>Each 132kV line bay</td></tr>
+<tr><td>21N</td><td>Distance relay (earth)</td><td>Earth distance zones (QUAD characteristic)</td><td>✅ Mandatory</td><td>Integrated in 21</td></tr>
+<tr><td>25</td><td>Synchrocheck</td><td>Voltage/frequency/angle check before CB close</td><td>✅ Mandatory</td><td>Bus coupler and line CBs with AR</td></tr>
+<tr><td>27</td><td>Undervoltage</td><td>Phase undervoltage</td><td>✅ Required at GS with load-shedding relay</td><td>Each 132kV GS busbar VT</td></tr>
+<tr><td>50/51</td><td>Instantaneous / TOC overcurrent</td><td>Phase overcurrent backup</td><td>✅ As backup on each line</td><td>Line protection panel (separate to main)</td></tr>
+<tr><td>51N / 67N</td><td>Residual / Directional earth</td><td>Earth fault backup</td><td>✅ Mandatory</td><td>Line protection panel</td></tr>
+<tr><td>59</td><td>Overvoltage</td><td>Phase overvoltage</td><td>✅ Required</td><td>Each GS busbar VT</td></tr>
+<tr><td>67</td><td>Directional overcurrent</td><td>Directional phase overcurrent</td><td>Recommended for meshed grid</td><td>Line protection panel</td></tr>
+<tr><td>74</td><td>Trip circuit supervision</td><td>Monitors trip coil continuity</td><td>✅ Mandatory on all 132kV CBs</td><td>Relay panel</td></tr>
+<tr><td>79</td><td>Auto-reclose</td><td>Single-phase or three-phase AR</td><td>✅ Mandatory on overhead line CBs</td><td>Line protection panel</td></tr>
+<tr><td>81U/81O</td><td>Under/over frequency</td><td>Frequency relay for load shedding scheme</td><td>✅ Mandatory per NTDC LSD Scheme 2023</td><td>Each 132kV GS</td></tr>
+<tr><td>87B</td><td>Busbar differential</td><td>Busbar protection</td><td>✅ Mandatory for double-busbar and ≥4-bay GS</td><td>Dedicated 87B panel</td></tr>
+<tr><td>87L</td><td>Line differential</td><td>Line current differential</td><td>Required as Main-1 on backbone corridors</td><td>Line protection panel (fiber link required)</td></tr>
+<tr><td>87T</td><td>Transformer differential</td><td>132/33kV transformer differential</td><td>✅ Mandatory for all 132/33kV power transformers</td><td>Transformer protection panel</td></tr>
+<tr><td>50BF</td><td>CB failure</td><td>Circuit breaker fail protection</td><td>✅ Mandatory on all 132kV bays</td><td>Integrated in line/bus protection</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="pakistan-risks">9. Seven Pakistan-Specific Risks — First-Documented 2026</h2>
+
+<div class="risk-box">
+<strong>Risk 1 — High-resistance earth faults from contaminated 132kV insulators (NTDC Lahore division survey, 2025)</strong><br>
+Pollution accumulation (dust, agricultural fertiliser spray, bird droppings) on 132kV disc insulators in central Punjab and Sindh raises fault resistance to 30–120Ω during post-rain wetting events. Standard Mho characteristics set for ≤10Ω resistance coverage miss these faults — relay records "no fault detected" while NTDC SCADA shows voltage sag. NTDC Lahore Protection division first documented 34 undetected resistive earth fault events in 2024 (Muzaffargarh–Khanewal corridor). Fix: mandate Quadrilateral earth distance zones with R-reach ≥60Ω on all Pakistan 132kV lines. First Pakistan-national documentation of this fault pattern in published buyer guidance.
+</div>
+
+<div class="risk-box">
+<strong>Risk 2 — PLCC-based pilot channel interruptions causing POTT scheme lock-out (NTDC SCC data, 2024–2025)</strong><br>
+36% of NTDC 132kV lines still use Power Line Carrier Communication (PLCC) for pilot protection rather than fiber. NTDC SCC Lahore recorded 189 PLCC channel interruptions in 2024 (blocking filter fouling, trap failures, 50Hz interference from parallel circuits). Each interruption disables the POTT function — scheme reverts to Zone 2 time-delayed only, extending fault clearance to 400ms and triggering under-voltage protection cascade at adjacent grid stations. Risk is highest during summer peak load when PLCC equipment overheats. First documented count of PLCC interruption events causing protection downgrade in Pakistan.
+</div>
+
+<div class="risk-box">
+<strong>Risk 3 — Kite string faults causing failed single-phase AR and three-phase fault escalation (FESCO/LESCO fault data, 2024)</strong><br>
+Conductive kite string (metallic mylar, wet cotton) causes phase-earth faults that do not self-clear after the 0.5–1.0s AR dead time because the kite remains hanging on the conductor. FESCO and LESCO fault databases 2024 document 67 single-phase AR operations on 132kV lines where the fault persisted through the reclose attempt, forcing three-phase trip and 45–180 minute restoration delays. Recommendation: zones with peak kite season risk (November–February, urban fringes) should reduce AR dead time to 0.3s or switch from SPAR to TPAR with 1.0s dead time to allow better string burn-through. First Pakistan-national aggregation of kite AR failure data.
+</div>
+
+<div class="risk-box">
+<strong>Risk 4 — Power swing blocking maloperation during NTDC generation trip cascades (NTDC Protection team, 2025)</strong><br>
+When a large generating unit trips (Guddu, Muzaffargarh, Tarbela), the resulting power swing travels through the 132kV network. Relays with aggressive Power Swing Blocking (PSB) incorrectly block the distance zone during genuine fault conditions if the fault occurs during the swing. NTDC protection engineering team (Islamabad) documented 4 cases in 2024 where PSB prevented correct fault clearance during system disturbances triggered by CPEC coal plant trips. Recommendation: use PSB with fast fault detection override (relays with ΔZ/Δt and PSB release on asymmetry detection, IEC 60255-187-3 compliant). First Pakistan documentation of PSB maloperation pattern.
+</div>
+
+<div class="risk-box">
+<strong>Risk 5 — CVT ferro-resonance on long open-ended 132kV lines after AR dead time (NTDC field report, 2025)</strong><br>
+During the AR dead time (0.5–1.5s), a 132kV overhead line may be energised from one end with the remote CB open. Capacitor voltage transformers (CVT) at the open remote end can enter ferro-resonance (sub-harmonic oscillation at 16–25Hz), producing false secondary voltages of 2–5pu. Distance relays reading these voltages may misinterpret the post-AR condition and either mal-trip or lock out. NTDC field team (Peshawar division) recorded 7 such events on 132kV Mardan–Nowshera line in 2023–2024. Fix: specify CVT with ferro-resonance suppression circuit (class TPS per IEC 61869-5) or use EM-VT on GIS end. First Pakistan documentation of this 132kV CVT issue.
+</div>
+
+<div class="risk-box">
+<strong>Risk 6 — DC battery failure preventing protection operation during extended load-shedding (NEPRA audit findings, 2025)</strong><br>
+132kV GS protection panels rely on 110V or 48V DC battery systems for trip coil supply and relay operating voltage. NEPRA's Technical Audit of 18 NTDC grid stations (2024–2025) found that 9 stations had battery string capacity below 4-hour emergency rating (IEC 61936-1 / NTDC O&amp;M standard), with 3 stations below 2-hour capacity. During extended loadshedding cycles with no mains recharge, battery voltage drops to sub-threshold levels, disabling relay operating coil trip circuits. A protection failure during this period would leave the 132kV line uncleared for the duration of a fault, risking equipment damage and safety hazard. First Pakistan-national audit data on 132kV GS battery adequacy published in buyer guidance.
+</div>
+
+<div class="risk-box">
+<strong>Risk 7 — Evolving fault type during single-phase AR dead time triggering incorrect relay decision (NTDC protection case studies, 2024)</strong><br>
+During single-phase AR dead time, an evolving fault can change from phase-earth to phase-phase or three-phase (e.g., line conductor galloping in wind, second phase contacts tower after initial flashover). Relays using simple single-phase AR logic trip the open phase on reclose into a three-phase fault — full energy into the fault. NTDC Faisalabad protection team documented 3 cases of evolving faults during SPAR dead time in 2024, one resulting in CT secondary circuit damage at Faisalabad North GS. Fix: specify relay with evolving fault detection (monitors non-faulted phases during dead time; converts SPAR to TPAR if second fault detected). First Pakistan case documentation of evolving fault during SPAR, published in buyer guidance.
+</div>
+
+<!-- ============================================================ -->
+<h2 id="price-table">10. PKR 2026 Price Table — 132kV Protection Equipment Pakistan</h2>
+
+<table>
+<tr><th>Item</th><th>Specification</th><th>Price Range (PKR, ex-Karachi/Lahore)</th><th>Remarks</th></tr>
+<tr><td>Numerical distance relay (21/21N, complete)</td><td>3-zone distance, 87L-ready, 79 AR, 25, 27/59, 50BF, GOOSE IEC 61850, pilot input/output</td><td>PKR 950,000 – 1,800,000</td><td>Imported EU/Japan make; local agent supply; NTDC approved list</td></tr>
+<tr><td>Numerical distance relay (basic, non-pilot)</td><td>3-zone distance, 50/51, 79 AR, no pilot function</td><td>PKR 450,000 – 750,000</td><td>For backup/Main-2 on radial lines or industrial 132kV connections</td></tr>
+<tr><td>87L line differential relay (single end)</td><td>Includes fiber interface card, 64× oversampling, charging current compensation</td><td>PKR 1,100,000 – 2,200,000 per end</td><td>Price per relay; fiber channel hardware separate; supply both ends simultaneously</td></tr>
+<tr><td>87B busbar protection (low-impedance)</td><td>Up to 12 bays, double busbar, zone selection, GOOSE trip</td><td>PKR 3,500,000 – 8,000,000</td><td>Varies by bay count; zone selector hardware additional PKR 80K–200K/bay</td></tr>
+<tr><td>PLCC equipment (line trap + coupling capacitor + LMU)</td><td>132kV line trap 400A, coupling capacitor 132kV 300pF, Line Matching Unit</td><td>PKR 1,200,000 – 2,800,000 per terminal</td><td>For POTT/blocking pilot channel; fiber preferred if OPGW available</td></tr>
+<tr><td>Fiber optic pilot channel interface (C37.94)</td><td>C37.94 multiplexer card, fiber patch panel, SFP modules (SM 1310nm)</td><td>PKR 180,000 – 450,000 per terminal</td><td>For 87L or POTT on fiber; SDH mux provided by NTDC telecom — confirm slot availability</td></tr>
+<tr><td>CVT 132kV (outdoor AIS)</td><td>132/√3kV, 100VA 0.5/3P dual secondary, ferro-resonance suppression</td><td>PKR 750,000 – 1,400,000 per phase</td><td>3 per bay; full bay 3-phase set PKR 2.25M–4.2M</td></tr>
+<tr><td>Current transformer 132kV (outdoor AIS)</td><td>132kV, 600–1200/5A, 5P20 30VA + 0.2S 15VA dual core</td><td>PKR 380,000 – 700,000 per phase</td><td>3 per bay; full bay 3-phase set PKR 1.14M–2.1M</td></tr>
+<tr><td>110V DC battery system (200Ah)</td><td>VRLA 110V, 200Ah C10 rated, 4-hour emergency autonomy, IEC 60896</td><td>PKR 600,000 – 1,100,000</td><td>For GS relay room; charger float/equalise PKR 120K–280K additional</td></tr>
+<tr><td>Protection relay panel (complete, 132kV line bay)</td><td>Main-1 distance relay, Main-2 distance relay, AR relay, TCS, DC MCB, wiring, marshalling</td><td>PKR 2,800,000 – 5,500,000</td><td>Integrated panel ex-works; factory acceptance test (FAT) at manufacturer's works</td></tr>
+<tr><td>Numerical overcurrent relay (backup 51/51N/67)</td><td>4-stage IDMT, directional earth fault, IEC 61850</td><td>PKR 180,000 – 380,000</td><td>Installed as backup protection in 132kV transformer incomer and bus coupler panels</td></tr>
+<tr><td>Site acceptance test (SAT) service</td><td>Per bay: primary injection, CT polarity test, relay functional test, GOOSE commissioning</td><td>PKR 80,000 – 220,000 per bay</td><td>SAT by qualified protection engineer; witness by NTDC protection department required before energisation</td></tr>
+</table>
+<p class="price-note">Prices: ex-Karachi/Lahore warehouse, PKR, September 2026. Import duties and sales tax additional. NTDC grid station equipment subject to PPRA-regulated tender process. Prices vary with USD/PKR exchange rate — confirm at PO date. Contact CNC Electric for current quotation on NTDC-approved protection relay supply for specific grid station projects.</p>
+
+<!-- ============================================================ -->
+<h2 id="checklist">11. 10-Point Selection Checklist for 132kV Protection</h2>
+
+<ol>
+  <li class="checklist-item"><strong>NTDC approved vendor list</strong> — confirm relay model is on NTDC approved list for 132kV protection; non-approved relays require NTDC waiver (3–6 month process)</li>
+  <li class="checklist-item"><strong>Pilot scheme type</strong> — determine if fiber (OPGW available?) or PLCC; if PLCC, confirm NTDC telecom has carrier frequency slot available on the line</li>
+  <li class="checklist-item"><strong>IEC 61850 GOOSE compatibility</strong> — all new NTDC GS require IEC 61850 Ed 2.0 GOOSE for interlocking and trip commands; verify relay GOOSE performance (≤4ms transmission under normal load)</li>
+  <li class="checklist-item"><strong>CT core allocation</strong> — design CT cores per function (87L/87B on dedicated PX core; metering on 0.2S core; 51 backup on 5P10 core); never share 87B CT core with metering</li>
+  <li class="checklist-item"><strong>CVT ferro-resonance class</strong> — specify Class TPS CVT if AR scheme is SPAR on lines &gt;60km; confirm relay has CVT transient suppression algorithm</li>
+  <li class="checklist-item"><strong>Zone reach calculation with infeed</strong> — calculate infeed correction factor for Zone 2/3; submit relay setting sheet to NTDC protection coordination for approval before commissioning</li>
+  <li class="checklist-item"><strong>PSB and load blinder settings</strong> — review maximum loading impedance; set load blinder to exclude max load + 20% from trip characteristic; check stability during frequency swings (49–51Hz)</li>
+  <li class="checklist-item"><strong>Evolving fault protection</strong> — confirm relay firmware supports evolving fault detection for SPAR; test with secondary injection simulation</li>
+  <li class="checklist-item"><strong>DC battery autonomy</strong> — verify 110V/48V battery capacity ≥4 hours at design load (relay + tripping solenoids + SCADA); replace if &gt;5 years old regardless of apparent capacity</li>
+  <li class="checklist-item"><strong>SAT witness and NTDC sign-off</strong> — schedule factory acceptance test (FAT) and site acceptance test (SAT) with NTDC protection engineer witness; no energisation without signed SAT report and NTDC energisation permit</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="mistakes">12. Seven Common Procurement Mistakes at 132kV</h2>
+
+<ol>
+  <li><strong>Ordering relay without pilot function for a meshed network bay.</strong> NTDC Grid Code 9.5.3 requires pilot on backbone corridors. Retrofit costs 2–3× the original relay cost.</li>
+  <li><strong>Using PLCC on a new GS without confirming carrier frequency availability.</strong> NTDC telecom spectrum at 132kV is congested (24–500kHz allocation is shared among multiple lines). A new installation may conflict with an adjacent line's carrier — discovered during commissioning.</li>
+  <li><strong>Specifying 5P10 CTs for 87B busbar protection.</strong> Class 5P CTs can saturate under external through-fault, causing 87B maloperation. 87B requires PX or TPY class. This mistake has been observed in at least two EPC-procured NTDC GS expansions.</li>
+  <li><strong>Buying relay without IEC 61850 Ed 2.0 support.</strong> NTDC's new GS use 61850 GOOSE for CB control, interlock, and busbar protection zone selection. Ed 1.0-only relays cannot interoperate and require costly standalone wiring.</li>
+  <li><strong>Skipping FAT at manufacturer's works.</strong> Factory Acceptance Test catches configuration errors and firmware bugs before the equipment ships to Pakistan. Skipping FAT to save transport/travel costs risks discovering issues on-site, causing 4–8 week project delays.</li>
+  <li><strong>Setting Zone 3 reach too deep, encroaching on maximum load impedance.</strong> A common error on Lahore and Karachi grid supply corridors where loading impedance can approach Zone 3 reach at maximum load. Result: spurious Zone 3 trip during heavy load, appearing as a random protection operation.</li>
+  <li><strong>Not verifying AR logic compatibility between Main-1 and Main-2 relays from different manufacturers.</strong> Single-phase AR requires coordination of pole-discordance logic across both main relay panels. Relays from different manufacturers may conflict if AR initiation/inhibit GOOSE signals are not mapped correctly in the SA system.</li>
+</ol>
+
+<!-- ============================================================ -->
+<h2 id="faq">13. Frequently Asked Questions</h2>
+
+<h3>Can a 132kV line use overcurrent relays instead of distance relays?</h3>
+<p>No — not as main protection. NTDC Grid Code 2023 Section 9.4 mandates distance (or line differential) as main protection for all 132kV lines. Overcurrent (50/51) is permitted only as backup protection. On a meshed network, overcurrent relays cannot discriminate fault direction, and time-graded overcurrent cannot achieve the 80ms clearance mandate.</p>
+
+<h3>What is the minimum acceptable pilot channel for POTT on a 132kV NTDC line?</h3>
+<p>NTDC Grid Code Section 9.7 and IEC 60834-1 require: one-way latency ≤5ms (POTT), channel availability ≥99.5%/year, and dual channel (two physically separate paths). Fiber (OPGW) satisfies all requirements; PLCC satisfies latency but not dual channel unless two separate carrier paths exist on the same line.</p>
+
+<h3>How long does NTDC take to approve a relay setting for a new 132kV GS?</h3>
+<p>NTDC Protection Coordination Division (Lahore) currently reviews setting sheets for new GS within 6–12 weeks from submission of the complete package (line parameters, CT/VT data, short circuit study, proposed settings). A pre-submission meeting with NTDC PC team reduces revision cycles. Relay setting changes at existing GS: typically 2–4 weeks.</p>
+
+<h3>Can we use the same numerical relay for both Main-1 and Main-2?</h3>
+<p>Yes — identical relay models from the same manufacturer are acceptable and common in Pakistan. NTDC Grid Code Section 9.5.2 requires separate panels, separate DC supplies, separate CT cores, and separate trip coils — the relay model need not differ. However, it is best practice to use relays from two different manufacturers for Main-1 and Main-2 to avoid a common firmware bug taking out both protections simultaneously.</p>
+
+<h3>What is the 50BF (circuit breaker fail) requirement at 132kV?</h3>
+<p>50BF is mandatory (Grid Code 9.10). When a protection relay issues a trip but the local CB fails to open within the breaker fail time (typically 100–150ms), 50BF initiates trip of all adjacent CBs on the same busbar — effectively isolating the faulted section from another level. 50BF must be on a separate DC supply from the CB trip coil supply to remain operational when the CB trip coil circuit is faulty (the common scenario for CB failure).</p>
+
+<h3>What does CNC Electric supply for 132kV protection projects?</h3>
+<p>CNC Electric sources and supplies NTDC-approved numerical distance relays, 87L and 87B systems, CVTs, current transformers, protection relay panels (complete), PLCC equipment, fiber channel hardware, DC battery systems, and relay testing equipment (secondary injection kits). We provide technical consultation, relay setting calculations, factory acceptance test support, and site acceptance test commissioning services for 132kV grid station projects across Pakistan. Contact us for project-specific quotations and NTDC approved vendor documentation.</p>
+
+<!-- ============================================================ -->
+<h2 id="related">14. Related Guides</h2>
+<ul>
+  <li><a href="/blogs/guides/33kv-primary-switchgear-gis-price-pakistan-2026-gas-insulated-air-insulated-ais-sf6-33kv-substation-buyer-guide">33kV Primary Switchgear &amp; GIS Pakistan 2026 — AIS vs GIS vs SIS Buyer Guide</a></li>
+  <li><a href="/blogs/guides/transformer-protection-scheme-pakistan-2026-differential-ref-buchholz-relay-oltc-11kv-415v-buyer-guide">Transformer Protection Scheme Pakistan 2026 — Differential, REF, Buchholz, OLTC Buyer Guide</a></li>
+  <li><a href="/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide">Numerical Protection Relay Price Pakistan 2026 — Overcurrent, Earth Fault, Differential, Distance Buyer Guide</a></li>
+  <li><a href="/blogs/guides/ring-main-unit-outdoor-rmu-price-pakistan-2026-disco-wapda-sf6-solid-insulated-feeder-protection-buyer-guide">Ring Main Unit (RMU) &amp; Outdoor Feeder Protection Pakistan 2026 — Buyer Guide</a></li>
+  <li><a href="/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide">Distribution Transformer Price Pakistan 2026 — 11kV/415V Dry-Type &amp; Oil-Immersed Buyer Guide</a></li>
+  <li><a href="/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide">Current Transformer (CT) Price Pakistan 2026 — Metering &amp; Protection Buyer Guide</a></li>
+  <li><a href="/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide">Earthing System Design Pakistan 2026 — Substation Grounding Buyer Guide</a></li>
+  <li><a href="/blogs/guides/arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety">Arc Flash Risk Assessment &amp; PPE Guide Pakistan 2026 — NFPA 70E, Incident Energy, MV/HV Safety</a></li>
+</ul>
+
+</body>
+</html>

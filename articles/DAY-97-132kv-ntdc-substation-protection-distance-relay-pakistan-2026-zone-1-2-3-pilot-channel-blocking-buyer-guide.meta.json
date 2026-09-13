@@ -1,0 +1,30 @@
+{
+  "day": 97,
+  "date": "2026-09-13",
+  "blog_id": "89971589186",
+  "handle": "132kv-ntdc-substation-protection-distance-relay-pakistan-2026-zone-1-2-3-pilot-channel-blocking-buyer-guide",
+  "title": "132kV NTDC Substation Protection & Distance Relay Pakistan 2026 — Zone 1/2/3, POTT, Pilot Channel, 87L, 87B | Complete Buyer Guide",
+  "summary_html": "<p>Complete specifier guide for 132kV NTDC substation protection Pakistan 2026: distance relay zone settings for Zebra/Panther/Drake conductors, POTT vs blocking vs 87L differential scheme selection, 87B busbar protection topology, auto-reclose SPAR/TPAR, CT/CVT classes, mandatory NTDC Grid Code 2023 Section 9 functions, 7 first-documented Pakistan risks (resistive earth faults, PLCC interruptions, kite AR failures, PSB maloperation, CVT ferro-resonance, battery failure, evolving faults), PKR 2026 price table, 10-point checklist, 7 common procurement mistakes, and 6-question FAQ.</p>",
+  "tags": ["protection-relay", "132kv", "distance-relay", "NTDC", "substation-protection", "87L", "87B", "POTT", "pilot-channel", "Pakistan-2026"],
+  "cluster": "Transformer & Switchgear — Day 5",
+  "word_count_approx": 4900,
+  "internal_links": [
+    "/blogs/guides/33kv-primary-switchgear-gis-price-pakistan-2026-gas-insulated-air-insulated-ais-sf6-33kv-substation-buyer-guide",
+    "/blogs/guides/transformer-protection-scheme-pakistan-2026-differential-ref-buchholz-relay-oltc-11kv-415v-buyer-guide",
+    "/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide",
+    "/blogs/guides/ring-main-unit-outdoor-rmu-price-pakistan-2026-disco-wapda-sf6-solid-insulated-feeder-protection-buyer-guide",
+    "/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide",
+    "/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety"
+  ],
+  "internal_links_verified": "8/8 valid (all confirmed in local article HTML filenames D62–D96)",
+  "shopify_push_status": "PENDING — cloud IP 403 block (Day 53+). Manual publish from repo when access restored.",
+  "preflight_committed": true,
+  "v7_post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 612,
+    "summary_html_ok": true,
+    "duplicate_title_check": "CLEAR — no existing article matches this title"
+  }
+}
