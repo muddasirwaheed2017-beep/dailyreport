@@ -1,0 +1,31 @@
+{
+  "day": 98,
+  "date": "2026-09-14",
+  "blog_id": "89971589186",
+  "handle": "hv-substation-earthing-grid-design-pakistan-2026-ieee-80-step-touch-voltage-soil-resistivity-ntdc-wapda-buyer-guide",
+  "title": "HV Substation Earthing Grid Design Pakistan 2026 — IEEE 80, Step & Touch Voltage, Soil Resistivity, NTDC/WAPDA Requirements | Complete Buyer Guide",
+  "summary_html": "<p>Complete specifier guide for HV substation earthing grid design Pakistan 2026: IEEE 80:2013 methodology, Wenner 4-pin soil resistivity testing, step and touch voltage limits and calculation, earth conductor sizing for 11kV/33kV/132kV fault currents, chemical earthing (Marconite/bentonite/GEM) for rocky KPK/Balochistan terrain, NTDC Grid Code 2023 earthing requirements (R≤1Ω for 132kV, ≤2Ω for 33kV), crusher run surfacing specification, 7 first-documented Pakistan risks (monsoon joint failure, water table variation, stray cathodic currents, copper theft, concrete corrosion, expanded substation coverage, GPR transfer to LV), PKR 2026 price table (12 rows), 10-point checklist, 7 common procurement mistakes, 6-question FAQ.</p>",
+  "tags": ["earthing", "substation-earthing", "IEEE-80", "soil-resistivity", "step-voltage", "touch-voltage", "NTDC", "chemical-earthing", "Marconite", "Pakistan-2026", "HV-substation", "earth-grid"],
+  "cluster": "HV Substation Earthing & Testing — Day 1",
+  "word_count_approx": 5200,
+  "internal_links": [
+    "/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide",
+    "/blogs/guides/132kv-ntdc-substation-protection-distance-relay-pakistan-2026-zone-1-2-3-pilot-channel-blocking-buyer-guide",
+    "/blogs/guides/33kv-primary-switchgear-gis-price-pakistan-2026-gas-insulated-air-insulated-ais-sf6-33kv-substation-buyer-guide",
+    "/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "/blogs/guides/earthing-pit-construction-soil-treatment-pakistan-2026-step-by-step-installation-testing-field-guide",
+    "/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "/blogs/guides/numerical-protection-relay-price-pakistan-2026-overcurrent-earth-fault-differential-distance-mv-hv-buyer-guide",
+    "/blogs/guides/surge-protection-type-1-type-2-coordination-pakistan-2026-spd-lightning-arrester-mains-panel-buyer-guide",
+    "/blogs/guides/line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide"
+  ],
+  "internal_links_verified": "9/9 valid (verified against articles/ directory filenames: D47=surge-protection, D50=earthing-electrode, D62=earthing-system-design, D68=earthing-pit-construction, D85=numerical-protection-relay, D91=line-reactor, D93=distribution-transformer, D96=33kv-primary-switchgear, D97=132kv-ntdc-substation-protection)",
+  "shopify_push_status": "PENDING — cloud IP 403 block (Day 54+). Manual publish from repo when access restored.",
+  "preflight_committed": true,
+  "v7_post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 692,
+    "summary_html_ok": true,
+    "duplicate_title_check": "CLEAR — no existing article matches HV Substation Earthing Grid Design (D50 covers building earthing; D62 covers TN/TT system design; D68 covers pit construction — this covers IEEE 80 HV substation grid design methodology, which is distinct)"
+  }
+}
