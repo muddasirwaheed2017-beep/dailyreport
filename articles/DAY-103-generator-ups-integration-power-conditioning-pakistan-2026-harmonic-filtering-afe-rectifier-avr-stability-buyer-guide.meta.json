@@ -1,0 +1,22 @@
+{
+  "day": 103,
+  "date": "2026-09-19",
+  "handle": "generator-ups-integration-power-conditioning-pakistan-2026-harmonic-filtering-afe-rectifier-avr-stability-buyer-guide",
+  "title": "Generator-UPS Integration & Power Conditioning Pakistan 2026 — Harmonic Filtering, AFE Rectifier, AVR Stability, Generator Compatibility Requirements | Complete Buyer Guide",
+  "blog_id": "89971589186",
+  "tags": ["generator-ups", "power-conditioning", "harmonic-filter", "afe-rectifier", "avr-stability", "pakistan-2026", "industrial-ups", "diesel-generator"],
+  "summary_html": "Complete guide to generator-UPS integration in Pakistan 2026. Covers generator sizing derating for non-linear UPS loads (6-pulse vs AFE rectifier), AVR compatibility (analogue vs DAVR vs PMG), harmonic distortion from UPS rectifiers and passive/active mitigation, AFE rectifier cost-benefit analysis, LESCO/IESCO/KESC grid-generator transfer protocols, 7 Pakistan-specific failure modes including synchronous reactance resonance, PMG demagnetisation, governor droop miscalibration, neutral overloading, fuel contamination, thermal derating and solar-generator-UPS interaction. PKR 2026 price table with 12 equipment categories. 10-point compatibility checklist and 7 common mistakes. IEC 62040-3, IEC 61000-3-2, IEC 61000-3-12, IEC 60034-1, NEPRA Grid Code 2023, NTDC PMM-P-2024, NFPA 110 compliance references.",
+  "cluster": "Power Electronics & Industrial Power Reliability",
+  "cluster_day": 3,
+  "word_count_approx": 5800,
+  "internal_links": [
+    "ups-price-pakistan-2026-online-offline-solar-hybrid-industrial-uninterruptible-power-supply-buyer-guide",
+    "industrial-ups-battery-monitoring-system-pakistan-2026-online-ups-bypass-vrla-lithium-bms-ntdc-relay-panel-buyer-guide",
+    "battery-capacity-testing-discharge-methodology-pakistan-2026-iec-60896-impedance-spectroscopy-vrla-lifepo4-buyer-guide",
+    "automatic-transfer-switch-ats-price-pakistan-2026-generator-changeover-solar-wapda-4-pole-buyer-guide",
+    "servo-stabilizer-price-pakistan-2026-voltage-stabilizer-ac-protection-3-phase-buyer-guide",
+    "line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide"
+  ],
+  "shopify_push_status": "PENDING - cloud IP 403 block",
+  "preflight_committed": true
+}
