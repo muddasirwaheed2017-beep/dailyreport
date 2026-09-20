@@ -1,0 +1,66 @@
+{
+  "day": "D104",
+  "date": "2026-09-20",
+  "handle": "iec-61000-4-30-power-quality-measurement-methodology-pakistan-2026-class-a-class-s-pqa-wapda-disco-compliance-buyer-guide",
+  "blog_id": "89971589186",
+  "title": "IEC 61000-4-30 Power Quality Measurement Methodology Pakistan 2026 — Class A vs Class S, WAPDA Grid Assessment, Harmonic THD Analysis | Complete Buyer Guide",
+  "summary_html": "IEC 61000-4-30 power quality measurement methodology guide for Pakistan 2026. Class A vs Class S analyser selection, WAPDA/DISCO compliance, harmonic THD measurement, voltage event logging, 7 Pakistan-specific grid challenges, NEPRA dispute documentation requirements, PKR prices from Rs 85,000 to Rs 1,200,000. 10-point selection checklist, 7 common mistakes, 6 FAQ. Complete technical buyer guide for industrial engineers, energy managers, and DISCO interface teams.",
+  "tags": ["power quality analyser", "IEC 61000-4-30", "Class A PQA Pakistan", "harmonic measurement Pakistan", "WAPDA power quality", "NEPRA QoS", "THD measurement Pakistan", "voltage dip measurement", "power quality Pakistan 2026"],
+  "cluster": "Power Measurement & Energy Management",
+  "cluster_day": "D104 (Day 1 of cluster)",
+  "w11stop_compliance": {
+    "pakistan_differentiators": 7,
+    "pkr_price_table": true,
+    "price_table_rows": 8,
+    "selection_checklist": "10-point",
+    "common_mistakes": 7,
+    "faq": 6,
+    "generic_descriptors_only": true,
+    "regulatory_refs": ["IEC 61000-4-30", "IEC 61000-4-7", "IEC 61000-4-15", "EN 50160", "IEC 61000-2-4", "IEC 61000-3-12", "NEPRA QoS Regulations 2009 rev 2022", "NEPRA NEM 3.0 2026", "NEPRA Grid Code 2023"]
+  },
+  "internal_links": [
+    {
+      "href": "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+      "handle": "power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+      "anchor": "power quality analyser buyer guide",
+      "status": "VALID",
+      "day_written": "D53"
+    },
+    {
+      "href": "/blogs/guides/3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide",
+      "handle": "3-phase-energy-meter-price-in-pakistan-2026-digital-smart-din-rail-buyer-guide",
+      "anchor": "3-phase energy meter",
+      "status": "VALID",
+      "day_written": "D18"
+    },
+    {
+      "href": "/blogs/guides/current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+      "handle": "current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+      "anchor": "current transformer CT buyer guide",
+      "status": "VALID"
+    },
+    {
+      "href": "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+      "handle": "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+      "anchor": "VFD variable frequency drive",
+      "status": "VALID"
+    },
+    {
+      "href": "/blogs/guides/line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide",
+      "handle": "line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide",
+      "anchor": "line reactor and active harmonic filter",
+      "status": "VALID"
+    },
+    {
+      "href": "/blogs/guides/net-metering-price-pakistan-2026-nepra-nem-3-0-net-billing-wapda-discos-application-guide",
+      "handle": "net-metering-price-pakistan-2026-nepra-nem-3-0-net-billing-wapda-discos-application-guide",
+      "anchor": "net metering NEPRA NEM 3.0",
+      "status": "VALID"
+    }
+  ],
+  "internal_links_verification": "6/6 VALID — all handles confirmed in known-good repo handle list (Shopify API 403 from cloud IP as expected; repo-side verification used)",
+  "shopify_push_status": "PENDING — HTTP 403 from cloud IP (known failure — article committed to repo per v6 preflight protocol)",
+  "word_count_approx": 5900,
+  "sections": 14,
+  "tables": 6
+}
