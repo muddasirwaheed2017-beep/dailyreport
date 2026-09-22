@@ -1,0 +1,26 @@
+{
+  "day": 106,
+  "date": "2026-09-22",
+  "handle": "apfc-automatic-power-factor-correction-panel-pakistan-2026-detuned-reactor-capacitor-bank-nepra-pf-penalty-sizing-buyer-guide",
+  "title": "Automatic Power Factor Correction (APFC) Panel Pakistan 2026 — Detuned Reactor-Capacitor Banks, NEPRA PF Penalty Avoidance, Sizing Methodology & PKR Buyer Guide",
+  "blog_id": "89971589186",
+  "summary_html": "Complete Pakistan buyer guide for APFC panels 2026. Covers NEPRA PF penalty structure (0.85 threshold), detuned reactor-capacitor bank selection for VFD-heavy environments, KVAR sizing methodology with worked example, summer ambient derating (45–50°C), generator island-mode instability risk and controller configuration, capacitor-duty contactor (AC-6b) requirements, CT sizing, Modbus SCADA integration, PKR price table (50 KVAR to 1,000 KVAR), 10-point selection checklist, 7 common mistakes in Pakistan, commissioning checklist, and 6-question FAQ.",
+  "tags": ["APFC", "power factor correction", "capacitor bank", "NEPRA penalty", "detuned reactor", "reactive power", "Pakistan 2026", "industrial electrical"],
+  "cluster": "Power Measurement & Energy Management",
+  "cluster_day": 3,
+  "word_count_approx": 5900,
+  "internal_links": [
+    "power-factor-capacitor-bank-price-pakistan",
+    "power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "iec-61000-4-30-power-quality-measurement-methodology-pakistan-2026-class-a-class-s-pqa-wapda-disco-compliance-buyer-guide",
+    "industrial-multi-function-energy-meter-pakistan-2026-wapda-disco-tariff-ct-modbus-rtu-tcp-scada-buyer-guide",
+    "contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide",
+    "scada-price-pakistan-2026-supervisory-control-data-acquisition-industrial-automation-buyer-guide",
+    "vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+    "current-transformer-ct-price-pakistan-2026-metering-protection-bar-type-buyer-guide",
+    "panel-cooling-fan-filter-thermostat-price-pakistan-2026-control-panel-ventilation-buyer-guide",
+    "line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide",
+    "spd-surge-protection-device-price-pakistan-2026-type-1-type-2-lightning-arrester-buyer-guide"
+  ],
+  "internal_links_verified": "11/11 valid"
+}
