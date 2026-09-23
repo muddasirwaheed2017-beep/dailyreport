@@ -1,0 +1,14 @@
+{
+  "day": 107,
+  "date": "2026-09-23",
+  "handle": "harmonic-distortion-analysis-ieee-519-2022-compliance-pakistan-2026-thdv-thdi-pcc-limits-wapda-disco-buyer-guide",
+  "title": "Harmonic Distortion Analysis & IEEE 519-2022 Compliance in Pakistan 2026: THDv, THDi, PCC Limits, WAPDA/DISCO Enforcement & Mitigation Buyer Guide",
+  "summary_html": "<p>Complete guide to harmonic distortion analysis and IEEE 519-2022 compliance for Pakistani industrial consumers 2026. Covers THDv/THDi measurement methodology (IEC 61000-4-30 Class A), WAPDA PCC voltage harmonic limits, NEPRA Determination 2025 enforcement for &gt;500 kW consumers, VFD harmonic current injection in Faisalabad/Karachi textile mills, generator island-mode harmonic amplification during 12–16 hr/day load-shedding, K-factor transformer selection, active harmonic filter (AHF) sizing, line reactor + AHF combined mitigation, detuned APFC interaction, 12-pulse/18-pulse rectifier options, PKR price guide for all mitigation technologies (line reactors PKR 8,000–110,000, AHF 30A–200A PKR 650,000–3,800,000), IEEE 519-2022 two-point measurement methodology for DISCO dispute attribution, and a worked example (Faisalabad textile mill, 650 kW VFD load, 8.2% THDv reduced to 3.2% with PKR 4.14M mitigation package).</p>",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "tags": ["harmonic distortion", "IEEE 519-2022", "THD", "power quality", "active harmonic filter", "line reactor", "VFD harmonic", "WAPDA compliance", "NEPRA", "K-factor transformer", "Pakistan industrial electrical"],
+  "internal_links_verified": 8,
+  "internal_links_valid": 8,
+  "word_count_approx": 5800,
+  "cluster": "Industrial Power Quality — Day 1 of 3"
+}
