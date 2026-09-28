@@ -1,0 +1,19 @@
+{
+  "day": 112,
+  "date": "2026-09-28",
+  "handle": "generator-fuel-management-maintenance-schedule-tco-pakistan-2026-dg-set-diesel-generator-total-cost-of-ownership-buyer-guide",
+  "title": "Generator Fuel Management, Maintenance Schedule & Total Cost of Ownership Pakistan 2026 — DG Set Diesel Quality, Oil Change Intervals, NEPRA Fuel Compliance & 10-Year TCO Analysis | Complete Buyer Guide",
+  "summary_html": "Pakistan-specific generator fuel management guide 2026. 500ppm sulphur diesel demands 250-hour oil changes (not 500), fuel polishing every 500 hours, and NEPRA-certified flow meters for registered DG sets >100kVA. FIA/OGRA surveys show 38–52% retail diesel is adulterated — density meter testing on every delivery is essential. 10-year TCO analysis for Lahore vs Quetta, altitude derating 8-city table, PKR maintenance price tables, worked examples for 625kVA textile mill and 250kVA dairy factory. Seven common mistakes costing PKR 500k–5M+. Cluster completes: D110 DG Set Sizing → D111 AMF Panel → D112 Fuel Management & TCO.",
+  "blog_id": "89971589186",
+  "blog_name": "guides",
+  "tags": ["generator", "DG set", "diesel generator", "fuel management", "maintenance", "TCO", "NEPRA", "Pakistan 2026", "oil change interval", "fuel adulteration", "flow meter"],
+  "word_count_approx": 5800,
+  "tables": 6,
+  "pakistan_differentiators": 7,
+  "internal_links_verified": "9/9",
+  "cluster": "Diesel Generator & Backup Power — Day 3 of 3",
+  "cluster_partners": [
+    "diesel-generator-dg-set-price-pakistan-2026-15kva-1500kva-standby-prime-power-wapda-nepra-buyer-guide",
+    "amf-panel-auto-mains-failure-generator-paralleling-price-pakistan-2026-ats-load-transfer-buyer-guide"
+  ]
+}
