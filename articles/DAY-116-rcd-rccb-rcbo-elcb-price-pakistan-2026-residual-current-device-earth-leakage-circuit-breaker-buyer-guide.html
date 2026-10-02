@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RCD, RCCB &amp; RCBO Price Pakistan 2026 — Residual Current Device, Earth Leakage Circuit Breaker, Type AC/A/B Selection for WAPDA TN-C-S &amp; K-Electric TT Networks | Complete Buyer Guide</title>
+<meta name="description" content="Complete 2026 buyer guide for RCDs, RCCBs, RCBOs, and ELCBs in Pakistan. Covers Type AC/A/B/F selection, 30mA–500mA ratings, WAPDA TN-C-S vs K-Electric TT earthing compatibility, load-shedding false-trip prevention, Pakistan Building Code 2021 Chapter 27 mandatory RCD circuits, agricultural pump protection in PESCO/QESCO rural zones, and 4 PKR price tables updated October 2026.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What type of RCD should I use with WAPDA supply in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For standard WAPDA TN-C-S residential and commercial supply, a Type AC RCCB is the minimum acceptable for resistive and linear loads. However, anywhere a variable frequency drive (VFD), inverter, UPS, EV charger, or solar inverter is connected, you must use a Type A RCCB (detects pulsating DC fault currents) or Type F/B as appropriate. Using Type AC on VFD-driven equipment is a known cause of nuisance tripping and missed fault detection in Pakistani industrial installations."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my RCCB keep tripping during load-shedding restoration in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Load-shedding restoration in WAPDA/DISCO networks causes a rapid voltage step-change (180V–260V within 40–80ms) accompanied by a transient inrush current surge. This creates a brief capacitive earth leakage current spike (typically 8–15mA peak) across the distributed capacitance of the wiring. Standard 30mA RCCBs with fast response (<10ms) trip on this transient. Solutions: (1) Use a time-delayed RCCB (S-type, IEC 61008) at the incomer position — minimum 130ms delay; (2) Install Type A RCCB rated 100mA at the main board incomer with 30mA RCBO downstream at branch level; (3) For generator ATS transfer, fit a 4-pole RCCB to break neutral discontinuity between WAPDA TN-C-S and floating generator neutral."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Pakistan Building Code 2021 require RCDs in homes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Pakistan Building Code (PBPCA 2021) Chapter 27, Clause 27.4.3 now mandates 30mA RCD protection for all socket outlets in wet locations (bathrooms, kitchens, outdoor), all circuits in agricultural buildings, all EV charging points, and all temporary construction site supply. Lahore Development Authority (LDA) and Islamabad Capital Territory (ICT) began enforcement for new construction completions from Q1 2026. Karachi Building Control Authority (KBCA) implementation is pending a separate notification. Existing buildings are exempt unless undergoing a major rewire requiring a completion certificate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between RCCB and RCBO?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An RCCB (Residual Current Circuit Breaker) detects earth fault current only — it does NOT provide overcurrent or short-circuit protection. An RCBO (Residual Current Breaker with Overcurrent protection) combines both functions in one device: it trips on earth fault current AND on overcurrent/short circuit, exactly like a combined MCB+RCCB. In Pakistan practice: install an RCCB at the distribution board incomer position (protected by the upstream fuse or MCCB for short-circuit duty) and RCBOs at individual circuit outlets where both protections are needed in a single pole position."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does K-Electric's TT earthing system require a different RCD solution than WAPDA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "K-Electric operates a TT earthing system at the service entry point in most of Karachi: the neutral at the transformer is earthed by K-Electric, and each consumer must provide their own independent earth electrode. In a TT system, the fault loop impedance is high (determined by two earth electrode resistances in series), so the fault current may be too low to trip an MCB or fuse within a safe time. An RCD is therefore NOT optional in a TT system — it is the ONLY protection device capable of detecting the fault current. A 30mA RCD for personal protection and a 300mA/500mA RCD for fire protection are both mandatory in TT-earthed K-Electric installations. Using an MCB alone in a TT system is a life-safety violation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What RCD sensitivity is required for agricultural pump protection in PESCO/QESCO zones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "PESCO and QESCO rural feeder supply to agricultural pump motors is predominantly via overhead LT lines and PMTs (Pole Mounted Transformers) in TN-C-S configuration with variable neutral integrity. For Pakistan's agricultural pump panels (5HP–50HP submersible or surface motor), the recommended RCD specification is: (1) 30mA for any pump where a person may contact the pump casing during operation (submersible, irrigation channel); (2) 100mA S-type (time-delayed) where direct contact is unlikely but fire risk is present (motor control panels in dry rural settings); (3) 4-pole configuration to handle the missing neutral continuity on long PESCO/QESCO overhead feeder runs. IEC 60364-7-705 (Agricultural and Horticultural Premises) applies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use a Type AC RCCB with a solar inverter or UPS in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Solar string inverters, hybrid inverters, and UPS systems with IGBT switching produce pulsating DC residual currents (not pure AC sine-wave leakage). A Type AC RCCB is calibrated only for sinusoidal AC fault current — it will either fail to trip (miss a real DC fault) or nuisance-trip on the pulsating DC component. For any circuit feeding a solar inverter, hybrid inverter, VFD, or UPS in Pakistan: use Type A RCCB minimum (detects AC + pulsating DC), or Type B RCCB for three-phase drives with smooth DC fault current. This is now specified in NEPRA Net Metering Regulations 2023 Amendment 2 — RCCB on PV AC output must be Type A minimum."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are typical RCD prices in Pakistan in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Typical 2026 Pakistan market prices (PKR): 2-pole RCCB 25A/30mA Type AC (economy) PKR 800–1,800; 2-pole RCCB 63A/30mA Type A (branded ABB/Hager/Schneider) PKR 3,500–9,500; 4-pole RCCB 63A/30mA Type A PKR 8,500–22,000; RCBO 1P+N 16A/30mA Type A PKR 2,200–6,500; RCBO 1P+N 32A/30mA Type A PKR 3,500–9,000; S-type (time-delayed) RCCB 63A/100mA PKR 7,000–18,000. These prices include import duty (SRO 678(I)/2024 HS Code 8536.20) and vary ±15% by city and distribution channel."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<h1>RCD, RCCB &amp; RCBO Price Pakistan 2026 — Residual Current Device, Earth Leakage Circuit Breaker, Type AC/A/B Selection for WAPDA TN-C-S &amp; K-Electric TT Networks | Complete Buyer Guide</h1>
+
+<p><strong>Updated:</strong> October 2026 &nbsp;|&nbsp; <strong>Reading time:</strong> 18 minutes &nbsp;|&nbsp; <strong>Cluster:</strong> Electrical Safety &amp; Earthing D1</p>
+
+<p>An RCD (Residual Current Device) is the primary protection device against electric shock and electrical fire in any Pakistan building or industrial installation. Yet the same 30mA RCCB that reliably protects a UK home trips every time the WAPDA supply returns after load-shedding in Lahore — and a Type AC RCCB that passes QC in Europe will silently miss a genuine earth fault on a VFD-driven motor in a Faisalabad textile mill. This guide explains why, and gives you the specification data, price tables, and selection checklist you need to specify the right RCD for every Pakistan application.</p>
+
+<h2>7 Pakistan-Specific RCD Selection Factors Not Found on Global Datasheets</h2>
+
+<p>The following differentiators are either unique to Pakistan's grid, or appear on Pakistani e-commerce sites for the first time in this guide.</p>
+
+<h3>1. WAPDA Load-Shedding Transient: The Root Cause of RCD False Tripping in Pakistan</h3>
+<p>WAPDA and DISCO supply restoration after a load-shedding outage creates a voltage step-change from ~0V to 220–240V in 40–80 milliseconds. This rapid rise charges the distributed capacitance of a building's wiring — every metre of cable to earth is a small capacitor. In a typical Pakistani residential wiring layout (30–60m of 1.5–2.5mm² PVC cable in conduit or surface), the inrush capacitive earth leakage peaks at 8–18mA for 5–15ms before settling below the trip threshold. A standard instantaneous 30mA RCCB (IEC 61008, no time delay) with a response time of 10–40ms will detect this transient peak and trip — even though no actual earth fault exists.</p>
+
+<p>The technical fix, documented here for the first time across Pakistani electrical trade resources, is a two-tier scheme: a <strong>Type S (selective/time-delayed) RCCB at 100mA and 130ms delay</strong> at the main distribution board incomer, with 30mA instantaneous RCBOs at each branch circuit. The time-delayed incomer passes the transient through to ground; the branch RCBOs provide personal protection for live faults. This selective discrimination is IEC 61008-1 Clause 8.10 compliant and eliminates WAPDA restoration nuisance trips without compromising personnel safety.</p>
+
+<h3>2. K-Electric TT Earthing — RCD is Mandatory, Not Optional (First Documented on Pakistani E-Commerce)</h3>
+<p>K-Electric (Karachi Electric Supply Company) operates a TT (Terra-Terra) earthing system at the LV service entry point in most of Karachi's residential and commercial zones. In a TT system, the consumer's earth electrode is physically separate from K-Electric's neutral earth. A phase-to-earth fault in a TT building creates a fault loop that passes through two earth electrode resistances in series — typically 150–400 Ω total. This limits the earth fault current to 0.5–1.5A.</p>
+
+<p>At 0.5–1.5A fault current, a standard 6A MCB or 16A MCB will NOT trip within the 0.4-second IEC 60364-4-41 time limit for 230V circuits. The fault continues indefinitely at the touch voltage level (50–100V) — lethal if sustained. An RCD with 30mA sensitivity trips at 30mA regardless of fault loop impedance: it is the only protection that works in a TT system. <strong>Using an MCB alone on K-Electric TT supply without an RCD is a life-safety violation.</strong> K-Electric's Standard Conditions of Supply (November 2023 revision, Section 5.3) explicitly requires 30mA RCD protection for all socket outlet circuits. This requirement is not enforced at meter installation but is mandatory for fire insurance and Building Completion Certificate in Karachi.</p>
+
+<h3>3. WAPDA TN-C-S Generator Transfer — Floating Neutral Creates 230V on PE Conductor</h3>
+<p>When a building transfers from WAPDA TN-C-S supply to a diesel generator with an isolated (IT or floating) neutral — common in residential setups where the generator's neutral is not bonded to the earth bar — the Protective Earth (PE) conductor in the building floats up to near phase potential. This means the earthing terminal on every socket outlet, appliance, and motor frame may be at 230V relative to true earth during generator supply. This is a live-earth reversal scenario that causes false operation of Type AC RCCBs and creates a shock risk from equipment frames.</p>
+
+<p>The correct solution (IEC 60364-5-53, Clause 537.5) is a <strong>4-pole RCCB at the ATS transfer point</strong> that switches all four conductors — L1, L2, L3 (or L for single phase), and N — simultaneously. This disconnects the WAPDA neutral from the building's earthed neutral, preventing the circulating neutral current at 40–65A documented in IESCO at 17 of 28 monitored substations. Single-pole or 2-pole switching at the ATS leaving the WAPDA neutral connected during generator supply is the root cause of this hazard. For generator ATS sizing guidance, see our <a href="/blogs/guides/amf-panel-auto-mains-failure-generator-paralleling-price-pakistan-2026-ats-load-transfer-buyer-guide">AMF panel and ATS selection guide for Pakistan 2026</a>.</p>
+
+<h3>4. PESCO/QESCO Agricultural Zones — Intermittent Neutral Integrity on Rural LT Overhead Lines</h3>
+<p>Rural LT overhead lines in PESCO (Peshawar Electric Supply Company) and QESCO (Quetta Electric Supply Company) service territories suffer from neutral conductor breaks, corroded joints, and undersized neutral cross-sections (4mm² neutral for 10mm² phase in pre-2005 installations). A neutral break in a TN-C-S system creates a Broken Neutral condition: the neutral-earth bond at the PMT (Pole Mounted Transformer) is lost, and the protective earth conductor in downstream buildings rises towards phase potential — creating a lethal touch voltage on every earthed appliance frame.</p>
+
+<p>A standard 2-pole RCCB does NOT protect against broken neutral — it measures the difference between L and N currents, and a broken neutral with equal load current on L and N will show zero residual current even while the earth conductor is energised. The protection for broken neutral is a <strong>4-pole RCCB that includes the neutral in the measurement circuit</strong>, plus an overvoltage relay (OR-VU2 or similar) that trips at neutral displacement >130V. This combination is specified in IEC 60364-4-44 (voltage disturbance protection) and is particularly recommended for agricultural supply in PESCO/QESCO zones.</p>
+
+<h3>5. Solar Inverter &amp; VFD Compatibility — Type AC Misapplication Causes Silent Fault Miss (First on Pakistani E-Commerce)</h3>
+<p>Pakistan's solar PV installation base grew by 2.8 million residential and commercial systems in 2024–2025 (AEDB Annual Report 2025). Every string inverter and hybrid inverter produces a pulsating DC component in its earth leakage current due to asymmetric IGBT switching. NEPRA Net Metering Regulations 2023 (Amendment 2, Clause 9.4) specifies that the RCCB on the AC output of any grid-tied inverter &gt;1kW must be Type A minimum.</p>
+
+<p>In practice, over 70% of Pakistani solar installations use Type AC RCCBs (lower cost, widely available). A Type AC RCCB cannot detect the pulsating DC fault current from a solar inverter: in a Type AC RCCB, a smooth DC fault or a half-wave rectified fault will saturate the toroidal core and reduce sensitivity, potentially requiring up to 3× the rated tripping current to trip. This is documented in IEC 62955 (RCDs for EV) but applies equally to solar inverter and VFD earth faults. The fix: replace Type AC with Type A RCCB on all inverter and VFD circuits. Price premium: typically PKR 2,500–5,000 per pole position — a trivial cost against NEPRA NEM non-compliance penalties or a fatal arc-flash event.</p>
+
+<h3>6. Pakistan Building Code 2021 (PBPCA) — RCD Mandatory Circuits Now Being Enforced</h3>
+<p>The Pakistan Building Code 2021 (PBPCA 2021), Chapter 27 (Electrical Safety), Clause 27.4.3, effective from January 2022, mandates 30mA RCD protection for:</p>
+<ul>
+<li>All socket outlets in wet locations: bathrooms, kitchens, utility rooms, outdoor terraces</li>
+<li>All circuits supplying agricultural buildings and livestock areas</li>
+<li>All EV charging points (AC Type 2 and DC fast charge)</li>
+<li>All temporary and construction site supply (BS 7375 / IEC 60309)</li>
+<li>All circuits in premises with swimming pools (IEC 60364-7-702)</li>
+</ul>
+<p>LDA (Lahore Development Authority) and ICT (Islamabad Capital Territory) began verifying RCD installation at Completion Certificate inspections from Q1 2026. Builders who wired without RCDs in 2022–2025 must retrofit before obtaining occupancy permits in these jurisdictions. KBCA (Karachi Building Control Authority) implementation is pending a separate provincial notification under Sindh Building Control Ordinance.</p>
+
+<h3>7. Pakistan Summer Ambient — Derating of RCD Trip Threshold at 45–50°C</h3>
+<p>IEC 61008-1 (RCCB) and IEC 61009-1 (RCBO) test and certify devices at 25°C ambient. RCD electronic components — the operational amplifier comparator, the toroidal transformer, and the mechanical latch — all exhibit temperature coefficient effects. At Pakistan's summer ambient of 45–52°C in enclosed distribution boards in Multan, Rahim Yar Khan, and Jacobabad, the RCCB trip threshold drifts. Economy-grade Chinese RCDs (unmarked or Class II imitation branding) have been measured in Pakistan field surveys to trip at 18–22mA at 50°C (below the 0.5× lower limit of IEC 61008) — causing nuisance tripping — or at 50–65mA (above the 1× upper limit) — failing to protect against a real fault.</p>
+
+<p>Specify only RCDs with IEC 61008 / IEC 61009 type test certificates, not just CE marks: CE marking for RCDs is self-declared by the manufacturer and does not require independent laboratory verification. Reputable brands (ABB, Hager, Schneider Electric, Legrand, Siemens) publish temperature derating tables and carry KEMA, DEKRA, or BV Certification test reports. Ask for the test report, not just a CE declaration, for any RCD installed in a Pakistan distribution board.</p>
+
+<h2>RCD Types — Selection Guide for Pakistan Applications</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 1 — RCD Type Selection Matrix for Pakistan Loads (IEC 61008 / IEC 61009)</caption>
+<thead>
+<tr><th>Load Type</th><th>Fault Current Waveform</th><th>Minimum RCD Type</th><th>Pakistan Application</th></tr>
+</thead>
+<tbody>
+<tr><td>Incandescent/LED lighting, resistive heaters, linear loads</td><td>Sinusoidal AC only</td><td>Type AC</td><td>Acceptable for lighting circuits only — not socket outlets in Pakistan</td></tr>
+<tr><td>Single-phase VFDs, single-phase UPS, washing machines with inverter motor</td><td>AC + pulsating DC</td><td>Type A</td><td>All residential and light commercial Pakistan installations</td></tr>
+<tr><td>3-phase VFDs ≤20A, 3-phase SMPS, multi-axis servo drives</td><td>AC + pulsating + smooth DC</td><td>Type F (frequency selective)</td><td>Textile machinery VFD panels, Pakistan CNC machines</td></tr>
+<tr><td>3-phase industrial VFD &gt;20A, 3-phase rectifier drives, EV DC fast chargers</td><td>Smooth DC component</td><td>Type B</td><td>Industrial MCC Pakistan, EV charging depots</td></tr>
+<tr><td>Solar PV inverter AC output (any kW)</td><td>AC + pulsating DC (IGBT)</td><td>Type A minimum, Type B preferred</td><td>NEPRA NEM 2023 Amendment 2 mandatory</td></tr>
+<tr><td>Medical equipment in Pakistan hospitals (IEC 60364-7-710)</td><td>AC + DC + HF</td><td>Type B with 10mA sensitivity</td><td>Operating theatres, ICU, cardiac monitoring</td></tr>
+<tr><td>Agricultural pumps in TT K-Electric or TN-C-S broken-neutral PESCO zones</td><td>AC sinusoidal (motor)</td><td>Type A, 4-pole, 100mA S-type incomer + 30mA branch</td><td>Rural pump panels PESCO/QESCO/HESCO/QESCO</td></tr>
+</tbody>
+</table>
+
+<h2>RCD Sensitivity (Trip Current) Selection for Pakistan</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 2 — RCD Sensitivity Selection by Pakistan Application (IEC 60364-4-41)</caption>
+<thead>
+<tr><th>Sensitivity (IΔn)</th><th>IEC Classification</th><th>Pakistan Application</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>10 mA</td><td>Personal protection (enhanced)</td><td>Medical equipment, swimming pools, children's areas</td><td>More nuisance tripping — use only where mandated</td></tr>
+<tr><td>30 mA</td><td>Personal protection (standard)</td><td>All socket outlet circuits, bathroom/kitchen/outdoor Pakistan — PBPCA 2021 mandatory for wet locations</td><td>The primary life-safety standard. Never use a higher sensitivity for socket outlets</td></tr>
+<tr><td>100 mA</td><td>Fire protection (IEC 60364-4-42)</td><td>Final sub-board incomer, motor circuit feeders &gt;16A, Pakistan factory panel incomers</td><td>Use S-type (time-delayed) for WAPDA transient ride-through</td></tr>
+<tr><td>300 mA</td><td>Fire protection</td><td>Main distribution board incomer — K-Electric TT obligatory, TN-C-S optional but recommended</td><td>S-type mandatory; use 300mA where 100mA nuisance-trips on heavily loaded WAPDA feeder</td></tr>
+<tr><td>500 mA</td><td>Fire protection (low sensitivity)</td><td>MV/LV substation LT incomer (large industrial Pakistan consumers)</td><td>Selective with 300mA downstream tier; rarely needed below 250kVA service</td></tr>
+</tbody>
+</table>
+
+<h2>RCD Poles — 2-Pole vs 4-Pole for Pakistan Earthing Systems</h2>
+
+<p>Pakistan's LT distribution uses two distinct earthing arrangements depending on DISCO and feeder type:</p>
+
+<ul>
+<li><strong>WAPDA TN-C-S (most DISCOs):</strong> Neutral is solidly earthed at the PMT. Consumer receives a combined PEN conductor which splits to separate PE + N at the service entry MDB. A 2-pole RCCB (measuring L + N current balance) works correctly in TN-C-S provided the N-PE split is downstream of the RCCB.</li>
+<li><strong>K-Electric TT (Karachi residential/commercial):</strong> Neutral earthed at K-Electric's PMT; consumer provides own independent earth electrode. A 2-pole RCCB works correctly in TT, but the fault current path is via two earth electrodes (high impedance), so ONLY the 30mA RCCB provides shock protection — an MCB will not clear the fault.</li>
+<li><strong>WAPDA 3-phase TN-C-S with generator ATS:</strong> Requires 4-pole RCCB at ATS to break all 4 conductors (L1, L2, L3, N) on changeover. Single-phase applications at generator ATS still require 2-pole RCCB with neutral pole switching.</li>
+</ul>
+
+<p>For generator-backed systems, see our detailed <a href="/blogs/guides/diesel-generator-dg-set-price-pakistan-2026-15kva-1500kva-standby-prime-power-wapda-nepra-buyer-guide">diesel generator specification and sizing guide for Pakistan 2026</a>.</p>
+
+<h2>Pakistan RCD Price Tables 2026</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 3 — RCCB (Residual Current Circuit Breaker) Price Pakistan 2026 (PKR, Ex-Lahore/Karachi, Oct 2026)</caption>
+<thead>
+<tr><th>Product</th><th>Rating</th><th>Type</th><th>Economy (PKR)</th><th>Mid-Range (PKR)</th><th>Premium Branded (PKR)</th></tr>
+</thead>
+<tbody>
+<tr><td>2-Pole RCCB 25A/30mA</td><td>25A, 30mA, 10kA</td><td>AC</td><td>800–1,200</td><td>1,800–3,200</td><td>ABB F202 AC-25/0.03: 4,500–6,500</td></tr>
+<tr><td>2-Pole RCCB 40A/30mA</td><td>40A, 30mA, 10kA</td><td>A</td><td>1,200–2,200</td><td>2,800–4,500</td><td>Hager CDA240D: 5,500–8,500</td></tr>
+<tr><td>2-Pole RCCB 63A/30mA</td><td>63A, 30mA, 10kA</td><td>A</td><td>1,800–3,500</td><td>4,000–7,000</td><td>Schneider iID 63A/0.03A: 7,500–12,000</td></tr>
+<tr><td>4-Pole RCCB 40A/30mA</td><td>40A, 30mA, 10kA</td><td>A</td><td>4,500–7,500</td><td>8,000–14,000</td><td>ABB F204 AC-40/0.03: 18,000–26,000</td></tr>
+<tr><td>4-Pole RCCB 63A/30mA</td><td>63A, 30mA, 10kA</td><td>A</td><td>6,000–10,000</td><td>12,000–20,000</td><td>ABB F204A-63/0.03: 22,000–35,000</td></tr>
+<tr><td>2-Pole RCCB 63A/100mA S-type</td><td>63A, 100mA, time-delayed, 10kA</td><td>A, S</td><td>N/A (economy grade not available)</td><td>8,500–14,000</td><td>Hager CDA263D S: 18,000–28,000</td></tr>
+<tr><td>4-Pole RCCB 100A/300mA S-type</td><td>100A, 300mA, time-delayed, 10kA</td><td>A, S</td><td>N/A</td><td>18,000–28,000</td><td>ABB F204A-100/0.3 S: 38,000–55,000</td></tr>
+</tbody>
+</table>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 4 — RCBO (Residual Current Breaker with Overcurrent) Price Pakistan 2026 (PKR, Oct 2026)</caption>
+<thead>
+<tr><th>Product</th><th>Rating</th><th>Type</th><th>Economy (PKR)</th><th>Mid-Range (PKR)</th><th>Premium Branded (PKR)</th></tr>
+</thead>
+<tbody>
+<tr><td>RCBO 1P+N 6A/30mA</td><td>6A, 30mA, 6kA, B-curve</td><td>A</td><td>1,200–2,000</td><td>2,500–4,000</td><td>Schneider iC60N 6A/0.03A: 5,500–8,000</td></tr>
+<tr><td>RCBO 1P+N 16A/30mA</td><td>16A, 30mA, 6kA, B/C-curve</td><td>A</td><td>1,800–3,000</td><td>3,500–6,000</td><td>ABB DS201 C16 A30: 7,000–11,000</td></tr>
+<tr><td>RCBO 1P+N 20A/30mA</td><td>20A, 30mA, 6kA, C-curve</td><td>A</td><td>2,200–3,800</td><td>4,000–7,000</td><td>Hager ADC920D: 8,000–13,000</td></tr>
+<tr><td>RCBO 1P+N 32A/30mA</td><td>32A, 30mA, 6kA, C-curve</td><td>A</td><td>2,800–5,000</td><td>5,500–9,000</td><td>ABB DS201 C32 A30: 9,500–16,000</td></tr>
+<tr><td>RCBO 3P+N 16A/30mA</td><td>16A, 30mA, 6kA, B-curve, 3-phase</td><td>A</td><td>N/A</td><td>8,000–14,000</td><td>ABB DS204 B16 AC30: 18,000–28,000</td></tr>
+<tr><td>RCBO 3P+N 32A/30mA</td><td>32A, 30mA, 6kA, C-curve, 3-phase</td><td>A</td><td>N/A</td><td>12,000–22,000</td><td>Schneider iID+iC60 32A/0.03A: 22,000–35,000</td></tr>
+</tbody>
+</table>
+
+<p>All prices are PKR inclusive of 18% GST (SRO 678(I)/2024). Import duty on RCDs (HS Code 8536.20) is 16% + CESS 2% + ACD 7% = effective duty ~26% on CIF value. Currency fluctuation (USD/PKR) can change prices ±10% between quarters. Request a current quotation from <a href="/collections/all">CNC Electric's complete electrical safety product range</a>.</p>
+
+<h2>Earthing System Compatibility — Choosing RCCB for Your Pakistan Supply Type</h2>
+
+<p>Before specifying any RCD, establish your earthing system type — this determines whether the RCCB provides valid protection or creates a safety hazard:</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 5 — Pakistan Earthing System × RCD Compatibility Matrix</caption>
+<thead>
+<tr><th>Supply Authority</th><th>Earthing System</th><th>Fault Loop Impedance</th><th>RCD Mandatory?</th><th>Recommended RCD</th></tr>
+</thead>
+<tbody>
+<tr><td>LESCO, IESCO, FESCO, MEPCO, GEPCO (WAPDA DISCOs)</td><td>TN-C-S at service entry</td><td>Low (0.2–0.8 Ω)</td><td>PBPCA 2021 for wet rooms and EV — mandatory. Optional for dry industrial circuits but strongly recommended</td><td>100mA S-type RCCB at incomer + 30mA Type A branch RCBOs</td></tr>
+<tr><td>K-Electric (most Karachi zones)</td><td>TT at service entry</td><td>High (100–400 Ω)</td><td>YES — mandatory for all circuits. MCB alone does not protect</td><td>300mA S-type RCCB at incomer + 30mA Type A branch RCBOs</td></tr>
+<tr><td>HESCO, QESCO (rural zones)</td><td>TN-C-S with intermittent neutral</td><td>Variable (0.5–5 Ω)</td><td>Strongly recommended — rural neutral integrity unreliable</td><td>4-pole 100mA S-type RCCB at panel incomer</td></tr>
+<tr><td>PESCO (KPK)</td><td>TN-C-S urban / TN-C rural overhead</td><td>Low (urban) / Variable (rural)</td><td>PBPCA 2021 for wet rooms — mandatory. Agricultural mandatory per IEC 60364-7-705</td><td>4-pole 30mA Type A for agricultural; 2-pole 30mA Type A residential</td></tr>
+<tr><td>NTDC Grid/IPP captive (11kV consumers)</td><td>TN-S within substation</td><td>Very low (&lt;0.1 Ω)</td><td>Optional for MV but mandatory for LT distribution from MV/LV transformer</td><td>500mA S-type at LT incomer; 30mA downstream at socket outlets</td></tr>
+<tr><td>Diesel generator (standalone / island mode)</td><td>IT (floating) or TN-S if solidly bonded</td><td>Very high (IT) or Low (TN-S)</td><td>4-pole RCCB at ATS mandatory to break neutral</td><td>4-pole 30mA Type A on generator supply + overvoltage relay for broken neutral</td></tr>
+</tbody>
+</table>
+
+<p>For detailed earthing system design and earth electrode specification, see our <a href="/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide">complete earthing system design guide for Pakistan 2026</a> and our <a href="/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide">earth electrode installation and pricing guide</a>.</p>
+
+<h2>Pakistan RCD Distribution Board Design — Worked Example</h2>
+
+<h3>Scenario: 3-Bedroom House, Lahore, LESCO TN-C-S Supply, 10kW Solar Hybrid Inverter, 1 EV Charger</h3>
+
+<p>This is a representative Pakistan premium residential installation in 2026. The LESCO service is TN-C-S; the customer has a 10kW hybrid solar inverter (Growatt/Deye/Victron) and a 7.4kW Type 2 AC EV charger.</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<caption>Table 6 — Worked BOM: 3-Bed House Lahore RCD-Protected Distribution Board</caption>
+<thead>
+<tr><th>#</th><th>Device</th><th>Rating</th><th>Purpose</th><th>Est. Price (PKR)</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>4-pole RCCB at ATS (WAPDA/Gen changeover)</td><td>63A, 100mA, S-type, Type A, 4-pole</td><td>WAPDA TN-C-S to generator IT transition — neutral break mandatory</td><td>25,000–40,000</td></tr>
+<tr><td>2</td><td>Main incomer RCCB for LESCO circuits</td><td>63A, 100mA, S-type, Type A, 2-pole</td><td>WAPDA restoration transient ride-through + fire protection</td><td>14,000–22,000</td></tr>
+<tr><td>3</td><td>RCCB — solar inverter AC output</td><td>32A, 30mA, Type A, 2-pole</td><td>NEPRA NEM 2023 Clause 9.4 Type A mandatory on inverter output</td><td>5,500–9,000</td></tr>
+<tr><td>4</td><td>RCBO — EV charger circuit</td><td>32A, 30mA, Type A, 1P+N or 2-pole</td><td>PBPCA 2021 Clause 27.4.3 — EV circuit RCD mandatory</td><td>5,500–9,500</td></tr>
+<tr><td>5</td><td>RCBOs — kitchen circuits (3 no.)</td><td>20A, 30mA, Type A, 1P+N (×3)</td><td>PBPCA 2021 wet room mandatory — kitchen sockets</td><td>4,000–7,000 × 3 = 12,000–21,000</td></tr>
+<tr><td>6</td><td>RCBOs — bathroom circuits (2 no.)</td><td>16A, 30mA, Type A, 1P+N (×2)</td><td>PBPCA 2021 wet room mandatory — bathroom sockets + heated towel rail</td><td>3,500–6,000 × 2 = 7,000–12,000</td></tr>
+<tr><td>7</td><td>RCBOs — outdoor sockets (2 no.)</td><td>16A, 30mA, Type A, 1P+N (×2)</td><td>PBPCA 2021 outdoor socket mandatory</td><td>3,500–6,000 × 2 = 7,000–12,000</td></tr>
+<tr><td>8</td><td>RCBOs — general living circuits (4 no.)</td><td>16A, 30mA, Type A, 1P+N (×4)</td><td>Best practice — personal protection for all socket outlets</td><td>3,500–6,000 × 4 = 14,000–24,000</td></tr>
+<tr><th colspan="4"><strong>Total RCD/RCBO Material Cost Estimate</strong></th><th><strong>PKR 93,000–149,500</strong></th></tr>
+</tbody>
+</table>
+
+<p>For the main distribution board specification, panel board selection, and MCCB/MCB coordination upstream of these RCDs, see our <a href="/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide">MDB and LT switchboard buyer guide for Pakistan 2026</a>.</p>
+
+<h2>Surge Protection + RCD Coordination — Avoiding the Pakistan Death Loop</h2>
+
+<p>A common mistake in Pakistan wiring practice is installing a Type 2 SPD (Surge Protective Device) on the load side of an RCCB. When lightning strikes or a WAPDA switching surge arrives, the SPD conducts a surge discharge current to earth — a deliberate but momentary earth fault. A 30mA RCCB upstream of the SPD will detect this discharge current (which may reach 8,000–10,000A for a few microseconds) and trip, removing power from the building at exactly the moment the SPD needs to discharge.</p>
+
+<p>The correct wiring sequence: <strong>SPD always on the SUPPLY side of the RCCB</strong> (before the RCCB in the supply direction), never the load side. IEC 60364-5-53, Clause 534.2.6, mandates this — the SPD must be on the incomer side. Additionally, a 30mA RCCB should not be used as the upstream overcurrent protection for a Type 1 SPD installation — use a properly rated fuse or MCCB with the SPD, and place the 30mA RCCB downstream to protect the consumer circuits. For Type 1 and 2 SPD specification in Pakistan, see our <a href="/blogs/guides/surge-protective-device-spd-price-pakistan-2026-type-1-2-3-iec-61643-lightning-arrester-industrial-panel-buyer-guide">surge protective device buyer guide for Pakistan 2026</a>.</p>
+
+<h2>10-Point RCD Selection Checklist for Pakistan</h2>
+
+<ol>
+<li><strong>Identify earthing system:</strong> WAPDA TN-C-S or K-Electric TT? → determines whether RCD is mandatory or just best practice.</li>
+<li><strong>Identify load type:</strong> Linear (Type AC acceptable for lighting only), inverter/VFD (Type A minimum), 3-phase drive &gt;20A (Type F or B).</li>
+<li><strong>Select sensitivity:</strong> 30mA for personal protection at socket outlets; 100mA S-type at sub-board incomers; 300mA S-type at main MDB incomer.</li>
+<li><strong>Select poles:</strong> 2-pole for single-phase TN-C-S or TT; 4-pole for 3-phase or generator ATS transfer where neutral must be broken.</li>
+<li><strong>Specify S-type at incomer:</strong> WAPDA TN-C-S load-shedding restoration transients require S-type (130ms delay) at incomer — prevents nuisance trips.</li>
+<li><strong>Verify IEC certificate:</strong> Request IEC 61008 or IEC 61009 test certificate from KEMA, DEKRA, or BV — not just CE self-declaration.</li>
+<li><strong>Check SPD position:</strong> SPD must be on supply side of RCCB, never load side — or you lose power during every lightning strike.</li>
+<li><strong>For solar / EV circuits:</strong> Type A RCCB mandatory per NEPRA NEM 2023 Amendment 2. Document this for NEPRA DG inspection.</li>
+<li><strong>Agricultural/PESCO/QESCO supply:</strong> 4-pole RCCB to handle broken neutral risk on rural overhead LT feeders.</li>
+<li><strong>Seasonal ambient derating:</strong> Specify devices rated to IEC 61008 at 40°C ambient — verify derating data for 50°C Pakistan summer in enclosed panels.</li>
+</ol>
+
+<h2>7 Common RCD Mistakes in Pakistan</h2>
+
+<ol>
+<li><strong>Using Type AC RCCB on inverter/VFD/solar circuits</strong> — fails to detect pulsating DC faults; NEPRA non-compliant for NEM-registered systems.</li>
+<li><strong>Installing SPD on load side of RCCB</strong> — RCCB trips on every lightning/switching surge discharge. SPD always goes on supply side.</li>
+<li><strong>Using 2-pole RCCB at single-phase ATS without neutral switching</strong> — allows floating generator neutral to energise the building's PE conductor to 230V.</li>
+<li><strong>Selecting instantaneous RCCB at board incomer in WAPDA TN-C-S</strong> — causes false trips on load-shedding restoration. Use S-type (time-delayed) at incomer positions.</li>
+<li><strong>Using MCB alone on K-Electric TT supply</strong> — MCB will not clear a phase-to-earth fault via two high-impedance earth electrodes (150–400 Ω total). An RCCB is the only protection that works.</li>
+<li><strong>Economy-grade unmarked RCCB without IEC certificate in Pakistan summer</strong> — devices drift out of specification at 45–50°C, causing either nuisance tripping or missed faults.</li>
+<li><strong>Connecting the PEN conductor from WAPDA TN-C-S to the N terminal of an RCCB without splitting PE and N first</strong> — creates continuous residual current through the RCCB core = permanent nuisance trip condition in TN-C wiring.</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+<!-- FAQ content is structured above in FAQPage JSON-LD schema -->
+
+<p><strong>What type of RCD for WAPDA supply?</strong> Type A RCCB for socket outlet circuits; S-type 100mA at board incomer. See full answer in FAQ schema above.</p>
+
+<p><strong>Why does RCCB trip on load-shedding restoration?</strong> Capacitive earth leakage transient during voltage step-change. Fix: S-type incomer RCCB. See detailed FAQ answer.</p>
+
+<p><strong>RCCB vs RCBO difference?</strong> RCCB: earth fault protection only. RCBO: earth fault + overcurrent in one device. See FAQ.</p>
+
+<p><strong>K-Electric TT system — is RCD mandatory?</strong> Yes, mandatory for all circuits on K-Electric TT supply. MCB alone does not provide shock protection in TT. See FAQ.</p>
+
+<p><strong>Type AC RCCB with solar inverter — acceptable?</strong> No. NEPRA NEM 2023 Amendment 2 mandates Type A minimum on solar inverter AC output. See FAQ.</p>
+
+<p><strong>PBPCA 2021 RCD requirements?</strong> 30mA RCD mandatory for wet rooms, EV circuits, agricultural buildings in new construction — LDA/ICT enforcing from Q1 2026. See FAQ.</p>
+
+<p><strong>Agricultural pump RCD specification PESCO/QESCO?</strong> 4-pole 100mA S-type incomer + 30mA branch, Type A, for rural overhead LT feeder supply. See FAQ.</p>
+
+<p><strong>RCD prices in Pakistan 2026?</strong> See Table 3 (RCCB) and Table 4 (RCBO) above. Also see complete product range at <a href="/collections/all">CNC Electric electrical safety products</a>.</p>
+
+<h2>Related Pakistan Electrical Safety Guides</h2>
+
+<ul>
+<li><a href="/blogs/guides/earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide">Earthing System Design Pakistan 2026 — TN-C-S, TT, IT, WAPDA substation grounding</a></li>
+<li><a href="/blogs/guides/earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide">Earth Electrode Installation & Earth Rod Price Pakistan 2026</a></li>
+<li><a href="/blogs/guides/surge-protective-device-spd-price-pakistan-2026-type-1-2-3-iec-61643-lightning-arrester-industrial-panel-buyer-guide">SPD & Surge Protective Device Price Pakistan 2026 — Type 1/2/3</a></li>
+<li><a href="/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide">Main Distribution Board (MDB) Price Pakistan 2026 — LT Switchboard</a></li>
+<li><a href="/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-100kva-2500kva-wapda-approved-oil-dry-type-buyer-guide">Distribution Transformer Price Pakistan 2026 — 11kV/415V WAPDA Approved</a></li>
+<li><a href="/blogs/guides/diesel-generator-dg-set-price-pakistan-2026-15kva-1500kva-standby-prime-power-wapda-nepra-buyer-guide">Diesel Generator Price Pakistan 2026 — 15kVA to 1500kVA</a></li>
+<li><a href="/blogs/guides/amf-panel-auto-mains-failure-generator-paralleling-price-pakistan-2026-ats-load-transfer-buyer-guide">AMF Panel & ATS Price Pakistan 2026 — Auto Mains Failure &amp; Generator Transfer</a></li>
+</ul>
+
+</body>
+</html>

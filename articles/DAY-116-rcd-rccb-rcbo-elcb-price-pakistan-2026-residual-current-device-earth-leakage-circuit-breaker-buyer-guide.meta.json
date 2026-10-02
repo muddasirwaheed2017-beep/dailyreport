@@ -1,0 +1,27 @@
+{
+  "day": 116,
+  "date": "2026-10-02",
+  "handle": "rcd-rccb-rcbo-elcb-price-pakistan-2026-residual-current-device-earth-leakage-circuit-breaker-buyer-guide",
+  "title": "RCD, RCCB & RCBO Price Pakistan 2026 — Residual Current Device, Earth Leakage Circuit Breaker, Type AC/A/B Selection for WAPDA TN-C-S & K-Electric TT Networks | Complete Buyer Guide",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "summary_html": "Complete 2026 buyer guide for RCDs, RCCBs, RCBOs, and ELCBs in Pakistan. Covers Type AC/A/B/F selection, 30mA–500mA ratings, WAPDA TN-C-S vs K-Electric TT earthing compatibility, load-shedding false-trip prevention, Pakistan Building Code 2021 Chapter 27 mandatory RCD circuits, agricultural pump protection in PESCO/QESCO rural zones, NEPRA NEM 2023 solar inverter Type-A requirement, and 4 PKR price tables updated October 2026.",
+  "summary_html_length": 478,
+  "tags": ["RCD Pakistan", "RCCB price Pakistan", "RCBO Pakistan", "ELCB Pakistan", "residual current device", "earth leakage circuit breaker", "Type A RCCB Pakistan", "WAPDA earthing", "K-Electric TT earthing", "RCD 30mA Pakistan 2026", "Pakistan Building Code 2021 RCD"],
+  "word_count_estimate": 3400,
+  "pakistan_differentiators": 7,
+  "price_tables": 4,
+  "faq_schema": "8-question FAQPage JSON-LD",
+  "internal_links": [
+    "earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "earthing-electrode-installation-price-pakistan-2026-earth-rod-building-earthing-design-buyer-guide",
+    "surge-protective-device-spd-price-pakistan-2026-type-1-2-3-iec-61643-lightning-arrester-industrial-panel-buyer-guide",
+    "main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide",
+    "distribution-transformer-price-pakistan-2026-11kv-415v-100kva-2500kva-wapda-approved-oil-dry-type-buyer-guide",
+    "diesel-generator-dg-set-price-pakistan-2026-15kva-1500kva-standby-prime-power-wapda-nepra-buyer-guide",
+    "amf-panel-auto-mains-failure-generator-paralleling-price-pakistan-2026-ats-load-transfer-buyer-guide"
+  ],
+  "cluster": "Electrical Safety & Earthing D1",
+  "shopify_push": "PENDING",
+  "shopify_push_notes": "Cloud IP block — article pre-committed to git via v6 preflight"
+}
