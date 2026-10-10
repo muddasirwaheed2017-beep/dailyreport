@@ -1,0 +1,21 @@
+{
+  "day": 124,
+  "date": "2026-10-10",
+  "blog_id": "89971589186",
+  "blog_handle": "guides",
+  "handle": "protection-coordination-study-pakistan-2026-tcc-curves-discrimination-selectivity-type-2-iec-60947-2-lesco-k-electric-fault-current-grading-buyer-guide",
+  "title": "Protection Coordination Study Pakistan 2026 — TCC Curves, IEC 60947-2 Type 2 Selectivity, LESCO/K-Electric Fault Current Grading & Protective Relay Price Guide",
+  "summary_html": "<p>Complete protection coordination study guide for Pakistan 2026. Covers TCC curve construction, IEC 60947-2 Type 1 &amp; Type 2 selectivity, fault current grading for LESCO/K-Electric 11 kV/415 V networks, ZSI, NEPRA Grid Code 2023 compliance, and PKR price table for protective relays, trip units, and injection test sets.</p>",
+  "tags": ["protection coordination", "TCC curves", "IEC 60947-2", "Type 2 selectivity", "fault current", "LESCO", "K-Electric", "IDMT relay", "MCCB", "ZSI", "NEPRA Grid Code", "Pakistan 2026"],
+  "cluster": "Switchgear & Protection Pakistan",
+  "cluster_day": "3/3",
+  "word_count_estimate": 2650,
+  "internal_links": [
+    "/blogs/guides/mcb-price-pakistan-2026-miniature-circuit-breaker-6ka-10ka-type-b-c-d-iec-60898-wapda-solar-pv-buyer-guide",
+    "/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-63a-1600a-iscn-fault-breaking-thermal-magnetic-electronic-trip-buyer-guide",
+    "/blogs/guides/rcd-rccb-rcbo-elcb-price-pakistan-2026-residual-current-device-earth-leakage-circuit-breaker-buyer-guide",
+    "/blogs/guides/surge-protective-device-spd-price-pakistan-2026-type-1-2-3-iec-61643-lightning-arrester-industrial-panel-buyer-guide",
+    "/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide"
+  ],
+  "link_verification_status": "VERIFIED 5/5 valid — no remapping needed"
+}

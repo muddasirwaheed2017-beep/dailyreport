@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Protection Coordination Study Pakistan 2026 — TCC Curves, Discrimination, IEC 60947-2 Type 2 Selectivity, LESCO/K-Electric Fault Current Grading | Complete Buyer Guide</title>
+<meta name="description" content="Complete protection coordination study guide for Pakistan 2026. TCC curves, IEC 60947-2 Type 1 & Type 2 selectivity, fault current grading, LESCO/K-Electric discrimination practice, protective relay & trip unit PKR price table.">
+</head>
+<body>
+
+<h1>Protection Coordination Study Pakistan 2026 — TCC Curves, IEC 60947-2 Type 2 Selectivity, LESCO/K-Electric Fault Current Grading &amp; Protective Relay Price Guide</h1>
+
+<p><strong>Bottom line up front:</strong> A well-executed protection coordination study ensures that only the fuse, MCB, or relay <em>closest</em> to a fault operates — leaving the rest of the system energised. In Pakistan's LESCO and K-Electric networks, where fault levels at LT bus bars range from 10 kA to 50 kA, a missing or incorrect coordination study means nuisance tripping of feeders, transformer damage, and NEPRA compliance failures. This guide covers the full methodology: TCC curve construction, IEC 60947-2 Type 2 selectivity requirements, fault current grading for Pakistani distribution voltages, and a 2026 PKR price table for protective relays, trip units, and overcurrent relay test sets.</p>
+
+<hr>
+
+<h2>1. What Is Protection Coordination?</h2>
+
+<p>Protection coordination (also called <em>protective device selectivity</em> or <em>discrimination</em>) is the deliberate arrangement of protective devices in a power system so that the device nearest the fault operates first, and upstream devices remain closed. The objectives are:</p>
+
+<ul>
+  <li><strong>Fault isolation:</strong> Disconnect the minimum amount of load.</li>
+  <li><strong>Equipment protection:</strong> Prevent transformer, cable, and switchgear damage from thermal and mechanical stress.</li>
+  <li><strong>Continuity of supply:</strong> Critical for hospitals, data centres, and process industries on LESCO/K-Electric tariff.</li>
+  <li><strong>NEPRA compliance:</strong> Grid Code 2023 Section 6.3 requires fault clearance within defined time windows for utility-connected generation and 11 kV feeders.</li>
+</ul>
+
+<p>Pakistan-specific context: LESCO 11 kV feeders typically carry 150–400 A load; prospective short-circuit current at LT panel incomers in industrial zones (Kot Lakhpat, SITE Karachi, Sundar Industrial Estate) can reach 35–50 kA(peak). Without coordination, a bolted fault at a sub-distribution board trips the 11 kV feeder breaker — blacking out hundreds of consumers.</p>
+
+<hr>
+
+<h2>2. Time-Current Characteristic (TCC) Curves — Construction &amp; Interpretation</h2>
+
+<h3>2.1 What Is a TCC Curve?</h3>
+
+<p>A TCC (Time-Current Characteristic) curve plots the <em>operating time</em> of a protective device against the <em>fault current</em> on log-log axes. The x-axis is current (A or multiples of In), the y-axis is time (seconds). Each device has a characteristic band defined by its minimum and maximum operating times.</p>
+
+<h3>2.2 Device Families on the Same Plot</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Device Type</th><th>Standard</th><th>Curve Shape</th><th>Pakistan Application</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>HRC Fuse (BS 88-2)</td><td>IEC 60269</td><td>Pre-arcing + total operating</td><td>LT incomer protection, motor branch (up to 800 A)</td></tr>
+    <tr><td>MCB (Type B/C/D)</td><td>IEC 60898-1</td><td>Thermal + magnetic bands</td><td>Final circuits, solar PV strings, WAPDA service fuses</td></tr>
+    <tr><td>MCCB (TM or ETU)</td><td>IEC 60947-2</td><td>Adjustable Ir, Isd, Ii bands</td><td>LT panel incomers 63 A–1600 A</td></tr>
+    <tr><td>ACB with IDMT relay</td><td>IEC 60947-2 / IEC 60255</td><td>IDMT (Standard Inverse, Very Inverse, Extremely Inverse)</td><td>Main LV incomer, 11 kV feeder protection</td></tr>
+    <tr><td>Numerical relay (IDMT + DT)</td><td>IEC 60255-151</td><td>Multiple configurable curves</td><td>11 kV / 33 kV feeder, transformer HV side</td></tr>
+  </tbody>
+</table>
+
+<h3>2.3 Reading Discrimination Margins on TCC</h3>
+
+<p>For time-based discrimination, a minimum margin of <strong>0.3–0.4 s</strong> is required between adjacent devices at the maximum fault current each device can see. This margin accounts for:</p>
+
+<ul>
+  <li>Relay overtravel time (electromechanical): 0.05 s</li>
+  <li>Circuit breaker opening time: 0.05–0.08 s (3–5 cycles at 50 Hz)</li>
+  <li>CT error and relay tolerance: 0.05–0.10 s</li>
+  <li>Safety margin: 0.10–0.15 s</li>
+</ul>
+
+<p>For numerical relays (e.g., SEL-351, Alstom MiCOM P142), the total opening time of downstream device plus grading margin applies. Many Pakistan utility installations use <strong>Very Inverse (VI) or Extremely Inverse (EI) curves</strong> per IEC 60255-151 because these curves provide better discrimination for high-impedance faults common in overhead distribution networks.</p>
+
+<hr>
+
+<h2>3. IEC 60947-2 Selectivity — Type 1 vs Type 2</h2>
+
+<p>IEC 60947-2 Annex A defines two selectivity levels for LV circuit breakers working in combination (usually an upstream MCCB backing up a downstream MCB):</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Selectivity Type</th><th>Meaning</th><th>Consequence for Downstream MCCB</th><th>Pakistan Recommendation</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Type 1</strong></td>
+      <td>Upstream and downstream devices may both trip (cascade). Downstream device may sustain damage but must remain operational after fault clearance.</td>
+      <td>Downstream MCCB may need inspection after major fault. No guarantee of discrimination at full fault level.</td>
+      <td>Acceptable for non-critical branch circuits (general lighting, small motors). Requires post-fault inspection protocol.</td>
+    </tr>
+    <tr>
+      <td><strong>Type 2</strong> ✅ PREFERRED</td>
+      <td>Only downstream device trips. Upstream device remains closed. Downstream device must not sustain damage — contacts may weld but device remains operational.</td>
+      <td>Downstream MCCB must be tested or certified to remain closed at the declared Ics under the upstream device's let-through energy.</td>
+      <td><strong>Required for:</strong> hospitals, data centres, process industries, LESCO/K-Electric grid-connected premises, solar IPP LT panels (NEPRA NEM 3.0).</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3.1 How to Achieve Type 2 Selectivity in Practice</h3>
+
+<ol>
+  <li><strong>Consult manufacturer discrimination tables.</strong> Every reputable MCCB/MCB brand publishes selectivity tables specifying the maximum fault current at which Type 2 selectivity is achieved for each upstream–downstream pair. Do NOT assume selectivity based on rating alone.</li>
+  <li><strong>Match the let-through energy (I²t).</strong> The upstream device's let-through I²t at fault current must not exceed the downstream device's withstand I²t. Numerical evaluation: I²t(upstream let-through) ≤ I²t(downstream withstand).</li>
+  <li><strong>Use electronic trip units (ETU) with Zone Selective Interlocking (ZSI).</strong> For ACBs and large MCCBs, ZSI communicates instantaneous-zone signals between upstream and downstream devices, enabling the downstream device to trip instantaneously while the upstream device adds a brief delay — achieving full Type 2 discrimination even at maximum fault current without time delay penalty.</li>
+  <li><strong>Apply cascading (back-up protection) rules carefully.</strong> Cascading tables in IEC 60947-2 Annex A allow a lower-rated MCCB to operate behind a higher-rated upstream device. The upstream device limits the let-through current, protecting the downstream device even if it interrupts beyond its Icu. This is common in Pakistan for cost optimisation — e.g., a 160 A MCCB (Icu 36 kA) behind a 630 A MCCB (Icu 50 kA) in a Lahore industrial panel with 40 kA prospective fault current.</li>
+</ol>
+
+<hr>
+
+<h2>4. Fault Current Grading — Pakistan Distribution Network</h2>
+
+<h3>4.1 Fault Level Calculation Chain</h3>
+
+<p>The fault current grading hierarchy from NTDC 132 kV bus bar down to LT final circuit:</p>
+
+<ol>
+  <li><strong>NTDC 132 kV bus:</strong> Typically 25–40 kA (system fault level varies by zone — Lahore Grid Station ~31.5 kA, SITE Karachi ~25 kA).</li>
+  <li><strong>11 kV primary switchgear / RMU:</strong> Fault current limited by 132/11 kV transformer impedance (typically Zk = 10–12.5%). At a 5 MVA transformer: Isc(11kV) = 5000/(√3 × 11 × 0.12) ≈ 2.18 kA (3-phase); For 10 MVA, ≈ 4.37 kA.</li>
+  <li><strong>11 kV cable / feeder:</strong> Further limited by cable impedance. Typical LESCO 11 kV XLPE underground feeder Zk ≈ 0.2–0.5 Ω/km.</li>
+  <li><strong>LV bus bar (415 V, after distribution transformer):</strong> Isc(415V) = 1000 kVA / (√3 × 415 × Zk). For 1000 kVA at 6%: Isc = 1000/(1.732 × 0.415 × 0.06) ≈ 23.2 kA. This is the value that must be compared to MCCB/fuse breaking capacity at the LT incomer.</li>
+  <li><strong>Sub-distribution board:</strong> Reduced by cable impedance between main and sub-panel. Must still be calculated — do not assume below 10 kA without calculation.</li>
+</ol>
+
+<h3>4.2 LESCO and K-Electric Grid Coordination Requirements</h3>
+
+<p><strong>LESCO (Lahore Electric Supply Company):</strong></p>
+<ul>
+  <li>11 kV feeder OC relay setting: Phase OC pickup 100–200 A (11 kV base), TMS 0.1–0.3 (Very Inverse per IEC 60255), instantaneous element at 800–1200 A.</li>
+  <li>Earth fault relay pickup: 10–30 A (11 kV base), TMS 0.05–0.1.</li>
+  <li>Grading margin with downstream LT fuses: 0.3–0.4 s at maximum LT fault current referred to 11 kV.</li>
+  <li>LESCO typically uses AREVA / Alstom MiCOM P142 or P143 feeder protection relays. Replacement testing requires relay injection test set (Omicron CMC 256 or equivalent).</li>
+</ul>
+
+<p><strong>K-Electric (Karachi):</strong></p>
+<ul>
+  <li>33 kV and 11 kV distribution — K-Electric operates a combined 33/11 kV network in Karachi.</li>
+  <li>Feeder protection: Numerical relays (SEL-351S, Schneider Sepam 10) set to Standard Inverse (SI) for main feeders, Very Inverse (VI) for sub-transmission.</li>
+  <li>Large industrial consumers (connected at 11 kV) must submit protection coordination study to K-Electric Engineering for approval before energisation. Study must show TCC curves for all devices from 11 kV incomer down to LT panel level.</li>
+  <li>Required documentation: Single Line Diagram, Equipment data sheets, Fault level calculation, TCC curve plots (per IEC 60255), proposed relay settings file.</li>
+</ul>
+
+<h3>4.3 Step-by-Step Coordination Study Methodology</h3>
+
+<ol>
+  <li><strong>Collect system data:</strong> Source impedance at PCC, transformer MVA and Zk, cable lengths and conductor sizes, all protective device ratings.</li>
+  <li><strong>Calculate fault levels:</strong> Three-phase fault (maximum), single-phase-to-earth fault (minimum) at every bus bar. Use IEC 60909 methodology.</li>
+  <li><strong>Select device ratings:</strong> Each device must have Icu (ultimate breaking capacity) ≥ prospective fault current at its location.</li>
+  <li><strong>Plot TCC curves:</strong> Starting from the load end. Plot all devices on the same log-log axes using software (ETAP, DAPPER, Easy Power, or DIgSILENT PowerFactory — all used by Pakistani engineering consultancies).</li>
+  <li><strong>Check grading margins:</strong> Verify 0.3–0.4 s margin at the maximum through-fault current at each grading point.</li>
+  <li><strong>Verify IEC 60947-2 selectivity:</strong> Check manufacturer tables for Type 1 or Type 2 selectivity at the declared fault current.</li>
+  <li><strong>Check thermal limits:</strong> Device let-through I²t must not exceed cable and equipment withstand I²t.</li>
+  <li><strong>Submit to utility:</strong> For 11 kV connections to LESCO/K-Electric, submit protection study with relay setting schedule for approval.</li>
+</ol>
+
+<hr>
+
+<h2>5. Protective Relays, Trip Units &amp; Test Equipment — 2026 PKR Price Table</h2>
+
+<p>Prices are approximate landed/ex-Karachi Port, inclusive of 17% GST. Actual prices vary by brand, quantity, and supplier. Exchange rate basis: 1 USD ≈ PKR 278 (2026 Q4).</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Specification</th>
+      <th>Brand Tier</th>
+      <th>PKR Price Range</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Numerical OC/EF Feeder Relay</td>
+      <td>IDMT + DT, 3OC + EF, SCADA comms (IEC 61850 / DNP3)</td>
+      <td>Premium (Siemens 7SJ85, SEL-351S)</td>
+      <td>PKR 420,000 – 650,000</td>
+      <td>LESCO/K-Electric approved. Includes GOOSE for busbar protection.</td>
+    </tr>
+    <tr>
+      <td>Numerical OC/EF Feeder Relay</td>
+      <td>IDMT + DT, 3OC + EF, RS485 Modbus</td>
+      <td>Mid-tier (Alstom MiCOM P142, Schneider Sepam 20)</td>
+      <td>PKR 185,000 – 320,000</td>
+      <td>Widely used by LESCO. Local support available.</td>
+    </tr>
+    <tr>
+      <td>Numerical OC/EF Feeder Relay</td>
+      <td>IDMT + instantaneous, 3OC + EF, RS485</td>
+      <td>Economy (Selec, Thor, local Chinese brands)</td>
+      <td>PKR 45,000 – 110,000</td>
+      <td>For industrial LT panels only. Not utility-approved.</td>
+    </tr>
+    <tr>
+      <td>Transformer Differential Relay</td>
+      <td>87T, 3-winding, through-fault restraint, harmonic blocking</td>
+      <td>Premium (Siemens 7UT85, GE T35)</td>
+      <td>PKR 580,000 – 950,000</td>
+      <td>NTDC / WAPDA-approved for 11 kV–132 kV transformers.</td>
+    </tr>
+    <tr>
+      <td>Transformer Differential Relay</td>
+      <td>87T, 2-winding, Modbus/IEC 61850</td>
+      <td>Mid-tier (Alstom MiCOM P643, Schneider Sepam T82)</td>
+      <td>PKR 260,000 – 480,000</td>
+      <td>Suitable for 11/0.415 kV industrial transformers.</td>
+    </tr>
+    <tr>
+      <td>MCCB Electronic Trip Unit (ETU)</td>
+      <td>Ir, Isd, Ii, Ig, ZSI, 4P 400–1600 A</td>
+      <td>Premium (Schneider Micrologic, ABB Ekip)</td>
+      <td>PKR 95,000 – 210,000</td>
+      <td>Retrofit ETU for existing MCCB frame. Enables Type 2 selectivity with ZSI.</td>
+    </tr>
+    <tr>
+      <td>MCCB Electronic Trip Unit (ETU)</td>
+      <td>Ir, Isd, Ii, 3P 250–630 A, Modbus</td>
+      <td>Mid-tier (Chint, Delixi ETU, Iskra)</td>
+      <td>PKR 28,000 – 75,000</td>
+      <td>Widely available. Manual cross-check against selectivity tables required.</td>
+    </tr>
+    <tr>
+      <td>ACB Release / Trip Unit</td>
+      <td>LSI + G + N, 1600–6300 A, IEC 61850 GOOSE</td>
+      <td>Premium (ABB PR123, Siemens SIVACON)</td>
+      <td>PKR 350,000 – 750,000</td>
+      <td>For main LV incomers in 11/0.415 kV substations.</td>
+    </tr>
+    <tr>
+      <td>Relay Injection Test Set</td>
+      <td>3-phase current + voltage injection, IEC 60255, autorecloser test</td>
+      <td>Omicron CMC 256 Plus</td>
+      <td>PKR 3,200,000 – 4,800,000</td>
+      <td>Standard for WAPDA/NTDC annual relay testing. Rental available in Lahore/Karachi: ~PKR 40,000/day.</td>
+    </tr>
+    <tr>
+      <td>Relay Injection Test Set</td>
+      <td>Single-phase current injection, IDMT timing</td>
+      <td>Economy (Ponovo, Doble, KINGSINE)</td>
+      <td>PKR 380,000 – 750,000</td>
+      <td>Suitable for industrial feeder relay testing. Accuracy ±1%.</td>
+    </tr>
+    <tr>
+      <td>Current Transformer (Protection Class)</td>
+      <td>Class 5P20, 200/1 A, 15 VA, IEC 61869-2</td>
+      <td>ABB, Siemens, local (ITRON, Peshawar Electric)</td>
+      <td>PKR 8,500 – 22,000 each</td>
+      <td>For LT protection. 5P10 acceptable for metering but not protection discrimination.</td>
+    </tr>
+    <tr>
+      <td>Current Transformer (Protection Class)</td>
+      <td>Class 5P20, 400–2000/1 A, 30 VA, 11 kV</td>
+      <td>ABB, GE, AREVA</td>
+      <td>PKR 45,000 – 130,000 each</td>
+      <td>For 11 kV feeder and transformer protection. NEPRA-approved designs required.</td>
+    </tr>
+    <tr>
+      <td>Coordination Study Software (annual licence)</td>
+      <td>ETAP Pro (IEC/ANSI), fault analysis + TCC</td>
+      <td>ETAP (USA)</td>
+      <td>USD 4,200–8,500/year ≈ PKR 1,170,000–2,365,000</td>
+      <td>Used by NESPAK, DESCON, Tricon Engineering for large-scale studies.</td>
+    </tr>
+    <tr>
+      <td>Coordination Study Software (one-time)</td>
+      <td>SKM DAPPER, EasyPower, DIgSILENT (perpetual)</td>
+      <td>Various</td>
+      <td>USD 1,500–3,500 ≈ PKR 415,000–975,000</td>
+      <td>Perpetual licences. Annual maintenance 15–20% of licence cost.</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>6. Zone Selective Interlocking (ZSI) — Achieving Instantaneous Discrimination</h2>
+
+<p>Traditional time-graded discrimination sacrifices fault clearance speed at upstream devices. ZSI addresses this by allowing the upstream ACB/MCCB to operate instantaneously when no downstream device has detected the fault (zone signal absent), while delaying for a controlled period when a downstream device has detected and is clearing a fault.</p>
+
+<p><strong>How ZSI works:</strong></p>
+<ol>
+  <li>Each device continuously monitors for overcurrent exceeding the instantaneous threshold (Ii).</li>
+  <li>When a downstream device detects overcurrent, it sends a restraint signal (zone signal) to the upstream device.</li>
+  <li>Upstream device receives zone signal: adds a short delay (typically 60–100 ms) — enough time for downstream to clear.</li>
+  <li>If downstream clears the fault, upstream returns to monitoring. If downstream fails, the upstream operates after the delay.</li>
+  <li>If upstream detects overcurrent with NO zone signal: operates instantaneously (typically &lt;20 ms).</li>
+</ol>
+
+<p><strong>Pakistan application:</strong> SITE Karachi industrial complexes and Kot Lakhpat (Lahore) industrial estates with multiple tenants on a shared 11/0.415 kV substation use ZSI to prevent complete LT bus-bar blackout during a sub-feeder fault. Retrofit ZSI kits available from major MCCB brands for panels already installed without ZSI wiring — cost PKR 35,000–90,000 per panel.</p>
+
+<hr>
+
+<h2>7. Common Coordination Failures in Pakistan — Root Causes &amp; Remedies</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Failure Mode</th><th>Root Cause</th><th>Remedy</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MCB on sub-circuit trips upstream MCCB</td>
+      <td>No selectivity analysis done; MCB Icu lower than fault current; upstream MCCB picks up on instantaneous element</td>
+      <td>Check Type 1/Type 2 selectivity tables; uprate MCB Icu; set upstream Ii above downstream Icu</td>
+    </tr>
+    <tr>
+      <td>LESCO 11 kV feeder trips for LT fault</td>
+      <td>LT fuse or MCCB failed to clear fault; 11 kV relay set too sensitively</td>
+      <td>Verify LT device Icu ≥ prospective fault; coordinate 11 kV relay TMS to achieve 0.3 s margin above LT device operating time</td>
+    </tr>
+    <tr>
+      <td>Fuse blows on motor start (nuisance)</td>
+      <td>Fuse rated too close to motor FLC; Type gG fuse used instead of Type aM (motor-start) fuse</td>
+      <td>Replace with IEC 60269-4 Type aM fuse rated at 1.5–1.8× motor FLC</td>
+    </tr>
+    <tr>
+      <td>Relay operates for magnetising inrush of transformer</td>
+      <td>Instantaneous element Ii set below 8–10× transformer rated current (inrush can reach 12× In)</td>
+      <td>Set Ii ≥ 10× transformer LV rated current; or use second-harmonic restraint if relay supports it</td>
+    </tr>
+    <tr>
+      <td>Cascading blackout during single LT fault</td>
+      <td>All upstream devices set with same TMS; no ZSI; no discrimination analysis</td>
+      <td>Full coordination study with TCC curve verification; implement ZSI or stagger TMS settings</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>8. NEPRA Grid Code 2023 — Protection Requirements for IPP and Consumer Connections</h2>
+
+<p>NEPRA's Grid Code (2023 revision) imposes specific requirements for protection systems at grid-connected generation and large consumer connections:</p>
+
+<ul>
+  <li><strong>Fault clearance time:</strong> Primary protection must clear three-phase faults within 80–120 ms (4–6 cycles) at 11 kV and above. LV faults must clear within 100 ms for solar PV systems under NEM 3.0.</li>
+  <li><strong>Back-up protection:</strong> Independent back-up relay required, separate CT circuit, separate DC supply.</li>
+  <li><strong>Protection study submission:</strong> All connections &gt;200 kVA at 11 kV must submit protection coordination study and relay setting schedule for NEPRA/utility approval before energisation.</li>
+  <li><strong>Anti-islanding protection:</strong> Solar PV inverter systems must include under/overvoltage and under/overfrequency relay, loss-of-mains detection (ROCOF ≥ 1 Hz/s or vector shift ≥ 6°) per NEM 3.0 Technical Standard.</li>
+  <li><strong>Earth fault detection:</strong> Neutral earthing resistor (NER) on 415 V LV bus recommended for industrial installations &gt;1 MVA. NER limits earth fault current to 5–50 A, protecting equipment and enabling sensitive earth fault relay operation.</li>
+</ul>
+
+<hr>
+
+<h2>9. Related Equipment Guides on CNC Electric</h2>
+
+<p>Protection coordination is effective only when the devices being coordinated are properly rated and installed. See our companion guides:</p>
+
+<ul>
+  <li><a href="/blogs/guides/mcb-price-pakistan-2026-miniature-circuit-breaker-6ka-10ka-type-b-c-d-iec-60898-wapda-solar-pv-buyer-guide">MCB Price in Pakistan 2026 — Type B/C/D, 6kA/10kA, IEC 60898-1, Solar PV DC MCB</a></li>
+  <li><a href="/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-63a-1600a-iscn-fault-breaking-thermal-magnetic-electronic-trip-buyer-guide">MCCB Price in Pakistan 2026 — 63A–1600A Thermal-Magnetic &amp; Electronic Trip Units, Icu/Ics Ratings</a></li>
+  <li><a href="/blogs/guides/rcd-rccb-rcbo-elcb-price-pakistan-2026-residual-current-device-earth-leakage-circuit-breaker-buyer-guide">RCD / RCCB / RCBO / ELCB Price in Pakistan 2026 — Residual Current Device Earth Fault Protection</a></li>
+  <li><a href="/blogs/guides/surge-protective-device-spd-price-pakistan-2026-type-1-2-3-iec-61643-lightning-arrester-industrial-panel-buyer-guide">Surge Protective Device (SPD) Price in Pakistan 2026 — Type 1/2/3, IEC 61643, Lightning Arrester</a></li>
+  <li><a href="/blogs/guides/distribution-transformer-price-pakistan-2026-11kv-415v-dry-type-oil-immersed-wapda-ntdc-approved-buyer-guide">Distribution Transformer Price in Pakistan 2026 — 11kV/415V, Oil-Immersed &amp; Dry-Type, WAPDA/NTDC Approved</a></li>
+</ul>
+
+<hr>
+
+<h2>10. Quick Selection Summary</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Scenario</th><th>Minimum Requirement</th><th>Recommended Action</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>New 11 kV consumer connection (LESCO/K-Electric)</td>
+      <td>Protection study + relay settings per NEPRA Grid Code 2023</td>
+      <td>Numerical OC/EF relay (MiCOM P142 or equivalent), submit TCC curves for utility approval</td>
+    </tr>
+    <tr>
+      <td>LT panel (415 V) with fault level &gt;25 kA</td>
+      <td>MCCB Icu ≥ 36 kA; Type 2 selectivity MCB/MCCB combination</td>
+      <td>ETU on main MCCB with ZSI; verify Type 2 from manufacturer tables</td>
+    </tr>
+    <tr>
+      <td>Solar PV rooftop system (NEM 3.0)</td>
+      <td>Anti-islanding, ROCOF ≥ 1 Hz/s, UV/OV relay, fault clearance &lt;100 ms</td>
+      <td>Inverter-integrated protection + external anti-islanding relay if &gt;50 kW</td>
+    </tr>
+    <tr>
+      <td>Industrial motor &gt;50 kW</td>
+      <td>Motor protection relay (49 thermal + 50 instantaneous + 51 time OC + 46 unbalance)</td>
+      <td>Numerical motor protection relay (Siemens 7SK, ABB REF615, Schneider EasyPact EVS)</td>
+    </tr>
+    <tr>
+      <td>Existing panel with nuisance tripping</td>
+      <td>Full coordination audit</td>
+      <td>Plot TCC curves of all existing devices; verify grading margins; retrofit ETU with ZSI if MCCBs are ETU-upgradable</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>Conclusion</h2>
+
+<p>Protection coordination is not optional for any serious industrial or commercial installation in Pakistan. NEPRA Grid Code 2023, LESCO and K-Electric interconnection requirements, and IEC 60947-2 Type 2 selectivity rules collectively demand that protection studies be done before energisation, not retrofitted after a blackout. The key deliverables — TCC curve plots, relay setting schedules, and IEC 60947-2 selectivity verification — can be produced with ETAP or even DIgSILENT PowerFactory, both used by engineering consultancies in Lahore, Karachi, and Islamabad. Budget PKR 45,000–320,000 for the protective relay hardware depending on voltage level, and PKR 380,000–3.5 million for relay test equipment. CNC Electric stocks protective relays, MCCBs with ETU, ZSI kits, and coordination accessories — contact us for a technical review of your LT panel before commissioning.</p>
+
+</body>
+</html>
