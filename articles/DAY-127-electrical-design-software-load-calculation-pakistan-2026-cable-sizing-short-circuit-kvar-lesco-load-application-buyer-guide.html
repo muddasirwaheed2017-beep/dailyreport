@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electrical Design Software &amp; Load Calculation Pakistan 2026 — Cable Sizing, Short-Circuit, kVAr &amp; LESCO Load Application Buyer Guide</title>
+<meta name="description" content="Complete guide to electrical design software and load calculation in Pakistan 2026: cable sizing (IEC 60364-5-52), short-circuit calculation (Zpu method), kVAr sizing, LESCO load application process, diversity factors, ADMD per WAPDA/DISCO guidelines, and PKR 2026 software price table.">
+</head>
+<body>
+
+<h1>Electrical Design Software &amp; Load Calculation Pakistan 2026 — Cable Sizing, Short-Circuit, kVAr &amp; LESCO Load Application Buyer Guide</h1>
+
+<p>Getting the electrical design right before construction starts saves significant rework costs in Pakistan, where LESCO, MEPCO, GEPCO, HESCO and other DISCOs all require stamped load calculations before approving a new industrial or commercial connection. This guide covers the complete workflow: how to calculate connected and demand loads, how to size cables per IEC 60364-5-52, how to run a symmetrical fault study, how to size kVAr for NEPRA power-factor compliance, and what software Pakistani engineers are actually using in 2026 — with current PKR prices for licences and recommended hardware.</p>
+
+<h2>1. Why Formal Load Calculations Matter in Pakistan</h2>
+
+<p>Under the <strong>Pakistan Electricity Rules 1937 (amended)</strong> and NEPRA's Connection Standards, any industrial or commercial consumer above 5 kW must submit a load schedule with the connection application. DISCOs verify:</p>
+
+<ul>
+<li><strong>Sanctioned load vs connected load</strong> — the tariff category (A1/A2/B1/B2/C1/C2/C3 industrial, B-III/IV commercial) is tied to your approved sanctioned load in kVA.</li>
+<li><strong>Protection coordination</strong> — the DISCO incoming breaker/fuse must discriminate with the consumer's incomers. Wrong cable sizing causes nuisance tripping or, worse, catastrophic failure under fault.</li>
+<li><strong>Power factor penalty</strong> — NEPRA's Fuel Price Component surcharge mechanism includes a PF penalty below 0.85 lagging. An APFC panel sized from a proper kVAr calculation avoids this penalty.</li>
+<li><strong>Tariff metering accuracy</strong> — undersized current transformers (CT ratio mismatch) or inaccurate demand estimation leads to billing disputes with LESCO/MEPCO.</li>
+</ul>
+
+<h2>2. Load Calculation Methodology</h2>
+
+<h3>2.1 Connected Load vs Design Load vs Demand Load</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>Term</th><th>Definition</th><th>Used For</th></tr>
+</thead>
+<tbody>
+<tr><td>Connected Load (kW)</td><td>Nameplate kW of every installed load</td><td>Cable sizing, transformer sizing upper bound</td></tr>
+<tr><td>Design Load (kW)</td><td>Connected load × demand factor</td><td>Main breaker sizing, transformer kVA</td></tr>
+<tr><td>Maximum Demand (kVA/kW)</td><td>Highest 15-minute or 30-minute averaged demand measured over billing period</td><td>DISCO sanctioned load, MD tariff</td></tr>
+<tr><td>ADMD (kVA/consumer)</td><td>After Diversity Maximum Demand — used for LV network planning per LESCO/WAPDA guidelines</td><td>LT feeder sizing, substation planning</td></tr>
+</tbody>
+</table>
+
+<h3>2.2 Demand Factors (Pakistan Practice)</h3>
+
+<p>NEC Table 220.12 demand factors are widely referenced in Pakistan, supplemented by LESCO's own load estimation guidelines for residential and small commercial loads:</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>Load Category</th><th>Demand Factor (%)</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>Lighting (general purpose)</td><td>100% first 3 kVA, 35% remainder</td><td>NEC 220.42 / local practice 70–100%</td></tr>
+<tr><td>Receptacles / small power</td><td>100% first 10 kVA, 50% remainder</td><td>NEC 220.44 / office: 60–80%</td></tr>
+<tr><td>Motor loads (industrial)</td><td>100% largest motor + 75% others</td><td>NEC 430.24</td></tr>
+<tr><td>HVAC (split/central)</td><td>100% largest unit + 65% rest</td><td>Textile mills: 80–90%</td></tr>
+<tr><td>Welding machines</td><td>Duty cycle factor × nameplate</td><td>IEC 60974-1 rated current</td></tr>
+<tr><td>UPS / critical load</td><td>100%</td><td>Always full demand</td></tr>
+<tr><td>Residential (LESCO ADMD)</td><td>1.2 kVA/consumer (urban LT feeder)</td><td>LESCO Load Estimation Manual 2020</td></tr>
+</tbody>
+</table>
+
+<h3>2.3 Power Factor Correction</h3>
+
+<p>Once design kW and PF are known:</p>
+
+<pre>
+kVAr required = kW × (tan φ₁ − tan φ₂)
+
+Where:
+  φ₁ = existing power factor angle (e.g., 0.75 → φ₁ = 41.4°, tan φ₁ = 0.882)
+  φ₂ = target power factor angle (e.g., 0.95 → φ₂ = 18.2°, tan φ₂ = 0.329)
+
+Example: 500 kW load at 0.75 PF → target 0.95:
+  kVAr = 500 × (0.882 − 0.329) = 500 × 0.553 = 276.5 kVAr → select 275 kVAr APFC panel
+</pre>
+
+<p>Refer to our <a href="/blogs/guides/apfc-automatic-power-factor-correction-panel-pakistan-2026-detuned-reactor-capacitor-bank-nepra-pf-penalty-sizing-buyer-guide">APFC Panel Pakistan 2026 guide</a> for capacitor bank selection, detuned reactor sizing (4.7% or 7% for harmonics), and NEPRA PF penalty avoidance.</p>
+
+<h2>3. Cable Sizing per IEC 60364-5-52</h2>
+
+<h3>3.1 The Six-Step Sizing Procedure</h3>
+
+<ol>
+<li><strong>Determine design current (Ib)</strong> — from load kW, voltage, PF and efficiency.</li>
+<li><strong>Select installation method</strong> — IEC 60364-5-52 reference methods: A1 (in conduit in wall), B1 (conduit on wall), C (clipped direct), D1 (underground duct), E (free air). Each has its own base ampacity table.</li>
+<li><strong>Apply derating factors (Ca × Cg × Cc × Cs)</strong>:
+  <ul>
+  <li><em>Ca</em> — ambient temperature derating (IEC Table B.52.14; Pakistan summer peak: 45–50°C in Karachi/Multan, derating factor ~0.71 at 50°C for 70°C PVC cable)</li>
+  <li><em>Cg</em> — grouping derating (IEC Table B.52.17; 3 circuits in flat touching = 0.70)</li>
+  <li><em>Cc</em> — conductor temperature correction</li>
+  <li><em>Cs</em> — soil thermal resistivity correction (for underground cables)</li>
+  </ul>
+</li>
+<li><strong>Tabulated current It ≥ Ib / (Ca × Cg)</strong> — select cable size from IEC Table B.52.4 (copper XLPE) or B.52.3 (copper PVC).</li>
+<li><strong>Voltage drop check</strong> — IEC 60364-5-52: ≤4% for final circuits, ≤2% LV distribution switchboards, ≤5% total. Formula: ΔV = √3 × Ib × L × (R cosφ + X sinφ) for 3-phase.</li>
+<li><strong>Fault current withstand check</strong> — IEC 60364-4-43 / IEC 60364-5-52 Annex D: minimum cross-section for fault energy let-through.</li>
+</ol>
+
+<h3>3.2 Pakistan-Specific Cable Sizing Notes</h3>
+
+<ul>
+<li><strong>Ground temperature</strong>: 30°C default (IEC) vs typical 35°C in Pakistan plains — always use local ambient in derating.</li>
+<li><strong>Soil thermal resistivity (ρT)</strong>: Pakistan dry soil 2.5 K·m/W (vs IEC default 1.0 K·m/W) — underground cables derate significantly; add one size as rule of thumb.</li>
+<li><strong>WAPDA/DISCO approved cables</strong>: LT armoured XLPE 3.5-core or 4-core per WAPDA spec. See <a href="/blogs/guides/lt-armoured-cable-xlpe-price-pakistan-2026-swa-3-5-core-4-core-185mm2-300mm2-wapda-nepra-specification-buyer-guide">LT Armoured Cable Pakistan 2026 guide</a> for approved specifications and PKR prices.</li>
+<li><strong>Voltage level</strong>: Pakistan LV system is 400 V L-L / 230 V L-N (50 Hz). 11 kV is the dominant MV level for industrial consumers.</li>
+</ul>
+
+<h2>4. Short-Circuit Current Calculation</h2>
+
+<h3>4.1 Per-Unit (Zpu) Method for LV Bus Fault</h3>
+
+<p>The symmetrical three-phase fault current at the LV bus of a distribution transformer is the most critical value for breaker rating and cable withstand verification.</p>
+
+<pre>
+Base kVA = transformer rated kVA (e.g., 1,000 kVA)
+Base voltage = LV voltage (e.g., 415 V)
+Base impedance: Zbase = V² / kVA = 415² / 1,000,000 = 0.172 Ω
+
+Transformer impedance: Zpu(transformer) = %Z / 100 (e.g., 5% → Zpu = 0.05)
+Utility source impedance: Zpu(source) ≈ kVA(transformer) / kVA(fault MVA × 1000)
+  e.g., LESCO 11kV fault level 250 MVA → Zpu(source) = 1,000 / 250,000 = 0.004 pu
+
+Total Zpu = Zpu(source) + Zpu(transformer) = 0.004 + 0.05 = 0.054 pu
+
+Isc(3ph) = Ibase / Zpu
+  Ibase = kVA / (√3 × kV) = 1,000,000 / (1.732 × 415) = 1,390 A
+  Isc = 1,390 / 0.054 = 25,740 A ≈ 25.7 kA
+
+→ Select MCCBs and ACBs with a minimum 25 kA rated short-circuit capacity (Icu)
+</pre>
+
+<p>For sub-distribution boards (SDB) downstream, add cable impedance (R + jX per metre from IEC or cable manufacturer data) to reduce available fault current. Refer to our <a href="/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide">MCCB Pakistan 2026 guide</a> for Icu ratings and recommended applications.</p>
+
+<h3>4.2 LESCO / DISCO 11 kV Fault Level Reference Values</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>DISCO Zone</th><th>Typical 11 kV Fault Level (MVA)</th><th>Isc at 415V bus (1MVA 5%Z transformer)</th></tr>
+</thead>
+<tbody>
+<tr><td>LESCO — Lahore industrial feeders</td><td>150–250 MVA</td><td>22–26 kA</td></tr>
+<tr><td>MEPCO — Multan / Faisalabad</td><td>100–180 MVA</td><td>20–24 kA</td></tr>
+<tr><td>GEPCO — Gujranwala</td><td>120–200 MVA</td><td>21–25 kA</td></tr>
+<tr><td>HESCO — Hyderabad / Sindh rural</td><td>80–150 MVA</td><td>18–23 kA</td></tr>
+<tr><td>K-Electric — Karachi industrial</td><td>200–350 MVA</td><td>24–28 kA</td></tr>
+</tbody>
+</table>
+
+<p><em>Note: Always obtain the actual Point of Common Coupling (PCC) fault MVA from your DISCO before finalising equipment ratings. Use these values only for preliminary design.</em></p>
+
+<h2>5. Electrical Design Software Used in Pakistan 2026</h2>
+
+<h3>5.1 Cable Sizing &amp; Load Calculation Software</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>Software</th><th>Key Features</th><th>PKR Price (2026 estimate)</th><th>Suitable For</th></tr>
+</thead>
+<tbody>
+<tr><td>ETC Calc (free, web)</td><td>IEC 60364 cable sizing, VD, short-circuit; export to Excel</td><td>Free</td><td>Small commercial, consultants</td></tr>
+<tr><td>Amtech ProDesign</td><td>BS 7671 / IEC, full load schedule, network analysis, arc flash</td><td>PKR 180,000–350,000/yr (single seat)</td><td>MEP consultants, large industrial</td></tr>
+<tr><td>ETAP LV (Student)</td><td>Load flow, short-circuit, motor starting, arc flash (NFPA)</td><td>PKR 500,000–1,200,000/yr (commercial)</td><td>Industrial power systems, utilities</td></tr>
+<tr><td>DIALux Evo</td><td>Lighting calculation, lux levels, UGR, energy compliance</td><td>Free (core); plugins paid</td><td>Lighting design for LESCO submissions</td></tr>
+<tr><td>AutoCAD Electrical 2026</td><td>Panel schedules, schematic, BOM, IEC/NEMA symbols</td><td>PKR 280,000–480,000/yr</td><td>Panel builders, drawing offices</td></tr>
+<tr><td>EPLAN Electric P8</td><td>Full IEC schematic, PLC wiring, cabinet layout, BOM automation</td><td>PKR 900,000–2,500,000/yr</td><td>OEM panel builders, automation</td></tr>
+<tr><td>SKM PowerTools</td><td>Comprehensive power system analysis, IEEE methods</td><td>PKR 600,000–1,500,000/yr</td><td>Utilities, NTDC/WAPDA consultants</td></tr>
+<tr><td>MATLAB Simulink (Electrical)</td><td>Dynamic simulation, harmonic analysis, custom models</td><td>PKR 400,000–800,000/yr (academic lower)</td><td>Research, universities, R&amp;D</td></tr>
+<tr><td>MS Excel (manual templates)</td><td>Custom IEC/NEC templates, fast iteration</td><td>Included in MS365 (PKR 12,000–24,000/yr)</td><td>Most LESCO submissions, small projects</td></tr>
+</tbody>
+</table>
+
+<h3>5.2 Recommended Hardware for Electrical Design Engineers</h3>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>Item</th><th>Specification</th><th>PKR Price (2026)</th></tr>
+</thead>
+<tbody>
+<tr><td>Engineering laptop (ETAP / AutoCAD)</td><td>Core i7-13th gen, 32GB RAM, NVIDIA RTX GPU, 512GB SSD</td><td>PKR 280,000–450,000</td></tr>
+<tr><td>A0 CAD plotter</td><td>HP DesignJet T230 or equivalent, 24" roll</td><td>PKR 130,000–200,000</td></tr>
+<tr><td>A1 drafting printer</td><td>HP DesignJet T130, for LESCO drawing submissions</td><td>PKR 90,000–140,000</td></tr>
+<tr><td>UPS for workstation</td><td>1500 VA line-interactive (for WAPDA loadshedding protection)</td><td>PKR 35,000–60,000</td></tr>
+<tr><td>External hard drive (backup)</td><td>4 TB portable, for AutoCAD project backups</td><td>PKR 18,000–28,000</td></tr>
+<tr><td>Network switch (office LAN)</td><td>24-port gigabit managed switch (ETAP floating licence server)</td><td>PKR 12,000–35,000</td></tr>
+</tbody>
+</table>
+
+<h2>6. LESCO/DISCO Load Application Process</h2>
+
+<h3>6.1 Required Documents for Industrial Connection Application</h3>
+
+<ol>
+<li><strong>Load Schedule (signed by Licensed Electrical Contractor / Electrical Engineer)</strong> — connected load per phase, demand load, PF, diversity factor applied.</li>
+<li><strong>Single Line Diagram (SLD)</strong> — from metering point to main distribution board; must show transformer kVA, protection scheme, cable sizes, earthing system.</li>
+<li><strong>Property documents</strong> — allotment letter or sale deed for industrial plots (SITE, MITE, Korangi, Sundar IEP, etc.).</li>
+<li><strong>NTN/CNIC of applicant</strong></li>
+<li><strong>NOC from NEPRA</strong> — for connections above 500 kW (varies by DISCO).</li>
+<li><strong>EI Certificate</strong> — Electrical Inspectorate approval for the internal wiring before connection is energised. (Refer to our <a href="/blogs/guides/industrial-electrical-installation-standards-pakistan-2026-iec-60364-psqca-lesco-service-entry-pmt-connection-wiring-regulations-buyer-guide">Industrial Electrical Installation Standards guide</a> for complete EI inspection requirements.)</li>
+</ol>
+
+<h3>6.2 Sanctioned Load vs Connected Load</h3>
+
+<p>DISCOs sanction a load in kVA. Your tariff category is determined by this sanctioned load:</p>
+
+<ul>
+<li><strong>B-III / B-IV</strong>: Commercial (B-III &lt;5 kW, B-IV &gt;5 kW)</li>
+<li><strong>C-1</strong>: Industrial &lt;70 kW</li>
+<li><strong>C-2</strong>: Industrial 70–500 kW</li>
+<li><strong>C-3</strong>: Industrial &gt;500 kW, peak-off-peak ToU tariff applies</li>
+<li><strong>H-1 / H-2</strong>: High tension (11 kV connection) — typically &gt;1 MVA</li>
+</ul>
+
+<p><strong>Caution:</strong> Over-applying sanctioned load to get a higher tariff bracket can result in a minimum demand charge even in months of low consumption. Under-applying results in penalties when actual MD exceeds sanctioned load (MD tariff surcharge).</p>
+
+<h2>7. Panel Layout Design Integration</h2>
+
+<p>Once load calculations are complete, the next step is translating them into a panel layout. Key inputs that feed from the load calculation into the panel design:</p>
+
+<ul>
+<li>Design current (Ib) per circuit → busbar ampacity, MCB/MCCB rating selection</li>
+<li>Short-circuit current at each board → Icu rating, Type 2 coordination verification</li>
+<li>Cable sizes → gland sizes, cable entry planning, cable duct fill calculation</li>
+<li>kVAr sizing → APFC panel section within MDB or separate panel</li>
+</ul>
+
+<p>See our <a href="/blogs/guides/electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide">Electrical Panel Layout Design Pakistan 2026 guide</a> and our <a href="/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide">Main Distribution Board (MDB) Pakistan 2026 guide</a> for detailed board assembly, busbar sizing, and cable entry standards.</p>
+
+<h2>8. Common Load Calculation Errors in Pakistan Practice</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead>
+<tr><th>Error</th><th>Consequence</th><th>Remedy</th></tr>
+</thead>
+<tbody>
+<tr><td>Using unity PF in kVA calculation</td><td>Undersized cables and transformer</td><td>Use actual PF from motor nameplates; assume 0.80 for mixed industrial load if unknown</td></tr>
+<tr><td>Ignoring Pakistan ambient temperature in cable derating</td><td>Cable overheating, insulation failure in summer</td><td>Use Ca at 45–50°C from IEC Table B.52.14 (0.71–0.82 range for 70°C PVC)</td></tr>
+<tr><td>Single-line fault current only (omitting 2-phase and earth fault)</td><td>Undersized neutral/PE conductor</td><td>Calculate all fault types; size neutral at 100% of phase for non-linear loads</td></tr>
+<tr><td>Not accounting for motor starting current in VD calculation</td><td>Voltage dip causes motor stall or VFD fault</td><td>Check VD during DOL start: Istart = 6–8 × FLC; use soft starter or VFD if VD &gt;10%</td></tr>
+<tr><td>Submitting demand load without diversity factor justification</td><td>DISCO rejects application or undersanctions</td><td>Document diversity factors with reference to NEC 220 or IEC 60364-3 load estimation</td></tr>
+<tr><td>Ignoring harmonics from VFD/UPS loads in cable sizing</td><td>Neutral overloading, hot neutral conductor</td><td>Apply harmonic derating per IEC 60364-5-523 / Cenelec harmonics guide; oversize neutral</td></tr>
+</tbody>
+</table>
+
+<h2>9. Commissioning Handover Documentation</h2>
+
+<p>A proper electrical design package for LESCO submission and project handover includes:</p>
+
+<ol>
+<li>Load schedule (Excel/PDF, signed and stamped)</li>
+<li>Single line diagram (AutoCAD or manually drawn, A1 size minimum)</li>
+<li>Cable schedule (origin, destination, length, size, type, installation method)</li>
+<li>Short-circuit study results (Isc at each board, equipment Icu vs available Isc)</li>
+<li>Coordination study (TCC curves or tabulated discrimination criteria)</li>
+<li>Earthing design calculation (resistance target, electrode configuration)</li>
+<li>kVAr sizing calculation (PF, kW, kVAr required, capacitor bank BOM)</li>
+<li>Lighting design (DIALux or lux calculation sheet, per PSQCA lighting standards)</li>
+<li>Panel layout drawings (component placement, busbar arrangement, cable entry)</li>
+<li>As-built drawings (after installation, before EI Inspectorate visit)</li>
+</ol>
+
+<p>For the commissioning test sequence and instrument requirements, see our companion guide: <a href="/blogs/guides/electrical-safety-testing-commissioning-pakistan-2026-pat-testing-loop-impedance-rcd-test-insulation-resistance-megger-continuity-buyer-guide">Electrical Safety Testing &amp; Commissioning Pakistan 2026</a>.</p>
+
+<h2>10. Frequently Asked Questions</h2>
+
+<p><strong>Q: Is ETAP required for LESCO submissions or will Excel calculations be accepted?</strong><br>
+A: LESCO and most Pakistani DISCOs accept hand calculations or Excel spreadsheets if signed by a licensed electrical engineer (registered with PEC under Electrical Engineer category). ETAP or Amtech reports are accepted but not mandatory except for projects above 500 kW where a formal protection coordination study may be requested.</p>
+
+<p><strong>Q: What voltage drop limit does LESCO enforce?</strong><br>
+A: LESCO follows WAPDA construction standards which reference IEC 60364 — max 4% VD in final circuits, 2.5% in distribution, 5% total end-to-end. In practice for industrial connections, a total 5% VD at full load is the accepted limit in DISCO review.</p>
+
+<p><strong>Q: How do I get the 11 kV fault level at my site from LESCO?</strong><br>
+A: Submit an official application to LESCO's Technical Services / New Connection department requesting "System Fault Level Data at proposed connection point." Processing time is typically 2–4 weeks. Alternatively, a licensed LESCO-approved electrical consultant may obtain this data through LESCO's technical liaison channel.</p>
+
+<p><strong>Q: Our factory has large VFDs — does this affect cable sizing?</strong><br>
+A: Yes, VFDs generate current harmonics (primarily 5th and 7th). High harmonic content causes neutral conductor overloading in 3-phase 4-wire systems. Size the neutral conductor at 130–173% of the phase conductor for drives constituting &gt;20% of total load, per IEC 60364-5-523 annex guidance.</p>
+
+</body>
+</html>

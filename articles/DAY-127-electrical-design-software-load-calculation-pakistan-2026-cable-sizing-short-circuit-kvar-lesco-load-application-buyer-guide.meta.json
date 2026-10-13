@@ -1,0 +1,23 @@
+{
+  "day": 127,
+  "date": "2026-10-13",
+  "blog_id": "89971589186",
+  "handle": "electrical-design-software-load-calculation-pakistan-2026-cable-sizing-short-circuit-kvar-lesco-load-application-buyer-guide",
+  "title": "Electrical Design Software & Load Calculation Pakistan 2026 — Cable Sizing, Short-Circuit, kVAr & LESCO Load Application Buyer Guide",
+  "summary_html": "Complete guide to electrical design software and load calculation in Pakistan 2026: cable sizing (IEC 60364-5-52), short-circuit calculation (Zpu method), kVAr sizing, LESCO load application, diversity factors, ADMD per WAPDA/DISCO guidelines, and PKR 2026 software price table for engineers, consultants and industrial consumers.",
+  "tags": ["electrical design", "load calculation", "cable sizing", "short circuit", "kVAr", "LESCO application", "IEC 60364", "Pakistan 2026", "ETAP", "AutoCAD Electrical", "demand factor", "power factor correction"],
+  "cluster": "Industrial Electrical Installation Standards Pakistan",
+  "cluster_day": "3/3",
+  "word_count": 2850,
+  "internal_links": [
+    "/blogs/guides/apfc-automatic-power-factor-correction-panel-pakistan-2026-detuned-reactor-capacitor-bank-nepra-pf-penalty-sizing-buyer-guide",
+    "/blogs/guides/lt-armoured-cable-xlpe-price-pakistan-2026-swa-3-5-core-4-core-185mm2-300mm2-wapda-nepra-specification-buyer-guide",
+    "/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-100a-250a-400a-buyer-guide",
+    "/blogs/guides/industrial-electrical-installation-standards-pakistan-2026-iec-60364-psqca-lesco-service-entry-pmt-connection-wiring-regulations-buyer-guide",
+    "/blogs/guides/electrical-panel-layout-design-pakistan-2026-db-board-mcc-control-panel-din-rail-buyer-guide",
+    "/blogs/guides/main-distribution-board-mdb-price-pakistan-2026-lt-switchboard-panel-board-415v-buyer-guide",
+    "/blogs/guides/electrical-safety-testing-commissioning-pakistan-2026-pat-testing-loop-impedance-rcd-test-insulation-resistance-megger-continuity-buyer-guide"
+  ],
+  "shopify_push": "PENDING_MANUAL",
+  "preflight_commit": "PENDING"
+}
