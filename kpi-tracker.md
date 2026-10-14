@@ -4,3 +4,4 @@
 | D125 | 2026-10-11 | Industrial Electrical Installation Standards Pakistan 2026 (IEC 60364/PSQCA/LESCO/PMT) | ❌ HTTP 000 | N/A | N/A | Ahrefs Insufficient | 6/6 links (0 remapped — 50d streak) | Industrial Elec Installation D1/3 |
 | D126 | 2026-10-12 | Electrical Safety Testing & Commissioning Pakistan 2026 (PAT/Loop Impedance/RCD/Megger/Continuity) | ❌ HTTP 000 | N/A | N/A | Ahrefs Insufficient | 7/7 links (0 remapped — 51d streak) | Industrial Elec Installation D2/3 |
 | D127 | 2026-10-13 | Electrical Design Software & Load Calculation Pakistan 2026 (Cable Sizing/Short-Circuit/kVAr/LESCO) | ❌ HTTP 000 | N/A | N/A | Ahrefs Insufficient | 7/7 links (0 remapped — 52d streak) | Industrial Elec Installation D3/3 ✅ |
+| D128 | 2026-10-14 | Motor Efficiency & IE Class Selection Pakistan 2026 (IE1/IE2/IE3/IE4, NEECA, Energy Audit, WAPDA Tariff ROI) | ❌ HTTP 000 | N/A | N/A | Ahrefs Insufficient | 10/10 links (0 remapped — 53d streak) | Motor Control & Drive Systems D1/3 |

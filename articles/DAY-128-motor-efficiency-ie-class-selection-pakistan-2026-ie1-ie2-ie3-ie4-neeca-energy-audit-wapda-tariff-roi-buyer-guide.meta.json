@@ -1,0 +1,36 @@
+{
+  "day": 128,
+  "date": "2026-10-14",
+  "handle": "motor-efficiency-ie-class-selection-pakistan-2026-ie1-ie2-ie3-ie4-neeca-energy-audit-wapda-tariff-roi-buyer-guide",
+  "title": "Motor Efficiency & IE Class Selection Pakistan 2026 — IE1/IE2/IE3/IE4, NEECA Regulations, Energy Audit & WAPDA Tariff ROI Buyer Guide",
+  "blog_id": "89971589186",
+  "cluster": "Industrial Motor Control & Drive Systems Pakistan — Day 1/3 (D128)",
+  "tags": ["motor efficiency", "ie2 motor pakistan", "ie3 motor pakistan", "neeca meps", "motor energy audit", "motor rewinding pakistan", "vfd energy savings", "ie class selection", "pakistan"],
+  "summary_html": "<p>Complete guide to motor efficiency class selection (IE1–IE4) in Pakistan 2026: NEECA MEPS SRO 612(I)/2022 compliance, PKR 2026 price table 0.37–315 kW, six-step motor energy audit, rewind-vs-replace decision framework, VFD vs capacitor correction ROI at LESCO/WAPDA B-2/C-2 tariffs, and 10-point motor selection checklist for Pakistani industrial buyers.</p>",
+  "internal_links": [
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-ac-drive-inverter-drive-motor-speed-control-buyer-guide",
+    "/blogs/guides/soft-starter-price-pakistan-2026-reduced-voltage-motor-starter-buyer-guide",
+    "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide",
+    "/blogs/guides/power-factor-capacitor-bank-price-pakistan",
+    "/blogs/guides/electrical-design-software-load-calculation-pakistan-2026-cable-sizing-short-circuit-kvar-lesco-load-application-buyer-guide"
+  ],
+  "internal_links_verified": "6/6",
+  "pakistan_differentiators": [
+    "NEECA MEPS SRO 612(I)/2022 compliance mapping — IE2 minimum for regulated sectors, IE3 for captive power auxiliaries ≥18.5 kW",
+    "First PKR 2026 price table for IE2 vs IE3 motors from 0.37–315 kW with annual energy saving per motor at Pakistani B-2/C-2 tariff",
+    "Pakistan rewinding market tiers (EASA-affiliated vs bazaar-grade) with quantified efficiency loss and PKR annual cost impact at current tariff",
+    "Rewind-vs-replace decision rule calibrated to Pakistani industrial conditions (Rs 38/kWh blended, NEECA compliance)",
+    "Voltage unbalance analysis methodology for Pakistan distribution conditions (2–4% typical unbalance causing 1.5–2% extra losses)",
+    "Altitude derating for KPK/AJK/Islamabad-Murree corridor — rarely addressed for Pakistani buyers",
+    "SBP Green Banking + NEECA ESCO fund for motor replacement financing — first documented for Pakistani e-commerce",
+    "LESCO/DISCO starting approval threshold reminder for motors ≥18.5 kW (required before energisation)"
+  ],
+  "word_count_approx": 3100,
+  "shopify_push_status": "PENDING",
+  "post_publish_audit": {
+    "img_tags_without_alt": 0,
+    "summary_html_length": 312,
+    "duplicate_title_flag": false
+  }
+}
