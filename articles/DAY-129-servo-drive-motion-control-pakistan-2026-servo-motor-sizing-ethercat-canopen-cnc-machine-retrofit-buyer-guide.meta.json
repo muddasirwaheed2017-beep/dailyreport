@@ -1,0 +1,22 @@
+{
+  "day": 129,
+  "date": "2026-10-15",
+  "handle": "servo-drive-motion-control-pakistan-2026-servo-motor-sizing-ethercat-canopen-cnc-machine-retrofit-buyer-guide",
+  "title": "Servo Drive & Motion Control Pakistan 2026 — Servo Motor Sizing, EtherCAT / CANopen, CNC Machine Retrofit & PKR Price Buyer Guide",
+  "summary_html": "Complete guide to servo drive selection and motion control in Pakistan 2026: servo vs stepper vs AC spindle drive comparison, servo motor sizing (inertia matching, peak/continuous torque), PKR 2026 price table 50W–15kW, EtherCAT/CANopen/Modbus RTU fieldbus options, CNC machine retrofit methodology for Pakistani machine shops, encoder types (incremental vs absolute with battery backup for AJK/KPK power outages), EMC compliance and earthing for Pakistani industrial zones, and 10-question buyer checklist. (580 chars)",
+  "blog_id": "89971589186",
+  "cluster": "Industrial Motor Control & Drive Systems Pakistan",
+  "cluster_day": "2/3",
+  "word_count": 3200,
+  "internal_links": [
+    "/blogs/guides/plc-price-pakistan-2026-programmable-logic-controller-industrial-automation-motor-control-buyer-guide",
+    "/blogs/guides/line-reactor-emc-filter-harmonic-mitigation-vfd-price-pakistan-2026-ac-choke-active-harmonic-filter-buyer-guide",
+    "/blogs/guides/tubewell-pump-control-panel-price-pakistan-2026-3-phase-single-phase-motor-starter-buyer-guide",
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-ac-drive-inverter-drive-motor-speed-control-buyer-guide",
+    "/blogs/guides/motor-efficiency-ie-class-selection-pakistan-2026-ie1-ie2-ie3-ie4-neeca-energy-audit-wapda-tariff-roi-buyer-guide",
+    "/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide",
+    "/blogs/guides/motor-winding-insulation-test-megger-price-pakistan-2026-ir-pi-ratio-predictive-maintenance-buyer-guide"
+  ],
+  "tags": ["servo drive", "servo motor", "motion control", "CNC", "EtherCAT", "CANopen", "Pakistan 2026", "industrial automation"],
+  "shopify_status": "pending_manual_push"
+}
