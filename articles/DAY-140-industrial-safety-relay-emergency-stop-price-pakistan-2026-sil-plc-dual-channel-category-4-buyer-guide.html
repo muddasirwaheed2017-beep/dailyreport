@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Industrial Safety Relay & Emergency Stop Price Pakistan 2026: SIL/PLe Category 4 Buyer Guide</title>
+<meta name="description" content="Complete Pakistan 2026 buyer guide to industrial safety relays, emergency stop buttons, safety light curtains and two-hand controls. SIL 2/3 vs PLc/PLd/PLe, dual-channel wiring, stop Category 0/1/2, PKR price tables, PSQCA requirements, 5-city sourcing.">
+</head>
+<body>
+
+<h1>Industrial Safety Relay & Emergency Stop Price Pakistan 2026: SIL/PLe Category 4 Buyer Guide</h1>
+
+<p>Pakistan's industrial accident rate remains one of the highest in South Asia, yet most machinery installed in Faisalabad textile mills, Karachi steel plants, and Lahore auto-component factories runs with no certified safety relay — just a standard contactor wired to a mushroom-head E-stop. That single-channel, non-monitored architecture violates <strong>EN ISO 13849-1</strong> (Performance Level), <strong>IEC 62061</strong> (SIL), and <strong>IEC 60204-1</strong> stop-category requirements, and it will not satisfy PSQCA audit requirements that are tightening under the <em>National Occupational Safety &amp; Health Policy 2018</em> and the <em>Factories Act enforcement upgrade 2025</em>.</p>
+
+<p>This guide explains — in engineering terms relevant to Pakistani industrial practice — what a safety relay actually does, how to select the right stop category, how to wire dual-channel circuits correctly, and what to budget in PKR for 2026.</p>
+
+<p>Related guides: <a href="/blogs/guides/pushbutton-selector-switch-price-pakistan-2026-emergency-stop-pilot-lamp-operator-panel-buyer-guide">Emergency stop buttons &amp; pushbutton stations Pakistan 2026</a> | <a href="/blogs/guides/plc-price-pakistan-2026-programmable-logic-controller-industrial-automation-motor-control-buyer-guide">PLC price Pakistan 2026</a> | <a href="/blogs/guides/lockout-tagout-loto-equipment-price-pakistan-2026-electrical-isolation-padlock-hasp-safety-station-industrial-buyer-guide">LOTO equipment Pakistan 2026</a></p>
+
+<hr>
+
+<h2>1. Safety Relay vs Standard Control Relay — The Distinction Pakistani Engineers Miss</h2>
+
+<p>A standard control relay (interposing relay, 24 V DC coil, 10 A contacts) performs a switching function. It has no self-monitoring, no redundancy, and no diagnostic capability. If the coil fails short-circuit, the relay may hold energised and never open — exactly the failure mode that injures machine operators.</p>
+
+<p>A <strong>safety relay module</strong> (also called a safety relay unit or SRU) does five things a standard relay cannot:</p>
+
+<ol>
+  <li><strong>Dual-channel input monitoring:</strong> both channels of the safety device (E-stop, light curtain, gate switch) are read independently. A discrepancy — one channel open, one closed — trips the relay and raises a fault rather than assuming the closed channel is correct.</li>
+  <li><strong>Output contact cross-monitoring:</strong> the relay reads its own output contacts through feedback loops (EDM — External Device Monitoring) to verify they actually opened when commanded.</li>
+  <li><strong>Automatic / manual reset control:</strong> prevents automatic restart after a safety demand without deliberate operator acknowledgment.</li>
+  <li><strong>Diagnostic coverage (DC):</strong> typically 99% DC for high-integrity SRUs, vs 0% for a standard relay.</li>
+  <li><strong>Achievable safety integrity:</strong> a properly wired SIL 2 / PLd or SIL 3 / PLe loop using a certified SRU is independently auditable under IEC 62061 / EN ISO 13849-1.</li>
+</ol>
+
+<p>The practical implication in Pakistan: if PSEB or a multinational buyer audits your machine and finds an uncertified relay in the E-stop loop, you face either machine lockout or costly retrofit. Buying the SRU upfront costs PKR 4,500–18,000; retrofitting a running machine can cost 5–10× that in downtime.</p>
+
+<hr>
+
+<h2>2. Stop Category 0, 1, 2 — EN 60204-1 Explained for Pakistan</h2>
+
+<p>IEC 60204-1 (Electrical equipment of machines) defines three stop categories. Pakistani engineers most commonly wire Category 0 but label it "emergency stop," which is correct. The confusion arises when specifying Category 1 or 2 for process-critical machines.</p>
+
+<h3>Category 0 — Uncontrolled (immediate power removal)</h3>
+<ul>
+  <li>Power to drive/actuator is removed immediately by opening safety contacts.</li>
+  <li>Motor coasts to rest. No controlled deceleration.</li>
+  <li>Correct for: presses, grinders, conveyors where immediate stop is safe.</li>
+  <li>Required safety device: safety contactor or SRU with force-guided contacts rated for the load.</li>
+  <li>Pakistan cost driver: must use <em>positively guided</em> (mechanically linked) contactors — standard AC contactors do not qualify.</li>
+</ul>
+
+<h3>Category 1 — Controlled stop, then power removal</h3>
+<ul>
+  <li>Drive is commanded to decelerate; when standstill is confirmed (or after a time delay), power is removed.</li>
+  <li>Required for: VFD-driven loads where sudden power removal causes mechanical damage (winding machines, high-inertia fans).</li>
+  <li>Pakistan application: <strong>textile ring frame</strong> machines must use Category 1 to prevent yarn breakage and spindle damage.</li>
+  <li>Requires SRU + speed monitor or standstill monitor relay.</li>
+</ul>
+
+<h3>Category 2 — Controlled stop, power remains available</h3>
+<ul>
+  <li>Machine stops under control but drive remains energised and ready for immediate restart.</li>
+  <li>Requires additional safeguarding (guard interlocking, safe speed monitoring) to prevent unintended restart.</li>
+  <li>Pakistan application: CNC machining centres with tool-change requirement — operator must approach stopped spindle while power remains on.</li>
+  <li>Requires SRU + safe speed monitoring module + SS1/SS2 STO function on VFD/servo drive.</li>
+</ul>
+
+<h3>Stop Function vs Safety Function</h3>
+<p>EN 60204-1 Category relates to <em>how</em> the machine stops. EN ISO 13849-1 Performance Level (PLa–PLe) and IEC 62061 SIL (1–3) rate <em>how reliably</em> the stop function is achieved. For most Pakistan press-brake and injection-moulding applications, PLd (SIL 2) is the minimum. Heavy presses and robots may require PLe (SIL 3).</p>
+
+<hr>
+
+<h2>3. Dual-Channel Safety Input Wiring — The #1 Pakistan Commissioning Error</h2>
+
+<p>Walk through any Pakistan industrial estate and you will find E-stop buttons wired single-channel: one NC contact, in series with the contactor coil, through a standard relay. This achieves no better than Category B (PLa) — inadequate for any rotating or stamping machine.</p>
+
+<h3>Why single-channel fails the audit</h3>
+<p>If the NC contact welds (common in dusty Karachi or humid Faisalabad environments), the contact stays closed. The button appears to work but provides no safety function. A cross-monitoring SRU detects contact welding; a standard relay does not.</p>
+
+<h3>Correct dual-channel wiring (EN ISO 13849-1 Category 3/4)</h3>
+<pre>
+  E-STOP BUTTON (dual NC contacts, positively opened)
+       │               │
+   CH1 NC          CH2 NC
+       │               │
+  [SRU Input 1]  [SRU Input 2]
+       │               │
+       └─── Safety Relay Module ───┘
+                    │
+           [Safety Output Contacts]
+                    │
+           [Safety Contactor Coil]
+                    │          │
+           [EDM Feedback 1]  [EDM Feedback 2]
+                    └────────┘
+                    back to SRU
+</pre>
+
+<p><strong>Key wiring rules for Pakistan conditions:</strong></p>
+<ul>
+  <li>Use <strong>separate conduits or cable cores</strong> for CH1 and CH2 wiring — common-cause fault (conduit crush, rodent damage) on both channels simultaneously must be prevented.</li>
+  <li>In high-vibration environments (Karachi port machinery, cement plant), specify <strong>IP67 E-stop heads</strong> and check positively-opened contact compliance per IEC 60947-5-1.</li>
+  <li><strong>Cable length:</strong> most SRUs specify maximum cable capacitance — verify for runs >50 m (common in large Karachi textile sheds).</li>
+  <li><strong>WAPDA supply quality:</strong> 24 V DC safety circuits should be powered from an isolated SMPS with 10 ms hold-up to survive WAPDA micro-interruptions without nuisance tripping.</li>
+</ul>
+
+<hr>
+
+<h2>4. Safety Relay Reset — Manual vs Automatic</h2>
+
+<p>After a safety demand (E-stop pressed, light curtain interrupted), the machine must not restart automatically when the hazard is cleared. EN ISO 13849-1 and EN 60204-1 both require manual reset for most applications.</p>
+
+<h3>Manual reset (standard for most Pakistan applications)</h3>
+<ul>
+  <li>Operator must press a dedicated reset pushbutton after clearing the safety device.</li>
+  <li>Reset button must be located <em>outside</em> the hazard zone (operator must physically exit to reset).</li>
+  <li>Common Pakistan error: reset button mounted <em>inside</em> the machine guard — rendering the entire safety function meaningless.</li>
+</ul>
+
+<h3>Automatic reset (limited applications)</h3>
+<ul>
+  <li>Machine restarts as soon as safety device is re-engaged (guard closed, light curtain clear).</li>
+  <li>Only permitted when: (a) machine speed is low, (b) no stored energy exists, (c) restart is visible and audible to operator.</li>
+  <li>Pakistan application: slow-speed conveyor sections with area scanners — automatic reset is acceptable if pre-start warning siren is fitted.</li>
+</ul>
+
+<h3>EDM (External Device Monitoring) — Why Pakistan Engineers Skip It</h3>
+<p>EDM reads the feedback contacts of the downstream safety contactors. If a contactor sticks closed, EDM prevents the SRU from resetting — the system latches in safe state until the fault is corrected. Many Pakistan panel shops omit EDM wiring to reduce panel complexity. This saves PKR 500 in wiring labour but eliminates the ability to achieve Category 4 / PLe, and means a welded contactor goes undetected.</p>
+
+<hr>
+
+<h2>5. Safety Light Curtain + Safety Relay Integration</h2>
+
+<p>Safety light curtains (Type 4, IEC 61496-1) are used on press brakes, injection moulding machines, and robot cells in Pakistan. Their OSSD (Output Signal Switching Device) outputs are dual PNP transistor outputs — not dry contacts. They cannot directly drive a contactor coil.</p>
+
+<h3>Correct integration</h3>
+<ol>
+  <li>OSSD1 → SRU Input CH1</li>
+  <li>OSSD2 → SRU Input CH2</li>
+  <li>SRU output safety contacts → safety contactors</li>
+  <li>Safety contactor NC feedback → SRU EDM input</li>
+  <li>Muting relay (for material entry/exit) monitored by additional SRU or safety PLC</li>
+</ol>
+
+<h3>Pakistan press brake application</h3>
+<p>Hydraulic press brakes running at 15–20 strokes/min require the light curtain response time + SRU response time + contactor open time to be less than the <em>safety distance</em> calculation (EN ISO 13857). Typical total response time for a properly selected system: 15–25 ms. Many budget-market setups in Pakistan have total response times >100 ms — placing operators' fingers inside the closing zone at the moment of stop.</p>
+
+<p>Related guide: <a href="/blogs/guides/motor-control-center-mcc-price-pakistan-2026-star-delta-dol-vfd-415v-industrial-switchboard-buyer-guide">Motor control centre Pakistan 2026</a></p>
+
+<hr>
+
+<h2>6. Two-Hand Control Pakistan Applications</h2>
+
+<p>Two-hand control (IEC 60947-5-8 Type IIIC) forces the operator to keep both hands on control buttons during the machine's hazardous motion. Used on: punch presses, hydraulic ironworkers, riveting machines, stamping presses.</p>
+
+<h3>Type IIIC requirements (relevant for Pakistan)</h3>
+<ul>
+  <li>Both buttons must be pressed <em>simultaneously</em> within 0.5 s — prevents holding one button down with tape (a common Pakistan workaround).</li>
+  <li>Releasing either button immediately stops/reverses hazardous motion.</li>
+  <li>Cannot be defeated by string, tape, or fixed jig — buttons must require deliberate hand pressure.</li>
+  <li>Safety relay monitoring: SRU detects if only one button is pressed and inhibits machine start.</li>
+</ul>
+
+<p>Pakistan Factories Act 1934 Section 29 (fencing of dangerous machinery) technically requires two-hand control on all press operations — but enforcement has been inconsistent. The 2025 PSQCA enforcement upgrade is changing this in export-oriented units supplying to EU buyers.</p>
+
+<hr>
+
+<h2>7. PKR 2026 Price Tables</h2>
+
+<h3>Safety Relay Modules</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Type</th><th>Channels</th><th>SIL/PL</th><th>Reset</th><th>PKR Range (2026)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Basic E-stop SRU, 2-ch input, 3 NO safety outputs</td><td>2</td><td>SIL 2 / PLd</td><td>Manual / Auto</td><td>4,500–8,000</td></tr>
+    <tr><td>E-stop + Gate switch SRU, 2-ch, EDM</td><td>2+EDM</td><td>SIL 2 / PLd</td><td>Manual</td><td>7,000–12,000</td></tr>
+    <tr><td>Light curtain interface SRU, OSSD input, 3 NO safety outputs</td><td>OSSD</td><td>SIL 2 / PLd</td><td>Manual / Auto</td><td>8,000–14,000</td></tr>
+    <tr><td>Universal SRU (E-stop + gate + light curtain), 4-ch expandable</td><td>4</td><td>SIL 3 / PLe</td><td>Manual</td><td>14,000–22,000</td></tr>
+    <tr><td>Two-hand control module, Type IIIC, 2-ch simultaneous</td><td>2</td><td>SIL 2 / PLd</td><td>Auto</td><td>6,500–11,000</td></tr>
+    <tr><td>Safety timer / muting relay</td><td>—</td><td>SIL 2 / PLd</td><td>Auto</td><td>5,500–9,500</td></tr>
+    <tr><td>Standstill / speed monitor relay</td><td>—</td><td>SIL 2 / PLd</td><td>Manual</td><td>9,000–16,000</td></tr>
+  </tbody>
+</table>
+
+<h3>Safety Light Curtains (Type 4, IEC 61496)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Protected Height</th><th>Resolution (finger/hand)</th><th>Range</th><th>PKR Range (2026)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>150 mm</td><td>14 mm (finger)</td><td>Up to 3 m</td><td>18,000–28,000</td></tr>
+    <tr><td>300 mm</td><td>14 mm (finger)</td><td>Up to 3 m</td><td>24,000–38,000</td></tr>
+    <tr><td>600 mm</td><td>14 mm (finger)</td><td>Up to 6 m</td><td>38,000–58,000</td></tr>
+    <tr><td>900 mm</td><td>14 mm (finger)</td><td>Up to 6 m</td><td>52,000–80,000</td></tr>
+    <tr><td>1,200 mm</td><td>30 mm (hand)</td><td>Up to 8 m</td><td>65,000–100,000</td></tr>
+  </tbody>
+</table>
+
+<h3>Safety-Rated Emergency Stop Buttons</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Type</th><th>Contacts</th><th>Protection</th><th>PKR Range (2026)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>40 mm mushroom, turn-to-release, 1 NC</td><td>1 NC (NOT positively guided)</td><td>IP65</td><td>350–650</td></tr>
+    <tr><td>40 mm mushroom, turn-to-release, 2 NC positively guided</td><td>2 NC PG (IEC 60947-5-1)</td><td>IP65</td><td>800–1,500</td></tr>
+    <tr><td>40 mm mushroom, key-release, 2 NC positively guided</td><td>2 NC PG</td><td>IP65</td><td>1,200–2,000</td></tr>
+    <tr><td>60 mm mushroom, pull-to-release, 2 NC PG, stainless</td><td>2 NC PG</td><td>IP67</td><td>2,000–3,500</td></tr>
+    <tr><td>Rope pull E-stop, 5 m rope, 2 NC PG</td><td>2 NC PG</td><td>IP65</td><td>3,500–6,500</td></tr>
+    <tr><td>Foot pedal safety switch, 2-ch NC PG</td><td>2 NC PG</td><td>IP54</td><td>4,500–8,000</td></tr>
+  </tbody>
+</table>
+
+<h3>Safety Gate / Interlocking Switches</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Type</th><th>Locking</th><th>Protection</th><th>PKR Range (2026)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Tongue interlock switch, 2 NC PG, no locking</td><td>None</td><td>IP67</td><td>2,500–4,500</td></tr>
+    <tr><td>Tongue interlock + solenoid lock, 2 NC PG</td><td>Solenoid (24 V DC)</td><td>IP67</td><td>5,500–9,000</td></tr>
+    <tr><td>RFID coded safety switch, PLe/SIL 3</td><td>Optional solenoid</td><td>IP67</td><td>9,000–16,000</td></tr>
+    <tr><td>Non-contact magnetic safety switch, 2-ch</td><td>None</td><td>IP67</td><td>3,500–6,500</td></tr>
+  </tbody>
+</table>
+
+<p>Related guide: <a href="/blogs/guides/contactor-overload-relay-price-pakistan-2026-ac-contactor-motor-starter-buyer-guide">Safety contactors &amp; overload relay Pakistan 2026</a></p>
+
+<hr>
+
+<h2>8. PSQCA / PSEB Industrial Safety Requirements — Pakistan Regulatory Context</h2>
+
+<p>Pakistan does not have a direct OSHA equivalent with mandatory EN/IEC machinery safety standards. However, the regulatory landscape is converging:</p>
+
+<ul>
+  <li><strong>Factories Act 1934 + Hazardous Occupations Rules:</strong> Sections 27–34 require fencing, safeguarding, and emergency stops on all dangerous machinery. Enforcement was historically lax; PSEB inspectors are now issuing improvement notices citing EN 60204-1 as the technical benchmark.</li>
+  <li><strong>PSQCA PS:4756 (Machinery Safety):</strong> Adopts EN ISO 12100 (risk assessment) and EN ISO 13849-1 (PLe requirements) for machinery manufactured or imported into Pakistan. Effective for new machinery from January 2025.</li>
+  <li><strong>Punjab Occupational Safety &amp; Health Act 2012 / KPK OSH Act 2022:</strong> Both provincial acts now reference ILO C155 (Occupational Safety Convention), which requires formal risk assessment and hazard control — creating indirect obligation for EN 13849-compliant safety circuits.</li>
+  <li><strong>Export compliance:</strong> Any machine exported to EU, UK, or US must carry CE / UL/CSA marking requiring third-party audit of safety functions. Pakistani OEMs supplying CNC furniture machines, auto parts, or packaging equipment to these markets require formal PLe / SIL 2 certification.</li>
+</ul>
+
+<h3>Practical inspection checklist (PSEB audit prep)</h3>
+<ol>
+  <li>Is every E-stop button positively guided (forced-open contacts)? Spec: IEC 60947-5-1.</li>
+  <li>Are safety circuits dual-channel with independent wiring routes?</li>
+  <li>Is manual reset positioned outside the hazard zone?</li>
+  <li>Are safety contactors positively guided and EDM-monitored?</li>
+  <li>Is there a documented risk assessment (EN ISO 12100) for each machine?</li>
+  <li>Are light curtain safety distances calculated per EN ISO 13857?</li>
+</ol>
+
+<p>Related guide: <a href="/blogs/guides/arc-flash-risk-assessment-ppe-guide-pakistan-2026-nfpa-70e-incident-energy-11kv-mv-hv-electrical-safety">Arc flash &amp; electrical safety Pakistan 2026</a></p>
+
+<hr>
+
+<h2>9. Pakistan 5-City Sourcing Guide</h2>
+
+<h3>Karachi</h3>
+<p>Main markets: Bolton Market (Electrical), M.A. Jinnah Road industrial suppliers. For safety relays, specialist automation distributors in SITE Industrial Area stock European-brand SRUs. Lead time for standard products: 3–7 days ex-stock; specialty (SIL 3, RFID coded) 2–4 weeks import.</p>
+
+<h3>Lahore</h3>
+<p>Main markets: Shah Alam Market (electrical wholesale), Ferozpur Road industrial suppliers, Kot Lakhpat industrial estate. Strong stock of basic SRUs and E-stop buttons. Safety light curtains mostly import-to-order.</p>
+
+<h3>Faisalabad</h3>
+<p>Largest textile machinery concentration in Pakistan. Demand for Category 1 stop systems (VFD + standstill monitor) for ring frames is growing. Local distributors carry basic SRUs; engineering firms handle system integration.</p>
+
+<h3>Sialkot</h3>
+<p>Surgical instruments and sports goods manufacturing. Export compliance pressure (EU MDR for surgical tools) is driving adoption of IEC 60204-1 compliant machine safety. Growing demand for CE-marking support services and SIL-rated safety systems.</p>
+
+<h3>Islamabad / Rawalpindi</h3>
+<p>Defence manufacturing, pharmaceutical plants. DRAP (Drug Regulatory Authority Pakistan) Good Manufacturing Practice requirements for pharmaceutical plants are now citing IEC 62061 SIL requirements for critical process equipment. Specialist system integrators in I-9 and I-10 industrial sectors.</p>
+
+<hr>
+
+<h2>10. 10-Question Safety Relay Buyer Checklist</h2>
+
+<ol>
+  <li><strong>What stop category does my machine require?</strong> (EN 60204-1 Cat 0 / 1 / 2) — determines whether a simple SRU or an SRU + speed monitor is needed.</li>
+  <li><strong>What Performance Level is required?</strong> (PLa–PLe per EN ISO 13849-1) — based on risk assessment severity × frequency × avoidability.</li>
+  <li><strong>Does my E-stop button have positively guided contacts?</strong> If not, replace before wiring — the SRU cannot achieve Category 4 without PG contacts.</li>
+  <li><strong>Are both channels of my E-stop routed in separate conduits?</strong> Required for Cat 3/4 common-cause fault prevention.</li>
+  <li><strong>Do my downstream contactors have positively guided (force-guided) contacts?</strong> Safety contactors (e.g., IEC 60947-4-1 Annex F) are required — standard AC contactors do not qualify.</li>
+  <li><strong>Have I wired the EDM feedback loop?</strong> Without EDM, a welded contactor goes undetected and the loop is limited to Category 3.</li>
+  <li><strong>Is my reset button outside the hazard zone?</strong> Position it so the operator must exit the machine area to reset.</li>
+  <li><strong>For light curtains: have I calculated the safety distance?</strong> (EN ISO 13857 formula: S = K × (t1 + t2) + C, where K = hand speed 2,000 mm/s).</li>
+  <li><strong>Is the 24 V DC supply for the safety circuit on an isolated SMPS with hold-up?</strong> WAPDA micro-cuts cause nuisance trips without hold-up; an isolated supply prevents safety circuit ground-faults from affecting other circuits.</li>
+  <li><strong>Is there a documented risk assessment and machinery technical file?</strong> Required for CE marking, PSQCA PS:4756 compliance, and PSEB audit.</li>
+</ol>
+
+<p>Related guide: <a href="/blogs/guides/lockout-tagout-loto-equipment-price-pakistan-2026-electrical-isolation-padlock-hasp-safety-station-industrial-buyer-guide">LOTO &amp; electrical isolation equipment Pakistan 2026</a></p>
+
+<hr>
+
+<h2>Summary — Key Takeaways for Pakistan Engineers</h2>
+
+<ul>
+  <li>Replace single-channel E-stop wiring with dual-channel SRU circuits — minimum PLd (SIL 2) for all rotating and stamping machinery.</li>
+  <li>Use positively guided E-stop buttons (2 NC PG contacts) — budget PKR 800–1,500 per station, not PKR 350 for non-PG types.</li>
+  <li>Wire EDM feedback from safety contactors — it costs 2 extra conductors but upgrades the loop from Category 3 to Category 4.</li>
+  <li>Position reset buttons outside hazard zones — inside-the-guard placement defeats the entire safety architecture.</li>
+  <li>For VFD-driven textile and winding machines: Category 1 stop with standstill monitor prevents spindle and yarn damage while achieving safety compliance.</li>
+  <li>PSQCA PS:4756 and PSEB enforcement are tightening — proactive compliance is now cheaper than reactive retrofit.</li>
+</ul>
+
+</body>
+</html>
