@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Encoder &amp; Resolver Price Pakistan 2026: Incremental Absolute Rotary PNP NPN Push-Pull 1024PPR Hollow Shaft Industry 4.0 Buyer Guide</title>
+<meta name="description" content="Complete 2026 buyer guide for rotary encoders and resolvers in Pakistan: incremental vs absolute selection, PPR resolution, PNP/NPN/HTL output, hollow shaft retrofit, IP67 magnetic vs optical, resolver for high-temperature, IO-Link SSI, PKR 2026 price tables for 5 Pakistani cities.">
+</head>
+<body>
+
+<h1>Encoder &amp; Resolver Price Pakistan 2026: Incremental Absolute Rotary PNP NPN Push-Pull 1024PPR Hollow Shaft Industry 4.0 Buyer Guide</h1>
+
+<p>Rotary encoders are the eyes of every motion control system in Pakistani industry — without accurate position and speed feedback, your <a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD</a>, <a href="/blogs/guides/servo-drive-motion-control-pakistan-2026-servo-motor-sizing-ethercat-canopen-cnc-machine-retrofit-buyer-guide">servo drive</a>, or <a href="/blogs/guides/plc-price-pakistan-2026-programmable-logic-controller-industrial-automation-motor-control-buyer-guide">PLC</a> is operating blind. Yet encoder failures and mis-specifications account for a significant share of Pakistan's industrial downtime — optical discs fog over in Karachi's 85% humidity, 10,000 PPR encoders get specified where 360 PPR would be adequate, and NPN open-collector wiring in long cable runs triggers ghost pulses on WAPDA's noisy industrial supplies. This guide fixes all of that.</p>
+
+<p>Whether you're retrofitting a Pakistan textile loom, commissioning an automated packaging line in Lahore, or upgrading CNC machine position feedback in Sialkot's surgical instruments sector, this guide gives you the specification framework, PKR 2026 price tables, and sourcing contacts you need.</p>
+
+<hr>
+
+<h2>1. Incremental vs Absolute Encoder — The Pakistan Engineer's Decision Framework</h2>
+
+<p>The single most important encoder decision is incremental vs absolute. Getting it wrong wastes money in one direction and causes safety incidents in the other.</p>
+
+<h3>Incremental Encoders</h3>
+<p>Generate a stream of pulses (A, B, and Z channels) as the shaft rotates. They tell you <em>how much</em> the shaft has moved from wherever it was when counting started — but they have no memory of position on power-up. Every time power is removed, the count resets to zero.</p>
+
+<p><strong>When incremental is the correct choice for Pakistan:</strong></p>
+<ul>
+<li>Speed feedback to a VFD (motor RPM control) — only relative change matters</li>
+<li>Web-tension control on Pakistan textile warp beams — reset on each new batch</li>
+<li><a href="/blogs/guides/stepper-motor-driver-price-pakistan-2026-nema-17-nema-23-cnc-router-laser-cutter-3d-printer-buyer-guide">Stepper motor</a> position verification — home reference is always performed on power-up anyway</li>
+<li>Conveyor belt length measurement — resets each shift</li>
+<li>Applications where a home/reference sensor is already fitted and homing on power-up is acceptable</li>
+</ul>
+
+<p><strong>Pakistan cost advantage:</strong> Incremental encoders are 40–60% cheaper than equivalent absolute encoders. For VFD speed feedback on Pakistan's standard induction motors, they are almost always the correct and cost-effective choice.</p>
+
+<h3>Absolute Encoders</h3>
+<p>Output a unique position value for every shaft angle — even after power loss. On power-up, the controller instantly knows shaft position without homing. This is not a luxury; it is a safety requirement in many Pakistan applications.</p>
+
+<p><strong>When absolute is mandatory for Pakistan:</strong></p>
+<ul>
+<li>Multi-axis robotic arm or gantry system — homing into an obstruction after WAPDA power cut causes machine damage</li>
+<li>Pakistan cement kiln / ball mill position — slow rotating heavy load, homing cycle not possible</li>
+<li>Vertical axis (Z-axis) on any machine — gravity means the axis drops on power failure; absolute encoder lets the controller know exact position before re-enabling the servo</li>
+<li>AGV (Automated Guided Vehicle) steering — Pakistan warehousing automation</li>
+<li>Printing registration on Pakistan packaging lines — sub-millimetre repeat accuracy requires no homing tolerance</li>
+</ul>
+
+<p><strong>Output interfaces for absolute encoders:</strong> Parallel (Gray code), SSI (Synchronous Serial Interface), BiSS-C, EnDat 2.2, PROFIBUS, CANopen, EtherCAT. For Pakistan applications, SSI and BiSS-C are the most common interfaces on affordable absolute encoders compatible with local drives.</p>
+
+<hr>
+
+<h2>2. Single-Turn vs Multi-Turn Absolute — Pakistan Machine Retrofit Pitfall</h2>
+
+<p>Single-turn absolute encoders output a unique code for every position within one shaft revolution (e.g., 0–4095 for a 12-bit encoder). Once the shaft completes a full turn, the count returns to 0. This is fine for a rotary indexing table or a direct-drive motor — but it fails silently on any mechanism with multiple turns of travel.</p>
+
+<p><strong>The Pakistan gearbox trap:</strong> A Pakistan engineer retrofits a single-turn absolute encoder on a conveyor drive with a 40:1 gearbox. The motor output shaft makes 40 revolutions for one conveyor metre of travel. The encoder only knows position within the current revolution — the controller has no idea which of the 40 revolutions it is in. After WAPDA power cut, the system re-initialises to the wrong position in the travel range, resulting in a crash.</p>
+
+<p><strong>Multi-turn absolute encoders</strong> add internal gearing and either battery backup or Wiegand-effect energy harvesting to count total revolutions (typically 4,096 revolutions × 13-bit single-turn = 25-bit total). The controller always knows the exact position in the full travel range.</p>
+
+<p><strong>Rule for Pakistan:</strong> Any linear axis with a gearbox → multi-turn absolute encoder mandatory. For direct-drive rotary index → single-turn absolute sufficient.</p>
+
+<p><strong>Battery vs Wiegand (battery-free) multi-turn:</strong> Battery-backed multi-turn encoders fail silently when the battery dies — Pakistan field service teams often discover dead batteries after position loss incidents. Wiegand-effect multi-turn encoders harvest energy from the rotating shaft and need no battery. The premium is approximately 35–50% but is strongly recommended for Pakistan's remote industrial sites where maintenance is infrequent.</p>
+
+<hr>
+
+<h2>3. PPR/CPR Resolution Selection — Pakistan Over-Specification Problem</h2>
+
+<p>PPR (Pulses Per Revolution) or CPR (Counts Per Revolution — which equals 4 × PPR with quadrature decoding) is the most mis-specified encoder parameter in Pakistan procurement.</p>
+
+<p><strong>Pakistan reality check:</strong></p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Application</th><th>Adequate PPR</th><th>Pakistan Commonly Ordered</th><th>Cost Penalty</th></tr></thead>
+<tbody>
+<tr><td>VFD speed feedback (induction motor)</td><td>1,024 PPR</td><td>5,000–10,000 PPR</td><td>+60–80%</td></tr>
+<tr><td>Conveyor length/speed</td><td>200–500 PPR</td><td>2,048 PPR</td><td>+40%</td></tr>
+<tr><td>Textile warp beam tension</td><td>1,024–2,048 PPR</td><td>Correct</td><td>—</td></tr>
+<tr><td>CNC axis (Sialkot machine tools)</td><td>2,048–4,096 PPR</td><td>10,000 PPR</td><td>+50%</td></tr>
+<tr><td>Servo motor feedback (built-in)</td><td>N/A — use dedicated servo encoder</td><td>—</td><td>—</td></tr>
+</tbody>
+</table>
+
+<p><strong>Frequency limit calculation:</strong> At maximum motor speed (e.g., 3,000 RPM) with a 10,000 PPR encoder, the pulse frequency = 10,000 × 3,000 / 60 = 500 kHz. Many Pakistan PLC high-speed counter modules are only rated to 100 kHz. Result: missed counts and incorrect position. Always calculate maximum frequency = PPR × RPM_max / 60 and verify your PLC or drive counter module can handle it.</p>
+
+<p><strong>Cable length vs PPR:</strong> Long cable runs (Pakistan factory floors often exceed 50m) attenuate high-frequency signals. For runs over 20m with PPR ≥ 5,000, use HTL (High-Threshold Logic, 10–30 V) or differential RS-422 output — not single-ended NPN/PNP. The extra noise immunity prevents ghost counts on WAPDA's dirty supply ground.</p>
+
+<hr>
+
+<h2>4. Output Signal Types — Pakistan Panel Builder Selection Guide</h2>
+
+<p>Pakistan panel builders face four encoder output types, and wiring the wrong one to the wrong input card is one of the most common commissioning errors.</p>
+
+<h3>PNP Open-Collector (Sourcing)</h3>
+<p>Output switches +Vsupply to the signal line when active. Compatible with PLC sink inputs (the most common PLC input type in Pakistan). Works at 10–30 VDC supply voltage. <strong>Use for:</strong> short cable runs ≤15m, standard Pakistan industrial PLC cabinets, proximity feedback alongside <a href="/blogs/guides/proximity-sensor-photoelectric-sensor-price-pakistan-2026-inductive-capacitive-pnp-npn-ip67-buyer-guide">proximity sensors</a>.</p>
+
+<h3>NPN Open-Collector (Sinking)</h3>
+<p>Output switches 0V (GND) to the signal line when active. Compatible with PLC source inputs. Less common in Pakistan but used in specific Asian-manufactured PLC brands. Wiring NPN to a PLC sink input destroys the PLC input module — always verify before connecting.</p>
+
+<h3>Push-Pull (Totem Pole)</h3>
+<p>Actively drives both high and low states. Higher drive capability, more noise immune than open-collector. Compatible with both PNP and NPN inputs. <strong>Best choice for Pakistan medium-length cable runs (15–50m)</strong> where signal integrity matters.</p>
+
+<h3>HTL (High-Threshold Logic) — 10–30 VDC</h3>
+<p>High-voltage push-pull output. Maximum noise immunity. <strong>Mandatory choice for Pakistan cement, steel, textile</strong> applications with long cable runs, heavy machinery noise, and WAPDA supply instability. HTL signal at 24 VDC can drive cable runs of 100m without ghost pulses.</p>
+
+<h3>TTL / RS-422 Differential</h3>
+<p>Low-voltage (5 V) differential pair. Maximum frequency capability (up to 1 MHz). Required for very high PPR encoders and for servo drives with dedicated encoder input cards. Not compatible with standard PLC digital input modules — requires a dedicated differential receiver card or servo drive input. Used in Pakistan CNC machine tool retrofits.</p>
+
+<h3>Pakistan Wiring Summary</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Scenario</th><th>Recommended Output</th></tr></thead>
+<tbody>
+<tr><td>PLC speed feedback, cable ≤15m</td><td>PNP Push-Pull or PNP Open-Collector</td></tr>
+<tr><td>PLC speed feedback, cable 15–50m</td><td>Push-Pull (24 VDC)</td></tr>
+<tr><td>Cement/steel/textile, cable ≥50m</td><td>HTL Push-Pull or RS-422 Differential</td></tr>
+<tr><td>Servo drive feedback</td><td>RS-422 Differential (or dedicated SSI/BiSS/EnDat)</td></tr>
+<tr><td>VFD speed feedback</td><td>Push-Pull 24 VDC or HTL</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>5. Hollow Shaft vs Solid Shaft — Pakistan Motor Retrofit</h2>
+
+<p>Pakistan industrial sites retrofitting encoders onto existing motors face a mechanical mounting decision that affects cost, alignment accuracy, and long-term reliability.</p>
+
+<h3>Solid Shaft Encoders</h3>
+<p>Traditional design with a separate shaft that must be coupled to the motor shaft. Requires a coupling (jaw, bellows, or <a href="/blogs/guides/shaft-coupling-flexible-coupling-price-pakistan-2026-jaw-tyre-disc-oldham-bellows-misalignment-buyer-guide">disc coupling</a>) and a separate mounting bracket. <strong>Advantages:</strong> encoder is fully isolated from motor vibration via flexible coupling; replaceable without disturbing motor shaft; standard off-the-shelf parts. <strong>Disadvantages:</strong> coupling misalignment is the #1 failure cause in Pakistan field installations; additional parts mean higher total cost and more installation time.</p>
+
+<h3>Hollow Shaft Encoders</h3>
+<p>The encoder shaft bore slides directly over the motor shaft (typically 6mm–42mm bore options). A stator coupling arm prevents rotation while allowing thermal expansion. <strong>Pakistan retrofit advantages:</strong></p>
+<ul>
+<li>No coupling required — eliminates Pakistan's #1 encoder failure mode</li>
+<li>Faster installation (15–20 minutes vs 45–60 minutes for solid shaft with bracket)</li>
+<li>Lower total cost when coupling + bracket cost is factored in</li>
+<li>Precise axial alignment not required — stator coupling absorbs angular and axial runout up to ±1.5mm</li>
+</ul>
+
+<p><strong>Pakistan hollow shaft selection:</strong> Match bore diameter exactly to the motor shaft (measure — don't assume standard sizes apply). For Pakistan-manufactured motors, common shaft sizes are 19mm, 24mm, 28mm, 38mm, 42mm. Avoid clamping so tight that the encoder bore contacts the motor shaft during thermal expansion — use the manufacturer's recommended torque for the clamping ring.</p>
+
+<p><strong>Vibration and shock:</strong> Pakistan cement and mining applications subject encoders to severe vibration. Hollow shaft encoders on large-diameter motor shafts amplify radial acceleration at the encoder body. For vibration levels above 5g, use a solid shaft encoder with a flexible bellows coupling and a properly supported mounting bracket — the coupling absorbs shock the hollow shaft arrangement would transmit directly to the encoder bearings.</p>
+
+<hr>
+
+<h2>6. IP Protection for Pakistan's Harsh Environments</h2>
+
+<p>Encoder IP rating selection for Pakistan requires matching to the specific site hazard — not simply buying the highest rating available.</p>
+
+<h3>Optical vs Magnetic Encoders in Pakistan</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Parameter</th><th>Optical Encoder</th><th>Magnetic Encoder</th></tr></thead>
+<tbody>
+<tr><td>Resolution capability</td><td>Up to 100,000+ PPR</td><td>Typically up to 10,000 PPR</td></tr>
+<tr><td>Karachi coastal humidity</td><td>Vulnerable — disc fogs, corrodes</td><td>Excellent — no optical path</td></tr>
+<tr><td>Faisalabad textile dust</td><td>Vulnerable — dust occludes disc</td><td>Excellent — sealed magnetic</td></tr>
+<tr><td>Pakistan cement/mining dust</td><td>Not recommended</td><td>Excellent with IP67</td></tr>
+<tr><td>Temperature range</td><td>−10°C to +70°C typical</td><td>−40°C to +100°C typical</td></tr>
+<tr><td>Vibration/shock</td><td>Moderate tolerance</td><td>High tolerance</td></tr>
+<tr><td>Cost</td><td>Lower for high resolution</td><td>Lower for ≤4,096 PPR</td></tr>
+</tbody>
+</table>
+
+<p><strong>Pakistan recommendation:</strong> For any Pakistan industrial application where the encoder is not in an enclosed, climate-controlled electrical room, specify IP67 magnetic encoder. The slight resolution limitation (rarely matters for VFD/conveyor use) is far outweighed by the dramatic reduction in field failures. Reserve optical encoders for precision CNC applications where they are housed in sealed machine enclosures.</p>
+
+<h3>IP Rating Quick Reference</h3>
+<ul>
+<li><strong>IP54:</strong> Dust-protected + water splash — suitable for Lahore indoor industrial (not Karachi)</li>
+<li><strong>IP65:</strong> Fully dust-tight + low-pressure water jet — minimum for Karachi coastal factories</li>
+<li><strong>IP67:</strong> Dust-tight + 1m water immersion — Pakistan cement, textile, food processing</li>
+<li><strong>IP69K:</strong> High-pressure steam cleaning — Pakistan food and beverage, pharmaceutical</li>
+</ul>
+
+<hr>
+
+<h2>7. Resolver Basics — High-Temperature Encoder Replacement in Pakistan Steel and Cement</h2>
+
+<p>A resolver is an electromagnetic position transducer with no electronics in the sensor body — it is essentially a rotary transformer. Because resolvers have no optical disc, no PCB, and no semiconductor in the measurement element, they survive conditions that destroy all encoders.</p>
+
+<p><strong>When Pakistan plants need resolvers over encoders:</strong></p>
+<ul>
+<li>Motor winding temperature above 120°C — standard encoder specifications end here</li>
+<li>Pakistan electric arc furnace (EAF) environments — electromagnetic interference that swamps encoder signals</li>
+<li>Pakistan cement kiln drive — sustained 150–180°C ambient at kiln inlet drive bearing</li>
+<li>Traction drives in Pakistan railways and mining — vibration and shock levels incompatible with encoder bearings</li>
+<li>Nuclear / high-radiation environments (KANUPP, CHASNUPP Pakistan) — radiation destroys semiconductor encoder ICs instantly</li>
+</ul>
+
+<p><strong>Resolver interface requirement:</strong> Resolvers output analogue sine/cosine signals and require a Resolver-to-Digital Converter (RDC) module in the controller. This adds cost. Pakistan servo drives from major brands include resolver input options — verify compatibility before specifying. The total system cost (resolver + RDC card) versus a high-temperature encoder with stainless steel housing needs to be calculated for the specific Pakistan application.</p>
+
+<p><strong>Resolver accuracy:</strong> ±5–20 arc-minutes for standard resolvers vs ±1–5 arc-seconds for precision optical encoders. For most Pakistan industrial applications (motor speed, position control within ±1mm), resolver accuracy is entirely adequate.</p>
+
+<hr>
+
+<h2>8. IO-Link and SSI Interface — Industry 4.0 Encoders for Pakistani Factories</h2>
+
+<p>Modern smart encoders communicate beyond pulse trains — they transmit diagnostics, configuration parameters, and position data digitally.</p>
+
+<h3>SSI (Synchronous Serial Interface)</h3>
+<p>The most common digital interface for absolute encoders in Pakistan. Two differential pairs: Clock (master sends to encoder) and Data (encoder sends to master). Pakistan drive compatibility: most major servo and VFD brands support SSI absolute encoder input with an optional expansion card. Resolution up to 25-bit (33 million positions per revolution) over standard shielded cable to 100m. No protocol licensing fees — fully open standard.</p>
+
+<p><strong>SSI Pakistan installation tip:</strong> Shield the cable at one end only (at the controller panel) to avoid ground loops. In Pakistan industrial environments, bidirectional ground loops on shielded cables are a common source of data corruption on 24-bit SSI streams.</p>
+
+<h3>IO-Link Encoders</h3>
+<p>IO-Link encoders communicate over a standard 3-wire unshielded cable. The controller reads position, speed, temperature, operating hours, and vibration data via a standard IO-Link master module. Benefits for Pakistan Industry 4.0 projects:</p>
+<ul>
+<li><strong>Predictive maintenance:</strong> bearing temperature trend visible before encoder failure</li>
+<li><strong>Remote parameter setting:</strong> change resolution scaling and direction without rewiring</li>
+<li><strong>Automatic device replacement:</strong> IO-Link master restores parameters to a replacement encoder automatically — reduces Pakistan field service time</li>
+<li><strong>Single cable type:</strong> standard 3-wire M12 cable works for all IO-Link encoder brands — eliminates Pakistan's multi-cable-type inventory</li>
+</ul>
+
+<p>IO-Link encoders currently cost 25–45% more than standard incremental encoders. The ROI calculation for Pakistan plants depends on maintenance cost reduction — in Pakistan's remote industrial zones (FATA, Balochistan mining), where field service visits cost PKR 50,000–150,000 per call, a single prevented failure pays for an entire IO-Link encoder upgrade.</p>
+
+<hr>
+
+<h2>9. PKR 2026 Price Tables — Encoder &amp; Resolver Pakistan</h2>
+
+<p><em>Note: Prices are indicative wholesale PKR ranges for genuine products from authorised distributors. Exchange rate basis: USD 1 = PKR 278 (Q3 2026). Import duty + GST included. Prices vary ±15% by city and supplier.</em></p>
+
+<h3>Table 1: Incremental Rotary Encoders (Solid Shaft)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Type / PPR</th><th>Output</th><th>IP Rating</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>360 PPR, 6mm shaft</td><td>PNP Push-Pull</td><td>IP50</td><td>PKR 2,800–4,500</td></tr>
+<tr><td>1,024 PPR, 6mm shaft</td><td>PNP/NPN Push-Pull</td><td>IP54</td><td>PKR 4,500–7,500</td></tr>
+<tr><td>2,048 PPR, 10mm shaft</td><td>Push-Pull / RS-422</td><td>IP65</td><td>PKR 7,500–13,000</td></tr>
+<tr><td>5,000 PPR, 10mm shaft</td><td>RS-422 Differential</td><td>IP65</td><td>PKR 13,000–22,000</td></tr>
+<tr><td>10,000 PPR, 10mm shaft</td><td>RS-422 Differential</td><td>IP65</td><td>PKR 22,000–38,000</td></tr>
+</tbody>
+</table>
+
+<h3>Table 2: Incremental Rotary Encoders (Hollow Shaft)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Bore / PPR</th><th>Output</th><th>IP Rating</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>15mm bore, 1,024 PPR</td><td>Push-Pull 24 VDC</td><td>IP65</td><td>PKR 7,000–12,000</td></tr>
+<tr><td>19mm bore, 1,024 PPR</td><td>Push-Pull 24 VDC</td><td>IP65</td><td>PKR 7,500–13,500</td></tr>
+<tr><td>28mm bore, 1,024 PPR</td><td>HTL Push-Pull</td><td>IP67</td><td>PKR 12,000–20,000</td></tr>
+<tr><td>38mm bore, 1,024 PPR</td><td>HTL Push-Pull</td><td>IP67</td><td>PKR 15,000–26,000</td></tr>
+<tr><td>42mm bore, 2,048 PPR</td><td>HTL Push-Pull</td><td>IP67</td><td>PKR 22,000–38,000</td></tr>
+</tbody>
+</table>
+
+<h3>Table 3: Absolute Encoders — Single-Turn</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Resolution / Interface</th><th>Output</th><th>IP Rating</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>12-bit (4,096 pos/rev), Parallel Gray code</td><td>Parallel</td><td>IP65</td><td>PKR 18,000–35,000</td></tr>
+<tr><td>13-bit SSI, 8,192 pos/rev</td><td>SSI</td><td>IP65</td><td>PKR 28,000–55,000</td></tr>
+<tr><td>16-bit SSI, 65,536 pos/rev</td><td>SSI</td><td>IP65</td><td>PKR 45,000–90,000</td></tr>
+<tr><td>13-bit BiSS-C, hollow shaft</td><td>BiSS-C</td><td>IP67</td><td>PKR 38,000–75,000</td></tr>
+</tbody>
+</table>
+
+<h3>Table 4: Absolute Encoders — Multi-Turn</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Resolution (Single × Multi-Turn)</th><th>Interface</th><th>Battery/Wiegand</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>13-bit × 12-bit = 25-bit total, SSI</td><td>SSI</td><td>Battery</td><td>PKR 65,000–120,000</td></tr>
+<tr><td>13-bit × 12-bit = 25-bit total, SSI</td><td>SSI</td><td>Wiegand (battery-free)</td><td>PKR 110,000–190,000</td></tr>
+<tr><td>16-bit × 12-bit, SSI/BiSS-C</td><td>SSI/BiSS-C</td><td>Wiegand</td><td>PKR 150,000–280,000</td></tr>
+<tr><td>23-bit total, EnDat 2.2</td><td>EnDat 2.2</td><td>Wiegand</td><td>PKR 220,000–400,000</td></tr>
+</tbody>
+</table>
+
+<h3>Table 5: IP67 Magnetic Incremental Encoders</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Type / PPR</th><th>Mounting</th><th>Output</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>1,024 PPR, solid shaft 10mm</td><td>Solid shaft, IP67</td><td>HTL Push-Pull</td><td>PKR 9,500–17,000</td></tr>
+<tr><td>1,024 PPR, hollow shaft 28mm bore</td><td>Hollow shaft, IP67</td><td>HTL Push-Pull</td><td>PKR 14,000–24,000</td></tr>
+<tr><td>4,096 PPR, solid shaft, magnetic</td><td>Solid shaft, IP67</td><td>RS-422 Diff</td><td>PKR 22,000–40,000</td></tr>
+</tbody>
+</table>
+
+<h3>Table 6: Resolvers</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Type</th><th>Accuracy</th><th>Temperature</th><th>Price PKR (each)</th></tr></thead>
+<tbody>
+<tr><td>Brushless resolver, 2-pole, ⌀58mm</td><td>±10 arc-min</td><td>−55°C to +155°C</td><td>PKR 35,000–70,000</td></tr>
+<tr><td>Brushless resolver, 2-pole, ⌀60mm flange</td><td>±5 arc-min</td><td>−55°C to +175°C</td><td>PKR 55,000–110,000</td></tr>
+<tr><td>Resolver-to-Digital Converter (RDC) module</td><td>14-bit</td><td>Industrial grade</td><td>PKR 25,000–55,000</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>10. 5-City Pakistan Sourcing Guide</h2>
+
+<h3>Karachi</h3>
+<p>SITE Industrial Area and Landhi Industrial Zone: Multiple industrial automation distributors carry incremental encoders in standard sizes (1,024 PPR, 10mm solid shaft) from stock. For hollow shaft and IP67 magnetic encoders, allow 3–7 days lead time from Lahore warehouse. Absolute encoders with SSI interface: 5–15 days lead time, often imported on order.</p>
+
+<h3>Lahore</h3>
+<p>Largest encoder stock in Pakistan. Industrial areas: Sundar Industrial Estate, Township industrial zone. Full range of incremental (solid and hollow shaft), IP67 magnetic, and single-turn SSI absolute available from stock from established automation distributors. Multi-turn absolute and resolvers require ordering — 7–21 days depending on specification.</p>
+
+<h3>Faisalabad</h3>
+<p>Textile industry hub: hollow shaft incremental encoders (19mm and 28mm bore, 1,024–2,048 PPR, HTL output) are carried in stock by local automation suppliers serving the textile sector. IP67 magnetic encoders for textile dust environments available within 2–3 days from Lahore.</p>
+
+<h3>Sialkot</h3>
+<p>Surgical instruments and sports goods: CNC-grade encoders (RS-422 differential, 2,048–5,000 PPR) available from CNC-focused distributors. EnDat and SSI absolute encoders for CNC machine tool retrofits ordered via Lahore — 10–15 days.</p>
+
+<h3>Islamabad / Rawalpindi</h3>
+<p>Government and cement sector buyers: standard incremental and absolute encoders available from local distributors. Heavy industry (cement, mining) hollow shaft IP67 encoders served from Lahore warehouse — 1–2 day delivery. Resolver supply chain weakest here — expect 3–4 week lead times for specialty high-temperature resolvers.</p>
+
+<hr>
+
+<h2>11. 10-Question Pakistan Encoder Buyer Checklist</h2>
+
+<ol>
+<li><strong>Incremental or absolute?</strong> Does your application need position after power-up without homing? → Absolute. Otherwise → Incremental.</li>
+<li><strong>Single-turn or multi-turn?</strong> Does your linear axis have a gearbox? → Multi-turn absolute mandatory.</li>
+<li><strong>Battery or Wiegand multi-turn?</strong> Is the encoder accessible for battery replacement every 2–3 years? If not → Wiegand battery-free.</li>
+<li><strong>What PPR is actually needed?</strong> Calculate: PPR_needed = (required_position_resolution × motor_gear_ratio) / encoder_circumference. Then confirm PLC counter max frequency supports PPR × RPM_max / 60.</li>
+<li><strong>What output type?</strong> Cable run: ≤15m → Push-Pull; 15–50m → Push-Pull or HTL; ≥50m → HTL or RS-422 differential.</li>
+<li><strong>Solid shaft or hollow shaft?</strong> New installation with bracket → solid. Retrofit on existing motor shaft → hollow shaft.</li>
+<li><strong>What bore diameter?</strong> Measure actual motor shaft diameter — do not assume standard sizes.</li>
+<li><strong>IP rating?</strong> Karachi coastal humidity or textile dust → IP67 minimum. High-pressure wash → IP69K.</li>
+<li><strong>Optical or magnetic?</strong> Humid/dusty Pakistan environment → IP67 magnetic. Clean, climate-controlled CNC → optical for highest PPR.</li>
+<li><strong>Do you need resolver?</strong> Ambient temperature &gt; 120°C or severe EMI environment → Resolver + RDC module. Otherwise → Magnetic encoder.</li>
+</ol>
+
+<hr>
+
+<h2>Related Guides</h2>
+<ul>
+<li><a href="/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide">VFD / Variable Frequency Drive Price Pakistan 2026</a> — encoder speed feedback integration</li>
+<li><a href="/blogs/guides/servo-drive-motion-control-pakistan-2026-servo-motor-sizing-ethercat-canopen-cnc-machine-retrofit-buyer-guide">Servo Drive &amp; Motion Control Pakistan 2026</a> — absolute encoder interface selection for servo systems</li>
+<li><a href="/blogs/guides/stepper-motor-driver-price-pakistan-2026-nema-17-nema-23-cnc-router-laser-cutter-3d-printer-buyer-guide">Stepper Motor &amp; Driver Price Pakistan 2026</a> — incremental encoder position verification on open-loop steppers</li>
+<li><a href="/blogs/guides/plc-price-pakistan-2026-programmable-logic-controller-industrial-automation-motor-control-buyer-guide">PLC Price Pakistan 2026</a> — high-speed counter module compatibility with encoder output types</li>
+<li><a href="/blogs/guides/proximity-sensor-photoelectric-sensor-price-pakistan-2026-inductive-capacitive-pnp-npn-ip67-buyer-guide">Proximity &amp; Photoelectric Sensor Price Pakistan 2026</a> — home/reference sensor for incremental encoder homing</li>
+<li><a href="/blogs/guides/shaft-coupling-flexible-coupling-price-pakistan-2026-jaw-tyre-disc-oldham-bellows-misalignment-buyer-guide">Shaft Coupling &amp; Flexible Coupling Price Pakistan 2026</a> — correct coupling selection for solid shaft encoder mounting</li>
+</ul>
+
+</body>
+</html>
