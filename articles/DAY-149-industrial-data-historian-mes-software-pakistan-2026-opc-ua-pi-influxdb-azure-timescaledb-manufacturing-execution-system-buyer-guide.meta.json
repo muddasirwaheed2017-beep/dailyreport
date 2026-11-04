@@ -1,0 +1,19 @@
+{
+  "day": 149,
+  "date": "2026-11-04",
+  "blog_id": "89971589186",
+  "handle": "industrial-data-historian-mes-software-pakistan-2026-opc-ua-pi-influxdb-azure-timescaledb-manufacturing-execution-system-buyer-guide",
+  "title": "Industrial Data Historian & MES Software Pakistan 2026: OPC-UA Time-Series, PI/InfluxDB/Azure, MES for Textile & Manufacturing, NEECA Energy Reporting & PKR Price Guide",
+  "summary_html": "<p>Complete buyer guide to industrial data historians and MES software for Pakistani factories in 2026. Covers OSIsoft PI vs InfluxDB vs TimescaleDB vs Azure Data Explorer, MES for textile/cement/pharma sectors, OPC-UA integration, NEECA energy data compliance, WAPDA load-shedding resilience design, and PKR price tables. 7-question FAQ with schema markup.</p>",
+  "tags": ["data historian", "MES", "OPC-UA", "InfluxDB", "TimescaleDB", "Azure Data Explorer", "PI System", "manufacturing execution system", "NEECA", "IIoT", "Pakistan 2026", "time-series database", "SCADA", "buying guide"],
+  "published_at": "2026-11-04T06:00:00+05:00",
+  "shopify_push_status": "PENDING — HTTP 000 cloud egress proxy block",
+  "word_count_estimate": 2800,
+  "schema_types": ["Article", "FAQPage"],
+  "faq_count": 7,
+  "internal_links_verified": "5/5",
+  "broken_links": 0,
+  "summary_html_length": 428,
+  "img_tags": 0,
+  "cluster": "Power Transmission & Motion Control Pakistan (extended) — Day 19"
+}
