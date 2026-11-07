@@ -1,0 +1,15 @@
+{
+  "day": 152,
+  "date": "2026-11-07",
+  "handle": "industrial-siem-ot-soc-pakistan-2026-ot-security-event-monitoring-cert-pk-nca-plc-hmi-iec-62443-buyer-guide",
+  "title": "Industrial SIEM & OT SOC Pakistan 2026 — Security Event Monitoring for PLC, HMI & SCADA with CERT-PK & NCA Compliance",
+  "summary_html": "Complete buyer guide to Industrial SIEM and OT Security Operations Centre (OT SOC) deployment in Pakistan 2026. Covers OT SIEM platforms (Claroty, Dragos, Nozomi, Fortinet FortiSIEM, Microsoft Sentinel + Defender for IoT, Wazuh open-source), PKR pricing for all tiers, CERT-PK 24-hour incident reporting workflow, NCA ECC compliance controls, IEC 62443 zone integration, and OT SOC staffing models for Pakistani textile, pharmaceutical, and power-utility operators.",
+  "blog_id": "89971589186",
+  "blog_name": "guides",
+  "tags": ["OT SIEM", "OT SOC", "CERT-PK", "NCA compliance", "IEC 62443", "industrial cybersecurity Pakistan", "PLC security", "SCADA security Pakistan", "Claroty Pakistan", "Dragos Pakistan", "Microsoft Sentinel OT", "Wazuh SIEM Pakistan"],
+  "cluster": "Industrial Networking & Security D3/3",
+  "internal_links_verified": "7/7",
+  "clean_streak_day": 77,
+  "shopify_status": "pending",
+  "word_count_approx": 2800
+}
