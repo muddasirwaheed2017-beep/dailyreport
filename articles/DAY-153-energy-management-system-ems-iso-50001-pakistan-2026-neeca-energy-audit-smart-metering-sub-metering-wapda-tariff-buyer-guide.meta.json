@@ -1,0 +1,26 @@
+{
+  "day": 153,
+  "date": "2026-11-08",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "handle": "energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide",
+  "title": "Energy Management System (EMS) & ISO 50001 Pakistan 2026 — NEECA Energy Audit, Sub-Metering, Smart Monitoring & WAPDA Tariff Savings Buyer's Guide",
+  "summary_html": "<p>Complete guide to industrial Energy Management Systems (EMS) and ISO 50001:2018 certification in Pakistan 2026. Covers NEECA SRO 1065 audit requirements, sub-metering hardware layers, WAPDA ToU tariff optimisation, EnPI/SEC KPIs, CUSUM charts, payback calculations and PKR pricing for textile, cement and manufacturing plants.</p>",
+  "tags": ["energy management system", "ISO 50001", "NEECA", "energy audit Pakistan", "sub-metering", "WAPDA tariff", "EnPI", "SEC", "power quality Pakistan 2026", "EMS Pakistan"],
+  "cluster": "Industrial Power Quality & Energy Management",
+  "cluster_position": "D1/3",
+  "word_count_approx": 2850,
+  "faq_schema": true,
+  "faq_count": 6,
+  "internal_links": [
+    "/blogs/guides/industrial-multi-function-energy-meter-pakistan-2026-wapda-disco-tariff-ct-modbus-rtu-tcp-scada-buyer-guide",
+    "/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide",
+    "/blogs/guides/motor-efficiency-ie-class-selection-pakistan-2026-ie1-ie2-ie3-ie4-neeca-energy-audit-wapda-tariff-roi-buyer-guide",
+    "/blogs/guides/apfc-automatic-power-factor-correction-panel-pakistan-2026-detuned-reactor-capacitor-bank-nepra-pf-penalty-sizing-buyer-guide",
+    "/blogs/guides/vfd-variable-frequency-drive-price-pakistan-2026-3-phase-motor-speed-controller-buyer-guide",
+    "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide"
+  ],
+  "shopify_push_result": "PENDING - will attempt",
+  "indexnow_result": "PENDING",
+  "yandex_ping_result": "PENDING"
+}
