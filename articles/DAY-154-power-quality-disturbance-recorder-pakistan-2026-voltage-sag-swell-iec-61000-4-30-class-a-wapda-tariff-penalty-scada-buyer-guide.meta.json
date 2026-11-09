@@ -1,0 +1,33 @@
+{
+  "day": 154,
+  "date": "2026-11-09",
+  "blog_id": "89971589186",
+  "handle": "power-quality-disturbance-recorder-pakistan-2026-voltage-sag-swell-iec-61000-4-30-class-a-wapda-tariff-penalty-scada-buyer-guide",
+  "title": "Power Quality Disturbance Recorder Pakistan 2026 — Voltage Sag, Swell & Interruption Logging, IEC 61000-4-30 Class A/S, WAPDA Tariff Penalty Evidence & SCADA Integration | Buyer's Guide",
+  "summary_html": "<p>Complete buyer's guide to power quality disturbance recorders (PQDR) in Pakistan 2026. Covers IEC 61000-4-30 Class A vs Class S, voltage sag/swell/interruption logging, WAPDA tariff penalty dispute methodology, SARFI indices, COMTRADE waveform capture, SCADA/IIoT integration via Modbus TCP and IEC 61850, and ISO 50001 EMS data quality. Sector sizing tables (textile, cement, cold storage, hospital) and ROI calculator included.</p>",
+  "tags": ["power quality", "disturbance recorder", "voltage sag", "WAPDA", "IEC 61000-4-30", "Class A", "NEPRA", "Pakistan", "buying guide", "2026", "SCADA integration", "SARFI", "COMTRADE"],
+  "meta_description": "Power quality disturbance recorder (PQDR) buyer's guide Pakistan 2026. IEC 61000-4-30 Class A vs S explained. WAPDA sag dispute evidence workflow. SCADA integration, ISO 50001 EMS data quality, SARFI indices, sector sizing table PKR prices.",
+  "approx_word_count": 2950,
+  "cluster": "Industrial Power Quality & Energy Management D2/3",
+  "shopify_push_status": "PENDING — HTTP 000 expected (cloud IP blocked)",
+  "internal_links": [
+    "/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide",
+    "/blogs/guides/iec-61000-4-30-power-quality-measurement-methodology-pakistan-2026-class-a-class-s-pqa-wapda-disco-compliance-buyer-guide",
+    "/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide",
+    "/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide",
+    "/blogs/guides/harmonic-distortion-analysis-ieee-519-2022-compliance-pakistan-2026-thdv-thdi-pcc-limits-wapda-disco-buyer-guide",
+    "/blogs/guides/industrial-data-historian-mes-software-pakistan-2026-opc-ua-pi-influxdb-azure-timescaledb-manufacturing-execution-system-buyer-guide",
+    "/blogs/guides/opcua-scada-software-pakistan-2026-iec-62541-industrial-pc-iiot-gateway-factory-cyber-security-buyer-guide"
+  ],
+  "faq_count": 6,
+  "schema_types": ["FAQPage", "Question", "Answer"],
+  "standards_cited": ["IEC 61000-4-30 (3rd ed 2015)", "IEC 61000-4-15", "IEEE 1159-2019", "IEEE 1564-2014", "IEEE C37.111-2013 (COMTRADE)", "IEEE 519-2022", "EN 50160", "NEPRA Power Quality Regulations 2022", "IEC 61850 MMS"],
+  "v7_link_verification": {
+    "total_links": 7,
+    "valid": 7,
+    "broken": 0,
+    "remapped": 0,
+    "clean_streak_days": 79,
+    "method": "known-handles.txt (142 meta.json files)"
+  }
+}

@@ -1,0 +1,676 @@
+<!--
+  CNC Electric Pakistan — Buying Guide
+  Title: Power Quality Disturbance Recorder Pakistan 2026 — Voltage Sag, Swell & Interruption Logging, IEC 61000-4-30 Class A/S, WAPDA Tariff Penalty Evidence & SCADA Integration | Buyer's Guide
+  Handle: power-quality-disturbance-recorder-pakistan-2026-voltage-sag-swell-iec-61000-4-30-class-a-wapda-tariff-penalty-scada-buyer-guide
+  Blog: 89971589186 (guides)
+  Day: 154
+  Date: 2026-11-09
+  Cluster: Industrial Power Quality & Energy Management D2/3
+-->
+<article>
+
+<h1>Power Quality Disturbance Recorder Pakistan 2026 — Voltage Sag, Swell &amp; Interruption Logging, IEC 61000-4-30 Class A/S, WAPDA Tariff Penalty Evidence &amp; SCADA Integration | Buyer's Guide</h1>
+
+<p><strong>Published:</strong> November 2026 &nbsp;|&nbsp; <strong>Reading time:</strong> ~18 min &nbsp;|&nbsp; <strong>Cluster:</strong> Industrial Power Quality &amp; Energy Management (Part 2 of 3)</p>
+
+<nav>
+  <strong>Quick Navigation</strong>
+  <ol>
+    <li><a href="#what-is-pqdr">What Is a Power Quality Disturbance Recorder?</a></li>
+    <li><a href="#iec-61000-4-30">IEC 61000-4-30 Class A vs Class S</a></li>
+    <li><a href="#event-types">Event Types — Sag, Swell, Interruption, Transient, Flicker</a></li>
+    <li><a href="#why-pakistan">Why Pakistani Factories Need a PQDR Right Now</a></li>
+    <li><a href="#wapda-penalty">Using PQDR Evidence to Dispute WAPDA Tariff Penalties</a></li>
+    <li><a href="#hardware-spec">Hardware Specification Table — Class A vs Class S vs Portable</a></li>
+    <li><a href="#channel-config">Channel Configuration: Voltage, Current, Harmonics, Flicker</a></li>
+    <li><a href="#memory-storage">Memory, Storage &amp; Triggered vs Continuous Recording</a></li>
+    <li><a href="#scada-integration">SCADA / IIoT Integration — Modbus, IEC 61850, MQTT</a></li>
+    <li><a href="#ems-link">PQDR in an ISO 50001 Energy Management System</a></li>
+    <li><a href="#sector-sizing">Sector Sizing Table (Textile / Cement / Cold Storage / Rice Mill / Hospital)</a></li>
+    <li><a href="#roi-calculator">ROI Calculator — Cost of One Unrecorded Sag Event</a></li>
+    <li><a href="#procurement-checklist">Procurement Checklist</a></li>
+    <li><a href="#faqs">FAQs</a></li>
+  </ol>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="what-is-pqdr">1. What Is a Power Quality Disturbance Recorder?</h2>
+
+<p>A <strong>Power Quality Disturbance Recorder (PQDR)</strong> — also called a Power Quality Analyser with extended logging, a Power Disturbance Monitor, or simply a PQ Recorder — is an instrument that continuously monitors one or more electrical supply points and stores timestamped records of every deviation from nominal voltage, frequency, and waveform quality. Unlike a basic multimeter or even a standard <a href="/blogs/guides/power-quality-analyser-pakistan-2026-wapda-voltage-unbalance-harmonics-power-factor-buyer-guide">power quality analyser</a>, a PQDR is designed for <em>unattended long-term deployment</em> — typically seven to thirty days at a minimum, and often permanently installed at the utility incomer or critical production feeder.</p>
+
+<p>The core value proposition in Pakistan is threefold:</p>
+<ol>
+  <li><strong>Evidence</strong> — a Class A PQDR produces time-stamped, court-admissible voltage sag records that can be presented to WAPDA, LESCO, FESCO, MEPCO, IESCO, or HESCO when disputing damage claims or penalty billings caused by utility-side disturbances.</li>
+  <li><strong>Root-cause analysis</strong> — by correlating sag/swell events with production stoppage timestamps from your MES or SCADA historian, you can pinpoint whether downtime is caused by the utility, your own network, or equipment malfunction.</li>
+  <li><strong>Compliance</strong> — IEC 61000-4-30 Class A measurement methodology is the internationally recognised standard; NEPRA's Power Quality Regulations (2022) reference IEC 61000-4-30 as the measurement method for PCC (Point of Common Coupling) assessments.</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="iec-61000-4-30">2. IEC 61000-4-30 Class A vs Class S — What It Means for Pakistani Buyers</h2>
+
+<p>The <strong><a href="/blogs/guides/iec-61000-4-30-power-quality-measurement-methodology-pakistan-2026-class-a-class-s-pqa-wapda-disco-compliance-buyer-guide">IEC 61000-4-30</a></strong> standard (3rd edition, 2015 — referenced by NEPRA Power Quality Regulations 2022) defines two measurement performance classes:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Class A — Type Testing &amp; Contractual</th>
+      <th>Class S — Survey / Indicative</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Voltage RMS measurement uncertainty</td>
+      <td>±0.1% of Udin</td>
+      <td>±0.5% of Udin</td>
+    </tr>
+    <tr>
+      <td>Aggregation intervals</td>
+      <td>10/12-cycle, 150/180-cycle, 10 min, 2 h — all mandatory</td>
+      <td>150/180-cycle and 10 min — optional others</td>
+    </tr>
+    <tr>
+      <td>Sag/swell detection threshold</td>
+      <td>Sliding reference window (10-cycle RMS)</td>
+      <td>Fixed nominal threshold</td>
+    </tr>
+    <tr>
+      <td>Flicker (Pst / Plt)</td>
+      <td>IEC 61000-4-15 compliant — mandatory</td>
+      <td>Optional</td>
+    </tr>
+    <tr>
+      <td>Mains signalling</td>
+      <td>Mandatory detection</td>
+      <td>Optional</td>
+    </tr>
+    <tr>
+      <td>Timing accuracy</td>
+      <td>±20 ms (synchronised to UTC if GPS/PTP)</td>
+      <td>±1 s</td>
+    </tr>
+    <tr>
+      <td>Typical use case in Pakistan</td>
+      <td>Utility PCC, 11 kV incomer, insurance / WAPDA dispute</td>
+      <td>Factory floor survey, power audit, quick check</td>
+    </tr>
+    <tr>
+      <td>Price range (PKR, 2026)</td>
+      <td>PKR 450,000 – 1,800,000</td>
+      <td>PKR 85,000 – 350,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Key rule for Pakistani buyers:</strong> If you intend to use recorder data in a formal dispute with a DISCO (Distribution Company) or in an insurance claim after equipment damage, you must use a <strong>Class A</strong> recorder. Class S data is admissible only as supplementary evidence. NEPRA's licensing conditions for DISCOs require them to meet EN 50160 voltage quality limits measured to Class A methodology.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="event-types">3. Power Quality Event Types — The Full Taxonomy</h2>
+
+<p>IEC 61000-4-30 and IEEE 1159-2019 define the following event categories, all of which a PQDR must capture:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Event Type</th>
+      <th>IEEE 1159 / IEC Definition</th>
+      <th>Typical Pakistani Cause</th>
+      <th>Equipment Damage Risk</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Voltage Sag (Dip)</strong></td>
+      <td>RMS drops to 10–90% Unom for 0.5 cycle – 1 min</td>
+      <td>WAPDA load shedding transitions, 11 kV feeder faults, large motor start on shared feeder</td>
+      <td>VFD trip, contactor dropout, PLC lockup, injection moulding scrap</td>
+    </tr>
+    <tr>
+      <td><strong>Voltage Swell</strong></td>
+      <td>RMS rises to 110–180% Unom for 0.5 cycle – 1 min</td>
+      <td>Capacitor bank switching by DISCO, sudden large load shed</td>
+      <td>Motor insulation stress, LED driver failure, overvoltage relay trip</td>
+    </tr>
+    <tr>
+      <td><strong>Short Interruption</strong></td>
+      <td>RMS &lt; 10% Unom for 0.5 cycle – 3 s</td>
+      <td>Auto-recloser operation on 11 kV feeder</td>
+      <td>All contactors drop out; production line restart required</td>
+    </tr>
+    <tr>
+      <td><strong>Long Interruption</strong></td>
+      <td>RMS &lt; 10% Unom for &gt; 3 s</td>
+      <td>Scheduled WAPDA load shedding; fuse/breaker fault</td>
+      <td>Full production stoppage; UPS/generator transfer</td>
+    </tr>
+    <tr>
+      <td><strong>Transient Overvoltage</strong></td>
+      <td>Sub-cycle spikes &gt; 1.1× peak; microseconds to milliseconds</td>
+      <td>Lightning, capacitor switching, arc flash</td>
+      <td>IGBT failure in VFDs, PLC I/O card burnout</td>
+    </tr>
+    <tr>
+      <td><strong>Harmonic Distortion</strong></td>
+      <td>THD-V &gt; 8% at PCC (EN 50160 limit)</td>
+      <td>VFD proliferation without line reactors, 6-pulse rectifiers</td>
+      <td>Capacitor bank resonance, neutral conductor overload, transformer heating</td>
+    </tr>
+    <tr>
+      <td><strong>Voltage Flicker (Pst / Plt)</strong></td>
+      <td>Pst &gt; 1.0 at PCC (EN 50160)</td>
+      <td>Arc furnace, spot welder, large motor starts</td>
+      <td>Process control instability; lighting flicker visible to operators</td>
+    </tr>
+    <tr>
+      <td><strong>Voltage Unbalance</strong></td>
+      <td>Negative-sequence / positive-sequence &gt; 2% (EN 50160)</td>
+      <td>Single-phase WAPDA agricultural loads on shared 11 kV feeder</td>
+      <td>3-phase motor overheating; derating required</td>
+    </tr>
+    <tr>
+      <td><strong>Frequency Deviation</strong></td>
+      <td>50 Hz ± 1 Hz for &gt; 10 s (NEPRA)</td>
+      <td>NTDC generation shortfall; under-frequency load shedding</td>
+      <td>Synchronous motor speed deviation; timing circuit drift</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="why-pakistan">4. Why Pakistani Industrial Facilities Need a PQDR Right Now</h2>
+
+<p>Pakistan's grid operates under exceptional stress. The five conditions that make a PQDR <em>mandatory</em> for any facility consuming more than 500 kVA:</p>
+
+<ol>
+  <li><strong>Chronic voltage sags from load shedding transitions</strong> — WAPDA's rotating load shedding, still occurring in 2026 despite solar additions, creates 20–80 sag events per week on many 11 kV feeders. Without a Class A record, your insurance claim for a PKR 3.5 million VFD is rejected.</li>
+  <li><strong>NEPRA Power Quality Regulations 2022</strong> — Under Regulation 7, industrial consumers connected at 11 kV or above can formally request PQ assessments. A PQDR gives you the counter-measurement capability to validate (or rebut) DISCO's own measurements.</li>
+  <li><strong>IEEE 519-2022 compliance pressure</strong> — EU and US textile buyers are now requiring <a href="/blogs/guides/harmonic-distortion-analysis-ieee-519-2022-compliance-pakistan-2026-thdv-thdi-pcc-limits-wapda-disco-buyer-guide">IEEE 519-2022 harmonic compliance</a> in their vendor audits. A PQDR that logs THD-V and THD-I per-harmonic order provides the data for your compliance report.</li>
+  <li><strong>High cost of unrecorded events</strong> — A 200 ms voltage sag that trips 20 VFDs on a weaving or spinning line causes PKR 180,000–450,000 of scrap and restart cost. Without a timestamped record, you cannot prove the sag came from the utility side vs your own factory.</li>
+  <li><strong>ISO 50001 EnPI data quality</strong> — Your <a href="/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide">Energy Management System</a> energy performance indicators lose validity if the sub-meter data is contaminated by unrecorded interruptions. A PQDR timestamps every interruption so the EMS can exclude incomplete measurement intervals.</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="wapda-penalty">5. Using PQDR Evidence to Dispute WAPDA / DISCO Tariff Penalties</h2>
+
+<p>This is the highest-ROI use case for a Class A PQDR in Pakistan. The workflow:</p>
+
+<h3>5.1 Penalty / Damage Scenario Setup</h3>
+<ul>
+  <li>LESCO / FESCO bills you for "power factor penalty" under their PF tariff — but your factory PF was 0.95+ when a 11 kV sag caused your capacitor bank protection to trip, dropping PF momentarily.</li>
+  <li>WAPDA refuses to compensate for equipment damage during a supply interruption, claiming it was your in-premises fault.</li>
+  <li>DISCO performs a PQ assessment and claims your facility injects harmonics above the PCC limit — you need counter-evidence.</li>
+</ul>
+
+<h3>5.2 Documentation Chain from PQDR to Formal Complaint</h3>
+<ol>
+  <li><strong>Install Class A PQDR at the 11 kV / LT incomer</strong>, synchronised to GPS UTC time ±20 ms. Install a second PQDR at the same location if the event is likely to become a legal matter (dual independent evidence chain).</li>
+  <li><strong>Capture the sag/swell/interruption event</strong> — PQDR records: RMS profile (10-cycle intervals), waveform capture (at least 100 ms pre-trigger, 500 ms post-trigger), THD-V at time of event, event start/end timestamp UTC.</li>
+  <li><strong>Cross-reference with production data</strong> — Export PQDR event CSV. Compare timestamps with your MES/SCADA stoppage log and motor trip logs (from your MCC <a href="/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide">IIoT gateway</a> event buffer).</li>
+  <li><strong>File formal complaint with NEPRA</strong> under Section 7(3) of the NEPRA Power Quality Regulations 2022, attaching the PQDR PDF/CSV report and a loss quantification statement signed by a licensed electrical engineer.</li>
+  <li><strong>DISCO response</strong> — DISCO must respond within 30 days. With Class A data, most DISCOs settle the PF penalty waiver administratively rather than proceed to tribunal.</li>
+</ol>
+
+<h3>5.3 Key PQDR Report Fields Required by NEPRA</h3>
+<table>
+  <thead>
+    <tr><th>Field</th><th>Requirement</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Measurement standard</td><td>IEC 61000-4-30 Class A — must be stated explicitly</td></tr>
+    <tr><td>Instrument make/model/serial</td><td>Traceable calibration certificate ≤ 24 months old</td></tr>
+    <tr><td>Measurement location</td><td>GPS coordinates of CT/VT installation point</td></tr>
+    <tr><td>Measurement duration</td><td>Minimum 1 week; 1 month recommended</td></tr>
+    <tr><td>Nominal voltage Udin</td><td>As per DISCO supply contract (typically 11 kV or 400 V)</td></tr>
+    <tr><td>Sag/swell events table</td><td>Start time (UTC), duration, residual voltage, phase(s) affected</td></tr>
+    <tr><td>SARFI-X indices</td><td>SARFI-90, SARFI-70, SARFI-50 as per IEEE 1564-2014</td></tr>
+    <tr><td>THD-V 10-min averages</td><td>95th percentile over measurement week</td></tr>
+    <tr><td>Flicker Plt weekly</td><td>95th percentile Plt ≤ 0.65 (EN 50160 planning level)</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="hardware-spec">6. Hardware Specification Table — Class A vs Class S vs Portable Analyser</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Spec</th>
+      <th>Class A Permanent Recorder</th>
+      <th>Class S Survey Recorder</th>
+      <th>Portable Clamp Analyser</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>IEC 61000-4-30 class</td>
+      <td>Class A</td>
+      <td>Class S</td>
+      <td>Class S or unclassified</td>
+    </tr>
+    <tr>
+      <td>Voltage inputs</td>
+      <td>3 V + N, up to 690 V direct or via VT</td>
+      <td>3 V + N, up to 400 V / 690 V with VT adapter</td>
+      <td>3 V + N, 1000 V CAT IV</td>
+    </tr>
+    <tr>
+      <td>Current inputs</td>
+      <td>3–5 CT inputs (1A/5A); some include 1 mA I/O for 4-20mA</td>
+      <td>3 CT inputs; Rogowski coil optional</td>
+      <td>Flexible Rogowski clamp 1–10,000 A</td>
+    </tr>
+    <tr>
+      <td>Sampling rate</td>
+      <td>512 samples/cycle (25.6 kHz at 50 Hz); 1 MHz optional (transient)</td>
+      <td>128–256 samples/cycle</td>
+      <td>64–256 samples/cycle</td>
+    </tr>
+    <tr>
+      <td>Harmonic order</td>
+      <td>Up to H50 (2.5 kHz), supraharmonics H50–H150 on premium models</td>
+      <td>Up to H50</td>
+      <td>Up to H50</td>
+    </tr>
+    <tr>
+      <td>Flicker measurement</td>
+      <td>IEC 61000-4-15 Pst, Plt — Class A mandatory</td>
+      <td>Optional / simplified</td>
+      <td>Basic / absent</td>
+    </tr>
+    <tr>
+      <td>Memory</td>
+      <td>8–64 GB internal flash; SD card expansion; cyclic overwrite</td>
+      <td>4–16 GB SD card</td>
+      <td>8 GB internal</td>
+    </tr>
+    <tr>
+      <td>Communication</td>
+      <td>Ethernet, Modbus TCP, IEC 61850 MMS, FTP push, MQTT optional</td>
+      <td>USB, Ethernet, optional Wi-Fi</td>
+      <td>USB, Bluetooth, Wi-Fi</td>
+    </tr>
+    <tr>
+      <td>Time sync</td>
+      <td>GPS/GNSS, PTP (IEEE 1588), NTP ≤ ±1 ms</td>
+      <td>NTP ≤ ±1 s</td>
+      <td>RTC; manual sync</td>
+    </tr>
+    <tr>
+      <td>Enclosure rating</td>
+      <td>IP20–IP40 (panel mount DIN rail or 19" rack)</td>
+      <td>IP42–IP52 (panel / portable carry case)</td>
+      <td>IP54 carry case</td>
+    </tr>
+    <tr>
+      <td>Power supply</td>
+      <td>85–265 V AC wide range; 20–60 V DC optional; backup supercap/battery 30 min</td>
+      <td>100–240 V AC; Li-ion battery 8–12 h</td>
+      <td>Li-ion 8 h; USB-C charge</td>
+    </tr>
+    <tr>
+      <td>Approvals</td>
+      <td>IEC 61000-4-30 Class A certificate; CE; UKCA</td>
+      <td>IEC 61000-4-30 Class S or EN 50463-2</td>
+      <td>CE; IEC 61010-1 CAT IV</td>
+    </tr>
+    <tr>
+      <td>Typical PKR price range (2026)</td>
+      <td>PKR 450,000 – 1,800,000</td>
+      <td>PKR 85,000 – 350,000</td>
+      <td>PKR 35,000 – 180,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Pakistan-specific note:</strong> Always verify the GPS antenna can receive signal through the factory roof or ceiling. Many PQDR installations in Lahore and Karachi industrial zones lose GPS lock inside steel-frame factory buildings. Use an external antenna cable (SMA connector, 10–15 m coaxial) routed to the building exterior. Without GPS lock, the ±20 ms UTC timestamp accuracy of Class A cannot be guaranteed, which weakens evidentiary value.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="channel-config">7. Channel Configuration for Pakistani Industrial Sites</h2>
+
+<h3>7.1 11 kV Incomer (High-Voltage Side — via VT/CT)</h3>
+<ul>
+  <li>Voltage: 3 × VT secondary (110V or 100V phase-to-neutral) — verify VT ratio and burden before connecting PQDR inputs.</li>
+  <li>Current: 3 × CT secondary (1A or 5A) — confirm accuracy class ≥ 0.5S for energy and ≥ 5P20 for protection events.</li>
+  <li>PQDR input range: 100V / 1A or 100V / 5A — most Class A recorders support both via jumper selection.</li>
+  <li>Auxiliary DI channels: 4–8 digital inputs — connect to: DISCO auto-recloser trip output, main incomer trip relay, generator ATS status, capacitor bank contactor feedback. These DI timestamps appear on the same event timeline as voltage events, enabling root-cause correlation.</li>
+</ul>
+
+<h3>7.2 400V LT Feeder (Low-Voltage Side — Direct or via CT)</h3>
+<ul>
+  <li>Voltage: 3 × direct input up to 690V L-L (most Class A recorders are 300V or 480V direct; use a step-down VT for 690V).</li>
+  <li>Current: Rogowski coil clamps (1A–10,000A) for quick installation without CT disconnection — suitable for surveys. For permanent installation, solid-core or split-core CTs with rated burden ≤ 2.5 VA are preferred.</li>
+  <li>Temperature channel (optional): PT100 input on some models — monitors transformer winding temperature correlation with voltage disturbances.</li>
+</ul>
+
+<h3>7.3 Recommended Measurement Points for a Typical Pakistani Factory</h3>
+<table>
+  <thead>
+    <tr><th>Priority</th><th>Location</th><th>PQDR Class</th><th>Rationale</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1 (Mandatory)</td><td>11 kV utility incomer PCC</td><td>Class A</td><td>Utility / factory boundary — legal evidence quality</td></tr>
+    <tr><td>2 (High)</td><td>Main 400V LT bus (after 11kV/400V transformer)</td><td>Class A or S</td><td>Separates utility sags from internal distribution voltage drop</td></tr>
+    <tr><td>3 (High)</td><td>Critical production feeder (VFD group, injection moulding, spinning)</td><td>Class S</td><td>Links power events to production stoppages</td></tr>
+    <tr><td>4 (Medium)</td><td>APFC panel incomer</td><td>Class S or sub-meter</td><td>Monitors capacitor bank switching transients — common cause of harmonic resonance</td></tr>
+    <tr><td>5 (Low)</td><td>Generator / UPS output</td><td>Portable analyser</td><td>Commissioning check; not for continuous deployment</td></tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="memory-storage">8. Memory, Storage and Recording Modes</h2>
+
+<p>A PQDR recording at 512 samples/cycle (50 Hz) across 3 voltage + 3 current channels + 4 DI channels generates approximately <strong>18–25 MB per day</strong> of compressed aggregated data (10/12-cycle RMS, 10-min values, event waveforms). For a 30-day campaign at a site with high sag frequency (50+ events/day), budget 2–4 GB of storage.</p>
+
+<h3>8.1 Recording Modes</h3>
+<table>
+  <thead>
+    <tr><th>Mode</th><th>What It Records</th><th>Use Case</th><th>Storage Impact</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Continuous RMS aggregation</strong></td>
+      <td>10/12-cycle, 150/180-cycle, 10-min, 2-h RMS values — all channels</td>
+      <td>Trend analysis; EN 50160 / NEPRA compliance reporting</td>
+      <td>Low — ~0.5 MB/day</td>
+    </tr>
+    <tr>
+      <td><strong>Triggered waveform capture</strong></td>
+      <td>Full waveform 512 samp/cycle, pre/post trigger window</td>
+      <td>Sag/swell/transient evidence; insurance / WAPDA dispute</td>
+      <td>Medium — ~0.5–5 MB per event</td>
+    </tr>
+    <tr>
+      <td><strong>Harmonic spectrum continuous</strong></td>
+      <td>10-min aggregated THD-V, THD-I, H2–H50 per phase</td>
+      <td>IEEE 519 / NEPRA PQ compliance; APFC / AHF sizing</td>
+      <td>Medium — ~2 MB/day</td>
+    </tr>
+    <tr>
+      <td><strong>Flicker continuous</strong></td>
+      <td>Pst (10-min), Plt (2-h) per IEC 61000-4-15</td>
+      <td>EN 50160 Plt ≤ 0.65 compliance; arc furnace / welder survey</td>
+      <td>Low — ~0.1 MB/day</td>
+    </tr>
+    <tr>
+      <td><strong>High-speed transient</strong></td>
+      <td>1 MHz transient capture, peak detection</td>
+      <td>Lightning, surge, capacitor switching spike identification</td>
+      <td>High — 10–50 MB per event</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Best practice for Pakistan:</strong> Enable all continuous modes always. Set triggered waveform capture for sag threshold 90% and swell threshold 110% with 200 ms pre-trigger / 1,000 ms post-trigger. High-speed transient capture is high-storage — enable only during targeted investigations (lightning season June–August, or after a VFD failure).</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="scada-integration">9. SCADA / IIoT Integration — Modbus TCP, IEC 61850, MQTT</h2>
+
+<p>A PQDR that records to local flash only is useful but not transformative. The step-change in value comes when PQDR event data is integrated with your plant's <a href="/blogs/guides/industrial-data-historian-mes-software-pakistan-2026-opc-ua-pi-influxdb-azure-timescaledb-manufacturing-execution-system-buyer-guide">data historian</a> or SCADA system, enabling automated correlation of power events with production KPIs.</p>
+
+<h3>9.1 Communication Protocol Options</h3>
+<table>
+  <thead>
+    <tr><th>Protocol</th><th>Use Case</th><th>PQDR Support</th><th>Notes for Pakistan</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Modbus TCP</strong></td>
+      <td>Real-time values to SCADA (V, I, THD, Pst)</td>
+      <td>Universal — all Class A/S recorders</td>
+      <td>Use via <a href="/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide">IIoT gateway</a> for buffering during WAPDA sag — gateway holds data during Ethernet interruption</td>
+    </tr>
+    <tr>
+      <td><strong>IEC 61850 MMS / GOOSE</strong></td>
+      <td>High-speed event reports to protection relay</td>
+      <td>Premium Class A recorders (11 kV substation class)</td>
+      <td>Required if integrating with 11 kV protection IED or bay controller</td>
+    </tr>
+    <tr>
+      <td><strong>IEC 61968 / CIM XML</strong></td>
+      <td>Utility-grade event export to WAPDA SCADA</td>
+      <td>High-end Class A with utility interface</td>
+      <td>Rarely applicable in PK private factories; relevant for IPPs and grid-connected solar</td>
+    </tr>
+    <tr>
+      <td><strong>MQTT</strong></td>
+      <td>Cloud PQDR dashboard; mobile alert on sag event</td>
+      <td>Premium models + IIoT gateway with MQTT bridge</td>
+      <td>Use MQTT over TLS; configure broker authentication — do not expose PQDR Modbus direct to internet</td>
+    </tr>
+    <tr>
+      <td><strong>FTP / SFTP push</strong></td>
+      <td>Scheduled bulk upload of COMTRADE / CSV / PDF reports</td>
+      <td>All Class A recorders; most Class S</td>
+      <td>Most reliable method for Pakistan where WAPDA outages cause Ethernet dropouts — FTP push on reconnect ensures no data loss</td>
+    </tr>
+    <tr>
+      <td><strong>OPC-UA Server</strong></td>
+      <td>MES / historian integration via standard node namespace</td>
+      <td>Premium Class A models + OPC-UA add-on license</td>
+      <td>Most compatible with <a href="/blogs/guides/opcua-scada-software-pakistan-2026-iec-62541-industrial-pc-iiot-gateway-factory-cyber-security-buyer-guide">OPC-UA SCADA</a> platforms already deployed</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>9.2 COMTRADE File Format — Portable Event Archive</h3>
+<p>Class A PQDRs store waveform captures in <strong>COMTRADE format</strong> (IEEE C37.111-2013), the universal protection and power quality event archive format. COMTRADE files consist of a .CFG configuration file + .DAT waveform data file. Any power quality software (commercial or open-source) can open these. For Pakistani factory owners: when requesting PQDR data for a WAPDA dispute, specifically request <strong>COMTRADE .CFG/.DAT exports</strong> plus the PDF or HTML summary report. The COMTRADE file is the primary legal evidence; the PDF is the human-readable presentation.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="ems-link">10. PQDR in an ISO 50001 Energy Management System</h2>
+
+<p>Your <a href="/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide">ISO 50001 EMS</a> measures energy performance indicators (EnPIs) using sub-meter kWh data. However, EnPI calculations become invalid when:</p>
+<ul>
+  <li>A voltage sag causes production to stop mid-interval — the sub-meter records partial production kWh but the production system records zero output for that batch.</li>
+  <li>A short interruption (auto-recloser, 300 ms) causes all meters to reset, creating a gap in the 10-min aggregation interval.</li>
+  <li>A voltage swell causes transformer saturation, drawing reactive power spikes that inflate kVAh billing without producing useful work.</li>
+</ul>
+
+<p>Integrating the PQDR's event timestamps into the EMS resolves these issues by allowing the EnPI calculation engine to:</p>
+<ol>
+  <li><strong>Flag</strong> EnPI intervals that contain a PQ event as "invalid measurement intervals" — excluded from the EnB (Energy Baseline) regression.</li>
+  <li><strong>Quantify</strong> energy wasted during voltage sag recovery (motor re-acceleration current surge, production restart energy).</li>
+  <li><strong>Report</strong> the total "PQ loss kWh" per month as a separate energy conservation measure (ECM) opportunity in the NEECA Energy Audit report.</li>
+</ol>
+
+<p>The PQDR → historian → EMS integration is therefore not optional for ISO 50001 Level 3 (automated real-time EnPI dashboards) — it is the data quality backbone of the entire measurement and verification chain.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="sector-sizing">11. Sector Sizing Table</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Sector</th>
+      <th>Recommended PQDR Config</th>
+      <th>Key Events to Monitor</th>
+      <th>Approximate PKR Budget (Installed)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Textile (Spinning / Weaving)</strong><br>500 kVA – 20 MVA</td>
+      <td>Class A at 11 kV PCC + Class S at critical VFD feeder; GPS antenna external</td>
+      <td>Sags &gt; 300 ms (VFD trip threshold), transient overvoltage (lightning), flicker from ARC welder</td>
+      <td>PKR 650,000 – 1,500,000 (dual-point)</td>
+    </tr>
+    <tr>
+      <td><strong>Cement / Steel</strong><br>5–50 MVA</td>
+      <td>Class A at 33 kV or 11 kV PCC; IEC 61850 MMS to protection system; 1 MHz transient capture enabled</td>
+      <td>Transients from large motor starts (10 MW kiln motor), voltage unbalance &gt; 2%, flicker from arc furnace</td>
+      <td>PKR 1,200,000 – 3,500,000</td>
+    </tr>
+    <tr>
+      <td><strong>Cold Storage / Food Processing</strong><br>200–1,000 kVA</td>
+      <td>Class S at 400V LT bus; Rogowski clamp CTs; FTP push to cloud historian</td>
+      <td>Short interruptions triggering compressor trips; swell events from capacitor bank switching</td>
+      <td>PKR 120,000 – 280,000</td>
+    </tr>
+    <tr>
+      <td><strong>Rice / Flour Mill</strong><br>100–500 kVA</td>
+      <td>Portable Class S analyser + 7-day deployment; survey mode</td>
+      <td>Voltage unbalance from single-phase agricultural loads; motor overheating from sustained 3–4% unbalance</td>
+      <td>PKR 85,000 – 180,000 (survey)</td>
+    </tr>
+    <tr>
+      <td><strong>Hospital / Data Centre</strong><br>200 kVA – 5 MVA</td>
+      <td>Class A at LT bus + UPS/generator output; dual independent recorders; PTP time sync</td>
+      <td>Short interruptions &gt; 10 ms (JCI / NABH facility accreditation PQ requirement); UPS switchover sag &lt; 4 ms</td>
+      <td>PKR 550,000 – 1,200,000</td>
+    </tr>
+    <tr>
+      <td><strong>Injection Moulding / Plastic</strong><br>300 kVA – 3 MVA</td>
+      <td>Class S at critical moulding machine feeder; sag threshold 95% (tighter than standard)</td>
+      <td>Sags &gt; 100 ms causing heater controller dropout (shot scrap); transients from capacitor bank</td>
+      <td>PKR 95,000 – 350,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="roi-calculator">12. ROI Calculator — Cost of One Unrecorded Sag Event</h2>
+
+<p><strong>Scenario:</strong> Medium-size textile spinning mill, Faisalabad, 2 MVA, 8 × 55 kW VFDs on Ring Frame machines.</p>
+
+<table>
+  <thead>
+    <tr><th>Cost Element</th><th>Calculation</th><th>PKR</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>VFD trip + restart delay</td><td>8 VFDs × 25 min restart × 50 kg yarn/hr machine rate</td><td>PKR 68,000</td></tr>
+    <tr><td>Broken yarn waste (sag-induced)</td><td>8 machines × avg 2 kg scrap × PKR 1,100/kg combed cotton</td><td>PKR 17,600</td></tr>
+    <tr><td>Labour overtime for restart</td><td>8 operators × 1 hr overtime × PKR 350/hr</td><td>PKR 2,800</td></tr>
+    <tr><td>VFD capacitor stress aging (actuarial)</td><td>1 event per 150 expected lifetime events × PKR 180,000 VFD cost</td><td>PKR 1,200</td></tr>
+    <tr><td><strong>Total cost of ONE sag event</strong></td><td></td><td><strong>PKR 89,600</strong></td></tr>
+  </tbody>
+</table>
+
+<p>At 3 sag events per week (conservative for Faisalabad FESCO feeder), annual cost = <strong>PKR 13.97 million</strong>. A Class A PQDR at PKR 650,000 (installed, calibrated, GPS-synced) pays back in <strong>&lt; 7 weeks</strong> — purely from WAPDA dispute credits and reduced scrap, before counting insurance claim success rates.</p>
+
+<p><strong>Even if only one WAPDA dispute per year succeeds</strong> in recovering a PKR 2 million equipment damage claim, the PQDR pays for itself in that one event.</p>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="procurement-checklist">13. Procurement Checklist</h2>
+
+<ul>
+  <li>[ ] IEC 61000-4-30 Class A certificate from an accredited test laboratory — not just a datasheet claim. Request the IECEE CB certificate number.</li>
+  <li>[ ] Calibration certificate ≤ 24 months from NABL-accredited lab (or international equivalent). Critical for NEPRA / insurance admissibility.</li>
+  <li>[ ] GPS/GNSS antenna included or as option. Confirm SMA connector and antenna cable length available (10 m minimum for internal installation).</li>
+  <li>[ ] COMTRADE export (IEEE C37.111) confirmed in firmware — not just CSV/PDF.</li>
+  <li>[ ] Modbus TCP register map provided (not just Modbus RTU). Verify register addresses for sag event count, latest sag magnitude, and instantaneous V/I/f/THD.</li>
+  <li>[ ] Input voltage range matches your LT voltage: 230V AC phase-to-neutral (400V L-L) for standard Pakistan LT.</li>
+  <li>[ ] CT and VT ratio input fields in configuration software (verify 11 kV / 100V VT ratio can be entered without firmware modification).</li>
+  <li>[ ] SD card or internal flash ≥ 8 GB for 30-day campaign with 50 events/day.</li>
+  <li>[ ] Wide-range AC/DC power supply input (85–265V AC). WAPDA supply routinely dips to 160–180V AC — do not purchase a device rated for 200–240V only.</li>
+  <li>[ ] DIN rail mount or 19-inch rack mount — confirm panel cut-out or rack unit height matches your MCC / switchboard bay.</li>
+  <li>[ ] After-sales support: local distributor with trained application engineer in Pakistan (Lahore / Karachi / Faisalabad coverage).</li>
+  <li>[ ] Software license: PC analysis software included, not subscription-only. Subscription models are acceptable only if the offline PDF/COMTRADE export does NOT require an active subscription.</li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<h2 id="faqs">14. Frequently Asked Questions</h2>
+
+<div itemscope itemtype="https://schema.org/FAQPage">
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">What is the difference between a power quality analyser and a power quality disturbance recorder?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">A power quality analyser is primarily a handheld or portable instrument used for one-off measurements, surveys, and troubleshooting — typically deployed for hours to a few days. A power quality disturbance recorder (PQDR) is designed for permanent or long-term unattended installation (weeks to months) with large local storage, continuous triggered waveform capture, and network connectivity for real-time SCADA integration. All PQDRs perform the same measurements as a PQ analyser, but their key advantage is timestamped event logging over extended periods — which is what makes the data admissible as legal evidence in WAPDA / DISCO disputes under NEPRA Power Quality Regulations 2022.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">Which IEC 61000-4-30 class is required for a NEPRA power quality dispute in Pakistan?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">Class A is required for formal disputes and contractual power quality assessments under NEPRA Power Quality Regulations 2022. Class A measurement uncertainty (±0.1% of Udin), mandatory 10/12-cycle aggregation, and ±20 ms UTC timing accuracy are what differentiate Class A data from Class S. Class S data may be used as supplementary evidence but is insufficient as primary evidence in a formal NEPRA complaint filing against a DISCO. Always confirm the instrument carries an accredited IEC 61000-4-30 Class A certificate (IECEE CB or equivalent), not just a datasheet claim.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">How long should I monitor before filing a WAPDA voltage sag complaint?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">A minimum of one continuous week of Class A PQDR data is required by NEPRA regulations; one month is strongly recommended. This establishes statistical validity — a one-week campaign might capture a good or bad week atypically. For SARFI (System Average RMS variation Frequency Index) calculations per IEEE 1564-2014, a minimum 12-week dataset gives statistically significant percentile values. For immediate damage claims (equipment failure during a specific event), even a 24-hour dataset is sufficient provided it captures the event's timestamp and waveform, plus a minimum 1-hour baseline before and after the event.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">Can a PQDR connected at the 400V LT bus be used to prove a voltage sag originated from WAPDA's 11 kV network?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">Yes, with the right analysis. The 11 kV/400V transformer has a typical impedance of 4–6% — a sag originating on the 11 kV side will appear at the 400V LT bus at approximately the same per-unit residual voltage (minus the transformer impedance drop). Key indicators that the sag originated from the utility 11 kV network: (a) the sag affects all three phases simultaneously (utility fault); (b) the sag duration matches DISCO auto-recloser clearing time (80–150 ms for single-shot reclosing); (c) a simultaneous DI input from the 11 kV incomer protection relay trip confirms the source. For highest evidentiary value, deploy a Class A recorder both at the 11 kV PCC (via VT) and the 400V LT bus simultaneously — the synchronised timestamps (GPS) prove both sides saw the same event.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">What is SARFI and how does NEPRA use it for power quality benchmarking?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">SARFI (System Average RMS variation Frequency Index) is defined in IEEE 1564-2014 as the number of voltage sag/swell/interruption events per year that exceed a threshold, averaged across all monitored sites. SARFI-90 counts events where voltage drops below 90% of nominal; SARFI-70 below 70%; SARFI-50 below 50%. NEPRA's Power Quality Regulations 2022 benchmark DISCOs against SARFI-90 targets. If WAPDA/LESCO exceeds the SARFI-90 threshold for your supply zone, you have a basis for a formal PQ complaint. Your PQDR's Class A data calculates your site-specific SARFI indices, which you can compare against NEPRA's publicly published DISCO performance data.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">Does a PQDR replace a power quality analyser for IEEE 519 harmonic compliance testing?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">A Class A PQDR with harmonic measurement up to H50 and 10-min aggregation can fully replace a portable analyser for IEEE 519-2022 harmonic compliance surveys, and provides a superior dataset because it captures 95th percentile THD-V and THD-I values over a week or more — which is exactly what IEEE 519-2022 requires for PCC compliance assessment (95th percentile, 10-min values over one week). A portable analyser used for a few hours may capture an atypically clean or dirty period. For the initial active harmonic filter sizing survey, a 7-day PQDR campaign at the PCC is the gold standard for Pakistan's variable production schedules.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between a power quality analyser and a power quality disturbance recorder?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A power quality analyser is primarily a handheld or portable instrument used for one-off measurements, surveys, and troubleshooting — typically deployed for hours to a few days. A power quality disturbance recorder (PQDR) is designed for permanent or long-term unattended installation (weeks to months) with large local storage, continuous triggered waveform capture, and network connectivity for real-time SCADA integration. All PQDRs perform the same measurements as a PQ analyser, but their key advantage is timestamped event logging over extended periods — which is what makes the data admissible as legal evidence in WAPDA / DISCO disputes under NEPRA Power Quality Regulations 2022."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which IEC 61000-4-30 class is required for a NEPRA power quality dispute in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Class A is required for formal disputes and contractual power quality assessments under NEPRA Power Quality Regulations 2022. Class A measurement uncertainty (±0.1% of Udin), mandatory 10/12-cycle aggregation, and ±20 ms UTC timing accuracy are what differentiate Class A data from Class S. Class S data may be used as supplementary evidence but is insufficient as primary evidence in a formal NEPRA complaint filing against a DISCO. Always confirm the instrument carries an accredited IEC 61000-4-30 Class A certificate (IECEE CB or equivalent), not just a datasheet claim."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long should I monitor before filing a WAPDA voltage sag complaint?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A minimum of one continuous week of Class A PQDR data is required by NEPRA regulations; one month is strongly recommended. For SARFI calculations per IEEE 1564-2014, a minimum 12-week dataset gives statistically significant percentile values. For immediate damage claims, even a 24-hour dataset is sufficient provided it captures the event's timestamp and waveform, plus a minimum 1-hour baseline before and after the event."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a PQDR connected at the 400V LT bus prove a voltage sag originated from WAPDA's 11 kV network?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Key indicators that the sag originated from the utility 11 kV network: (a) the sag affects all three phases simultaneously; (b) the sag duration matches DISCO auto-recloser clearing time (80–150 ms); (c) a simultaneous DI input from the 11 kV incomer protection relay trip confirms the source. For highest evidentiary value, deploy a Class A recorder both at the 11 kV PCC (via VT) and the 400V LT bus simultaneously — the synchronised GPS timestamps prove both sides saw the same event."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is SARFI and how does NEPRA use it for power quality benchmarking?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SARFI (System Average RMS variation Frequency Index) is defined in IEEE 1564-2014 as the number of voltage sag/swell/interruption events per year that exceed a threshold, averaged across all monitored sites. SARFI-90 counts events where voltage drops below 90% of nominal. NEPRA's Power Quality Regulations 2022 benchmark DISCOs against SARFI-90 targets. Your PQDR's Class A data calculates your site-specific SARFI indices, which you can compare against NEPRA's publicly published DISCO performance data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a PQDR replace a power quality analyser for IEEE 519 harmonic compliance testing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A Class A PQDR with harmonic measurement up to H50 and 10-min aggregation can fully replace a portable analyser for IEEE 519-2022 harmonic compliance surveys, capturing 95th percentile THD-V and THD-I values over a week or more — which is exactly what IEEE 519-2022 requires for PCC compliance assessment. A 7-day PQDR campaign at the PCC is the gold standard for Pakistan's variable production schedules."
+      }
+    }
+  ]
+}
+</script>
+
+</article>
