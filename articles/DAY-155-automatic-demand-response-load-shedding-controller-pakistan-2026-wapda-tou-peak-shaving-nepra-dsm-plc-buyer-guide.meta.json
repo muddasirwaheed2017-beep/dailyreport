@@ -1,0 +1,24 @@
+{
+  "day": 155,
+  "date": "2026-11-10",
+  "blog_id": "89971589186",
+  "blog": "guides",
+  "handle": "automatic-demand-response-load-shedding-controller-pakistan-2026-wapda-tou-peak-shaving-nepra-dsm-plc-buyer-guide",
+  "title": "Automatic Demand Response & Load Shedding Controller Pakistan 2026 — WAPDA Time-of-Use Peak Shaving, NEPRA DSM Regulations, PLC-Based ADR, Priority Load Relay Control & EMS Integration | Buyer's Guide",
+  "summary_html": "<p>Complete buyer's guide to Automatic Demand Response (ADR) controllers for Pakistani industrial facilities: WAPDA ToU tariff peak shaving, NEPRA DSM Regulation 2024 compliance, load priority sequencing, PLC vs standalone vs cloud ADR comparison, and ROI calculator showing &lt;4-month payback at 1,000 kVA LESCO B-3 tariff.</p>",
+  "tags": ["demand-response", "load-shedding-controller", "wapda", "nepra-dsm", "peak-shaving", "plc", "tou-tariff", "energy-management", "industrial-electrical", "pakistan-2026"],
+  "cluster": "Industrial Power Quality & Energy Management D3/3",
+  "word_count_approx": 3100,
+  "internal_links": [
+    "industrial-multi-function-energy-meter-pakistan-2026-wapda-disco-tariff-ct-modbus-rtu-tcp-scada-buyer-guide",
+    "energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide",
+    "iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide",
+    "vfd-variable-frequency-drive-price-pakistan-2026-ac-drive-inverter-drive-motor-speed-control-buyer-guide",
+    "apfc-automatic-power-factor-correction-panel-pakistan-2026-detuned-reactor-capacitor-bank-nepra-pf-penalty-sizing-buyer-guide",
+    "industrial-data-historian-mes-software-pakistan-2026-opc-ua-pi-influxdb-azure-timescaledb-manufacturing-execution-system-buyer-guide"
+  ],
+  "faq_count": 6,
+  "schema": ["FAQPage"],
+  "shopify_push": "PENDING (HTTP 000 expected — cloud IP blocked)",
+  "preflight_commit": "PENDING"
+}
