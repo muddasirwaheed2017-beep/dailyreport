@@ -1,0 +1,23 @@
+{
+  "day": 162,
+  "date": "2026-11-17",
+  "handle": "solar-dc-protection-price-pakistan-2026-dc-mcb-string-fuse-surge-arrester-dc-circuit-breaker-pv-array-buyer-guide",
+  "title": "Solar DC Protection Price in Pakistan 2026 — DC MCB, String Fuse Holder, DC Surge Arrester & DC Circuit Breaker PV Array Buyer Guide",
+  "summary_html": "<p>Complete buyer guide to solar DC protection in Pakistan 2026: DC MCBs (500V–1000V), string fuse holders (gPV IEC 60269-6), DC surge protective devices (SPD Type II, IEC 61643-11), DC load break isolators and PV combiner boxes. PKR prices, system-size selection tables (3 kW–100 kW), IEC 60898-1/60947-2/60947-3 compliance checklist, NEPRA SRO 892 net metering requirements and PEPCO/DISCO DC disconnect rules. Includes the 5 most common DC protection mistakes on Pakistani rooftops and how to fix them.</p>",
+  "blog_id": "89971589186",
+  "blog_name": "Guides",
+  "schema_types": ["Article", "FAQPage"],
+  "word_count_approx": 3900,
+  "topic_cluster": "Solar DC Protection",
+  "cross_links": [
+    "mcb-price-pakistan-2026-miniature-circuit-breaker-6ka-10ka-type-b-c-d-iec-60898-wapda-solar-pv-buyer-guide",
+    "hybrid-inverter-price-pakistan-2026-on-grid-off-grid-mppt-split-phase-wapda-buyer-guide",
+    "solar-battery-storage-system-bess-price-pakistan-2026-lifepo4-lithium-lead-acid-nepra-buyer-guide",
+    "lightning-protection-system-lps-price-pakistan-2026-iec-62305-air-terminal-down-conductor-earth-termination-buyer-guide",
+    "earthing-system-design-pakistan-2026-tncs-tts-it-wapda-substation-grounding-buyer-guide",
+    "rccb-type-a-type-ac-price-pakistan-2026-solar-ev-charger-earth-leakage-protection-buyer-guide",
+    "isolator-switch-price-pakistan-2026-load-break-disconnector-wapda-metering-dp-tp-buyer-guide"
+  ],
+  "v7_link_verification": "PASS — 7/7 unique handles verified against local meta.json",
+  "broken_link_streak_day": 87
+}
