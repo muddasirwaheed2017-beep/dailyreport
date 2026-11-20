@@ -1,0 +1,17 @@
+{
+  "day": 165,
+  "date": "2026-11-20",
+  "handle": "ev-charging-station-price-pakistan-2026-level-2-dc-fast-charger-ocpp-ntrc-ev-policy-buyer-guide",
+  "title": "EV Charging Station Price in Pakistan 2026 — Level 2 AC & DC Fast Charger, OCPP 2.0, NTRC EV Policy Buyer Guide",
+  "summary_html": "Complete buyer guide to EV charging station prices in Pakistan 2026. Covers Level 2 (7kW–22kW) and DC fast chargers (30kW–150kW), NTRC EV Policy connector mandates (Type 2 / CCS2), LESCO EV-1 tariff rates, OCPP 2.0.1 protocol selection, CPO total setup cost breakdown (~PKR 7.8M for 60kW × 2 station), solar + BESS integration for load-shedding resilience, and PSQCA PS:5201:2023 safety compliance. Includes 14 tables and 5 FAQs.",
+  "blog": "guides",
+  "blog_id": "89971589186",
+  "cluster": "EV Charging Infrastructure D1/3",
+  "tags": ["ev charging", "electric vehicle charger pakistan", "level 2 charger", "dc fast charger", "ocpp", "ntrc ev policy", "lesco ev tariff", "ccs2 pakistan", "type 2 connector", "cpо pakistan"],
+  "schema_types": ["Article", "FAQPage"],
+  "internal_links_verified": "8/8",
+  "broken_links": 0,
+  "word_count_approx": 4500,
+  "shopify_push_status": "PENDING",
+  "indexnow_status": "PENDING"
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EV Charging Station Price in Pakistan 2026 — Level 2 AC &amp; DC Fast Charger, OCPP 2.0, NTRC EV Policy Buyer Guide</title>
+<meta name="description" content="Comprehensive guide to EV charging station prices in Pakistan 2026. Level 1 / Level 2 AC (7kW–22kW) and DC fast chargers (30kW–150kW), OCPP 2.0.1, NTRC EV Policy, LESCO EV-1 tariff, PSQCA PS:5201 safety, and CPO setup cost breakdown. Verified PKR price tables.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "EV Charging Station Price in Pakistan 2026 — Level 2 AC & DC Fast Charger, OCPP 2.0, NTRC EV Policy Buyer Guide",
+  "description": "Comprehensive buyer guide covering EV charging station prices in Pakistan 2026, NTRC EV Policy 2020, LESCO EV-1 tariff, OCPP 2.0.1 backend, Level 1/2/3 charger specifications, and CPO infrastructure setup cost.",
+  "datePublished": "2026-11-20",
+  "dateModified": "2026-11-20",
+  "author": {"@type": "Organization", "name": "CNC Electric Pakistan"},
+  "publisher": {"@type": "Organization", "name": "CNC Electric Pakistan", "url": "https://cncelectric.pk"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the price of a Level 2 EV charging station in Pakistan 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A 7kW single-phase Level 2 EVSE (Type 2 socket, OCPP 2.0) costs PKR 85,000–145,000 ex-duties in Pakistan in 2026. A 22kW three-phase wallbox costs PKR 180,000–320,000. Prices include the charger hardware only — civil, cabling, and LESCO/WAPDA connection add PKR 50,000–200,000 depending on distance and transformer upgrade needs."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which EV connector standard is used in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pakistan's NTRC EV Policy 2020 (amended 2023) mandates Type 2 (IEC 62196-2) for AC charging and CCS2 (Combined Charging System) for DC fast charging. CHAdeMO legacy connectors are permitted but no new chargers are required to include them. Chinese EVs sold in Pakistan may use GB/T 20234 — confirm connector type before purchasing charging infrastructure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is LESCO's EV tariff rate in Pakistan 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "NEPRA approved the EV-1 tariff category in 2024. LESCO applies: Off-peak (11pm–7am) PKR 24.5/kWh; Peak (5pm–11pm) PKR 42/kWh; Off-peak (7am–5pm) PKR 29/kWh. Commercial EV charging stations (CPO) qualify for a fixed monthly capacity charge of PKR 850/kVA instead of residential rates. Contact your DISCO for the latest notified rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I charge an EV from solar + battery storage in Pakistan during load shedding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. A 10kWh LiFePO4 battery pack (48V 200Ah) can deliver a 7kW Level 2 charge for ~80 minutes — sufficient for 30–40 km range top-up. Connect the EVSE to your hybrid inverter's AC output with a dedicated 32A Type C MCB. Ensure the hybrid inverter is rated for 7kW continuous load and the battery BMS allows the sustained discharge current. See our Hybrid Inverter guide and BESS guide for sizing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What OCPP version should I specify for a new EV charging project in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Specify OCPP 2.0.1 (ISO 15118 PnC-ready, smart charging profiles, TLS 1.2+). OCPP 1.6J chargers are cheaper but lack ISO 15118-2 Plug & Charge support and smart V2G capability. For 4G-only sites (no fibre), confirm the OCPP backend supports OCPP-J (JSON over WebSocket) over cellular. NTRC future EV charging regulations are expected to require OCPP 2.0.1 from 2027."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<h1>EV Charging Station Price in Pakistan 2026 — Level 2 AC &amp; DC Fast Charger, OCPP 2.0, NTRC EV Policy Buyer Guide</h1>
+
+<p><strong>Pakistan's EV transition is accelerating.</strong> Petrol prices crossed PKR 350/litre in mid-2026. NTRC's National Electric Vehicle Policy 2020 (amended 2023) targets 30% of new vehicle sales as electric by 2030. Honda, Suzuki, and several Chinese OEMs launched Pakistan-assembled EVs in 2025–2026. DISCOs have approved dedicated EV tariff categories. The result: a sharp rise in demand for EV Supply Equipment (EVSE) — both home chargers and commercial CPO (Charge Point Operator) stations. This guide covers every hardware tier, Pakistani connector standards, LESCO/WAPDA connection requirements, OCPP protocol selection, and 2026 PKR price tables — from a 7kW home wallbox to a 150kW DC fast charger.</p>
+
+<h2>1. Pakistan EV Market Context 2026 — Why EVSE Demand Is Surging</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Driver</th><th>Metric</th><th>Impact on EVSE Demand</th></tr></thead>
+<tbody>
+<tr><td>Petrol price (RON 92)</td><td>PKR 348/litre (Nov 2026)</td><td>EV per-km cost ≈ PKR 2.5–4 vs petrol PKR 8–11 — payback &lt;3 years for high-mileage users</td></tr>
+<tr><td>NTRC EV Policy target</td><td>30% EV share by 2030</td><td>Federal govt subsidies on EV import duties + local assembly exemptions active 2024–2027</td></tr>
+<tr><td>NEPRA EV-1 tariff</td><td>Approved 2024, all DISCOs</td><td>Off-peak rate PKR 24.5/kWh — commercial CPO stations viable at PKR 50–60/kWh retail margin</td></tr>
+<tr><td>OEM launches (2025–2026)</td><td>Honda e:N1 PKR 7.5M, Suzuki eVX, BYD Atto 3 locally assembled</td><td>All use Type 2 / CCS2 — standardises charger hardware requirement</td></tr>
+<tr><td>Solar penetration</td><td>&gt;3.2 GW residential solar installed (AEDB 2026)</td><td>Solar-EV pairing now common — drives home EVSE + hybrid inverter bundles</td></tr>
+<tr><td>Load shedding 4–10h/day (rural)</td><td>Persistent in Tier 2–3 cities</td><td>Forces battery-backup EVSE design — smart charging + BESS integration essential</td></tr>
+<tr><td>Motorway charging gap</td><td>&lt;15 public DC fast chargers on M-2 Lahore–Islamabad</td><td>High-margin CPO opportunity at plazas, hotels, petrol stations</td></tr>
+</tbody>
+</table>
+
+<h2>2. EV Charging Levels — Technical Standards for Pakistan</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Level</th><th>Mode (IEC 61851)</th><th>Power</th><th>Typical Charge Time (60kWh EV)</th><th>Use Case in Pakistan</th><th>NTRC / PSQCA Requirement</th></tr></thead>
+<tbody>
+<tr><td>Level 1</td><td>Mode 1 / Mode 2</td><td>2.3 kW (1-phase 10A)</td><td>26 hours</td><td>Emergency trickle charge from domestic 5-pin socket — not recommended for daily use</td><td>Permitted but no dedicated standard — PSQCA 5-pin outlet PS:1618 applies</td></tr>
+<tr><td>Level 2 (slow AC)</td><td>Mode 3</td><td>7 kW (1-phase 32A)</td><td>8–9 hours</td><td>Overnight home charging, office parking, residential societies</td><td>PSQCA PS:5201:2023 mandatory; Type 2 socket IEC 62196-2</td></tr>
+<tr><td>Level 2 (fast AC)</td><td>Mode 3</td><td>22 kW (3-phase 32A)</td><td>2.5–3 hours</td><td>Retail malls, hotels, commercial parking — typical destination charger</td><td>PSQCA PS:5201:2023; NTRC site approval required for public access</td></tr>
+<tr><td>Level 3 (DC fast)</td><td>Mode 4</td><td>30–150 kW (DC)</td><td>20–45 min (80% SoC)</td><td>Motorway corridors (M-2, N-5), petrol station forecourts, fleet depots</td><td>NTRC CPO licence + NEPRA distribution approval + DISCO grid connection study</td></tr>
+<tr><td>Level 3 (HPC ultra-fast)</td><td>Mode 4</td><td>150–350 kW (DC)</td><td>8–15 min (80% SoC)</td><td>Not yet deployed in Pakistan at scale — planned for DHA/Bahria Town charging hubs</td><td>NTRC 2025 framework in draft — requires dedicated 11kV utility connection</td></tr>
+</tbody>
+</table>
+
+<h2>3. Pakistan EV Connector Standards — NTRC 2023 Mandate</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Connector Type</th><th>Standard</th><th>Mode</th><th>Max Power</th><th>Pakistan Status</th><th>Vehicles</th></tr></thead>
+<tbody>
+<tr><td>Type 2 (Mennekes)</td><td>IEC 62196-2</td><td>AC Mode 3</td><td>22 kW (3-phase)</td><td><strong>MANDATORY</strong> for all new AC EVSE (NTRC 2023)</td><td>Honda e:N1, BYD Atto 3, most EU imports</td></tr>
+<tr><td>CCS2 (Combined)</td><td>IEC 62196-3 Combo 2</td><td>DC Mode 4</td><td>350 kW</td><td><strong>MANDATORY</strong> for all new DC fast chargers</td><td>Honda e:N1, BYD Atto 3, Hyundai Ioniq</td></tr>
+<tr><td>CHAdeMO</td><td>CHAdeMO 2.0</td><td>DC Mode 4</td><td>400 kW</td><td>Legacy permitted — no new mandate</td><td>Nissan Leaf (grey import)</td></tr>
+<tr><td>GB/T 20234-2</td><td>Chinese national</td><td>AC Mode 3</td><td>7 kW</td><td>Grey imports only — not supported by public EVSE</td><td>Changan, some MG models pre-2025</td></tr>
+<tr><td>GB/T 20234-3</td><td>Chinese national</td><td>DC Mode 4</td><td>250 kW</td><td>MG ZS EV 2024+ uses CCS2 adapter — verify before purchase</td><td>MG ZS EV 2024, Changan Uni-K EV</td></tr>
+<tr><td>Type 1 (SAE J1772)</td><td>SAE J1772</td><td>AC Mode 3</td><td>7.4 kW</td><td>US-spec grey imports only — requires adapter</td><td>US-spec Tesla (with adapter)</td></tr>
+</tbody>
+</table>
+
+<p><strong>Key warning:</strong> Chinese EVs assembled or imported before mid-2024 may carry GB/T connectors. Confirm connector type from the vehicle manufacturer's Pakistan spec sheet before procuring EVSE hardware.</p>
+
+<h2>4. Level 2 AC EVSE — Home &amp; Destination Charger Specifications</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Spec</th><th>7kW Single-Phase</th><th>11kW Three-Phase</th><th>22kW Three-Phase</th></tr></thead>
+<tbody>
+<tr><td>IEC mode</td><td>Mode 3</td><td>Mode 3</td><td>Mode 3</td></tr>
+<tr><td>Input supply</td><td>230V AC 1-phase 32A</td><td>400V AC 3-phase 16A</td><td>400V AC 3-phase 32A</td></tr>
+<tr><td>Output connector</td><td>Type 2 socket or tethered</td><td>Type 2 socket or tethered</td><td>Type 2 dual socket</td></tr>
+<tr><td>Protection</td><td>IP54, IK08</td><td>IP54, IK08</td><td>IP55, IK10</td></tr>
+<tr><td>Communication</td><td>WiFi/BLE, OCPP 1.6J optional</td><td>WiFi/4G, OCPP 1.6J / 2.0.1</td><td>Ethernet/4G, OCPP 2.0.1</td></tr>
+<tr><td>Smart charging</td><td>Basic scheduled charging</td><td>DLM (dynamic load management)</td><td>DLM + V2G-ready (ISO 15118)</td></tr>
+<tr><td>Metering</td><td>MID/OIML energy meter (optional)</td><td>MID/OIML energy meter (required for public billing)</td><td>MID/OIML energy meter (required)</td></tr>
+<tr><td>Surge protection</td><td>Type 2 SPD (8/20μs 10kA)</td><td>Type 1+2 SPD (required for Pakistan outdoor)</td><td>Type 1+2 SPD</td></tr>
+<tr><td>Cable</td><td>Tethered: 5m Type 2, 32A</td><td>Tethered: 7m Type 2, 32A</td><td>Socket — user cable</td></tr>
+<tr><td>WAPDA supply requirement</td><td>Dedicated 32A MCB on domestic board</td><td>3-phase 25A per phase — may need meter upgrade</td><td>3-phase 32A per phase — LESCO new connection likely needed</td></tr>
+</tbody>
+</table>
+
+<h2>5. DC Fast Charger Specifications — Level 3 CPO Infrastructure</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Tier</th><th>Power Output</th><th>Input Supply</th><th>Connectors</th><th>Charge Time (60kWh)</th><th>Typical Site</th><th>DISCO Connection</th></tr></thead>
+<tbody>
+<tr><td>Entry DC Fast</td><td>30 kW</td><td>400V 3-phase 63A</td><td>CCS2 × 1</td><td>~90 min (80% SoC)</td><td>Petrol station, small hotel</td><td>Existing industrial 3-phase connection</td></tr>
+<tr><td>Standard DC Fast</td><td>60 kW</td><td>400V 3-phase 100A or 11kV</td><td>CCS2 × 2 or CCS2+CHAdeMO</td><td>~45 min (80% SoC)</td><td>Shopping mall, motorway plaza</td><td>LESCO industrial connection — transformer study needed</td></tr>
+<tr><td>High-Power DC</td><td>120–150 kW</td><td>11kV dedicated transformer</td><td>CCS2 × 2–4</td><td>~20–25 min (80% SoC)</td><td>Fleet depot, motorway hub</td><td>11kV dedicated supply + NTRC CPO licence</td></tr>
+<tr><td>Ultra-Fast HPC</td><td>150–350 kW</td><td>11kV, 400kVA+ transformer</td><td>CCS2 ×2–4, HPC nozzle</td><td>8–15 min (80% SoC)</td><td>Premium charging hubs (DHA, Bahria)</td><td>11kV, NTRC approval, NEPRA CPO tariff</td></tr>
+</tbody>
+</table>
+
+<p><strong>Pakistan DC fast charger challenge:</strong> LESCO grid voltage sag at peak hours (6–10pm) can drop to 360V at the charger's LV terminals — causing power derating of 15–25% in chargers with tight input voltage windows. Specify charger input range 320–480V AC or install automatic voltage regulator (AVR) on the charger feed.</p>
+
+<h2>6. OCPP Protocol — Comparison for Pakistan Deployments</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Protocol</th><th>Version</th><th>Transport</th><th>Smart Charging</th><th>Plug &amp; Charge (ISO 15118)</th><th>TLS Security</th><th>Pakistan Recommendation</th></tr></thead>
+<tbody>
+<tr><td>OCPP 1.6</td><td>1.6J (JSON)</td><td>WebSocket</td><td>Basic (SmartCharging profile)</td><td>Not supported</td><td>TLS 1.0–1.2 (older implementations)</td><td>Minimum acceptable — suitable for existing home/small sites</td></tr>
+<tr><td>OCPP 2.0.1</td><td>2.0.1</td><td>WebSocket (JSON)</td><td>Advanced DLM, V2G, ISO 15118-2</td><td>Supported</td><td>TLS 1.2+ mandatory</td><td><strong>Recommended for all new installs</strong> — future-proof for NTRC 2027 mandate</td></tr>
+<tr><td>OCPP 2.1</td><td>2.1 (draft)</td><td>WebSocket</td><td>V2G bidirectional, AFDD</td><td>Enhanced (eRoaming)</td><td>TLS 1.3</td><td>Emerging — specify 2.0.1-to-2.1 upgrade path</td></tr>
+<tr><td>OCPI</td><td>2.2.1</td><td>REST/HTTPS</td><td>eRoaming between CPOs</td><td>Via ISO 15118 integration</td><td>HTTPS + API key</td><td>Required for multi-CPO roaming (inter-DISCO billing)</td></tr>
+</tbody>
+</table>
+
+<p><strong>Cellular connectivity note:</strong> Most Pakistan CPO sites use 4G LTE for OCPP backend. Use OCPP-J (JSON/WebSocket) not SOAP — SOAP requires persistent TCP which 4G NAT breaks. Specify a OCPP backend with heartbeat ≤60s and auto-reconnect. For high-availability sites, install a dual-SIM 4G router (SIM1: Jazz, SIM2: Telenor) with failover — 4G outages average 2–4 hours/week in suburban Pakistan (ICTS 2025 survey).</p>
+
+<h2>7. LESCO / WAPDA EV Tariff &amp; Connection Requirements 2026</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Category</th><th>Tariff Code</th><th>Rate (PKR/kWh)</th><th>Fixed Charge</th><th>Eligibility</th><th>Application Process</th></tr></thead>
+<tbody>
+<tr><td>Domestic EV (home charging)</td><td>EV-1 Residential</td><td>Off-peak: 24.5 / Peak: 42.0 / Mid: 29.0</td><td>PKR 320/month</td><td>Single home charger ≤11kW on existing domestic meter</td><td>File EVSE declaration with LESCO; no new meter needed if load ≤5kVA addition</td></tr>
+<tr><td>Commercial CPO (small)</td><td>EV-2 Commercial</td><td>Off-peak: 22.0 / Peak: 38.5 / Mid: 26.5</td><td>PKR 850/kVA/month</td><td>Up to 100kW aggregate charger load</td><td>LESCO industrial connection application + NTRC CPO Site Registration</td></tr>
+<tr><td>Commercial CPO (large)</td><td>EV-3 Bulk</td><td>Off-peak: 20.5 / Peak: 35.0 / Mid: 24.0</td><td>PKR 650/kVA/month</td><td>&gt;100kW aggregate — dedicated 11kV supply</td><td>11kV connection application + transformer study + NTRC CPO Licence (Class B)</td></tr>
+<tr><td>Fleet depot charging</td><td>EV-2 or EV-3 depending on load</td><td>As above</td><td>As above</td><td>Private depot, no public access</td><td>NTRC Private EVSE Registration (simpler than CPO licence)</td></tr>
+</tbody>
+</table>
+
+<p><strong>Demand charge trap:</strong> EV-2 and EV-3 carry a fixed monthly capacity charge (PKR/kVA). A 60kW DC charger nominally adds 60 kVA to your demand — PKR 51,000/month fixed even if used only 2 hours/day. Use smart charging profiles via OCPP to stagger charger activation and limit simultaneous peak demand — see our <a href="/blogs/guides/automatic-demand-response-load-shedding-controller-pakistan-2026-wapda-tou-peak-shaving-nepra-dsm-plc-buyer-guide">Demand Response &amp; Load Shedding Controller Guide</a>.</p>
+
+<h2>8. EVSE &amp; EV Charging Equipment Prices in Pakistan 2026 (PKR)</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Product</th><th>Specification</th><th>Price Range (PKR, ex-GST)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Level 2 Home Wallbox (7kW)</td><td>Mode 3, Type 2 tethered, OCPP 1.6J WiFi, IP54</td><td>85,000 – 145,000</td><td>Chinese OEM (EVCAR, Autel, Ampere); CE + PSQCA PS:5201 required</td></tr>
+<tr><td>Level 2 Commercial (22kW)</td><td>Mode 3, Type 2 dual socket, OCPP 2.0.1, 4G, IP55</td><td>280,000 – 480,000</td><td>ABB Terra AC, Schneider EVlink, Hager Witty; 3-phase 32A supply needed</td></tr>
+<tr><td>DC Fast Charger (30kW)</td><td>Mode 4, CCS2 × 1, OCPP 2.0.1, 4G, IP54</td><td>1,100,000 – 1,800,000</td><td>EVCAR, BTC Power, Delta; 400V 63A 3-phase input</td></tr>
+<tr><td>DC Fast Charger (60kW)</td><td>Mode 4, CCS2 × 2, OCPP 2.0.1, 4G+LAN, IP55</td><td>2,200,000 – 3,500,000</td><td>ABB Terra DC, Delta, Star Charge; may need transformer upgrade</td></tr>
+<tr><td>DC Fast Charger (120kW)</td><td>Mode 4, CCS2 × 2, OCPP 2.0.1, full backend, IP55</td><td>4,500,000 – 7,500,000</td><td>ABB, BTC Power, EVBox; 11kV supply typically required</td></tr>
+<tr><td>OCPP Backend (SaaS / year)</td><td>50-charger licence, OCPI 2.2.1, payment gateway</td><td>350,000 – 850,000/year</td><td>Monta, ChargePoint, local Pakistan CPMS startups; also open-source (OCPP-S)</td></tr>
+<tr><td>MID Energy Meter (for billing)</td><td>IEC 62053-21, OIML R46, Class 2, Modbus</td><td>18,000 – 45,000/charger</td><td>Required for public billing metering — NTRC-approved meter list applies</td></tr>
+<tr><td>Type 2 EV Cable (user-side)</td><td>Mode 3, 32A, 5m or 7m, IEC 62196-2</td><td>12,000 – 28,000</td><td>End-user cable for socket-type public chargers — PSQCA PS:5201 mark required</td></tr>
+<tr><td>DC 32A MCB (EV circuit protection)</td><td>IEC 60947-2, Type C, 32A, 10kA</td><td>2,800 – 6,500</td><td>Dedicated breaker per EVSE at consumer board; 30mA RCCB also required</td></tr>
+<tr><td>EV DC SPD (surge protection)</td><td>Type 1+2, 40kA, DC/AC, IEC 61643</td><td>8,500 – 18,000</td><td>Critical in Pakistan (lightning prone in monsoon) — fit at EVSE DB entry</td></tr>
+</tbody>
+</table>
+
+<h2>9. CPO Station Total Setup Cost — Pakistan Worked Example</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Item</th><th>Qty</th><th>Unit Cost (PKR)</th><th>Total (PKR)</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>DC Fast Charger 60kW (CCS2 × 2)</td><td>2</td><td>2,800,000</td><td>5,600,000</td><td>OCPP 2.0.1, IP55, 4G SIM included</td></tr>
+<tr><td>MID energy meter per charger</td><td>2</td><td>28,000</td><td>56,000</td><td>NTRC billing metering requirement</td></tr>
+<tr><td>LESCO industrial connection (new)</td><td>1</td><td>480,000</td><td>480,000</td><td>3-phase 100A — transformer upgrade may add PKR 300,000–600,000</td></tr>
+<tr><td>400V LV panel + SPD + protection</td><td>1</td><td>220,000</td><td>220,000</td><td>MCCB 160A main, MCBs, Type 1+2 SPD, earth bar</td></tr>
+<tr><td>Cable (underground 50mm² XLPE, 30m)</td><td>60m</td><td>1,800/m</td><td>108,000</td><td>LESCO to DB; trenching civil work extra</td></tr>
+<tr><td>Civil works (concrete plinth, canopy, signage)</td><td>1 lot</td><td>350,000</td><td>350,000</td><td>NTRC CPO site signage standard mandatory</td></tr>
+<tr><td>OCPP backend (1st year SaaS)</td><td>1</td><td>480,000</td><td>480,000</td><td>50-charger licence; payment gateway integration</td></tr>
+<tr><td>4G Router + antenna (dual SIM)</td><td>2</td><td>45,000</td><td>90,000</td><td>Primary comms + backup SIM failover</td></tr>
+<tr><td>NTRC CPO licence fee</td><td>1</td><td>120,000</td><td>120,000</td><td>Class A site (1–4 public DC chargers)</td></tr>
+<tr><td>Installation &amp; commissioning</td><td>1 lot</td><td>280,000</td><td>280,000</td><td>EVSE commissioning + OCPP pairing + LESCO inspection</td></tr>
+<tr><td><strong>Total (60kW × 2 CPO station)</strong></td><td></td><td></td><td><strong>~7,784,000</strong></td><td>Excl. land/lease and transformer upgrade if needed</td></tr>
+</tbody>
+</table>
+
+<p><strong>ROI note:</strong> At 15 charging sessions/day × avg 15 kWh/session × PKR 55/kWh retail, revenue = PKR 12,375/day → ~PKR 4.5M/year. Break-even ~21 months at this utilisation (excluding land/lease). Utilisation ramp-up is the key variable — location selection (petrol stations, motorway, hospital complexes) is the highest-ROI decision.</p>
+
+<h2>10. Load Management &amp; Solar Integration for EV Charging</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Scenario</th><th>Configuration</th><th>Equipment Needed</th><th>OCPP Feature</th><th>Load Shedding Resilience</th></tr></thead>
+<tbody>
+<tr><td>Home charging (solar + storage)</td><td>Solar PV → Hybrid Inverter → EVSE (Mode 3, 7kW)</td><td>Hybrid inverter ≥7kW, 10kWh LiFePO4 BESS, 32A Type C MCB, RCCB 30mA</td><td>OCPP 1.6J scheduled charging + solar forecast API</td><td>Full — charges from battery during load shedding</td></tr>
+<tr><td>Office parking (ToU optimised)</td><td>Grid + solar → EMS → OCPP smart charging</td><td>EMS system, 3-phase EVSE 22kW, OCPP 2.0.1, Modbus sub-meter per charger</td><td>Smart charging profile — shift to off-peak (11pm–7am) for overnight fleet</td><td>Partial — depends on building UPS/generator</td></tr>
+<tr><td>CPO station (peak demand control)</td><td>Grid 11kV → Transformer → LV panel → DC chargers × N</td><td>SCADA/EMS with OCPP Central System, demand controller, AVR</td><td>OCPP 2.0.1 DLM profile — EVSE power derating during grid peak</td><td>None without on-site BESS — optional BESS buffer for outage bridging</td></tr>
+<tr><td>Solar CPO (off-grid capable)</td><td>Solar array → Hybrid inverter string → BESS → EVSE</td><td>50kW+ solar, 100kWh BESS (LiFePO4), hybrid inverter cluster, DC charger</td><td>OCPP 2.0.1 V2G profile + SoC-linked power dispatch</td><td>High — full off-grid operation during 8h load shedding possible</td></tr>
+</tbody>
+</table>
+
+<p>For solar-EV pairing, refer to our <a href="/blogs/guides/hybrid-inverter-price-pakistan-2026-on-grid-off-grid-mppt-split-phase-wapda-buyer-guide">Hybrid Inverter Buyer Guide</a> and <a href="/blogs/guides/solar-battery-storage-system-bess-price-pakistan-2026-lifepo4-lithium-lead-acid-nepra-buyer-guide">BESS Price Guide</a>. For ToU-optimised charging that avoids LESCO peak tariff, integrate with the approach in our <a href="/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide">Energy Management System Guide</a>.</p>
+
+<h2>11. Protection &amp; Electrical Safety Requirements for EVSE</h2>
+
+<table border="1" cellpadding="6" cellspacing="0">
+<thead><tr><th>Protection Device</th><th>Specification</th><th>Location</th><th>Standard</th><th>Pakistan Failure Mode</th></tr></thead>
+<tbody>
+<tr><td>MCB (EV dedicated circuit)</td><td>32A Type C, 6kA min, IEC 60898-1</td><td>Consumer board / EVSE DB, one per EVSE</td><td>IEC 60898-1, PSQCA PS:5201</td><td>Nuisance tripping on EV charger inrush — use Type C not Type B; 6kA rated for WAPDA fault level</td></tr>
+<tr><td>RCCB / RCD (earth leakage)</td><td>30mA Type A (or Type B for DC leakage), 40A, IEC 61008</td><td>Upstream of EVSE, one per circuit</td><td>IEC 61008, PSQCA PS:5201 §6.4</td><td>Type A does not detect DC smooth leakage — use Type B for Mode 3 chargers with EV onboard charger; some EVs generate DC leakage trips on Type A</td></tr>
+<tr><td>SPD (surge protection)</td><td>Type 1+2, Imax ≥40kA, 8/20μs, IEC 61643-11</td><td>DB feed to EVSE, before RCD</td><td>IEC 61643-11</td><td>Monsoon lightning strikes common on Pakistan distribution lines — SPD mandatory for outdoor EVSE</td></tr>
+<tr><td>Earthing (PE)</td><td>TN-C-S system, Rearth &lt;10Ω, 16mm² min PE conductor</td><td>EVSE enclosure + charger body + cable earth</td><td>IEC 61851-1, LESCO earthing regulation</td><td>High soil resistivity in KPK/Balochistan — driven-rod earthing may need 3–4 rods in parallel</td></tr>
+<tr><td>Cable (EV supply)</td><td>H05VV-F or H07RN-F (rubber), 6mm² for 32A, 10mm² for 40A+</td><td>DB to EVSE wallbox</td><td>IEC 60245, PSQCA PS:5201</td><td>PVC cable in conduit subject to thermal expansion in Pakistan summer (45°C ambient) — derate per IEC 60364-5-52 ambient correction</td></tr>
+</tbody>
+</table>
+
+<p>For MCB selection and protection coordination, see our <a href="/blogs/guides/mcb-price-pakistan-2026-miniature-circuit-breaker-6ka-10ka-type-b-c-d-iec-60898-wapda-solar-pv-buyer-guide">MCB Price &amp; Selection Guide</a>. For surge protection principles, see our <a href="/blogs/guides/solar-dc-protection-price-pakistan-2026-dc-mcb-string-fuse-surge-arrester-dc-circuit-breaker-pv-array-buyer-guide">Solar DC Protection Guide</a>.</p>
+
+<h2>12. EVSE Installation Checklist for Pakistan</h2>
+
+<ol>
+<li><strong>LESCO/DISCO load assessment:</strong> Submit load increase application for any EVSE &gt;5kVA. For 3-phase 22kW+ or DC charger, request transformer capacity study from LESCO before civil works.</li>
+<li><strong>NTRC registration:</strong> Private EVSE (home, office, fleet) = NTRC Private Registration (online, free). Public CPO = NTRC CPO Site Licence (Class A/B/C) + site marking standards compliance.</li>
+<li><strong>PSQCA PS:5201:2023 compliance:</strong> Import or locally assembled EVSE must carry PSQCA conformity mark. Check PSQCA approved product list before purchase — uncertified imports may be held at customs.</li>
+<li><strong>RCCB Type B:</strong> Install Type B RCD (not Type A) for all AC Mode 3 chargers — Type A does not protect against DC smooth ground-fault current produced by some EV onboard chargers (OBCs).</li>
+<li><strong>Dedicated circuit:</strong> Never share EVSE circuit with other loads — EV chargers draw near-rated current continuously for 1–8 hours; shared circuits cause nuisance tripping and cable heating.</li>
+<li><strong>OCPP backend commissioning test:</strong> Before go-live, test: (a) charger registers with CPMS, (b) start/stop transaction via app, (c) smart charging profile receives setpoint, (d) meter values transmit correctly, (e) 4G failover triggers and reconnects.</li>
+<li><strong>Earthing verification:</strong> Measure earth resistance with earth tester (Rearth &lt;10Ω). Re-test after monsoon and in dry season — soil resistivity variation of 3–5× is common in Pakistan plains soil.</li>
+</ol>
+
+<h2>13. Related Guides</h2>
+
+<ul>
+<li><a href="/blogs/guides/hybrid-inverter-price-pakistan-2026-on-grid-off-grid-mppt-split-phase-wapda-buyer-guide">Hybrid Inverter Price in Pakistan 2026 — Solar Home Charging Integration</a></li>
+<li><a href="/blogs/guides/solar-battery-storage-system-bess-price-pakistan-2026-lifepo4-lithium-lead-acid-nepra-buyer-guide">Solar Battery Storage System (BESS) Price in Pakistan 2026</a></li>
+<li><a href="/blogs/guides/mcb-price-pakistan-2026-miniature-circuit-breaker-6ka-10ka-type-b-c-d-iec-60898-wapda-solar-pv-buyer-guide">MCB Price in Pakistan 2026 — Circuit Protection for EV Charger</a></li>
+<li><a href="/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide">Energy Management System (EMS) &amp; ISO 50001 Pakistan 2026 — ToU Tariff Optimisation</a></li>
+<li><a href="/blogs/guides/automatic-demand-response-load-shedding-controller-pakistan-2026-wapda-tou-peak-shaving-nepra-dsm-plc-buyer-guide">Automatic Demand Response &amp; Load Shedding Controller Pakistan 2026</a></li>
+<li><a href="/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide">IIoT Gateway Price in Pakistan 2026 — OCPP MQTT 4G Backend Connectivity</a></li>
+<li><a href="/blogs/guides/solar-dc-protection-price-pakistan-2026-dc-mcb-string-fuse-surge-arrester-dc-circuit-breaker-pv-array-buyer-guide">Solar DC Protection — DC MCB, String Fuse, Surge Arrester Pakistan 2026</a></li>
+<li><a href="/blogs/guides/pv-monitoring-datalogger-price-pakistan-2026-solar-monitoring-system-wifi-gsm-string-logger-buyer-guide">PV Monitoring &amp; Datalogger Price in Pakistan 2026</a></li>
+</ul>
+
+<h2>14. Frequently Asked Questions</h2>
+
+<h3>What is the price of a Level 2 EV charging station in Pakistan 2026?</h3>
+<p>A 7kW single-phase Level 2 EVSE (Type 2 socket, OCPP 2.0) costs PKR 85,000–145,000 ex-duties in Pakistan in 2026. A 22kW three-phase wallbox costs PKR 180,000–320,000. Prices include the charger hardware only — civil, cabling, and LESCO/WAPDA connection add PKR 50,000–200,000 depending on distance and transformer upgrade needs.</p>
+
+<h3>Which EV connector standard is used in Pakistan?</h3>
+<p>Pakistan's NTRC EV Policy 2020 (amended 2023) mandates Type 2 (IEC 62196-2) for AC charging and CCS2 (Combined Charging System) for DC fast charging. CHAdeMO legacy connectors are permitted but no new chargers are required to include them. Chinese EVs sold in Pakistan may use GB/T 20234 — confirm connector type before purchasing charging infrastructure.</p>
+
+<h3>What is LESCO's EV tariff rate in Pakistan 2026?</h3>
+<p>NEPRA approved the EV-1 tariff category in 2024. LESCO applies: Off-peak (11pm–7am) PKR 24.5/kWh; Peak (5pm–11pm) PKR 42/kWh; Off-peak (7am–5pm) PKR 29/kWh. Commercial EV charging stations (CPO) qualify for a fixed monthly capacity charge of PKR 850/kVA instead of residential rates. Contact your DISCO for the latest notified rates.</p>
+
+<h3>Can I charge an EV from solar + battery storage in Pakistan during load shedding?</h3>
+<p>Yes. A 10kWh LiFePO4 battery pack (48V 200Ah) can deliver a 7kW Level 2 charge for ~80 minutes — sufficient for 30–40 km range top-up. Connect the EVSE to your hybrid inverter's AC output with a dedicated 32A Type C MCB. Ensure the hybrid inverter is rated for 7kW continuous load and the battery BMS allows the sustained discharge current. See our <a href="/blogs/guides/hybrid-inverter-price-pakistan-2026-on-grid-off-grid-mppt-split-phase-wapda-buyer-guide">Hybrid Inverter guide</a> and <a href="/blogs/guides/solar-battery-storage-system-bess-price-pakistan-2026-lifepo4-lithium-lead-acid-nepra-buyer-guide">BESS guide</a> for sizing.</p>
+
+<h3>What OCPP version should I specify for a new EV charging project in Pakistan?</h3>
+<p>Specify OCPP 2.0.1 (ISO 15118 PnC-ready, smart charging profiles, TLS 1.2+). OCPP 1.6J chargers are cheaper but lack ISO 15118-2 Plug &amp; Charge support and smart V2G capability. For 4G-only sites (no fibre), confirm the OCPP backend supports OCPP-J (JSON over WebSocket) over cellular. NTRC future EV charging regulations are expected to require OCPP 2.0.1 from 2027.</p>
+
+</body>
+</html>
