@@ -1,0 +1,32 @@
+{
+  "day": 168,
+  "date": "2026-11-23",
+  "blog_id": "89971589186",
+  "handle": "variable-frequency-drive-vfd-price-pakistan-2026-ac-drive-motor-controller-wapda-energy-saving-buyer-guide",
+  "title": "Variable Frequency Drive (VFD) Price Pakistan 2026 — AC Drive & Motor Controller Complete Buyer Guide",
+  "summary_html": "Complete VFD buyer guide Pakistan 2026. PKR price list 0.4kW–315kW, WAPDA energy saving calculator, V/Hz vs vector control vs DTC, IE3 motor matching, Modbus/PROFINET. Textile, sugar, cement, HVAC, water pump applications. ROI payback under 45 days at WAPDA B-2 tariff.",
+  "tags": ["VFD", "variable frequency drive", "AC drive", "inverter drive", "motor controller", "Pakistan 2026", "WAPDA energy saving", "IE3 motor", "NEECA", "Modbus RTU", "PROFINET", "textile mill", "sugar mill", "HVAC", "centrifugal pump", "buying guide"],
+  "published": false,
+  "shopify_push_status": "PENDING — HTTP 000 expected from cloud IP",
+  "cluster": "VFD & Motor Soft-Start Systems D1/3",
+  "schema": ["Article", "FAQPage"],
+  "word_count_approx": 4100,
+  "internal_links": [
+    "/blogs/guides/mccb-price-pakistan-2026-moulded-case-circuit-breaker-63a-1600a-iscn-fault-breaking-thermal-magnetic-electronic-trip-buyer-guide",
+    "/blogs/guides/iiot-gateway-price-pakistan-2026-modbus-mqtt-opcua-4g-lte-edge-computing-factory-protocol-converter-buyer-guide",
+    "/blogs/guides/energy-management-system-ems-iso-50001-pakistan-2026-neeca-energy-audit-smart-metering-sub-metering-wapda-tariff-buyer-guide",
+    "/blogs/guides/motor-efficiency-ie-class-selection-pakistan-2026-ie1-ie2-ie3-ie4-neeca-energy-audit-wapda-tariff-roi-buyer-guide",
+    "/blogs/guides/automatic-demand-response-load-shedding-controller-pakistan-2026-wapda-tou-peak-shaving-nepra-dsm-plc-buyer-guide",
+    "/blogs/guides/power-quality-disturbance-recorder-pakistan-2026-voltage-sag-swell-iec-61000-4-30-class-a-wapda-tariff-penalty-scada-buyer-guide",
+    "/blogs/guides/power-factor-capacitor-bank-price-pakistan",
+    "/collections/all"
+  ],
+  "link_verification": {
+    "total": 8,
+    "valid": 8,
+    "broken": 0,
+    "remapped": 0,
+    "method": "articles/ directory filename matching",
+    "streak_day": 93
+  }
+}
