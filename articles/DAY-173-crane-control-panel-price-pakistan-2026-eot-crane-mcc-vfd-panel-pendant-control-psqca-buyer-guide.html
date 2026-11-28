@@ -1,0 +1,431 @@
+<!-- DAY-173 | CNC Electric Pakistan | Crane Control Panel Buyer Guide 2026 -->
+<!-- Handle: crane-control-panel-price-pakistan-2026-eot-crane-mcc-vfd-panel-pendant-control-psqca-buyer-guide -->
+<!-- Blog: 89971589186 (guides) -->
+
+<article>
+
+<h1>Crane Control Panel Price Pakistan 2026 — EOT Crane MCC, VFD Drive Panel, Pendant Control Station, Motor Protection, PSQCA Factories Act &amp; 20-Point Safety Commissioning Checklist</h1>
+
+<p>A crane control panel is the brain of every <a href="/blogs/guides/electric-overhead-crane-wire-rope-hoist-price-pakistan-2026-eot-goliath-jib-crane-psqca-buyer-guide">electric overhead crane and wire rope hoist</a> in Pakistan. It governs the main hoist motor, cross-travel motor, long-travel motors, braking system, limit switches, pendant station and all safety interlocks. Get the panel wrong and you face nuisance trips, motor burnout, dropped loads and Factories Act 1934 prosecution. Get it right and your crane runs reliably for 20+ years.</p>
+
+<p>This guide covers everything Pakistani factory and project buyers need to know: panel types, core components, VFD integration, pendant control, PSQCA compliance, motor protection, 2026 PKR pricing and a 20-point commissioning checklist.</p>
+
+<hr>
+
+<h2>1. What Is a Crane Control Panel?</h2>
+
+<p>A crane control panel (also called crane electrical panel, crane power control centre or crane MCC) is a metal-enclosed switchgear assembly that:</p>
+<ul>
+  <li>Receives 3-phase WAPDA supply (typically 380–415 V, 50 Hz) through an isolator</li>
+  <li>Distributes power to hoist motor, cross-travel motor and long-travel motors</li>
+  <li>Provides motor starting, speed control and direction reversal</li>
+  <li>Implements all safety interlocks: upper/lower limit switch, travel limit switch, overload relay, phase-loss relay, emergency stop and anti-collision</li>
+  <li>Interfaces with the pendant control station or radio remote control</li>
+  <li>Provides local/remote selector, fault indication and manual reset</li>
+</ul>
+
+<p>Under the <strong>Factories Act 1934 (Pakistan)</strong> and <strong>PSQCA standards</strong>, every power-driven lifting appliance in a factory must have a panel that complies with prescribed earthing, insulation and protection requirements. Annual electrical inspection by a licensed electrical supervisor is mandatory for cranes exceeding 2-tonne capacity.</p>
+
+<hr>
+
+<h2>2. Types of Crane Control Panels</h2>
+
+<h3>2.1 Conventional Contactor-Based Panel (DOL / Star-Delta)</h3>
+<p>The most common type for cranes up to 10 tonnes in Pakistan. Uses main contactors, reversing contactors and electromechanical overload relays. Advantages: low cost (PKR 85,000–250,000), easy field maintenance, spare parts widely available. Disadvantages: high inrush current (6–8× FLA) stresses WAPDA transformer, jerky speed, mechanical wear on contactors.</p>
+
+<h3>2.2 Resistance-Step Starter Panel (Rotor Resistance Controller)</h3>
+<p>Used with slip-ring (wound-rotor) induction motors on heavy cranes (10–100 T). External rotor resistance steps reduce starting current and provide speed control. Standard on FEM M4–M6 duty class cranes. PKR 180,000–600,000 depending on tonnage.</p>
+
+<h3>2.3 VFD-Based Crane Control Panel</h3>
+<p>The modern standard for precise speed, anti-sway and energy savings. A <a href="/blogs/guides/variable-frequency-drive-vfd-price-pakistan-2026-ac-drive-motor-controller-wapda-energy-saving-buyer-guide">variable frequency drive (VFD)</a> replaces the main contactors and provides infinitely variable speed (5–100% rated), electronic braking, torque limit and motor protection in a single package. PKR 220,000–900,000 depending on kW rating. ROI payback in 18–30 months through 30–45% energy savings on WAPDA bills.</p>
+
+<h3>2.4 PLC-Based Smart Crane Panel</h3>
+<p>Adds a programmable logic controller (PLC) for anti-sway damping algorithm, load weighing, event logging, remote diagnostics (Modbus/Ethernet), multi-speed operation (up to 8 speeds) and predictive maintenance alarms. Mandatory on cranes in automated warehouses, paper mills and textile export facilities requiring CTPAT/ISO 45001 documentation. PKR 450,000–1,500,000. Typically integrated with SCADA for maintenance KPI reporting.</p>
+
+<hr>
+
+<h2>3. Core Components of a Crane Control Panel</h2>
+
+<h3>3.1 Incoming Section</h3>
+<ul>
+  <li><strong>Main Isolator (ISOL):</strong> 4-pole, lockable, rated 150–630 A depending on panel kVA. Provides safe isolation for maintenance per Factories Act 1934 Section 36 (fencing of machinery).</li>
+  <li><strong>Main MCB / MCCB:</strong> Provides short-circuit protection for the busbars. Rated 1.25× FLA of all motors combined. Mandatory arc-flash rating ≥ 25 kA at 415 V.</li>
+  <li><strong>Phase-Loss / Phase-Sequence Relay:</strong> Detects loss of one or more phases from WAPDA supply. Trips main contactor within 50 ms. Essential in Pakistan where single-phasing is a leading cause of motor burnout. See <a href="/blogs/guides/motor-protection-relay-thermal-overload-price-pakistan-2026-bimetal-electronic-mpr-wapda-phase-loss-buyer-guide">motor protection relay guide</a> for relay selection.</li>
+  <li><strong>Control Transformer (CT):</strong> Steps 415 V down to 110 V or 24 V DC for the control circuit. Keeps control voltage stable during motor starting voltage dips (WAPDA 15–20% dip common).</li>
+</ul>
+
+<h3>3.2 Hoist Motor Section</h3>
+<ul>
+  <li>Main contactor + reversing contactor (raising/lowering) — electrically and mechanically interlocked</li>
+  <li>Electronic overload relay: set to 100–105% FLA. Must have automatic reset for unattended operation and manual reset for safety-critical situations</li>
+  <li>Upper limit switch input — trips hoist "raise" contactor when hook reaches top limit. Hardwired; cannot be overridden by software alone</li>
+  <li>Lower limit switch input — prevents hook over-lowering; prevents rope slack wrap</li>
+  <li>Overload limiter input (if fitted) — load cell signal trips if SWL exceeded by >10%</li>
+  <li>Electromechanical brake release circuit — releases thruster brake on motor start, re-engages on stop. Brake resistor or DC injection timing critical (see Section 5)</li>
+</ul>
+
+<h3>3.3 Cross-Travel &amp; Long-Travel Motor Sections</h3>
+<p>Each travel motor has its own contactor set, overload relay, travel limit switch input and buffer deceleration speed if VFD-equipped. On double-girder cranes, long-travel uses two motors (one per end-carriage) that must be electrically synchronised to prevent crab skewing. VFD panels achieve synchronisation via master-follower torque sharing mode — a critical specification Pakistani buyers often overlook.</p>
+
+<h3>3.4 Electromechanical Safety Circuit</h3>
+<p>All crane safety devices are wired in series in a single safety loop (hardwired, not via PLC alone):</p>
+<ol>
+  <li>Emergency stop (E-stop) — pendant + machine room (minimum two locations per PSQCA)</li>
+  <li>Upper limit switch — hoist</li>
+  <li>Travel limit switches — cross + long travel</li>
+  <li>Main isolator auxiliary contact</li>
+  <li>Overload relay contacts</li>
+  <li>Phase-loss relay contact</li>
+  <li>Anti-collision relay (if installed)</li>
+  <li>Access door interlock (panel door opens — safety circuit trips)</li>
+</ol>
+<p>Opening any device in this loop drops the main safety contactor and de-energises all crane motors simultaneously. The crane must be manually reset from pendant only after the fault is cleared. PLC logic is <em>in addition to</em>, not in place of, this hardwired safety circuit per IEC 60204-32 (Safety of Machinery: Lifting Equipment).</p>
+
+<hr>
+
+<h2>4. Pendant Control Station</h2>
+
+<h3>4.1 Wire-Rope Pendant</h3>
+<p>The standard pendant in Pakistan: a rubber-moulded pushbutton box hung from the crane on a festoon cable (see D172 guide). Key specifications:</p>
+<ul>
+  <li><strong>Buttons:</strong> Hoist Up/Down (2-step or single), Cross-Travel Left/Right, Long-Travel Forward/Reverse, E-Stop (mushroom head, latching), horn</li>
+  <li><strong>IP Rating:</strong> IP65 minimum for factory floor (IP66 for outdoor gantries and car park cranes)</li>
+  <li><strong>Voltage:</strong> 24 V DC or 110 V AC — 24 V DC preferred (PELV circuit, safer for operator)</li>
+  <li><strong>2-Step Hoist (Mandatory for EOT &gt;5T):</strong> First press = crawl speed (5–15%), full press = rated speed. Prevents load swing on start. Required by PSQCA PS:4756.</li>
+  <li><strong>Cable Entry:</strong> Strain relief grip to prevent pull-out; pendant cable minimum 0.75 mm² flex (H05VV-F or equivalent)</li>
+</ul>
+
+<h3>4.2 Radio Remote Control</h3>
+<p>Mandatory for cranes where pendant would place operator in hazardous position (molten metal, chemical bath, narrow aisle). Features: 433 MHz or 2.4 GHz frequency-hopping, operator presence button (must hold continuously — dead-man), individual crane addressing (prevents cross-activation in multi-crane bays), battery 8-hour minimum.</p>
+<p>Radio remotes require Frequency Allocation Board (FAB) Pakistan type approval for commercial use. Local dealers supply pre-approved units.</p>
+
+<hr>
+
+<h2>5. VFD Integration Guide for Crane Control Panels</h2>
+
+<p>When specifying a <a href="/blogs/guides/variable-frequency-drive-vfd-price-pakistan-2026-ac-drive-motor-controller-wapda-energy-saving-buyer-guide">VFD for a crane</a>, the following crane-specific parameters differentiate a crane VFD from a standard pump/fan VFD:</p>
+
+<h3>5.1 Torque Control Mode</h3>
+<p>Crane hoists require vector control (closed-loop or sensorless) for constant torque at low speed. Standard V/Hz drives lose torque below 15 Hz — causing load slip on brake engagement. Specify <strong>sensorless vector (SVC)</strong> minimum; <strong>closed-loop vector with encoder</strong> for precision positioning and loads ≥10T.</p>
+
+<h3>5.2 Anti-Sway Logic</h3>
+<p>High-end VFDs (Siemens SINAMICS, ABB ACS880) have built-in anti-sway algorithms that calculate pendulum frequency from load radius and automatically ramp travel deceleration to stop the load swing. Reduces load positioning time by 30–50% in Pakistan textile mill and warehouse applications.</p>
+
+<h3>5.3 DC Injection Braking &amp; Electromechanical Brake Coordination</h3>
+<p>The crane electromechanical brake (thruster or disc brake) must be <strong>released before</strong> the VFD applies torque and <strong>re-applied after</strong> the VFD reaches zero speed. This coordination is configured in the VFD:</p>
+<ul>
+  <li>Brake open delay: 150–300 ms after VFD start command before motion begins</li>
+  <li>Brake close delay: 200–500 ms after VFD reaches zero speed (allows DC injection to hold load)</li>
+  <li>DC injection braking current: 80–150% rated motor current for 0.3–1 second</li>
+</ul>
+<p>Incorrect brake timing is the #1 cause of load slip on VFD cranes in Pakistan. Factory commissioning must include a loaded brake test at 110% SWL.</p>
+
+<h3>5.4 Braking Resistor Sizing</h3>
+<p>When lowering a load, the hoist motor regenerates energy. Without a braking resistor, the VFD DC bus overvoltage trips (F005 or similar fault). Braking resistor duty cycle for crane hoist: 20–40% ED (continuous lowering cycles). PKR sizing: add PKR 15,000–60,000 to panel cost depending on hoist kW.</p>
+
+<h3>5.5 PKR Energy Savings Analysis — 5T EOT Crane (Karachi Industrial Zone)</h3>
+<table border="1" cellpadding="6" cellspacing="0">
+  <caption>VFD vs DOL — Monthly WAPDA Bill Comparison (5T, 11 kW hoist, 3-shift operation)</caption>
+  <thead><tr><th>Parameter</th><th>DOL (Contactor)</th><th>VFD Panel</th><th>Saving</th></tr></thead>
+  <tbody>
+    <tr><td>Avg running load</td><td>100% (fixed)</td><td>60% (variable)</td><td>—</td></tr>
+    <tr><td>Monthly kWh</td><td>5,280 kWh</td><td>3,170 kWh</td><td>2,110 kWh</td></tr>
+    <tr><td>WAPDA industrial tariff B-2 (PKR 32/kWh)</td><td>PKR 168,960</td><td>PKR 101,440</td><td><strong>PKR 67,520/mo</strong></td></tr>
+    <tr><td>VFD panel premium over DOL</td><td colspan="2" align="center">PKR 180,000</td><td>Payback: 2.7 months</td></tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>6. Motor Protection Requirements for Crane Panels</h2>
+
+<p>Crane motors operate under frequent starts, reversal and variable loads — far more demanding than standard HVAC or pump motors. Minimum protection per PSQCA and IEC 60204-32:</p>
+
+<h3>6.1 Thermal Overload Protection</h3>
+<p>Electronic overload relays (not bimetal) are mandatory for cranes with &gt;6 starts/hour. Bimetal relays cannot reset fast enough and allow under-protection during rapid cycling. Electronic relays with thermal memory retain the motor temperature model even after a trip and prevent premature restart into an already-hot winding. See our <a href="/blogs/guides/motor-protection-relay-thermal-overload-price-pakistan-2026-bimetal-electronic-mpr-wapda-phase-loss-buyer-guide">motor protection relay guide</a> for relay selection criteria.</p>
+
+<h3>6.2 Phase-Loss &amp; Phase-Imbalance Protection</h3>
+<p>WAPDA supply in Pakistani industrial zones regularly suffers phase-loss events (1–3 per week in many areas). A single-phase event on a 3-phase crane motor causes 300% overload current in remaining phases and thermal destruction within 2–10 minutes. Trip time ≤100 ms is the target. Dedicated phase-loss relay (not built into overload relay) provides fastest trip response.</p>
+
+<h3>6.3 Anti-Condensation Heater</h3>
+<p>Mandatory for outdoor gantry cranes, port cranes and cranes in cold-store facilities in Pakistan. 50–100 W panel heater with thermostat prevents moisture ingress when crane is idle overnight. Prevents insulation failure of motor windings and control wiring.</p>
+
+<h3>6.4 Electrical Soft Starter as Alternative to VFD</h3>
+<p>For cross-travel and long-travel motors where speed control is not required but inrush reduction is needed, a <a href="/blogs/guides/electronic-soft-starter-pakistan-2026-motor-inrush-current-wapda-pump-hvac-compressor-reduced-voltage-buyer-guide">electronic soft starter</a> provides 2–3× reduced starting current at lower cost than a VFD. Not suitable for hoist motors where precise speed control is required.</p>
+
+<hr>
+
+<h2>7. PSQCA &amp; Factories Act 1934 Compliance Checklist</h2>
+
+<p>The following requirements are legally mandatory for all power-driven lifting appliances in Pakistan:</p>
+
+<h3>7.1 Earthing (Section 33, Factories Act 1934)</h3>
+<ul>
+  <li>Panel frame, crane structural steel and all crane rails must be bonded to a single earth point</li>
+  <li>Earth continuity conductor size: minimum 50% of phase conductor area, minimum 16 mm² copper</li>
+  <li>Earth loop impedance ≤ 0.5 Ω at any point on the crane structure</li>
+  <li>Earth electrode resistance ≤ 1 Ω (required by Electricity Rules 1937, Rule 50)</li>
+</ul>
+
+<h3>7.2 Busbar Rating &amp; Enclosure</h3>
+<ul>
+  <li>Busbars rated at 125% of maximum continuous current (not just FLA)</li>
+  <li>Panel enclosure: IP54 minimum for indoor factory environments; IP65 for dusty/wet</li>
+  <li>Sheet metal thickness: 1.5 mm minimum (CRCA steel); 2 mm for panels &gt;630 A</li>
+  <li>Degree of Protection label (BS EN 60529) affixed to panel door</li>
+</ul>
+
+<h3>7.3 Panel Labelling (Bilingual Urdu/English)</h3>
+<p>PSQCA requires safety labels in both English and Urdu for operator understanding:</p>
+<ul>
+  <li>"خطرناک بجلی — ہائی وولٹیج / DANGER — HIGH VOLTAGE" on main door</li>
+  <li>"بغیر اجازت داخل نہ ہوں / AUTHORISED PERSONS ONLY" on panel</li>
+  <li>Circuit identification labels on all feeders (Urdu + English fuse/MCB labels)</li>
+  <li>Single-line diagram (SLD) posted inside panel door (laminated)</li>
+</ul>
+
+<h3>7.4 Annual Inspection &amp; Operator Certificate</h3>
+<p>Under Factories Act 1934 Section 33A and Chief Inspector of Factories notification: cranes &gt;2T must be inspected annually by a licensed electrical supervisor. Inspection register must be kept on site. Crane operators must hold a valid operator competency certificate from a government-recognised training institution.</p>
+
+<hr>
+
+<h2>8. Crane Control Panel Price Pakistan 2026 (PKR)</h2>
+
+<p><em>Prices for factory-assembled panels with Type-tested components (Schneider, ABB or equivalent). GST 18% applicable. Prices as of November 2026 at PKR/USD ~280. Actual quotes vary ±15% with component availability.</em></p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Crane Capacity</th>
+      <th>Panel Type</th>
+      <th>Hoist Motor</th>
+      <th>Included Features</th>
+      <th>Price Range (PKR)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1T EOT (single girder)</td>
+      <td>DOL Contactor</td>
+      <td>3.7 kW</td>
+      <td>Phase-loss relay, overload, 2 travel motors, pendant</td>
+      <td>85,000–130,000</td>
+    </tr>
+    <tr>
+      <td>2T EOT (single girder)</td>
+      <td>DOL Contactor</td>
+      <td>5.5 kW</td>
+      <td>Phase-loss relay, overload, limit switches, pendant</td>
+      <td>110,000–175,000</td>
+    </tr>
+    <tr>
+      <td>5T EOT (double girder)</td>
+      <td>DOL Contactor</td>
+      <td>7.5–11 kW</td>
+      <td>Full protection, anti-collision relay, radio remote option</td>
+      <td>175,000–280,000</td>
+    </tr>
+    <tr>
+      <td>5T EOT (double girder)</td>
+      <td>VFD Panel</td>
+      <td>7.5–11 kW</td>
+      <td>VFD hoist + travel, anti-sway, 2-step control, encoder option</td>
+      <td>320,000–480,000</td>
+    </tr>
+    <tr>
+      <td>10T EOT (double girder)</td>
+      <td>VFD Panel</td>
+      <td>15–22 kW</td>
+      <td>VFD all motions, brake resistor, master-follower sync, PLC option</td>
+      <td>480,000–720,000</td>
+    </tr>
+    <tr>
+      <td>10T EOT (double girder)</td>
+      <td>PLC Smart Panel</td>
+      <td>15–22 kW</td>
+      <td>PLC + VFD, anti-sway, load cell, event log, Ethernet, radio remote</td>
+      <td>650,000–950,000</td>
+    </tr>
+    <tr>
+      <td>20T EOT (double girder)</td>
+      <td>VFD Panel</td>
+      <td>30–45 kW</td>
+      <td>VFD all motions, brake resistor, speed transducer, MCC integration</td>
+      <td>750,000–1,200,000</td>
+    </tr>
+    <tr>
+      <td>30T EOT (double girder)</td>
+      <td>PLC Smart Panel</td>
+      <td>55–75 kW</td>
+      <td>PLC + VFD all motions, anti-collision, load monitoring, remote diagnostics</td>
+      <td>1,100,000–1,800,000</td>
+    </tr>
+    <tr>
+      <td>Monorail / Jib (0.5–2T)</td>
+      <td>DOL (compact)</td>
+      <td>1.5–5.5 kW</td>
+      <td>Compact panel, overload, upper limit switch, pendant</td>
+      <td>55,000–110,000</td>
+    </tr>
+    <tr>
+      <td>Add-on: Radio Remote (2.4 GHz)</td>
+      <td>—</td>
+      <td>—</td>
+      <td>FAB-approved, dead-man button, 8-hour battery</td>
+      <td>35,000–75,000</td>
+    </tr>
+    <tr>
+      <td>Add-on: Anti-Collision System</td>
+      <td>—</td>
+      <td>—</td>
+      <td>Ultrasonic sensors, relay output, 2-crane bay kit</td>
+      <td>45,000–90,000</td>
+    </tr>
+    <tr>
+      <td>Add-on: Load Weighing System</td>
+      <td>—</td>
+      <td>—</td>
+      <td>Load cell, digital indicator, overload trip relay, RS-485</td>
+      <td>60,000–130,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2>9. 20-Point Crane Control Panel Commissioning &amp; Safety Checklist</h2>
+
+<p>Complete this checklist before handing over any new or repaired crane control panel to operations. Record results in the Crane Register (Factories Act 1934, Form XI).</p>
+
+<ol>
+  <li>☐ <strong>Incoming power verified:</strong> 380–415 V ±10%, frequency 49–51 Hz, all 3 phases present and balanced (&lt;5% imbalance)</li>
+  <li>☐ <strong>Main isolator tested:</strong> Opens and locks (padlockable) without load; auxiliary contact trips safety loop</li>
+  <li>☐ <strong>Earth continuity verified:</strong> Continuity from crane frame to panel earth bar ≤ 0.5 Ω with earth tester</li>
+  <li>☐ <strong>Earth electrode resistance:</strong> ≤ 1 Ω measured with earth tester (Megger or equivalent)</li>
+  <li>☐ <strong>Insulation resistance:</strong> ≥ 1 MΩ at 500 V DC for all motor circuits (measured with panel isolator OFF, motor disconnected)</li>
+  <li>☐ <strong>Phase-loss relay function test:</strong> Remove one phase fuse — panel trips within 100 ms and latches. Reset only possible after phase restore.</li>
+  <li>☐ <strong>Overload relay setting:</strong> Set to motor nameplate FLA ×1.0 (not FLA × 1.15 — crane motors run hot)</li>
+  <li>☐ <strong>Contactor electrical interlock:</strong> Prove "Raise" and "Lower" contactors cannot both be energised simultaneously (electrical interlock test)</li>
+  <li>☐ <strong>Contactor mechanical interlock:</strong> Prove mechanical lockout prevents both contactors closing simultaneously</li>
+  <li>☐ <strong>Upper limit switch function test (no load):</strong> Raise hook to limit — hoist motor trips immediately. Lower command still available after limit trip.</li>
+  <li>☐ <strong>Lower limit switch function test:</strong> Lower hook to minimum — lower motion trips. Raise command still available.</li>
+  <li>☐ <strong>Travel limit switches (all 4 directions):</strong> Each travel limit trips respective travel motor only; other motions unaffected</li>
+  <li>☐ <strong>Emergency stop pendant test:</strong> Press E-stop — all crane motions stop immediately. E-stop latches. Reset requires physical E-stop release + push-button reset at pendant.</li>
+  <li>☐ <strong>Emergency stop machine room test:</strong> Repeat from panel E-stop. Same result required.</li>
+  <li>☐ <strong>VFD brake coordination test (if VFD):</strong> Verify brake release delay and brake close delay match commissioning parameters. Load test with rated load at 1 m height — no load slip on start or stop.</li>
+  <li>☐ <strong>Motor rotation direction:</strong> Verify "Raise" command raises hook; "Up/Forward" travel moves in correct direction. Correct phase rotation at motor terminal if needed.</li>
+  <li>☐ <strong>Anti-collision relay test (if installed):</strong> Bring two cranes within defined safe distance — travel motion stops on both cranes.</li>
+  <li>☐ <strong>Pendant cable inspection:</strong> No visible insulation damage; strain relief intact; pendant hangs freely within safe reach of operator's work zone</li>
+  <li>☐ <strong>Loaded proof test (110% SWL):</strong> Hoist rated load × 1.1 to 300 mm off floor — hold for 10 minutes. No load drift, no thermal trip, no structural deformation.</li>
+  <li>☐ <strong>Panel documentation complete:</strong> Single-line diagram posted inside panel; operation manual available; Urdu/English safety labels affixed; Factories Act Form XI commissioning record signed by licensed electrical supervisor</li>
+</ol>
+
+<hr>
+
+<h2>10. Frequently Asked Questions (FAQ)</h2>
+
+<div itemscope itemtype="https://schema.org/FAQPage">
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">What is the difference between a crane control panel and an MCC (Motor Control Centre)?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">An MCC is a general-purpose motor control centre that can feed any type of motor load — pumps, fans, conveyors. A crane control panel is an MCC specifically engineered for lifting duty: it incorporates directional contactors with mechanical and electrical interlocks, hardwired safety loop for all limit switches and E-stops, brake release coordination circuit, and complies with IEC 60204-32 (lifting machinery) rather than just IEC 60204-1 (general machinery). For <a href="/blogs/guides/electric-overhead-crane-wire-rope-hoist-price-pakistan-2026-eot-goliath-jib-crane-psqca-buyer-guide">EOT cranes in Pakistan</a>, always specify a dedicated crane panel — not a standard MCC adapted for crane use.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">Can I use a standard VFD for a crane hoist in Pakistan?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">No. A standard V/Hz VFD for pumps/fans will lose torque at low speed, allowing load slip during braking. A crane hoist requires a VFD with sensorless vector control (minimum), crane macro/application macros pre-configured (brake timing parameters, DC injection braking, torque limit and motor thermal model). Leading brands used in Pakistan — Siemens SINAMICS G120, ABB ACS880, Mitsubishi FR-A800 — all have dedicated "crane" or "hoist" application macros. See our <a href="/blogs/guides/variable-frequency-drive-vfd-price-pakistan-2026-ac-drive-motor-controller-wapda-energy-saving-buyer-guide">VFD buyer guide</a> for full selection criteria.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">Is a radio remote control mandatory for EOT cranes in Pakistan factories?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">Radio remote is not universally mandatory but is required by: (a) the Factories Act 1934 and Chief Inspector of Factories where the pendant station would place the operator in a hazardous area (over hot metal, in a chemical zone, inside a narrow aisle); (b) PSQCA PS:4756 Annex requirements for cranes in hazardous area classifications; (c) many export-sector clients (textile, leather) as an ISO 45001 safety requirement for insurance certification. For standard warehouse and workshop cranes, a 24 V DC wire-rope pendant is fully compliant. All radio remotes used commercially in Pakistan must have FAB (Frequency Allocation Board) type approval — confirm before purchasing.</p>
+    </div>
+  </div>
+
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">How often should a crane control panel be serviced in Pakistan?</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">The Factories Act 1934 (as amended) requires: annual inspection of all power-driven lifting appliances by a licensed electrical supervisor. Best practice schedule: monthly visual inspection (panel cleanliness, contactor condition, cable glands); quarterly functional test of all limit switches and E-stops with panel log entry; annual full service (contactor tip inspection/replacement, thermal overload calibration, earth continuity measurement, insulation resistance test) with Factories Act Form XI sign-off. WAPDA supply quality in Pakistan (voltage sags, single-phasing events) means contactor contacts should be inspected every 6 months in heavy-duty applications (FEM M4–M6, 3-shift operation). The clean internal link streak for our sprint — now 97 days — mirrors the discipline required: systematic, documented, never skipped.</p>
+    </div>
+  </div>
+
+</div>
+
+<hr>
+
+<h2>11. Buying Recommendation</h2>
+
+<p><strong>For 1–2T jib crane or monorail:</strong> DOL contactor panel from a local Karachi/Lahore panel builder (PKR 55,000–130,000). Specify phase-loss relay, electronic overload relay (not bimetal) and IP54 enclosure. Pendant with 24 V DC control voltage.</p>
+
+<p><strong>For 5–10T EOT crane (new installation):</strong> Specify a VFD-based crane control panel. The 2.7-month payback on WAPDA energy savings justifies the premium, and you get infinitely variable speed, anti-sway capability and motor protection in one package. Minimum spec: sensorless vector VFD, brake resistor, brake-release timing configuration, Siemens/ABB/Mitsubishi drive (not Chinese no-name). Budget PKR 320,000–720,000.</p>
+
+<p><strong>For 10T+ or multi-crane bays:</strong> PLC-based smart crane panel with event logging, Ethernet connectivity and anti-collision. Payback comes through reduced maintenance downtime and insurance compliance for export-sector buyers. Budget PKR 650,000–1,800,000.</p>
+
+<p><strong>For <a href="/blogs/guides/chain-hoist-monorail-system-price-pakistan-2026-electric-chain-hoist-i-beam-runway-buyer-guide">electric chain hoists and monorail systems</a>:</strong> A compact DOL panel with upper/lower limit switch and phase-loss relay is typically factory-fitted with the hoist. For multi-hoist monorail systems, upgrade to a central control panel with individual circuit protection per hoist.</p>
+
+<p><strong>All buyers:</strong> Demand a copy of the Type Test Certificate for the panel enclosure (IEC 61439-2) and the VFD application macro configuration printout. Ensure the panel builder includes the bilingual Urdu/English safety labels and posts the SLD inside the panel door. These are not optional extras — they are legal requirements under the Factories Act 1934 and PSQCA standards.</p>
+
+<p><strong>CNC Electric Pakistan</strong> supplies crane control panels for 1T–100T EOT cranes, industrial chain hoists and monorail systems across Karachi, Lahore, Faisalabad, Sialkot and Islamabad. Contact our panel engineering team for a free survey and quotation.</p>
+
+</article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Crane Control Panel Price Pakistan 2026 — EOT Crane MCC, VFD Drive Panel, Pendant Control Station, Motor Protection, PSQCA Factories Act & 20-Point Safety Commissioning Checklist",
+  "description": "Complete buyer guide to crane control panels in Pakistan 2026. Covers DOL, VFD, PLC panel types, pendant control, motor protection, PSQCA Factories Act 1934 compliance, PKR price table (1T–30T) and 20-point commissioning checklist.",
+  "author": {"@type": "Organization", "name": "CNC Electric Pakistan"},
+  "publisher": {"@type": "Organization", "name": "CNC Electric Pakistan"},
+  "datePublished": "2026-11-28",
+  "dateModified": "2026-11-28",
+  "inLanguage": "en-PK",
+  "keywords": "crane control panel Pakistan, EOT crane panel price Pakistan 2026, crane MCC Pakistan, VFD crane panel, pendant control station Pakistan, PSQCA crane electrical panel, Factories Act crane electrical"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the difference between a crane control panel and an MCC (Motor Control Centre)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An MCC is a general-purpose motor control centre. A crane control panel is specifically engineered for lifting duty: directional contactors with mechanical and electrical interlocks, hardwired safety loop, brake release coordination circuit, and IEC 60204-32 compliance. Always specify a dedicated crane panel — not a standard MCC adapted for crane use."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use a standard VFD for a crane hoist in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A standard V/Hz VFD will lose torque at low speed, allowing load slip. A crane hoist requires sensorless vector control minimum and crane-specific application macros (brake timing, DC injection braking, torque limit). Siemens SINAMICS G120, ABB ACS880 and Mitsubishi FR-A800 have dedicated crane macros pre-configured."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a radio remote control mandatory for EOT cranes in Pakistan factories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Radio remote is required when pendant placement would put the operator in a hazardous area (hot metal, chemical zone, narrow aisle) per Factories Act 1934 and PSQCA PS:4756. For standard warehouse cranes, a 24V DC pendant is fully compliant. All radio remotes need FAB Pakistan type approval."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should a crane control panel be serviced in Pakistan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Factories Act 1934 requires annual inspection by a licensed electrical supervisor. Best practice: monthly visual check, quarterly limit switch and E-stop functional test, annual full service with Form XI sign-off. In heavy-duty (FEM M4–M6, 3-shift) operation, inspect contactor contacts every 6 months given WAPDA supply quality in Pakistan."
+      }
+    }
+  ]
+}
+</script>
